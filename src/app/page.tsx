@@ -16,6 +16,7 @@ import {
 
 import { inAppWallet } from "thirdweb/wallets";
 
+import { polygon } from "thirdweb/chains";
 
 
 /*
@@ -62,6 +63,15 @@ export default function Home() {
               //wallets={wallets}
 
               wallets={wallets}
+              
+              accountAbstraction={{
+                chain: polygon,
+                factoryAddress: "0x9Bb60d360932171292Ad2b80839080fb6F5aBD97",
+                gasless: true,
+              }}
+              
+
+              //chain={polygon}
 
 
               theme={"light"}
