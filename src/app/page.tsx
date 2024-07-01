@@ -1,7 +1,40 @@
+'use client';
+
 import Image from "next/image";
-import { ConnectButton } from "thirdweb/react";
+
 import thirdwebIcon from "@public/thirdweb.svg";
+
+
 import { client } from "./client";
+
+import { createThirdwebClient } from "thirdweb";
+
+import {
+  ThirdwebProvider,
+  ConnectButton,
+} from "thirdweb/react";
+
+import { inAppWallet } from "thirdweb/wallets";
+
+
+
+/*
+const client = createThirdwebClient({
+  clientId: process.env.NEXT_PUBLIC_TEMPLATE_CLIENT_ID || "",
+});
+*/
+
+
+const wallets = [
+  inAppWallet({
+    auth: {
+      options: ["phone"],
+    },
+  }),
+];
+
+
+
 
 export default function Home() {
   return (
@@ -10,16 +43,56 @@ export default function Home() {
         <Header />
 
         <div className="flex justify-center mb-20">
+          {/*
           <ConnectButton
             client={client}
             appMetadata={{
-              name: "Example App",
-              url: "https://example.com",
+              name: "Next App",
+              url: "https://next.unove.space",
             }}
           />
+          */}
+
+
+            <ConnectButton
+              client={client}
+ 
+              // inAppWallet
+
+              //wallets={wallets}
+
+              wallets={wallets}
+
+
+              theme={"light"}
+              connectModal={{ size: "wide" }}
+
+              /*
+                      appMetadata={{
+                  logoUrl: "https://path/to/my-app/logo.svg",
+                }}
+
+                */
+              
+              appMetadata={
+                {
+                  logoUrl: "https://next.unove.space/logo.png",
+                  name: "Next App",
+                  url: "https://next.unove.space",
+                  description: "This is a Next.js app with thirdweb SDK.",
+
+                }
+              }
+
+              // custom
+
+              
+            />
+      
+
+
         </div>
 
-        <ThirdwebResources />
       </div>
     </main>
   );
@@ -28,6 +101,7 @@ export default function Home() {
 function Header() {
   return (
     <header className="flex flex-col items-center mb-20 md:mb-20">
+      {/*
       <Image
         src={thirdwebIcon}
         alt=""
@@ -37,6 +111,7 @@ function Header() {
         }}
       />
 
+      
       <h1 className="text-2xl md:text-6xl font-semibold md:font-bold tracking-tighter mb-6 text-zinc-100">
         thirdweb SDK
         <span className="text-zinc-300 inline-block mx-1"> + </span>
@@ -50,6 +125,7 @@ function Header() {
         </code>{" "}
         file to get started.
       </p>
+      */}
     </header>
   );
 }
