@@ -173,8 +173,12 @@ export default function Home() {
 
 
     <main className="p-4 pb-10 min-h-[100vh] flex items-center justify-center container max-w-screen-lg mx-auto">
+
       <div className="py-20">
+        
+        {/*
         <Header />
+        */}
 
         <div className="flex justify-center mb-10">
           {/*
@@ -237,10 +241,10 @@ export default function Home() {
                 </div>
 
 
-                <h2 className="text-2xl font-semibold text-zinc-100">
+                <h2 className="text-3xl font-semibold text-zinc-100">
                   {balance} USDT
                 </h2>
-                <p className="text-zinc-300">My USDT balance</p>
+                <p className="text-zinc-300">My balance</p>
 
 
                 {/* my address */}
@@ -308,8 +312,8 @@ export default function Home() {
         <div className="flex flex-row justify-center mb-10 gap-10">
 
           <div className="flex flex-col items-center mr-4">
-            <h3 className="text-lg font-semibold text-zinc-100">Phone Number</h3>
-            <p className="text-zinc-300 text-sm">{phoneNumber}</p>
+            <h3 className="text-sm font-semibold text-zinc-100">Phone Number</h3>
+            <p className="text-zinc-300 text-xl">{phoneNumber}</p>
           </div>
 
           {/* Logout button */}
