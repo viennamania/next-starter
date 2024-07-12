@@ -35,7 +35,13 @@ import {
   getContract,
   //readContract,
 } from "thirdweb";
-import { add } from "thirdweb/extensions/farcaster/keyGateway";
+
+//import { add } from "thirdweb/extensions/farcaster/keyGateway";
+
+import { getUserPhoneNumber } from "thirdweb/wallets/in-app";
+
+
+
 
 
 /*
@@ -43,6 +49,9 @@ const client = createThirdwebClient({
   clientId: process.env.NEXT_PUBLIC_TEMPLATE_CLIENT_ID || "",
 });
 */
+
+
+
 
 
 const wallets = [
@@ -58,13 +67,18 @@ const contractAddress = "0xc2132D05D31c914a87C6611C10748AEb04B58e8F"; // USDT on
 
 
 
+
+
+
+
+
 export default function Home() {
 
 
 
-  const { connect, isConnecting, error } = useConnect();
+  //const { connect, isConnecting, error } = useConnect();
 
-  console.log(isConnecting, error);
+  ///console.log(isConnecting, error);
 
 
  // get a contract
@@ -114,7 +128,7 @@ export default function Home() {
 
   //console.log("activeWallet", activeWallet);
 
-  //console.log("activeWallet.getAccount().address", activeWallet?.getAccount()?.address);
+  console.log("activeWallet", activeWallet);
 
 
   // get wallet address
@@ -125,6 +139,32 @@ export default function Home() {
 
   console.log('address', address);
       
+
+  const [phoneNumber, setPhoneNumber] = useState("");
+
+  useEffect(() => {
+
+
+    if (activeWallet) {
+
+      //const phoneNumber = await getUserPhoneNumber({ client });
+      //setPhoneNumber(phoneNumber);
+
+
+      getUserPhoneNumber({ client }).then((phoneNumber) => {
+        setPhoneNumber(phoneNumber || "");
+      });
+
+
+
+    }
+
+  } , [activeWallet]);
+
+ 
+
+  console.log(phoneNumber);
+
 
 
 
@@ -265,18 +305,26 @@ export default function Home() {
 
         </div>
 
-        {/* Logout button */}
-        <div className="flex justify-center mb-10">
-          {address && (
-            <button
-              onClick={() => {
-                activeWallet?.disconnect();
-              }}
-              className="text-sm text-blue-500"
-            >
-              Disconnect Wallet
-            </button>
-          )}
+        <div className="flex flex-row justify-center mb-10 gap-10">
+
+          <div className="flex flex-col items-center mr-4">
+            <h3 className="text-lg font-semibold text-zinc-100">Phone Number</h3>
+            <p className="text-zinc-300 text-sm">{phoneNumber}</p>
+          </div>
+
+          {/* Logout button */}
+          <div className="flex justify-center">
+            {address && (
+              <button
+                onClick={() => {
+                  activeWallet?.disconnect();
+                }}
+                className="text-sm text-blue-500"
+              >
+                Disconnect Wallet
+              </button>
+            )}
+          </div>
         </div>
 
         {/*
