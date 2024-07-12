@@ -1,5 +1,7 @@
 'use client';
 
+import { useState, useEffect, use } from "react";
+
 import Image from "next/image";
 
 import thirdwebIcon from "@public/thirdweb.svg";
@@ -7,11 +9,18 @@ import thirdwebIcon from "@public/thirdweb.svg";
 
 import { client } from "./client";
 
-import { createThirdwebClient } from "thirdweb";
+//import { createThirdwebClient } from "thirdweb";
 
 import {
-  ThirdwebProvider,
+  //ThirdwebProvider,
   ConnectButton,
+
+  useConnect,
+
+  useReadContract,
+
+  useActiveWallet,
+  
 } from "thirdweb/react";
 
 import { inAppWallet } from "thirdweb/wallets";
@@ -20,6 +29,13 @@ import {
   polygon,
   arbitrum,
 } from "thirdweb/chains";
+
+
+import {
+  getContract,
+  //readContract,
+} from "thirdweb";
+import { add } from "thirdweb/extensions/farcaster/keyGateway";
 
 
 /*
@@ -38,15 +54,89 @@ const wallets = [
 ];
 
 
+const contractAddress = "0xc2132D05D31c914a87C6611C10748AEb04B58e8F"; // USDT on Polygon
+
 
 
 export default function Home() {
+
+
+
+  const { connect, isConnecting, error } = useConnect();
+
+  console.log(isConnecting, error);
+
+
+ // get a contract
+  const contract = getContract({
+    // the client you have created via `createThirdwebClient()`
+    client,
+    // the chain the contract is deployed on
+    chain: polygon,
+    // the contract's address
+    address: contractAddress,
+    // OPTIONAL: the contract's abi
+    //abi: [...],
+  });
+
+  
+
+  const [balance, setBalance] = useState(0);
+
+
+
+  const { data: balanceData } = useReadContract({
+    contract, 
+    method: "function balanceOf(address account) view returns (uint256)", 
+
+    params: [ "0xaeACC0a48DBDedD982fdfa21Da7175610CAE0f51" ], // the address to get the balance of
+
+  });
+
+  console.log(balanceData);
+
+  useEffect(() => {
+    if (balanceData) {
+      setBalance(
+        Number(balanceData) / 10 ** 6
+      );
+    }
+  }, [balanceData]);
+
+
+  console.log(balance);
+
+
+
+  // get the active wallet
+  const activeWallet = useActiveWallet();
+
+
+  //console.log("activeWallet", activeWallet);
+
+  //console.log("activeWallet.getAccount().address", activeWallet?.getAccount()?.address);
+
+
+  // get wallet address
+
+  const address = activeWallet?.getAccount()?.address;
+  
+
+
+  console.log('address', address);
+      
+
+
+
   return (
+
+
+
     <main className="p-4 pb-10 min-h-[100vh] flex items-center justify-center container max-w-screen-lg mx-auto">
       <div className="py-20">
         <Header />
 
-        <div className="flex justify-center mb-20">
+        <div className="flex justify-center mb-10">
           {/*
           <ConnectButton
             client={client}
@@ -57,10 +147,82 @@ export default function Home() {
           />
           */}
 
+          {/*
+          <button
+            onClick={() =>
+              connect(async () => {
 
-            <ConnectButton
-              client={client}
+                
+                const metamask = createWallet("io.metamask"); // pass the wallet id
+      
+                // if user has metamask installed, connect to it
+                if (injectedProvider("io.metamask")) {
+                  await metamask.connect({ client });
+                }
+      
+                // open wallet connect modal so user can scan the QR code and connect
+                else {
+                  await metamask.connect({
+                    client,
+                    walletConnect: { showQrModal: true },
+                  });
+                }
+      
+                // return the wallet
+                return metamask;
+
+
+              })
+            }
+          >
+            Connect
+          </button>
+          */}
+
+
+        
+            {address && (
+              // USDT balance
+              // large colored card
+              <div className="bg-zinc-800 p-8 rounded-lg text-center">
+
+                {/* Tether USDT logo */}
+                <div className="mb-4">
+                  <Image
+                    src="https://cryptologos.cc/logos/tether-usdt-logo.png"
+                    alt="USDT"
+                    width={50}
+                    height={50}
+                  />
+                </div>
+
+
+                <h2 className="text-2xl font-semibold text-zinc-100">
+                  {balance} USDT
+                </h2>
+                <p className="text-zinc-300">My USDT balance</p>
+
+
+                {/* my address */}
+
+                <p className="text-zinc-300 text-sm mt-4">
+                  {address}
+                </p>
+
+
+              </div>
+            )}
  
+
+          {!address && (
+            <ConnectButton
+
+              client={client}
+
+              // Connect Wallet button text change
+              
+
+
               // inAppWallet
 
               //wallets={wallets}
@@ -75,21 +237,20 @@ export default function Home() {
               }}
               
               theme={"light"}
-              connectModal={{ size: "wide" }}
+              connectModal={{
+                size: "wide"
 
-              /*
-                      appMetadata={{
-                  logoUrl: "https://path/to/my-app/logo.svg",
-                }}
 
-                */
+              }}
+
+
               
               appMetadata={
                 {
                   logoUrl: "https://next.unove.space/logo.png",
                   name: "Next App",
                   url: "https://next.unove.space",
-                  description: "This is a Next.js app with thirdweb SDK.",
+                  description: "This is a Next App.",
 
                 }
               }
@@ -98,15 +259,40 @@ export default function Home() {
 
               
             />
-      
+
+          )}
 
 
         </div>
+
+        {/* Logout button */}
+        <div className="flex justify-center mb-10">
+          {address && (
+            <button
+              onClick={() => {
+                activeWallet?.disconnect();
+              }}
+              className="text-sm text-blue-500"
+            >
+              Disconnect Wallet
+            </button>
+          )}
+        </div>
+
+        {/*
+        <ThirdwebResources />
+        */}
+
+     
+
+        <MarketResources />
 
       </div>
     </main>
   );
 }
+
+
 
 function Header() {
   return (
@@ -163,6 +349,37 @@ function ThirdwebResources() {
     </div>
   );
 }
+
+
+function MarketResources() {
+  return (
+    <div className="grid gap-4 lg:grid-cols-3 justify-center">
+
+      <ArticleCard
+        title="Buy USDT"
+        href="/"
+        description="Buy USDT with your favorite real-world currency"
+      />
+
+      <ArticleCard
+        title="Sell USDT"
+        href="/"
+        description="Sell USDT for your favorite real-world currency"
+      />
+
+      <ArticleCard
+        title="How to use USDT"
+        href="/"
+        description="Learn how to use USDT in your favorite DeFi apps"
+      />
+
+    </div>
+  );
+}
+
+
+
+
 
 function ArticleCard(props: {
   title: string;

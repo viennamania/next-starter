@@ -6,9 +6,9 @@ import { ThirdwebProvider } from "thirdweb/react";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Next Starter",
+  title: "WEB3 Starter",
   description:
-    "Starter for Hyperapp, Next.js, Tailwind CSS, TypeScript, and Vercel.",
+    "Starter for  WEB3 Wallet.",
 };
 
 export default function RootLayout({
