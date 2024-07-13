@@ -40,7 +40,7 @@ import {
 import { getUserPhoneNumber } from "thirdweb/wallets/in-app";
 
 
-
+import { toast } from 'react-hot-toast';
 
 
 /*
@@ -227,7 +227,7 @@ export default function Home() {
             {address && (
               // USDT balance
               // large colored card
-              <div className="bg-zinc-800 p-8 rounded-lg text-center">
+              <div className="bg-zinc-800 p-5 rounded-lg text-center">
 
                 {/* Tether USDT logo */}
                 <div className="mb-4">
@@ -246,11 +246,37 @@ export default function Home() {
                 <p className="text-zinc-300">My balance</p>
 
 
-                {/* my address */}
+                {/* my address and copy button */}
+                <div className="flex flex-row justify-center items-center mt-4">
 
-                <p className="text-zinc-300 text-sm mt-4">
-                  {address}
-                </p>
+                  <p className="text-zinc-300 text-xs">
+                    {address}
+                  </p>
+
+                  <button
+                    onClick={() => {
+                      navigator.clipboard.writeText(address);
+                      toast.success('Address copied to clipboard');
+                    }}
+                    className="text-sm text-blue-500 ml-2"
+                  >
+                    Copy
+                  </button>
+
+                </div>
+
+
+                {/* send button */}
+
+                <button
+                  onClick={() => {
+                    // send USDT
+                    console.log("send USDT");
+                  }}
+                  className="mt-4 bg-blue-500 text-white px-4 py-2 rounded-lg"
+                >
+                  Send USDT
+                </button>
 
 
               </div>
@@ -312,7 +338,7 @@ export default function Home() {
 
           <div className="flex flex-col items-center mr-4">
             <h3 className="text-sm font-semibold text-zinc-100">Phone Number</h3>
-            <p className="text-zinc-300 text-xl">{phoneNumber}</p>
+            <p className="text-zinc-300 text-2xl">{phoneNumber}</p>
           </div>
 
           {/* Logout button */}
