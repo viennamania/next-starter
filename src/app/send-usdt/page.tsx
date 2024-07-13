@@ -28,6 +28,7 @@ import {
 import {
     getContract,
     //readContract,
+    sendTransaction,
 } from "thirdweb";
 
 
@@ -35,7 +36,7 @@ import {
 import { sendAndConfirmTransaction } from "thirdweb";
 import { createWallet } from "thirdweb/wallets";
  
-
+import { transfer } from "thirdweb/extensions/erc20";
 
 const contractAddress = "0xc2132D05D31c914a87C6611C10748AEb04B58e8F"; // USDT on Polygon
 
@@ -65,6 +66,27 @@ export default function SendUsdt() {
 
 
 
+
+  // get the active wallet
+  const activeWallet = useActiveWallet();
+
+
+  //console.log("activeWallet", activeWallet);
+
+  console.log("activeWallet", activeWallet);
+
+
+  // get wallet address
+
+  const address = activeWallet?.getAccount()?.address || "";
+  
+
+
+  console.log('address', address);
+
+
+
+
   const [balance, setBalance] = useState(0);
 
 
@@ -73,7 +95,7 @@ export default function SendUsdt() {
     contract, 
     method: "function balanceOf(address account) view returns (uint256)", 
 
-    params: [ "0xaeACC0a48DBDedD982fdfa21Da7175610CAE0f51" ], // the address to get the balance of
+    params: [ address ], // the address to get the balance of
 
   });
 
@@ -89,19 +111,6 @@ export default function SendUsdt() {
 
 
   console.log(balance);
-
-
-
-  // get the active wallet
-  const activeWallet = useActiveWallet();
-
-  // get wallet address
-
-  const address = activeWallet?.getAccount()?.address;
-  
-
-
-  console.log('address', address);
 
 
 
@@ -132,22 +141,18 @@ export default function SendUsdt() {
 
 
         // send USDT
+        // Call the extension function to prepare the transaction
+        const transaction = transfer({
+            contract,
+            to: toAddress,
+            amount: amount,
+        });
+        
         /*
-        const contract = await sdk.getContract("{{contract_address}}");
-        await contract.erc20.transfer(walletAddress, amount);
-        */
-        //const tx = await contract.erc20.transfer(toAddress, amount);
-        /*
-        const wallet = createWallet(
-            activeWallet.getAccount().privateKey
-        );
-
-
-        const account = await wallet.connect({ client });
-         
-        const receipt = await sendAndConfirmTransaction({
-          transaction,
-          account,
+        // Send the transaction
+        const transactionResult = await sendTransaction({
+            transaction,
+            wallet,
         });
         */
 

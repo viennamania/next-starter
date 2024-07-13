@@ -98,6 +98,30 @@ export default function Home() {
 
   
 
+
+
+
+
+  // get the active wallet
+  const activeWallet = useActiveWallet();
+
+
+  //console.log("activeWallet", activeWallet);
+
+  console.log("activeWallet", activeWallet);
+
+
+  // get wallet address
+
+  const address = activeWallet?.getAccount()?.address || "";
+  
+
+
+  console.log('address', address);
+
+
+
+
   const [balance, setBalance] = useState(0);
 
 
@@ -106,7 +130,7 @@ export default function Home() {
     contract, 
     method: "function balanceOf(address account) view returns (uint256)", 
 
-    params: [ "0xaeACC0a48DBDedD982fdfa21Da7175610CAE0f51" ], // the address to get the balance of
+    params: [ address ], // the address to get the balance of
 
   });
 
@@ -125,22 +149,9 @@ export default function Home() {
 
 
 
-  // get the active wallet
-  const activeWallet = useActiveWallet();
 
 
-  //console.log("activeWallet", activeWallet);
 
-  console.log("activeWallet", activeWallet);
-
-
-  // get wallet address
-
-  const address = activeWallet?.getAccount()?.address;
-  
-
-
-  console.log('address', address);
       
 
   const [phoneNumber, setPhoneNumber] = useState("");
