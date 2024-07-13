@@ -36,7 +36,6 @@ import {
   //readContract,
 } from "thirdweb";
 
-//import { add } from "thirdweb/extensions/farcaster/keyGateway";
 
 import { getUserPhoneNumber } from "thirdweb/wallets/in-app";
 

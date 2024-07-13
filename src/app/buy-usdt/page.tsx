@@ -10,13 +10,15 @@ import Image from "next/image";
 
 import Modal from '../../components/modal';
 
-
+import { useRouter }from "next//navigation";
 
 
 
 
 
 const P2PTable = () => {
+
+    const router = useRouter();
 
 
   const data = [
@@ -76,12 +78,14 @@ const P2PTable = () => {
     const closeModal = () => setModalOpen(false);
     const openModal = () => setModalOpen(true);
 
+    const goChat = () => {
+        console.log('Go Chat');
+        router.push(`/chat?tradeId=12345`);
+    }
 
     
     return (
         <main className="p-4 pb-10 min-h-[100vh] flex items-center justify-center container max-w-screen-lg mx-auto">
-
-
 
             <div className="py-20 w-full">
 
@@ -151,8 +155,7 @@ const P2PTable = () => {
                                     openModal();
 
 
-
-
+                               
 
                                 }}
                             >
@@ -172,6 +175,7 @@ const P2PTable = () => {
             <Modal isOpen={isModalOpen} onClose={closeModal}>
                 <TradeDetail
                     closeModal={closeModal}
+                    goChat={goChat}
                 />
             </Modal>
 
@@ -192,15 +196,11 @@ const P2PTable = () => {
 
 const TradeDetail = (
     {
-        closeModal = () => {}
+        closeModal = () => {},
+        goChat = () => {},
+        
     }
 ) => {
-
-
-
-
-
-
 
 
     const [amount, setAmount] = useState(1000);
@@ -274,7 +274,19 @@ const TradeDetail = (
           </div>
           
           <div className="mt-6 flex space-x-4">
-            <button className="bg-green-500 text-white px-4 py-2 rounded-lg">Buy USDT</button>
+            <button
+                className="bg-green-500 text-white px-4 py-2 rounded-lg"
+                onClick={() => {
+                    console.log('Buy USDT');
+                    // go to chat
+                    // close modal
+                    closeModal();
+                    goChat();
+
+                }}
+            >
+                Buy USDT
+            </button>
             <button
                 className="bg-gray-200 text-gray-700 px-4 py-2 rounded-lg"
                 onClick={() => {
