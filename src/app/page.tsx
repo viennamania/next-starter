@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, use } from "react";
+import { useState, useEffect } from "react";
 
 import Image from "next/image";
 
@@ -409,7 +409,7 @@ function MarketResources() {
 
       <ArticleCard
         title="Buy USDT"
-        href="/"
+        href="/buy-usdt"
         description="Buy USDT with your favorite real-world currency"
       />
 
@@ -440,8 +440,12 @@ function ArticleCard(props: {
 }) {
   return (
     <a
-      href={props.href + "?utm_source=next-template"}
-      target="_blank"
+      
+      //href={props.href + "?utm_source=next-template"}
+      href={props.href}
+
+      //target="_blank"
+
       className="flex flex-col border border-zinc-800 p-4 rounded-lg hover:bg-zinc-900 transition-colors hover:border-zinc-700"
     >
       <article>
