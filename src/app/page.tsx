@@ -262,7 +262,7 @@ export default function Home() {
                       navigator.clipboard.writeText(address);
                       toast.success('Address copied to clipboard');
                     }}
-                    className="text-sm text-blue-500 ml-2"
+                    className="text-sm text-blue-500 ml-2 hover:underline"
                   >
                     Copy
                   </button>
@@ -281,7 +281,7 @@ export default function Home() {
                     router.push("/send-usdt");
 
                   }}
-                  className="mt-4 bg-blue-500 text-white px-4 py-2 rounded-lg"
+                  className="mt-4 bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
                 >
                   Send USDT
                 </button>
@@ -356,7 +356,7 @@ export default function Home() {
                 onClick={() => {
                   activeWallet?.disconnect();
                 }}
-                className="text-sm text-blue-500"
+                className="text-sm text-blue-500 hover:underline"
               >
                 Disconnect Wallet
               </button>

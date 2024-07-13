@@ -1,7 +1,7 @@
 // send USDT
 'use client';
 
-import { createThirdwebClient } from 'thirdweb';
+
 import React, { useEffect, useState } from 'react';
 
 import { toast } from 'react-hot-toast';
@@ -16,6 +16,7 @@ import {
     useReadContract,
   
     useActiveWallet,
+
     
 } from "thirdweb/react";
 
@@ -27,16 +28,20 @@ import {
 import {
     getContract,
     //readContract,
-  } from "thirdweb";
+} from "thirdweb";
 
 
+
+import { sendAndConfirmTransaction } from "thirdweb";
+import { createWallet } from "thirdweb/wallets";
+ 
 
 
 const contractAddress = "0xc2132D05D31c914a87C6611C10748AEb04B58e8F"; // USDT on Polygon
 
 
- // get a contract
- const contract = getContract({
+// get a contract
+const contract = getContract({
     // the client you have created via `createThirdwebClient()`
     client,
     // the chain the contract is deployed on
@@ -45,7 +50,9 @@ const contractAddress = "0xc2132D05D31c914a87C6611C10748AEb04B58e8F"; // USDT on
     address: contractAddress,
     // OPTIONAL: the contract's abi
     //abi: [...],
-  });
+});
+
+
 
 
 
@@ -121,17 +128,34 @@ export default function SendUsdt() {
     }
 
     try {
-      const response = await client.sendUsdt({
-        from: activeWallet.getAccount()?.address,
-        to: address,
-        amount: amount,
-      });
 
-      if (response.status === 'success') {
+
+
+        // send USDT
+        /*
+        const contract = await sdk.getContract("{{contract_address}}");
+        await contract.erc20.transfer(walletAddress, amount);
+        */
+        //const tx = await contract.erc20.transfer(toAddress, amount);
+        /*
+        const wallet = createWallet(
+            activeWallet.getAccount().privateKey
+        );
+
+
+        const account = await wallet.connect({ client });
+         
+        const receipt = await sendAndConfirmTransaction({
+          transaction,
+          account,
+        });
+        */
+
         toast.success('USDT sent successfully');
-      } else {
-        toast.error('Failed to send USDT');
-      }
+
+
+
+
     } catch (error) {
       toast.error('Failed to send USDT');
     }
