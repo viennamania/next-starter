@@ -42,6 +42,9 @@ import { getUserPhoneNumber } from "thirdweb/wallets/in-app";
 
 import { toast } from 'react-hot-toast';
 
+import { useRouter }from "next//navigation";
+
+
 
 /*
 const client = createThirdwebClient({
@@ -66,7 +69,17 @@ const contractAddress = "0xc2132D05D31c914a87C6611C10748AEb04B58e8F"; // USDT on
 
 
 
-
+ // get a contract
+ const contract = getContract({
+  // the client you have created via `createThirdwebClient()`
+  client,
+  // the chain the contract is deployed on
+  chain: polygon,
+  // the contract's address
+  address: contractAddress,
+  // OPTIONAL: the contract's abi
+  //abi: [...],
+});
 
 
 
@@ -80,17 +93,8 @@ export default function Home() {
   ///console.log(isConnecting, error);
 
 
- // get a contract
-  const contract = getContract({
-    // the client you have created via `createThirdwebClient()`
-    client,
-    // the chain the contract is deployed on
-    chain: polygon,
-    // the contract's address
-    address: contractAddress,
-    // OPTIONAL: the contract's abi
-    //abi: [...],
-  });
+
+  const router = useRouter();
 
   
 
@@ -272,6 +276,10 @@ export default function Home() {
                   onClick={() => {
                     // send USDT
                     console.log("send USDT");
+
+                    // redirect to send USDT page
+                    router.push("/send-usdt");
+
                   }}
                   className="mt-4 bg-blue-500 text-white px-4 py-2 rounded-lg"
                 >
