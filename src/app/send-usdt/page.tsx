@@ -17,6 +17,8 @@ import {
   
     useActiveWallet,
 
+    useActiveAccount,
+    useSendBatchTransaction,
     
 } from "thirdweb/react";
 
@@ -31,10 +33,17 @@ import {
     sendTransaction,
 } from "thirdweb";
 
+import { balanceOf } from "thirdweb/extensions/erc20";
+ 
+
 
 
 import { sendAndConfirmTransaction } from "thirdweb";
-import { createWallet } from "thirdweb/wallets";
+
+import {
+  createWallet,
+  smartWallet,
+} from "thirdweb/wallets";
  
 import { transfer } from "thirdweb/extensions/erc20";
 
@@ -54,6 +63,13 @@ const contract = getContract({
 });
 
 
+/*
+const smartWallet = new smartWallet(config);
+const smartAccount = await smartWallet.connect({
+  client,
+  personalAccount,
+});
+*/
 
 
 
@@ -66,20 +82,30 @@ export default function SendUsdt() {
 
 
 
+  const smartAccount = useActiveAccount();
+
+
+
+  console.log("smartAccount", smartAccount);
+
+  
+
+
 
   // get the active wallet
-  const activeWallet = useActiveWallet();
+  //const activeWallet = useActiveWallet();
 
 
   //console.log("activeWallet", activeWallet);
 
-  console.log("activeWallet", activeWallet);
+  //console.log("activeWallet", activeWallet);
 
 
   // get wallet address
 
-  const address = activeWallet?.getAccount()?.address || "";
+  //const address = activeWallet?.getAccount()?.address || "";
   
+  const address = smartAccount?.address || "";
 
 
   console.log('address', address);
@@ -91,6 +117,9 @@ export default function SendUsdt() {
 
 
 
+
+
+  /*
   const { data: balanceData } = useReadContract({
     contract, 
     method: "function balanceOf(address account) view returns (uint256)", 
@@ -101,32 +130,51 @@ export default function SendUsdt() {
 
   console.log(balanceData);
 
+  
   useEffect(() => {
+
     if (balanceData) {
       setBalance(
         Number(balanceData) / 10 ** 6
       );
     }
   }, [balanceData]);
+  */
+
+  useEffect(() => {
+
+    // get the balance
+    const getBalance = async () => {
+      const result = await balanceOf({
+        contract,
+        address: address,
+      });
+  
+      console.log(result);
+  
+      setBalance( Number(result) / 10 ** 6 );
+
+    };
+
+    getBalance();
+
+  } , [address]);
 
 
   console.log(balance);
 
 
 
-
-
-
-
+  const [sending, setSending] = useState(false);
 
 
   const sendUsdt = async () => {
-    if (!activeWallet) {
-      toast.error('No active wallet found');
+    if (sending) {
       return;
     }
 
-    if (!address) {
+
+    if (!toAddress) {
       toast.error('Please enter a valid address');
       return;
     }
@@ -135,6 +183,15 @@ export default function SendUsdt() {
       toast.error('Please enter a valid amount');
       return;
     }
+
+    console.log('amount', amount, "balance", balance);
+
+    if (Number(amount) > balance) {
+      toast.error('Insufficient balance');
+      return;
+    }
+
+    setSending(true);
 
     try {
 
@@ -148,22 +205,37 @@ export default function SendUsdt() {
             amount: amount,
         });
         
-        /*
-        // Send the transaction
-        const transactionResult = await sendTransaction({
-            transaction,
-            wallet,
+
+        const transactionResult = await sendAndConfirmTransaction({
+            transaction: transaction,
+            
+            account: smartAccount as any,
         });
-        */
 
         toast.success('USDT sent successfully');
 
+        setAmount('');
 
+        // refresh balance
+
+        // get the balance
+
+        const result = await balanceOf({
+          contract,
+          address: address,
+        });
+
+        console.log(result);
+
+        setBalance( Number(result) / 10 ** 6 );
+      
 
 
     } catch (error) {
       toast.error('Failed to send USDT');
     }
+
+    setSending(false);
   };
 
 
@@ -193,6 +265,9 @@ export default function SendUsdt() {
               onChange={(e) => (
 
                 // check if the value is a number
+
+
+
                 // check balance
 
                 setAmount(e.target.value)
@@ -208,7 +283,11 @@ export default function SendUsdt() {
                 onChange={(e) => setToAddress(e.target.value)}
             />
 
+            {sending && (
+              <div className="text-lg font-semibold text-gray-400">Sending...</div>
+            )}
             <button
+              disabled={sending}
               onClick={sendUsdt}
               className="bg-zinc-800 text-white p-2 rounded w-80 text-center font-semibold hover:bg-zinc-700 hover:text-white"
             >
