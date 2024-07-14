@@ -194,6 +194,15 @@ export default function Home() {
         <Header />
         */}
 
+        <div className="flex justify-center space-x-4 mb-10">
+          <div className="text-zinc-300 font-semibold">Home</div>
+          <a href="/buy-usdt" className="text-zinc-100 font-semibold">Buy</a>
+          <a href="/sell-usdt" className="text-zinc-100 font-semibold">Sell</a>
+          <a href="/" className="text-zinc-100 font-semibold">Wallet</a>
+          <a href="/settings" className="text-zinc-100 font-semibold">Settings</a>
+        </div>
+
+
         <div className="flex justify-center mb-10">
           {/*
           <ConnectButton
@@ -353,27 +362,29 @@ export default function Home() {
 
         </div>
 
-        <div className="flex flex-row justify-center mb-10 gap-10">
+        {address && (
+          <div className="flex flex-row justify-center mb-10 gap-10">
 
-          <div className="flex flex-col items-center mr-4">
-            <h3 className="text-sm font-semibold text-zinc-100">Phone Number</h3>
-            <p className="text-zinc-300 text-2xl">{phoneNumber}</p>
-          </div>
+            <div className="flex flex-col items-center mr-4">
+              <h3 className="text-sm font-semibold text-zinc-100">Phone Number</h3>
+              <p className="text-zinc-300 text-2xl">{phoneNumber}</p>
+            </div>
 
-          {/* Logout button */}
-          <div className="flex justify-center">
-            {address && (
-              <button
-                onClick={() => {
-                  activeWallet?.disconnect();
-                }}
-                className="text-sm text-blue-500 hover:underline"
-              >
-                Disconnect Wallet
-              </button>
-            )}
+            {/* Logout button */}
+            <div className="flex justify-center">
+                <button
+                  onClick={() => {
+                    activeWallet?.disconnect();
+                  }}
+                  className="text-sm text-blue-500 hover:underline"
+                >
+                  Disconnect Wallet
+                </button>
+            </div>
           </div>
-        </div>
+          
+        )}
+
 
         {/*
         <ThirdwebResources />

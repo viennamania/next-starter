@@ -15,6 +15,10 @@ const nextConfig = {
   images: {
     domains: ["cryptologos.cc"],
   },
+
+  experimental: {
+    appDir: true,
+  },
   
 };
 
