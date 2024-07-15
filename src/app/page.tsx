@@ -189,7 +189,7 @@ export default function Home() {
 
 
 
-    <main className="p-4 pb-10 min-h-[100vh] flex items-center justify-center container max-w-screen-lg mx-auto">
+    <main className="p-4 pb-10 min-h-[100vh] flex items-start justify-center container max-w-screen-lg mx-auto">
 
       <div className="py-20">
         
@@ -263,7 +263,7 @@ export default function Home() {
                 <h2 className="text-3xl font-semibold text-zinc-100">
                   {balance} USDT
                 </h2>
-                <p className="text-zinc-300">My balance</p>
+                <p className="text-zinc-300">My Balance</p>
 
 
                 {/* my address and copy button */}
@@ -337,7 +337,10 @@ export default function Home() {
               
               theme={"light"}
               connectModal={{
-                size: "wide"
+                size: "wide",
+                
+                //title: "Connect",
+
 
 
               }}
@@ -368,7 +371,7 @@ export default function Home() {
           <div className="flex flex-row justify-center mb-10 gap-10">
 
             <div className="flex flex-col items-center mr-4">
-              <h3 className="text-sm font-semibold text-zinc-100">Phone Number</h3>
+              <h3 className="text-sm font-semibold text-zinc-100">My Phone Number</h3>
               <p className="text-zinc-300 text-2xl">{phoneNumber}</p>
             </div>
 
@@ -386,9 +389,9 @@ export default function Home() {
                     window.location.reload();
 
                   }}
-                  className="text-sm text-blue-500 hover:underline"
+                  className="text-sm bg-red-500 text-white p-2 rounded-lg hover:bg-red-600"
                 >
-                  Disconnect Wallet
+                  Disconnect
                 </button>
             </div>
           </div>

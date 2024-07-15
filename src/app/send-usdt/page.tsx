@@ -47,6 +47,8 @@ import {
  
 import { transfer } from "thirdweb/extensions/erc20";
 
+import Image from 'next/image';
+
 const contractAddress = "0xc2132D05D31c914a87C6611C10748AEb04B58e8F"; // USDT on Polygon
 
 
@@ -259,11 +261,21 @@ export default function SendUsdt() {
 
 
         <div className="flex flex-col items-center space-y-4">
-            <div className="text-2xl font-semibold">Send USDT</div>
+
+            <div className='flex flex-row items-center space-x-4'>
+              <Image
+                src="https://cryptologos.cc/logos/tether-usdt-logo.png"
+                alt="USDT"
+                width={30}
+                height={30}
+              />
+              <div className="text-2xl font-semibold">Send USDT</div>
+            </div>
+
             <div className="text-lg">Enter the amount and recipient address</div>
 
             <input
-              type="text"
+              type="number"
               placeholder="Enter amount"
               className="w-80 p-2 border border-gray-300 rounded text-black"
               value={amount}
