@@ -20,6 +20,8 @@ import {
   useReadContract,
 
   useActiveWallet,
+
+  useActiveAccount,
   
 } from "thirdweb/react";
 
@@ -43,6 +45,7 @@ import { getUserPhoneNumber } from "thirdweb/wallets/in-app";
 import { toast } from 'react-hot-toast';
 
 import { useRouter }from "next//navigation";
+import { add } from "thirdweb/extensions/farcaster/keyGateway";
 
 
 
@@ -106,15 +109,15 @@ export default function Home() {
   const activeWallet = useActiveWallet();
 
 
-  //console.log("activeWallet", activeWallet);
-
-  console.log("activeWallet", activeWallet);
-
 
   // get wallet address
 
-  const address = activeWallet?.getAccount()?.address || "";
+  //const address = activeWallet?.getAccount()?.address || "";
   
+
+  const smartAccount = useActiveAccount();
+
+  const address = smartAccount?.address || "";
 
 
   console.log('address', address);
@@ -159,7 +162,7 @@ export default function Home() {
   useEffect(() => {
 
 
-    if (activeWallet) {
+    if (smartAccount) {
 
       //const phoneNumber = await getUserPhoneNumber({ client });
       //setPhoneNumber(phoneNumber);
@@ -173,7 +176,7 @@ export default function Home() {
 
     }
 
-  } , [activeWallet]);
+  } , [smartAccount]);
 
  
 
@@ -194,16 +197,10 @@ export default function Home() {
         <Header />
         */}
 
-        <div className="flex justify-center space-x-4 mb-10">
-          <div className="text-zinc-300 font-semibold">Home</div>
-          <a href="/buy-usdt" className="text-zinc-100 font-semibold">Buy</a>
-          <a href="/sell-usdt" className="text-zinc-100 font-semibold">Sell</a>
-          <a href="/" className="text-zinc-100 font-semibold">Wallet</a>
-          <a href="/settings" className="text-zinc-100 font-semibold">Settings</a>
-        </div>
 
 
-        <div className="flex justify-center mb-10">
+
+        <div className="flex flex-col justify-center gap-5 mb-10">
           {/*
           <ConnectButton
             client={client}
@@ -248,9 +245,8 @@ export default function Home() {
 
 
         
-            {address && (
-              // USDT balance
-              // large colored card
+            
+              
               <div className="bg-zinc-800 p-5 rounded-lg text-center">
 
                 {/* Tether USDT logo */}
@@ -273,19 +269,24 @@ export default function Home() {
                 {/* my address and copy button */}
                 <div className="flex flex-row justify-center items-center mt-4">
 
-                  <p className="text-zinc-300 text-xs">
-                    {address}
-                  </p>
+                  {address && (
+                    <>
+                      <p className="text-zinc-300 text-xs w-80">
+                        {address}
+                      </p>
 
-                  <button
-                    onClick={() => {
-                      navigator.clipboard.writeText(address);
-                      toast.success('Address copied to clipboard');
-                    }}
-                    className="text-sm text-blue-500 ml-2 hover:underline"
-                  >
-                    Copy
-                  </button>
+                      <button
+
+                        onClick={() => {
+                          navigator.clipboard.writeText(address);
+                          toast.success('Address copied to clipboard');
+                        }}
+                        className="text-sm text-blue-500 ml-2 hover:underline"
+                      >
+                        Copy
+                      </button>
+                    </>
+                  )}
 
                 </div>
 
@@ -293,6 +294,7 @@ export default function Home() {
                 {/* send button */}
 
                 <button
+                  disabled={!address}
                   onClick={() => {
                     // send USDT
                     console.log("send USDT");
@@ -308,7 +310,7 @@ export default function Home() {
 
 
               </div>
-            )}
+           
  
 
           {!address && (
@@ -374,7 +376,15 @@ export default function Home() {
             <div className="flex justify-center">
                 <button
                   onClick={() => {
+                    // disconnect wallet
+
+
                     activeWallet?.disconnect();
+
+                    
+                    
+                    window.location.reload();
+
                   }}
                   className="text-sm text-blue-500 hover:underline"
                 >

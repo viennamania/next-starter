@@ -156,7 +156,7 @@ export default function SendUsdt() {
 
     };
 
-    getBalance();
+    if (address) getBalance();
 
   } , [address]);
 
@@ -244,17 +244,19 @@ export default function SendUsdt() {
 
   return (
 
-    <main className="p-4 pb-10 min-h-[100vh] flex items-center justify-center container max-w-screen-lg mx-auto">
+    <main className="p-4 pb-10 min-h-[100vh] flex items-start justify-center container max-w-screen-lg mx-auto">
 
-      <div className="py-20">
+      <div className="py-20 ">
 
-        <div className="flex justify-center space-x-4 mb-10">
-          <a href="/" className="text-zinc-100 font-semibold">Home</a>
-          <a href="/buy-usdt" className="text-zinc-100 font-semibold">Buy</a>
-          <a href="/sell-usdt" className="text-zinc-100 font-semibold">Sell</a>
-          <a href="/" className="text-zinc-100 font-semibold">Wallet</a>
-          <a href="/settings" className="text-zinc-100 font-semibold">Settings</a>
+        {/* goto home button using go back icon
+        history back
+        */}
+
+        <div className="flex justify-start space-x-4 mb-10">
+            <button onClick={() => window.history.back()} className="text-zinc-100 font-semibold">Go Back</button>
         </div>
+        
+
 
         <div className="flex flex-col items-center space-y-4">
             <div className="text-2xl font-semibold">Send USDT</div>
@@ -290,7 +292,7 @@ export default function SendUsdt() {
               <div className="text-lg font-semibold text-gray-400">Sending...</div>
             )}
             <button
-              disabled={sending}
+              disabled={!address || !toAddress || !amount || sending}
               onClick={sendUsdt}
               className="bg-zinc-800 text-white p-2 rounded w-80 text-center font-semibold hover:bg-zinc-700 hover:text-white"
             >
