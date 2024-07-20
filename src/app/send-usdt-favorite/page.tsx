@@ -96,7 +96,7 @@ export default function SendUsdt() {
   ///const [toAddress, setToAddress] = useState('');
 
 
-  const [amount, setAmount] = useState('');
+  const [amount, setAmount] = useState(0);
 
 
 
@@ -331,7 +331,7 @@ export default function SendUsdt() {
 
         toast.success('USDT sent successfully');
 
-        setAmount('');
+        setAmount(0); // reset amount
 
         // refresh balance
 
@@ -437,18 +437,25 @@ export default function SendUsdt() {
 
               <input
                 type="number"
-                placeholder="Enter amount"
+                //placeholder="Enter amount"
                 className="w-full p-2 border border-gray-300 rounded text-black text-5xl font-semibold "
+                
                 value={amount}
+
                 onChange={(e) => (
 
                   // check if the value is a number
 
 
+                  // check if start 0, if so remove it
+
+                  e.target.value = e.target.value.replace(/^0+/, ''),
+                  
+
 
                   // check balance
 
-                  setAmount(e.target.value)
+                  setAmount(e.target.value as any)
 
                 )}
               />
