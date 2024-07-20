@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, use } from "react";
 
 import Image from "next/image";
 
@@ -22,6 +22,8 @@ import {
   useActiveWallet,
 
   useActiveAccount,
+
+  
   
 } from "thirdweb/react";
 
@@ -47,6 +49,8 @@ import { toast } from 'react-hot-toast';
 import { useRouter }from "next//navigation";
 import { add } from "thirdweb/extensions/farcaster/keyGateway";
 
+
+import { getOwnedNFTs } from "thirdweb/extensions/erc721";
 
 
 /*
@@ -83,6 +87,33 @@ const contractAddress = "0xc2132D05D31c914a87C6611C10748AEb04B58e8F"; // USDT on
   // OPTIONAL: the contract's abi
   //abi: [...],
 });
+
+
+
+
+
+/*
+const editionDropAddress = "0x41FBA0bd9f4DC9a968a10aEBb792af6A09969F60";
+
+
+
+
+ // get a contract
+ const contractEditorDrop = getContract({
+  // the client you have created via `createThirdwebClient()`
+  client,
+  // the chain the contract is deployed on
+  chain: polygon,
+  // the contract's address
+  address: editionDropAddress,
+  // OPTIONAL: the contract's abi
+  //abi: [...],
+})
+
+
+
+console.log("contractEditorDrop", contractEditorDrop);
+*/
 
 
 
@@ -185,6 +216,33 @@ export default function Home() {
 
 
 
+  /*
+  useEffect(() => {
+
+    if (address) {
+
+      try {
+        getOwnedNFTs({
+          contract: contractEditorDrop,
+          owner: address,
+        }).then((ownedNFTs) => {
+
+          console.log("ownedNFTs=", ownedNFTs);
+
+        });
+      } catch (error) {
+        console.error(error);
+      }
+
+    }
+
+  } , [address]);
+  */
+  
+
+  
+
+
   return (
 
 
@@ -267,6 +325,7 @@ export default function Home() {
 
 
                 {/* my address and copy button */}
+                {/*
                 <div className="flex flex-row justify-center items-center mt-4">
 
                   {address && (
@@ -289,6 +348,7 @@ export default function Home() {
                   )}
 
                 </div>
+                */}
 
 
                 {/* send button */}
