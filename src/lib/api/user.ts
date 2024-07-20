@@ -56,7 +56,7 @@ export async function insertOne(data: any) {
   const checkUser = await collection.findOne<UserProps>(
     {
       $or: [
-        { email: data.email },
+        { walletAddress: data.walletAddress },
         { nickname: data.nickname },
       ]
     },
