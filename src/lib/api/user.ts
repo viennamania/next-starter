@@ -49,12 +49,12 @@ export async function insertOne(data: any) {
 
 
   const client = await clientPromise;
-  const collection = client.db('lefimall').collection('users');
+  const collection = client.db('vienna').collection('users');
 
   // check same email, then return error
 
   const checkUser = await collection.findOne<UserProps>(
-    { email: data.email },
+    { walletAddress: data.walletAddress },
     { projection: { _id: 0, emailVerified: 0 } }
   );
 
@@ -66,9 +66,9 @@ export async function insertOne(data: any) {
   }
 
 
-  // generate id 1000000 ~ 9999999
+  // generate id 100000 ~ 999999
 
-  const id = Math.floor(Math.random() * 9000000) + 1000000;
+  const id = Math.floor(Math.random() * 900000) + 100000;
 
 
   return await collection.insertOne(
@@ -76,15 +76,11 @@ export async function insertOne(data: any) {
     {
       id: id,
       email: data.email,
-      password: data.password,
-      name: data.name,
       nickname: data.nickname,
-      avatar: data.avatar,
-      regType: data.regType,
       mobile: data.mobile,
 
       walletAddress: data.walletAddress,
-      walletPrivateKey: data.walletPrivateKey,
+
 
       createdAt: new Date().toISOString(),
 
@@ -101,29 +97,32 @@ export async function insertOne(data: any) {
 
 
 
-export async function getUser(
-  id: string,
+export async function getOneByWalletAddress(
+  walletAddress: string,
 ): Promise<UserProps | null> {
 
-  console.log('getUser id: ' + id);
+  console.log('getOneByWalletAddress walletAddress: ' + walletAddress);
 
   const client = await clientPromise;
-  const collection = client.db('lefimall').collection('users');
+  const collection = client.db('vienna').collection('users');
 
 
   // id is number
 
   const results = await collection.findOne<UserProps>(
-    { id: parseInt(id) },
+    { walletAddress: walletAddress },
     { projection: { _id: 0, emailVerified: 0 } }
   );
 
 
-  console.log('getUser results: ' + results);
+  console.log('getOneByWalletAddress results: ' + results);
 
   return results;
 
 }
+
+
+
 
 export async function getUserWalletPrivateKeyByWalletAddress(
   walletAddress: string,

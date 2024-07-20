@@ -23,7 +23,79 @@ export default function SettingsPage() {
 
     const address = smartAccount?.address || "";
 
+
+
+
+    
     const [nickname, setNickname] = useState("");
+
+    const [nicknameEdit, setNicknameEdit] = useState(false);
+
+    const [userCode, setUserCode] = useState("");
+
+    useEffect(() => {
+        const fetchData = async () => {
+            const response = await fetch("/api/user/getUser", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    walletAddress: address,
+                }),
+            });
+
+            const data = await response.json();
+
+            console.log("data", data);
+
+            if (data.result) {
+                setNickname(data.result.nickname);
+                setUserCode(data.result.id);
+            }
+        };
+
+        fetchData();
+    }, [address]);
+
+
+
+
+
+    const setUserData = async () => {
+
+
+        // check nickname length and alphanumeric
+        if (nickname.length < 5 || nickname.length > 20) {
+            toast.error('Nickname should be at least 5 characters and at most 20 characters');
+            return;
+        }
+        
+        if (!/^[a-zA-Z0-9]*$/.test(nickname)) {
+            toast.error('Nickname should be alphanumeric');
+            return;
+        }
+
+
+        const response = await fetch("/api/user/setUser", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                walletAddress: address,
+                nickname: nickname,
+            }),
+        });
+
+        const data = await response.json();
+
+        console.log("data", data);
+
+        toast.success('Nickname saved');
+    }
+
+
 
 
     return (
@@ -49,29 +121,117 @@ export default function SettingsPage() {
                         <div className="text-2xl font-semibold">Settings</div>
                     </div>
 
-                    <div className=' flex flex-col xl:flex-row gap-2 items-center justify-center border border-zinc-800 p-4 rounded-lg'>
 
-                        <div
-                            className="bg-red-800 text-sm text-zinc-100 p-2 rounded"
-                        >
-                            Nickname
+                    <div className='w-full  flex flex-col gap-5 '>
+
+                        {/* My Wallet */}
+                        <div className='flex flex-col xl:flex-row gap-2 items-center justify-between border border-gray-300 p-4 rounded-lg'>
+                                
+                            <div
+                                className="bg-red-800 text-sm text-zinc-100 p-2 rounded"
+                            >
+                                My Wallet
+                            </div>
+
+                            <div className="p-2 bg-zinc-800 rounded text-zinc-100 text-xs font-semibold">
+                                {address}
+                            </div>
+
+                            <button
+                                onClick={() => {
+                                navigator.clipboard.writeText(address);
+                                toast.success('Address copied to clipboard');
+                                }}
+                                className="p-2 bg-blue-500 text-zinc-100 rounded"
+                                >
+                                Copy
+                            </button>
+
                         </div>
 
-                        <input
-                            className="p-2 w-64 text-zinc-100 bg-zinc-800 rounded text-2xl font-semibold"
-                            placeholder="Enter your nickname"
-                            value={nickname}
-                            type='text'
-                            onChange={(e) => setNickname(e.target.value)}
-                        />
-                        <button
-                            className="p-2 bg-zinc-800 rounded text-zinc-100 font-semibold"
-                            onClick={() => {
-                                toast.success('Nickname saved');
-                            }}
-                        >
-                            Save
-                        </button>
+
+                        {userCode && (
+
+                            <div className='flex flex-row gap-2 items-center justify-between border border-gray-300 p-4 rounded-lg'>
+
+                                <div className="bg-red-800 text-sm text-zinc-100 p-2 rounded">
+                                    My User Code
+                                </div>
+
+                                <div className="p-2 bg-zinc-800 rounded text-zinc-100 text-xl font-semibold">
+                                    {userCode}
+                                </div>
+
+                                <button
+                                    onClick={() => {
+                                        navigator.clipboard.writeText(userCode);
+                                        toast.success('User code copied to clipboard');
+                                    }}
+                                    className="p-2 bg-blue-500 text-zinc-100 rounded"
+                                >
+                                    Copy
+                                </button>
+
+                            </div>
+
+                        )}
+
+                        {nickname && (
+                            <div className='flex flex-row gap-2 items-center justify-between border border-gray-300 p-4 rounded-lg'>
+
+                                <div className="bg-red-800 text-sm text-zinc-100 p-2 rounded">
+                                   My Nickname
+                                </div>
+
+                                <div className="p-2 bg-zinc-800 rounded text-zinc-100 text-xl font-semibold">
+                                    {nickname}
+                                </div>
+
+
+                                <button
+                                    onClick={() => {
+
+                                        //setNicknameEdit(true);
+
+                                        nicknameEdit ? setNicknameEdit(false) : setNicknameEdit(true);
+
+                                    } }
+                                    className="p-2 bg-blue-500 text-zinc-100 rounded"
+                                >
+                                    {nicknameEdit ? 'Cancel' : 'Edit'}
+                                </button>
+                                
+                            </div>
+                        )}
+
+
+                        {nicknameEdit && (
+                            <div className=' flex flex-col xl:flex-row gap-2 items-center justify-between border border-gray-300 p-4 rounded-lg'>
+
+                                <div
+                                    className="bg-red-800 text-sm text-zinc-100 p-2 rounded"
+                                >
+                                    Nickname
+                                </div>
+
+                                <input
+                                    className="p-2 w-64 text-zinc-100 bg-zinc-800 rounded text-2xl font-semibold"
+                                    placeholder="Enter your nickname"
+                                    value={nickname}
+                                    type='text'
+                                    onChange={(e) => setNickname(e.target.value)}
+                                />
+                                <button
+                                    className="p-2 bg-blue-500 text-zinc-100 rounded"
+                                    onClick={() => {
+                                        setUserData();
+                                    }}
+                                >
+                                    Save
+                                </button>
+
+                            </div>
+                        )}
 
                     </div>
 

@@ -381,7 +381,7 @@ export default function Home() {
                     console.log("send USDT");
 
                     // redirect to send USDT page
-                    router.push("/send-usdt");
+                    router.push("/send-usdt-favorite");
 
                   }}
                   className="mt-4 bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
