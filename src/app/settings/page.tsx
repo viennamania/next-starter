@@ -15,6 +15,7 @@ import {
 import {
     ConnectButton,
     useActiveAccount,
+    useActiveWallet,
 } from "thirdweb/react";
 import { inAppWallet } from "thirdweb/wallets";
 
@@ -45,6 +46,11 @@ const wallets = [
 
 
 export default function SettingsPage() {
+
+    // get the active wallet
+    const activeWallet = useActiveWallet();
+
+
 
     const smartAccount = useActiveAccount();
 
@@ -287,57 +293,7 @@ export default function SettingsPage() {
 
                     <div className='w-full  flex flex-col gap-5 '>
 
-                        {/* My Wallet */}
-                        <div className='flex flex-col xl:flex-row gap-2 items-center justify-between border border-gray-300 p-4 rounded-lg'>
-                                
-                            <div
-                                className="bg-red-800 text-sm text-zinc-100 p-2 rounded"
-                            >
-                                My Wallet
-                            </div>
 
-                            <div className="p-2 bg-zinc-800 rounded text-zinc-100 text-xs font-semibold">
-                                {address}
-                            </div>
-
-                            <button
-                                onClick={() => {
-                                navigator.clipboard.writeText(address);
-                                toast.success('Address copied to clipboard');
-                                }}
-                                className="p-2 bg-blue-500 text-zinc-100 rounded"
-                                >
-                                Copy
-                            </button>
-
-                        </div>
-
-
-                        {userCode && (
-
-                            <div className='flex flex-row gap-2 items-center justify-between border border-gray-300 p-4 rounded-lg'>
-
-                                <div className="bg-red-800 text-sm text-zinc-100 p-2 rounded">
-                                    My User Code
-                                </div>
-
-                                <div className="p-2 bg-zinc-800 rounded text-zinc-100 text-xl font-semibold">
-                                    {userCode}
-                                </div>
-
-                                <button
-                                    onClick={() => {
-                                        navigator.clipboard.writeText(userCode);
-                                        toast.success('User code copied to clipboard');
-                                    }}
-                                    className="p-2 bg-blue-500 text-zinc-100 rounded"
-                                >
-                                    Copy
-                                </button>
-
-                            </div>
-
-                        )}
 
                         {userCode && (
                             <div className='flex flex-row gap-2 items-center justify-between border border-gray-300 p-4 rounded-lg'>
@@ -379,6 +335,7 @@ export default function SettingsPage() {
                                 </div>
 
                                 <input
+                                    disabled={!address}
                                     className="p-2 w-64 text-zinc-100 bg-zinc-800 rounded text-2xl font-semibold"
                                     placeholder="Enter your nickname"
                                     
@@ -412,6 +369,7 @@ export default function SettingsPage() {
                                     <div className="text-xs font-semibold">alphanumeric lowercase</div>
                                 </div>
                                 <button
+                                    disabled={!address}
                                     className="p-2 bg-blue-500 text-zinc-100 rounded"
                                     onClick={() => {
                                         setUserData();
@@ -422,6 +380,100 @@ export default function SettingsPage() {
 
                             </div>
                         )}
+
+
+
+                        {userCode && (
+
+                            <div className='flex flex-row gap-2 items-center justify-between border border-gray-300 p-4 rounded-lg'>
+
+                                <div className="bg-red-800 text-sm text-zinc-100 p-2 rounded">
+                                    My Referral Code
+                                </div>
+
+                                <div className="p-2 bg-zinc-800 rounded text-zinc-100 text-xl font-semibold">
+                                    {userCode}
+                                </div>
+
+                                <button
+                                    onClick={() => {
+                                        navigator.clipboard.writeText(userCode);
+                                        toast.success('Referral code copied to clipboard');
+                                    }}
+                                    className="p-2 bg-blue-500 text-zinc-100 rounded"
+                                >
+                                    Copy
+                                </button>
+
+                            </div>
+
+                        )}
+
+
+                        {/* My Wallet */}
+                        <div className='flex flex-col xl:flex-row gap-2 items-center justify-between border border-gray-300 p-4 rounded-lg'>
+                                
+                            <div className="bg-red-800 text-sm text-zinc-100 p-2 rounded">
+                                My Wallet
+                            </div>
+
+                            <div className="p-2 bg-zinc-800 rounded text-zinc-100 text-xs font-semibold">
+                                {address}
+                            </div>
+
+                            <button
+                                disabled={!address}
+                                onClick={() => {
+                                navigator.clipboard.writeText(address);
+                                toast.success('Address copied to clipboard');
+                                }}
+                                className="p-2 bg-blue-500 text-zinc-100 rounded"
+                                >
+                                Copy
+                            </button>
+
+                        </div>
+
+                        {/* My Phone Number */}
+                        <div className='flex flex-col xl:flex-row gap-2 items-center justify-between border border-gray-300 p-4 rounded-lg'>
+                                
+                            <div className="bg-red-800 text-sm text-zinc-100 p-2 rounded">
+                                My Phone Number
+                            </div>
+
+                            <div className="p-2 bg-zinc-800 rounded text-zinc-100 text-2xl font-semibold">
+                                {phoneNumber}
+                            </div>
+
+                            <button
+                                disabled={!phoneNumber}
+                                onClick={() => {
+                                    navigator.clipboard.writeText(phoneNumber);
+                                    toast.success('Phone number copied to clipboard');
+                                }}
+                                className="p-2 bg-blue-500 text-zinc-100 rounded"
+                            >
+                                Copy
+                            </button>
+                        
+                        </div>
+
+                        {/* Disconnect Wallet */}
+
+                        <button
+                            disabled={!activeWallet}
+                            onClick={() => {
+                                activeWallet?.disconnect();
+
+                                window.location.reload();
+                            }}
+                            className="p-2 bg-red-500 text-zinc-100 rounded"
+                        >
+                            Disconnect Wallet
+                        </button>
+
+
+
 
                     </div>
 

@@ -242,6 +242,41 @@ export default function Home() {
   */
   
 
+  const [nickname, setNickname] = useState("");
+  const [userCode, setUserCode] = useState("");
+
+
+
+
+
+
+  useEffect(() => {
+      const fetchData = async () => {
+          const response = await fetch("/api/user/getUser", {
+              method: "POST",
+              headers: {
+                  "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                  walletAddress: address,
+              }),
+          });
+
+          const data = await response.json();
+
+          //console.log("data", data);
+
+          if (data.result) {
+              setNickname(data.result.nickname);
+              setUserCode(data.result.id);
+          }
+      };
+
+      fetchData();
+
+  }, [address]);
+
+
   
 
 
@@ -396,6 +431,16 @@ export default function Home() {
 
 
               </div>
+
+              {/* My Nickname */}
+              <div className="bg-zinc-800 p-5 rounded-lg text-center">
+
+                <h2 className="text-3xl font-semibold text-zinc-100">
+                  {nickname}
+                </h2>
+                <p className="text-zinc-300">My Nickname</p>
+
+              </div>
            
  
 
@@ -453,6 +498,13 @@ export default function Home() {
 
         </div>
 
+
+        
+
+
+
+
+        {/*}
         {address && (
           <div className="flex flex-row justify-center mb-10 gap-10">
 
@@ -461,7 +513,6 @@ export default function Home() {
               <p className="text-zinc-300 text-2xl">{phoneNumber}</p>
             </div>
 
-            {/* Logout button */}
             <div className="flex justify-center">
                 <button
                   onClick={() => {
@@ -483,6 +534,7 @@ export default function Home() {
           </div>
           
         )}
+        */}
 
 
         {/*

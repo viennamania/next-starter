@@ -45,7 +45,7 @@ export interface ResultProps {
 
 export async function insertOne(data: any) {
 
-  console.log('insertOne data: ' + data);
+  console.log('insertOne data: ' + JSON.stringify(data));
 
   if (!data.walletAddress || !data.nickname || !data.mobile) {
     return null;
