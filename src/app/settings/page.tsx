@@ -29,7 +29,11 @@ export default function SettingsPage() {
     
     const [nickname, setNickname] = useState("");
 
+
     const [nicknameEdit, setNicknameEdit] = useState(false);
+
+    const [editedNickname, setEditedNickname] = useState("");
+
 
     const [userCode, setUserCode] = useState("");
 
@@ -72,12 +76,16 @@ export default function SettingsPage() {
 
 
         // check nickname length and alphanumeric
-        if (nickname.length < 5 || nickname.length > 10) {
+        //if (nickname.length < 5 || nickname.length > 10) {
+
+        if (editedNickname.length < 5 || editedNickname.length > 10) {
+
             toast.error('Nickname should be at least 5 characters and at most 10 characters');
             return;
         }
         
-        if (!/^[a-z0-9]*$/.test(nickname)) {
+        ///if (!/^[a-z0-9]*$/.test(nickname)) {
+        if (!/^[a-z0-9]*$/.test(editedNickname)) {
             toast.error('Nickname should be alphanumeric and lowercase');
             return;
         }
@@ -92,7 +100,10 @@ export default function SettingsPage() {
                 },
                 body: JSON.stringify({
                     walletAddress: address,
-                    nickname: nickname,
+                    
+                    //nickname: nickname,
+                    nickname: editedNickname,
+
                 }),
             });
 
@@ -106,6 +117,7 @@ export default function SettingsPage() {
                 setNickname(data.result.nickname);
 
                 setNicknameEdit(false);
+                setEditedNickname('');
 
                 toast.success('Nickname saved');
 
@@ -123,7 +135,9 @@ export default function SettingsPage() {
                 },
                 body: JSON.stringify({
                     walletAddress: address,
-                    nickname: nickname,
+                    
+                    //nickname: nickname,
+                    nickname: editedNickname,
                 }),
             });
 
@@ -137,6 +151,7 @@ export default function SettingsPage() {
                 setNickname(data.result.nickname);
 
                 setNicknameEdit(false);
+                setEditedNickname('');
 
                 toast.success('Nickname saved');
 
@@ -172,8 +187,7 @@ export default function SettingsPage() {
                 </div>
 
 
-                <div className="flex flex-col gap-5 items-center space-y-4">
-
+                <div className="flex flex-col items-start justify-center space-y-4">
 
                     <div className='flex flex-row items-center space-x-4'>
                         <GearSetupIcon />
@@ -251,7 +265,7 @@ export default function SettingsPage() {
                                 <button
                                     onClick={() => {
 
-                                        //setNicknameEdit(true);
+                                       
 
                                         nicknameEdit ? setNicknameEdit(false) : setNicknameEdit(true);
 
@@ -265,7 +279,7 @@ export default function SettingsPage() {
                         )}
 
 
-                        {nicknameEdit && (
+                        {(nicknameEdit || !userCode) && (
                             <div className=' flex flex-col xl:flex-row gap-2 items-center justify-between border border-gray-300 p-4 rounded-lg'>
 
                                 <div
@@ -277,7 +291,10 @@ export default function SettingsPage() {
                                 <input
                                     className="p-2 w-64 text-zinc-100 bg-zinc-800 rounded text-2xl font-semibold"
                                     placeholder="Enter your nickname"
-                                    value={nickname}
+                                    
+                                    //value={nickname}
+                                    value={editedNickname}
+
                                     type='text'
                                     onChange={(e) => {
                                         // check if the value is a number
@@ -292,11 +309,18 @@ export default function SettingsPage() {
                                             return;
                                         }
 
-                                        setNickname(e.target.value);
+                                        //setNickname(e.target.value);
+
+                                        setEditedNickname(e.target.value);
+
                                     } }
 
 
                                 />
+                                <div className='flex flex-row gap-2 items-center justify-between'>
+                                    <div className="text-xs font-semibold">5-10 characters</div>
+                                    <div className="text-xs font-semibold">alphanumeric lowercase</div>
+                                </div>
                                 <button
                                     className="p-2 bg-blue-500 text-zinc-100 rounded"
                                     onClick={() => {

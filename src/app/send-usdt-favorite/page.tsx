@@ -167,6 +167,41 @@ export default function SendUsdt() {
 
 
 
+
+
+  // get list of user wallets from api
+  const [users, setUsers] = useState([]);
+  const [totalCountOfUsers, setTotalCountOfUsers] = useState(0);
+
+  useEffect(() => {
+
+    const getUsers = async () => {
+
+      const response = await fetch('/api/user/getAllUsers', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({}),
+      });
+
+      const data = await response.json();
+
+      console.log("getUsers", data);
+
+      setUsers(data.result.users);
+      setTotalCountOfUsers(data.result.totalCount);
+
+    };
+
+    getUsers();
+
+  }, [address]);
+
+
+
+
+
   const [sending, setSending] = useState(false);
 
 

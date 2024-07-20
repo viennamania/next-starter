@@ -165,6 +165,71 @@ export async function getOneByWalletAddress(
 
 
 
+
+export async function getAllUsers(
+  {
+    limit,
+    page,
+  }: {
+    limit: number;
+    page: number;
+  }
+): Promise<ResultProps> {
+
+
+  const client = await clientPromise;
+  const collection = client.db('vienna').collection('users');
+
+
+  console.log('limit: ' + limit);
+  console.log('page: ' + page);
+
+  // walletAddress is not empty and not null
+
+  const users = await collection
+    .find<UserProps>(
+      {
+
+
+        walletAddress: { $exists: true, $ne: null },
+        
+
+      },
+      {
+        limit: limit,
+        skip: (page - 1) * limit,
+      },
+      
+    )
+    .sort({ _id: -1 })
+    .toArray();
+
+
+  const totalCount = await collection.countDocuments(
+    {
+      walletAddress: { $exists: true, $ne: null },
+    }
+  );
+
+  return {
+    totalCount,
+    users,
+  };
+
+  
+}
+
+
+
+
+
+
+
+
+
+
+
+
 export async function getUserWalletPrivateKeyByWalletAddress(
   walletAddress: string,
 ): Promise<string | null> {
@@ -286,129 +351,6 @@ export async function loginUserByEmail(
 
 
 
-
-export async function getAllUsers(
-  limit: number,
-  page: number,
-): Promise<ResultProps> {
-
-
-  const client = await clientPromise;
-  const collection = client.db('lefimall').collection('users');
-
-
-  console.log('limit: ' + limit);
-  console.log('page: ' + page);
-
-  // walletAddress is not empty and not null
-
-  const users = await collection
-    .find<UserProps>(
-      {
-
-
-        walletAddress: { $exists: true, $ne: null },
-        walletPrivateKey: { $exists: true, $ne: null },
-        
-
-      },
-      {
-        limit: limit,
-        skip: (page - 1) * limit,
-      },
-      
-    )
-    .sort({ _id: -1 })
-    .toArray();
-
-
-  const totalCount = await collection.countDocuments(
-    {
-      walletAddress: { $exists: true, $ne: null },
-      walletPrivateKey: { $exists: true, $ne: null },
-    }
-  );
-
-  return {
-    totalCount,
-    users,
-  };
-
-
-
-
-   
-  /*
-  return await collection
-    .aggregate<ResultProps>([
-
-      {
-        $match: {
-          status : 'active',
-        }
-      },
-      {
-        //sort by follower count
-        $sort: {
-          followers: -1
-        }
-      },
-      
-      {
-        $limit: limit,
-        /////$skip: (page - 1) * limit, // skip the first n documents
-      },
- 
-
-      {
-        $group: {
-
-          _id: {
-            $toLower: { $substrCP: ['$name', 0, 1] }
-          },
-
-          users: {
-            $push: {
-
-              id: '$id',
-              name: '$name',
-              nickname: '$nickname',
-              email: '$email',
-              avatar: '$avatar',
-              regType: '$regType',
-              mobile: '$mobile',
-              gender: '$gender',
-              weight: '$weight',
-              height: '$height',
-              birthDate: '$birthDate',
-              purpose: '$purpose',
-              marketingAgree: '$marketingAgree',
-              createdAt: '$createdAt',
-              updatedAt: '$updatedAt',
-              deletedAt: '$deletedAt',
-              loginedAt: '$loginedAt',
-              followers : '$followers',
-              emailVerified: '$emailVerified',
-
-            }
-          },
-          count: { $sum: 1 }
-        }
-      },
-      
-      {
-        //sort alphabetically
-        $sort: {
-          _id: 1
-        }
-      }
-      
-    ])
-    .toArray();
-    */
-
-  
-}
 
 
 
