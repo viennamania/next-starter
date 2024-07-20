@@ -249,7 +249,7 @@ export default function SettingsPage() {
 
                     <div className='flex flex-row items-center space-x-4'>
                         <GearSetupIcon />
-                        <div className="text-2xl font-semibold">Wallet Settings</div>
+                        <div className="text-2xl font-semibold">Profile Settings</div>
 
                         {!address && (
                             <ConnectButton
@@ -295,69 +295,121 @@ export default function SettingsPage() {
 
 
 
+                        {userCode && (
+                            <div className='flex flex-row gap-2 items-center justify-between border border-gray-300 p-4 rounded-lg'>
+
+                                <div className="bg-red-800 text-sm text-zinc-100 p-2 rounded">
+                                   My Nickname
+                                </div>
+
+                                <div className="p-2 bg-zinc-800 rounded text-zinc-100 text-xl font-semibold">
+                                    {nickname}
+                                </div>
 
 
-                        {/* My Wallet */}
-                        <div className='flex flex-col xl:flex-row gap-2 items-center justify-between border border-gray-300 p-4 rounded-lg'>
                                 
-                            <div className="bg-red-800 text-sm text-zinc-100 p-2 rounded">
-                                My Wallet
-                            </div>
+                                <button
+                                    onClick={() => {
 
-                            <div className="p-2 bg-zinc-800 rounded text-zinc-100 text-xs font-semibold">
-                                {address}
-                            </div>
+                                       
 
-                            <button
-                                disabled={!address}
-                                onClick={() => {
-                                navigator.clipboard.writeText(address);
-                                toast.success('Address copied to clipboard');
-                                }}
-                                className="p-2 bg-blue-500 text-zinc-100 rounded"
+                                        nicknameEdit ? setNicknameEdit(false) : setNicknameEdit(true);
+
+                                    } }
+                                    className="p-2 bg-blue-500 text-zinc-100 rounded"
                                 >
-                                Copy
-                            </button>
-
-                        </div>
-
-                        {/* My Phone Number */}
-                        <div className='flex flex-col xl:flex-row gap-2 items-center justify-between border border-gray-300 p-4 rounded-lg'>
+                                    {nicknameEdit ? 'Cancel' : 'Edit'}
+                                </button>
                                 
-                            <div className="bg-red-800 text-sm text-zinc-100 p-2 rounded">
-                                My Phone Number
+                            </div>
+                        )}
+
+
+                        {(nicknameEdit || !userCode) && (
+                            <div className=' flex flex-col xl:flex-row gap-2 items-center justify-between border border-gray-300 p-4 rounded-lg'>
+
+                                <div
+                                    className="bg-red-800 text-sm text-zinc-100 p-2 rounded"
+                                >
+                                    Nickname
+                                </div>
+
+                                <input
+                                    disabled={!address}
+                                    className="p-2 w-64 text-zinc-100 bg-zinc-800 rounded text-2xl font-semibold"
+                                    placeholder="Enter your nickname"
+                                    
+                                    //value={nickname}
+                                    value={editedNickname}
+
+                                    type='text'
+                                    onChange={(e) => {
+                                        // check if the value is a number
+                                        // check if the value is alphanumeric and lowercase
+
+                                        if (!/^[a-z0-9]*$/.test(e.target.value)) {
+                                            toast.error('Nickname should be alphanumeric and lowercase');
+                                            return;
+                                        }
+                                        if ( e.target.value.length > 10) {
+                                            toast.error('Nickname should be at least 5 characters and at most 10 characters');
+                                            return;
+                                        }
+
+                                        //setNickname(e.target.value);
+
+                                        setEditedNickname(e.target.value);
+
+                                    } }
+
+
+                                />
+                                <div className='flex flex-row gap-2 items-center justify-between'>
+                                    <div className="text-xs font-semibold">5-10 characters</div>
+                                    <div className="text-xs font-semibold">alphanumeric lowercase</div>
+                                </div>
+                                <button
+                                    disabled={!address}
+                                    className="p-2 bg-blue-500 text-zinc-100 rounded"
+                                    onClick={() => {
+                                        setUserData();
+                                    }}
+                                >
+                                    Save
+                                </button>
+
+                            </div>
+                        )}
+
+
+
+                        {userCode && (
+
+                            <div className='flex flex-row gap-2 items-center justify-between border border-gray-300 p-4 rounded-lg'>
+
+                                <div className="bg-red-800 text-sm text-zinc-100 p-2 rounded">
+                                    My Referral Code
+                                </div>
+
+                                <div className="p-2 bg-zinc-800 rounded text-zinc-100 text-xl font-semibold">
+                                    {userCode}
+                                </div>
+
+                                <button
+                                    onClick={() => {
+                                        navigator.clipboard.writeText(userCode);
+                                        toast.success('Referral code copied to clipboard');
+                                    }}
+                                    className="p-2 bg-blue-500 text-zinc-100 rounded"
+                                >
+                                    Copy
+                                </button>
+
                             </div>
 
-                            <div className="p-2 bg-zinc-800 rounded text-zinc-100 text-2xl font-semibold">
-                                {phoneNumber}
-                            </div>
+                        )}
 
-                            <button
-                                disabled={!phoneNumber}
-                                onClick={() => {
-                                    navigator.clipboard.writeText(phoneNumber);
-                                    toast.success('Phone number copied to clipboard');
-                                }}
-                                className="p-2 bg-blue-500 text-zinc-100 rounded"
-                            >
-                                Copy
-                            </button>
-                        
-                        </div>
 
-                        {/* Disconnect Wallet */}
-
-                        <button
-                            disabled={!activeWallet}
-                            onClick={() => {
-                                activeWallet?.disconnect();
-
-                                window.location.reload();
-                            }}
-                            className="p-2 bg-red-500 text-zinc-100 rounded"
-                        >
-                            Disconnect Wallet
-                        </button>
 
 
 

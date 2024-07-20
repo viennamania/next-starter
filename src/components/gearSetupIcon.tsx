@@ -10,8 +10,8 @@ const GearSetupIcon = () => (
     xmlnsXlink="http://www.w3.org/1999/xlink"
     viewBox="0 0 64 64"
     xmlSpace="preserve"
-    width="32px"
-    height="32px"
+    width="25px"
+    height="25px"
 
     fill='#fff'
   >

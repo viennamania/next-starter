@@ -525,7 +525,7 @@ export default function SendUsdt() {
                   text-2xl
                   font-semibold
                 ">
-                  Sending...
+                  ...
                 </div>
 
 

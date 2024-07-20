@@ -435,6 +435,36 @@ export default function Home() {
               {/* My Nickname */}
               <div className="bg-zinc-800 p-5 rounded-lg text-center">
 
+                <div className="flex flex-row justify-between items-start">
+                  <Image
+                    src="/profile-default.png"
+                    alt="Profile Image"
+                    width={45}
+                    height={45}
+                    className="rounded-full"
+                  />
+                  {/* Settings Button */}
+                  <button
+
+                    onClick={() => {
+
+                      if (!address) {
+                        toast.error('Please connect your wallet first');
+                        return;
+                      }
+
+                      // redirect to settings page
+                      router.push("/profiles");
+
+                    }}
+                    className="text-blue-500 hover:underline"
+                  >
+                    <GearSetupIcon />
+
+                  </button>
+
+                </div>
+
                 <h2 className="text-3xl font-semibold text-zinc-100">
                   {nickname}
                 </h2>
