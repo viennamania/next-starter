@@ -10,14 +10,14 @@ export async function POST(request: NextRequest) {
 
   const body = await request.json();
 
-  const { walletAddress, nickname, mobile } = body;
+  const { walletAddress, nickname } = body;
 
-
+  console.log("walletAddress", walletAddress);
+  console.log("nickname", nickname);
 
   const result = await insertOne({
     walletAddress: walletAddress,
     nickname: nickname,
-    mobile: mobile,
   });
 
 

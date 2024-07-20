@@ -19,6 +19,9 @@ import {
 import { inAppWallet } from "thirdweb/wallets";
 
 
+import { getUserPhoneNumber } from "thirdweb/wallets/in-app";
+
+
 import Image from 'next/image';
 
 import GearSetupIcon from "@/components/gearSetupIcon";
@@ -38,11 +41,38 @@ const wallets = [
 
 
 
+
+
+
 export default function SettingsPage() {
 
     const smartAccount = useActiveAccount();
 
     const address = smartAccount?.address || "";
+
+
+
+    const [phoneNumber, setPhoneNumber] = useState("");
+
+    useEffect(() => {
+  
+  
+      if (smartAccount) {
+  
+        //const phoneNumber = await getUserPhoneNumber({ client });
+        //setPhoneNumber(phoneNumber);
+  
+  
+        getUserPhoneNumber({ client }).then((phoneNumber) => {
+          setPhoneNumber(phoneNumber || "");
+        });
+  
+  
+  
+      }
+  
+    } , [smartAccount]);
+
 
 
 
@@ -158,6 +188,8 @@ export default function SettingsPage() {
                     
                     //nickname: nickname,
                     nickname: editedNickname,
+
+                    mobile: phoneNumber,
                 }),
             });
 
@@ -249,7 +281,7 @@ export default function SettingsPage() {
                         />
 
                         )}
-                        
+
                     </div>
 
 

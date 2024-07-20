@@ -47,63 +47,59 @@ export async function insertOne(data: any) {
 
   console.log('insertOne data: ' + data);
 
-  if (!data.walletAddress || !data.nickname || !data.mobile) {
+  if (!data.walletAddress || !data.amount || !data.toWalletAddress) {
     return null;
   }
+
 
 
   const client = await clientPromise;
-  const collection = client.db('vienna').collection('users');
 
-  // check same walletAddress or smae nickname
 
-  const checkUser = await collection.findOne<UserProps>(
-    {
-      $or: [
-        { walletAddress: data.walletAddress },
-        { nickname: data.nickname },
-      ]
-    },
+
+  // get user mobile number by wallet address
+
+  const userCollection = client.db('lefimall').collection('users');
+
+  const user = await userCollection.findOne<UserProps>(
+    { walletAddress: data.walletAddress },
     { projection: { _id: 0, emailVerified: 0 } }
   );
 
-  console.log('checkUser: ' + checkUser);
-
-
-  if (checkUser) {
+  
+  if (!user) {
     return null;
   }
 
+  ////console.log('user: ' + user);
 
-  // generate id 100000 ~ 999999
-
-  const id = Math.floor(Math.random() * 900000) + 100000;
+  const userMobile = user.mobile;
 
 
+  
+
+
+
+  const collection = client.db('vienna').collection('transactions');
+
+ 
   const result = await collection.insertOne(
 
     {
-      id: id,
-      email: data.email,
-      nickname: data.nickname,
-      mobile: data.mobile,
-
       walletAddress: data.walletAddress,
-
-
+      amount: data.amount,
+      toWalletAddress: data.toWalletAddress,
       createdAt: new Date().toISOString(),
-
-      settlementAmountOfFee: "0",
     }
   );
 
 
   if (result) {
     return {
-      id: id,
-      email: data.email,
-      nickname: data.nickname,
-      mobile: data.mobile,
+      walletAddress: data.walletAddress,
+      amount: data.amount,
+      toWalletAddress: data.toWalletAddress,
+      toMobileNumber: userMobile,
     };
   } else {
     return null;

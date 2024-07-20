@@ -436,6 +436,7 @@ export default function SendUsdt() {
               <div className="text-lg">Enter the amount and recipient address</div>
 
               <input
+                disabled={sending}
                 type="number"
                 //placeholder="Enter amount"
                 className="w-full p-2 border border-gray-300 rounded text-black text-5xl font-semibold "
@@ -450,7 +451,7 @@ export default function SendUsdt() {
                   // check if start 0, if so remove it
 
                   e.target.value = e.target.value.replace(/^0+/, ''),
-                  
+
 
 
                   // check balance
@@ -474,6 +475,7 @@ export default function SendUsdt() {
               {/* user list and select one */}
 
               <select
+                disabled={sending}
                 className="w-full p-2 border border-gray-300 rounded text-black"
                 value={recipient.nickname}
 
@@ -496,15 +498,18 @@ export default function SendUsdt() {
               </select>
 
 
-              {/* sending rotate animation */}
+              {/* sending rotate animation with white color*/}
               {sending && (
                 <div className="
-                  w-5 h-5 border-2 border-zinc-800 rounded-full animate-spin
-                  border-t-2 border-t-zinc-800
-                  border-b-2 border-b-zinc-800
-                  border-l-2 border-l-transparent
-                  border-r-2 border-r-transparent
-                "></div>
+                  w-6 h-6
+                  border-2 border-zinc-800
+                  rounded-full
+                  animate-spin
+                  mx-auto
+
+                ">
+                  Sending...
+                </div>
 
 
               )}
