@@ -1,6 +1,6 @@
 // nickname settings
 'use client';
-import React, { useEffect, useState } from 'react';
+import React, { use, useEffect, useState } from 'react';
 
 
 
@@ -33,6 +33,11 @@ export default function SettingsPage() {
 
     const [userCode, setUserCode] = useState("");
 
+
+
+
+
+
     useEffect(() => {
         const fetchData = async () => {
             const response = await fetch("/api/user/getUser", {
@@ -62,39 +67,93 @@ export default function SettingsPage() {
 
 
 
+
     const setUserData = async () => {
 
 
         // check nickname length and alphanumeric
-        if (nickname.length < 5 || nickname.length > 20) {
-            toast.error('Nickname should be at least 5 characters and at most 20 characters');
+        if (nickname.length < 5 || nickname.length > 10) {
+            toast.error('Nickname should be at least 5 characters and at most 10 characters');
             return;
         }
         
-        if (!/^[a-zA-Z0-9]*$/.test(nickname)) {
-            toast.error('Nickname should be alphanumeric');
+        if (!/^[a-z0-9]*$/.test(nickname)) {
+            toast.error('Nickname should be alphanumeric and lowercase');
             return;
         }
 
+        if (nicknameEdit) {
 
-        const response = await fetch("/api/user/setUser", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                walletAddress: address,
-                nickname: nickname,
-            }),
-        });
 
-        const data = await response.json();
+            const response = await fetch("/api/user/updateUser", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    walletAddress: address,
+                    nickname: nickname,
+                }),
+            });
 
-        console.log("data", data);
+            const data = await response.json();
 
-        toast.success('Nickname saved');
+            console.log("updateUser data", data);
+
+            if (data.result) {
+
+                setUserCode(data.result.id);
+                setNickname(data.result.nickname);
+
+                setNicknameEdit(false);
+
+                toast.success('Nickname saved');
+
+            } else {
+                toast.error('Error saving nickname');
+            }
+
+
+        } else {
+
+            const response = await fetch("/api/user/setUser", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    walletAddress: address,
+                    nickname: nickname,
+                }),
+            });
+
+            const data = await response.json();
+
+            console.log("data", data);
+
+            if (data.result) {
+
+                setUserCode(data.result.id);
+                setNickname(data.result.nickname);
+
+                setNicknameEdit(false);
+
+                toast.success('Nickname saved');
+
+            } else {
+                toast.error('Error saving nickname');
+            }
+        }
+
+
+        
+
+        
     }
 
+
+    console.log("nickname", nickname);
+    console.log("userCode", userCode);
 
 
 
@@ -176,7 +235,7 @@ export default function SettingsPage() {
 
                         )}
 
-                        {nickname && (
+                        {userCode && (
                             <div className='flex flex-row gap-2 items-center justify-between border border-gray-300 p-4 rounded-lg'>
 
                                 <div className="bg-red-800 text-sm text-zinc-100 p-2 rounded">
@@ -188,6 +247,7 @@ export default function SettingsPage() {
                                 </div>
 
 
+                                
                                 <button
                                     onClick={() => {
 
@@ -219,7 +279,23 @@ export default function SettingsPage() {
                                     placeholder="Enter your nickname"
                                     value={nickname}
                                     type='text'
-                                    onChange={(e) => setNickname(e.target.value)}
+                                    onChange={(e) => {
+                                        // check if the value is a number
+                                        // check if the value is alphanumeric and lowercase
+
+                                        if (!/^[a-z0-9]*$/.test(e.target.value)) {
+                                            toast.error('Nickname should be alphanumeric and lowercase');
+                                            return;
+                                        }
+                                        if ( e.target.value.length > 10) {
+                                            toast.error('Nickname should be at least 5 characters and at most 10 characters');
+                                            return;
+                                        }
+
+                                        setNickname(e.target.value);
+                                    } }
+
+
                                 />
                                 <button
                                     className="p-2 bg-blue-500 text-zinc-100 rounded"

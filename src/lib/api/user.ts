@@ -51,10 +51,15 @@ export async function insertOne(data: any) {
   const client = await clientPromise;
   const collection = client.db('vienna').collection('users');
 
-  // check same email, then return error
+  // check same walletAddress or smae nickname
 
   const checkUser = await collection.findOne<UserProps>(
-    { walletAddress: data.walletAddress },
+    {
+      $or: [
+        { email: data.email },
+        { nickname: data.nickname },
+      ]
+    },
     { projection: { _id: 0, emailVerified: 0 } }
   );
 
@@ -71,7 +76,7 @@ export async function insertOne(data: any) {
   const id = Math.floor(Math.random() * 900000) + 100000;
 
 
-  return await collection.insertOne(
+  const result = await collection.insertOne(
 
     {
       id: id,
@@ -88,11 +93,47 @@ export async function insertOne(data: any) {
     }
   );
 
+
+  if (result) {
+    return {
+      id: id,
+      email: data.email,
+      nickname: data.nickname,
+      mobile: data.mobile,
+    };
+  } else {
+    return null;
+  }
   
 
 }
 
 
+
+export async function updateOne(data: any) {
+  const client = await clientPromise;
+  const collection = client.db('vienna').collection('users');
+
+
+  // update and return updated user
+
+
+  const result = await collection.updateOne(
+    { walletAddress: data.walletAddress },
+    { $set: { nickname: data.nickname } }
+  );
+
+  if (result) {
+    const updated = await collection.findOne<UserProps>(
+      { walletAddress: data.walletAddress },
+      { projection: { _id: 0, emailVerified: 0 } }
+    );
+
+    return updated;
+  }
+
+
+}
 
 
 
