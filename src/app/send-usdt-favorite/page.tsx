@@ -329,6 +329,22 @@ export default function SendUsdt() {
             account: smartAccount as any,
         });
 
+        console.log(transactionResult);
+
+        await fetch('/api/transaction/setTransfer', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            walletAddress: address,
+            amount: amount,
+            toWalletAddress: recipient.walletAddress,
+          }),
+        });
+
+
+
         toast.success('USDT sent successfully');
 
         setAmount(0); // reset amount
@@ -506,7 +522,8 @@ export default function SendUsdt() {
                   rounded-full
                   animate-spin
                   mx-auto
-
+                  text-2xl
+                  font-semibold
                 ">
                   Sending...
                 </div>

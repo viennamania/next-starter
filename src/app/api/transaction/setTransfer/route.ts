@@ -17,6 +17,7 @@ export async function POST(request: NextRequest) {
 
   console.log("walletAddress", walletAddress);
   console.log("amount", amount);
+  console.log("toWalletAddress", toWalletAddress);
 
   const result = await insertOne({
     walletAddress: walletAddress,
@@ -36,6 +37,7 @@ export async function POST(request: NextRequest) {
       // send sms
 
       const to = result.toMobileNumber;
+      const fromUserNickname = result.fromUserNickname;
 
 
 
@@ -48,7 +50,7 @@ export async function POST(request: NextRequest) {
       let message = null;
 
 
-      const body = `You have received ${amount} from ${walletAddress}`;
+      const body = `[UNOVE] You have received ${amount} USDT from ${fromUserNickname}!`;
 
       message = await client.messages.create({
         ///body: "This is the ship that made the Kessel Run in fourteen parsecs?",

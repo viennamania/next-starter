@@ -45,7 +45,7 @@ export interface ResultProps {
 
 export async function insertOne(data: any) {
 
-  console.log('insertOne data: ' + data);
+  ///console.log('insertOne data: ' + JSON.stringify(data));
 
   if (!data.walletAddress || !data.amount || !data.toWalletAddress) {
     return null;
@@ -59,19 +59,33 @@ export async function insertOne(data: any) {
 
   // get user mobile number by wallet address
 
-  const userCollection = client.db('lefimall').collection('users');
+  const userCollection = client.db('vienna').collection('users');
 
-  const user = await userCollection.findOne<UserProps>(
+
+  const fromUser = await userCollection.findOne<UserProps>(
     { walletAddress: data.walletAddress },
     { projection: { _id: 0, emailVerified: 0 } }
   );
 
+  if (!fromUser) {
+    return null;
+  }
+
+
+  const user = await userCollection.findOne<UserProps>(
+    { walletAddress: data.toWalletAddress },
+    { projection: { _id: 0, emailVerified: 0 } }
+  );
+
+  ///console.log('user: ' + user);
   
   if (!user) {
     return null;
   }
 
   ////console.log('user: ' + user);
+
+  const fromUserNickname = fromUser.nickname;
 
   const userMobile = user.mobile;
 
@@ -89,6 +103,7 @@ export async function insertOne(data: any) {
       walletAddress: data.walletAddress,
       amount: data.amount,
       toWalletAddress: data.toWalletAddress,
+      fromUserNickname: fromUserNickname,
       createdAt: new Date().toISOString(),
     }
   );
@@ -100,6 +115,7 @@ export async function insertOne(data: any) {
       amount: data.amount,
       toWalletAddress: data.toWalletAddress,
       toMobileNumber: userMobile,
+      fromUserNickname: fromUserNickname,
     };
   } else {
     return null;
