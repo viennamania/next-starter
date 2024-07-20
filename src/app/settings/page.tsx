@@ -6,9 +6,17 @@ import React, { use, useEffect, useState } from 'react';
 
 import { toast } from 'react-hot-toast';
 
+import { client } from "../client";
+
 import {
+    polygon,
+} from "thirdweb/chains";
+
+import {
+    ConnectButton,
     useActiveAccount,
 } from "thirdweb/react";
+import { inAppWallet } from "thirdweb/wallets";
 
 
 import Image from 'next/image';
@@ -19,12 +27,22 @@ import GearSetupIcon from "@/components/gearSetupIcon";
 import Uploader from '@/components/uploader';
 
 
+const wallets = [
+    inAppWallet({
+      auth: {
+        options: ["phone"],
+      },
+    }),
+];
+
+
+
+
 export default function SettingsPage() {
 
     const smartAccount = useActiveAccount();
 
     const address = smartAccount?.address || "";
-
 
 
 
@@ -194,6 +212,44 @@ export default function SettingsPage() {
                     <div className='flex flex-row items-center space-x-4'>
                         <GearSetupIcon />
                         <div className="text-2xl font-semibold">Settings</div>
+
+                        {!address && (
+                            <ConnectButton
+
+                            client={client}
+
+                            wallets={wallets}
+                            
+                            accountAbstraction={{        
+                            chain: polygon,
+                            //chain: arbitrum,
+                            factoryAddress: "0x9Bb60d360932171292Ad2b80839080fb6F5aBD97", // polygon, arbitrum
+                            gasless: true,
+                            }}
+                            
+                            theme={"light"}
+                            connectModal={{
+                            size: "wide",
+
+
+                            }}
+
+
+                            
+                            appMetadata={
+                            {
+                                logoUrl: "https://next.unove.space/logo.png",
+                                name: "Next App",
+                                url: "https://next.unove.space",
+                                description: "This is a Next App.",
+
+                            }
+                            }
+
+                        />
+
+                        )}
+                        
                     </div>
 
 

@@ -42,12 +42,26 @@ import { sendAndConfirmTransaction } from "thirdweb";
 
 import {
   createWallet,
-  smartWallet,
+  inAppWallet,
 } from "thirdweb/wallets";
+
+
  
 import { transfer } from "thirdweb/extensions/erc20";
 
 import Image from 'next/image';
+
+
+const wallets = [
+  inAppWallet({
+    auth: {
+      options: ["phone"],
+    },
+  }),
+];
+
+
+
 
 const contractAddress = "0xc2132D05D31c914a87C6611C10748AEb04B58e8F"; // USDT on Polygon
 
@@ -371,6 +385,47 @@ export default function SendUsdt() {
                 height={30}
               />
               <div className="text-2xl font-semibold">Send USDT</div>
+
+
+
+              {!address && (
+                  <ConnectButton
+
+                  client={client}
+
+                  wallets={wallets}
+                  
+                  accountAbstraction={{        
+                  chain: polygon,
+                  //chain: arbitrum,
+                  factoryAddress: "0x9Bb60d360932171292Ad2b80839080fb6F5aBD97", // polygon, arbitrum
+                  gasless: true,
+                  }}
+                  
+                  theme={"light"}
+                  connectModal={{
+                  size: "wide",
+
+
+                  }}
+
+
+                  
+                  appMetadata={
+                  {
+                      logoUrl: "https://next.unove.space/logo.png",
+                      name: "Next App",
+                      url: "https://next.unove.space",
+                      description: "This is a Next App.",
+
+                  }
+                  }
+
+              />
+
+              )}
+
+
             </div>
 
             <div className='w-full  flex flex-col gap-5 border border-gray-300 p-4 rounded-lg'>
