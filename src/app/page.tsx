@@ -53,6 +53,8 @@ import { add } from "thirdweb/extensions/farcaster/keyGateway";
 import { getOwnedNFTs } from "thirdweb/extensions/erc721";
 
 
+import GearSetupIcon from "@/components/gearSetupIcon";
+
 /*
 const client = createThirdwebClient({
   clientId: process.env.NEXT_PUBLIC_TEMPLATE_CLIENT_ID || "",
@@ -307,14 +309,33 @@ export default function Home() {
               
               <div className="bg-zinc-800 p-5 rounded-lg text-center">
 
-                {/* Tether USDT logo */}
-                <div className="mb-4">
+
+                <div className="flex flex-row justify-between items-start">
+                  {/* Tether USDT logo */}
                   <Image
                     src="https://cryptologos.cc/logos/tether-usdt-logo.png"
                     alt="USDT"
                     width={50}
                     height={50}
+                    className="rounded-lg"
                   />
+                  {/* Settings Button */}
+                  <button
+                    onClick={() => {
+                      // setup USDT
+                      console.log("settings");
+
+                      // redirect to settings page
+                      router.push("/settings");
+
+                    }}
+                    className="text-blue-500 hover:underline"
+                  >
+
+                    {/* settings gear icon white color */}
+                    <GearSetupIcon />
+
+                  </button>
                 </div>
 
 
