@@ -476,7 +476,7 @@ export default function SendUsdt() {
 
               <select
                 disabled={sending}
-                className="w-full p-2 border border-gray-300 rounded text-black"
+                className="w-full p-2 border border-gray-300 rounded text-black text-2xl font-semibold"
                 value={recipient.nickname}
 
 
@@ -516,7 +516,7 @@ export default function SendUsdt() {
               <button
                 disabled={!address || !recipient.walletAddress || !amount || sending}
                 onClick={sendUsdt}
-                className="w-full bg-zinc-800 text-white p-2 rounded text-center font-semibold hover:bg-zinc-700 hover:text-white"
+                className="mt-10 w-full bg-zinc-800 text-white p-2 rounded text-center text-2xl font-semibold hover:bg-zinc-700 hover:text-white"
               >
                   Send
               </button>
