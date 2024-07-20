@@ -47,6 +47,10 @@ export async function insertOne(data: any) {
 
   console.log('insertOne data: ' + data);
 
+  if (!data.walletAddress || !data.nickname) {
+    return null;
+  }
+
 
   const client = await clientPromise;
   const collection = client.db('vienna').collection('users');
@@ -116,6 +120,10 @@ export async function updateOne(data: any) {
 
 
   // update and return updated user
+
+  if (!data.walletAddress || !data.nickname) {
+    return null;
+  }
 
 
   const result = await collection.updateOne(

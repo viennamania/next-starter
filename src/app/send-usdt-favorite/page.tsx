@@ -79,7 +79,9 @@ export default function SendUsdt() {
 
 
 
-  const [toAddress, setToAddress] = useState('');
+  ///const [toAddress, setToAddress] = useState('');
+
+
   const [amount, setAmount] = useState('');
 
 
@@ -170,7 +172,19 @@ export default function SendUsdt() {
 
 
   // get list of user wallets from api
-  const [users, setUsers] = useState([]);
+  const [users, setUsers] = useState([
+    {
+      _id: '',
+      id: 0,
+      email: '',
+      nickname: '',
+      mobile: '',
+      walletAddress: '',
+      createdAt: '',
+      settlementAmountOfFee: '',
+    }
+  ]);
+
   const [totalCountOfUsers, setTotalCountOfUsers] = useState(0);
 
   useEffect(() => {
@@ -187,19 +201,71 @@ export default function SendUsdt() {
 
       const data = await response.json();
 
-      console.log("getUsers", data);
+      ///console.log("getUsers", data);
 
-      setUsers(data.result.users);
+
+      ///setUsers(data.result.users);
+      // set users except the current user
+
+      setUsers(data.result.users.filter((user: any) => user.walletAddress !== address));
+
+
+
       setTotalCountOfUsers(data.result.totalCount);
 
     };
 
     getUsers();
 
+    /*
+    [
+        {
+            "_id": "669b7701f33f6e09a44eb105",
+            "id": 311778,
+            "email": null,
+            "nickname": "eva1647",
+            "mobile": null,
+            "walletAddress": "",
+            "createdAt": "2024-07-20T08:36:17.552Z",
+            "settlementAmountOfFee": "0"
+        },
+        {
+            "_id": "669b76a0f33f6e09a44eb104",
+            "id": 678776,
+            "email": null,
+            "nickname": "genie",
+            "mobile": null,
+            "walletAddress": "0xaeACC0a48DBDedD982fdfa21Da7175610CAE0f51",
+            "createdAt": "2024-07-20T08:34:40.151Z",
+            "settlementAmountOfFee": "0"
+        }
+    ]
+    */
+
   }, [address]);
 
 
+  console.log("users", users);
 
+
+
+
+  const [recipient, setRecipient] = useState({
+    _id: '',
+    id: 0,
+    email: '',
+    nickname: '',
+    mobile: '',
+    walletAddress: '',
+    createdAt: '',
+    settlementAmountOfFee: '',
+  });
+
+
+
+
+  console.log("recipient.walletAddress", recipient.walletAddress);
+  console.log("amount", amount);
 
 
   const [sending, setSending] = useState(false);
@@ -211,7 +277,7 @@ export default function SendUsdt() {
     }
 
 
-    if (!toAddress) {
+    if (!recipient.walletAddress) {
       toast.error('Please enter a valid address');
       return;
     }
@@ -238,7 +304,7 @@ export default function SendUsdt() {
         // Call the extension function to prepare the transaction
         const transaction = transfer({
             contract,
-            to: toAddress,
+            to: recipient.walletAddress,
             amount: amount,
         });
         
@@ -315,7 +381,7 @@ export default function SendUsdt() {
               <input
                 type="number"
                 placeholder="Enter amount"
-                className="w-80 p-2 border border-gray-300 rounded text-black"
+                className="w-full p-2 border border-gray-300 rounded text-black text-5xl font-semibold "
                 value={amount}
                 onChange={(e) => (
 
@@ -330,6 +396,9 @@ export default function SendUsdt() {
                 )}
               />
 
+
+            
+              {/*
               <input
                   type="text"
                   placeholder="Enter address"
@@ -337,14 +406,48 @@ export default function SendUsdt() {
                   value={toAddress}
                   onChange={(e) => setToAddress(e.target.value)}
               />
+              */}
+              {/* user list and select one */}
 
+              <select
+                className="w-full p-2 border border-gray-300 rounded text-black"
+                value={recipient.nickname}
+
+
+                onChange={(e) => {
+
+                  const selectedUser = users.find((user) => user.nickname === e.target.value) as any;
+
+                  console.log("selectedUser", selectedUser);
+
+                  setRecipient(selectedUser);
+
+                } } 
+
+              >
+                <option value="">Select a user</option>
+                {users.map((user) => (
+                  <option key={user.id} value={user.nickname}>{user.nickname}</option>
+                ))}
+              </select>
+
+
+              {/* sending rotate animation */}
               {sending && (
-                <div className="text-lg font-semibold text-gray-400">Sending...</div>
+                <div className="
+                  w-5 h-5 border-2 border-zinc-800 rounded-full animate-spin
+                  border-t-2 border-t-zinc-800
+                  border-b-2 border-b-zinc-800
+                  border-l-2 border-l-transparent
+                  border-r-2 border-r-transparent
+                "></div>
+
+
               )}
               <button
-                disabled={!address || !toAddress || !amount || sending}
+                disabled={!address || !recipient.walletAddress || !amount || sending}
                 onClick={sendUsdt}
-                className="bg-zinc-800 text-white p-2 rounded w-80 text-center font-semibold hover:bg-zinc-700 hover:text-white"
+                className="w-full bg-zinc-800 text-white p-2 rounded text-center font-semibold hover:bg-zinc-700 hover:text-white"
               >
                   Send
               </button>
