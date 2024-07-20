@@ -16,6 +16,8 @@ import Image from 'next/image';
 import GearSetupIcon from "@/components/gearSetupIcon";
 
 
+import Uploader from '@/components/uploader';
+
 
 export default function SettingsPage() {
 

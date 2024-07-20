@@ -321,7 +321,13 @@ export default function Home() {
                   />
                   {/* Settings Button */}
                   <button
+
                     onClick={() => {
+
+                      if (!address) {
+                        toast.error('Please connect your wallet first');
+                        return;
+                      }
                       // setup USDT
                       console.log("settings");
 
@@ -331,11 +337,10 @@ export default function Home() {
                     }}
                     className="text-blue-500 hover:underline"
                   >
-
-                    {/* settings gear icon white color */}
                     <GearSetupIcon />
 
                   </button>
+
                 </div>
 
 
