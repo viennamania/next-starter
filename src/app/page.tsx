@@ -120,6 +120,7 @@ console.log("contractEditorDrop", contractEditorDrop);
 
 
 
+
 export default function Home() {
 
 
@@ -311,7 +312,48 @@ export default function Home() {
   
 
 
-  console.log("bestSellers", bestSellers);
+  ///console.log("bestSellers", bestSellers);
+
+
+
+
+  const [buyTrades, setBuyTrades] = useState([]);
+
+  useEffect(() => {
+
+    if (!address) {
+      return;
+    }
+
+    const fetchData = async () => {
+        const response = await fetch("/api/order/getBuyTrades", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              walletAddress: address,
+              limit: 10,
+              page: 1,
+            }),
+        });
+
+        const data = await response.json();
+
+        //console.log("data", data);
+
+        if (data.result) {
+
+          setBuyTrades(data.result.orders);
+        }
+    };
+
+    fetchData();
+
+  } , [address]);
+
+
+
 
 
   return (
@@ -511,6 +553,37 @@ export default function Home() {
                 <p className="text-zinc-300">My Nickname</p>
 
               </div>
+
+
+
+              {/* My Trades */}
+
+              <div className="bg-zinc-800 p-5 rounded-lg text-center">
+
+                <h2 className="text-3xl font-semibold text-zinc-100">
+                  {buyTrades.length}
+                </h2>
+                <p className="text-zinc-300">My Buy Trades</p>
+
+                <div className="grid gap-4 lg:grid-cols-3 justify-center mt-4">
+
+                  {buyTrades.map((trade: any) => (
+                    <ArticleCard
+                      key={trade.id}
+                      title={`Seller: ${trade.nickname} - ${trade.usdtAmount} USDT`}
+                      avatar={trade.avatar}
+                      href={`/profiles/${trade.walletAddress}`}
+                      description={
+                        `Trade ID: ${trade.tradeId} - ${trade.status?.toUpperCase()}`
+                      }
+                    />
+                  ))}
+
+                </div>
+
+              </div>
+
+
            
  
 

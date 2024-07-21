@@ -1,7 +1,7 @@
 import { NextResponse, type NextRequest } from "next/server";
 
 import {
-	getSellOrders,
+	getTradesByWalletAddress,
 } from '@lib/api/order';
 
 
@@ -10,10 +10,14 @@ export async function POST(request: NextRequest) {
 
   const body = await request.json();
 
+  const { walletAddress } = body;
 
+  console.log("walletAddress", walletAddress);
+  
 
-  const result = await getSellOrders({
-    limit: 20,
+  const result = await getTradesByWalletAddress({
+    walletAddress: walletAddress,
+    limit: 10,
     page: 1,
   });
 
