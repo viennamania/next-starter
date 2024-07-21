@@ -206,7 +206,10 @@ export async function acceptSellOrder(data: any) {
   const client = await clientPromise;
   const collection = client.db('vienna').collection('orders');
 
-  // update and return updated user
+  // random number for tradeId
+  // 100000 ~ 999999 string
+
+  const tradeId = Math.floor(Math.random() * 900000) + 100000 + '';
 
   const result = await collection.updateOne(
     
@@ -216,6 +219,10 @@ export async function acceptSellOrder(data: any) {
     { $set: {
       status: 'accepted',
       acceptedAt: new Date().toISOString(),
+
+
+      tradeId: tradeId,
+
       buyer: {
         walletAddress: data.buyerWalletAddress,
         nickname: data.buyerNickname,

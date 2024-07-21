@@ -73,6 +73,8 @@ interface SellOrder {
 
   acceptedAt: string;
 
+  tradeId: string;
+
   buyer: any;
 }
 
@@ -454,33 +456,60 @@ const P2PTable = () => {
                             </p>
 
                             {item.status === 'accepted' && (
+                              <p className="text-2xl font-semibold text-green-500">
+                                Trade ID: {item.tradeId}
+                              </p>
+                            )}
+
+                            {item.status === 'accepted' && (
                               <p className="text-sm text-zinc-400">
                                 Accepted at {new Date(item.acceptedAt).toLocaleDateString() + ' ' + new Date(item.acceptedAt).toLocaleTimeString()}
                               </p>
                             )}
 
                             {item.status === 'accepted' && (
-                                <div className="mt-2 mb-2 flex flex-row items-center space-x-4">
+                                <div className="w-full mt-2 mb-2 flex flex-col items-start ">
 
                                   <p className="text-xl text-green-500 font-semibold">
                                     Buyer: {item.buyer.nickname}
                                   </p>
                                   <button
-                                      className="text-lg bg-blue-500 text-white px-4 py-2 rounded-md mt-4"
+                                      className="w-full text-lg bg-blue-500 text-white px-4 py-2 rounded-md mt-4"
                                       onClick={() => {
-                                          console.log('Commit Trade');
+                                          console.log('request Payment');
                                           
                                           ///router.push(`/chat?tradeId=12345`);
 
                                       }}
                                   >
-                                    Commit Trade
+                                    <div className="flex flex-col gap-2">
+                                      <div className="flex flex-row items-center gap-2">
+                                        <GearSetupIcon />
+                                        <div className="text-lg font-semibold">
+                                        Request Payment
+                                        </div>
+                                      </div>
+                                      <div className="flex flex-col gap-2 text-sm text-left font-semibold text-white">
+                                        
+                                        <ul>
+                                          <li>Bank Name : {item.seller.bankInfo.bankName}</li>
+                                          <li>Account Number : {item.seller.bankInfo.accountNumber}</li>
+                                          <li>Account Holder : {item.seller.bankInfo.accountHolder}</li>
+                                          <li>Amount : {item.krwAmount} KRW</li>
+                                          {/* 입금자명 표시 */}
+                                          <li>Deposit Name : {item.tradeId}</li>
+                                        </ul>
+
+
+
+                                      </div>
+                                    </div>
                                   </button>
                                 </div>
                             )}
 
-                            <p className="text-sm text-zinc-400">
-                              Order Date: {
+                            <p className="mt-5 text-sm text-zinc-400">
+                              Ordered at {
                                 new Date(item.createdAt).toLocaleDateString() + ' ' + new Date(item.createdAt).toLocaleTimeString()
                               }
                             </p>
