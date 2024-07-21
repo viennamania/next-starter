@@ -170,7 +170,7 @@ export default function Uploader(
                   </button>
                 </div>
               ),
-              { duration: 10000 }
+              { duration: 3000 }
             )
 
           } else {

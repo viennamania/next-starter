@@ -247,7 +247,7 @@ export default function Home() {
   const [userCode, setUserCode] = useState("");
 
 
-
+  const [seller, setSeller] = useState(null) as any;
 
 
 
@@ -272,6 +272,9 @@ export default function Home() {
               setNickname(data.result.nickname);
               data.result.avatar && setAvatar(data.result.avatar);
               setUserCode(data.result.id);
+
+              setSeller(data.result.seller);
+
           }
       };
 
@@ -575,8 +578,35 @@ export default function Home() {
         */}
 
      
-
+        {/*
         <MarketResources />
+        */}
+        <div className="grid gap-4 lg:grid-cols-3 justify-center">
+
+          <ArticleCard
+            title="Buy USDT"
+            href="/buy-usdt"
+            description="Buy USDT with your favorite real-world currency"
+          />
+
+          {seller && (
+            
+              <ArticleCard
+                title="Sell USDT"
+                href="/sell-usdt"
+                description="Sell USDT for your favorite real-world currency"
+              />
+            
+            )}
+
+          <ArticleCard
+            title="How to use USDT"
+            href="/"
+            description="Learn how to use USDT in your favorite DeFi apps"
+          />
+
+        </div>
+
 
       </div>
     </main>
@@ -652,6 +682,7 @@ function MarketResources() {
         description="Buy USDT with your favorite real-world currency"
       />
 
+  
       <ArticleCard
         title="Sell USDT"
         href="/sell-usdt"

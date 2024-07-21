@@ -259,6 +259,10 @@ export default function SettingsPage() {
     }
 
 
+    // 은행명, 계좌번호, 예금주
+    const [bankName, setBankName] = useState("");
+    const [accountNumber, setAccountNumber] = useState("");
+    const [accountHolder, setAccountHolder] = useState("");
 
     const [applying, setApplying] = useState(false);
 
@@ -305,6 +309,9 @@ export default function SettingsPage() {
             body: JSON.stringify({
                 walletAddress: address,
                 sellerStatus: 'confirmed',
+                bankName: bankName,
+                accountNumber: accountNumber,
+                accountHolder: accountHolder,
             }),
           });
 
@@ -577,8 +584,18 @@ export default function SettingsPage() {
                                     Seller
                                 </div>
 
-                                <div className="p-2 bg-zinc-800 rounded text-zinc-100 text-xl font-semibold">
-                                    {seller.status}
+                                <div className="flex flex-col p-2 bg-zinc-800 rounded text-zinc-100 text-xl font-semibold">
+                                    
+                                    <div className="text-lg font-semibold">
+                                        {seller?.bankInfo?.bankName}
+                                    </div>
+                                    <div className="text-lg font-semibold">
+                                        {seller?.bankInfo?.accountNumber}
+                                    </div>
+                                    <div className="text-lg font-semibold">
+                                        {seller?.bankInfo?.accountHolder}
+                                    </div>
+
                                 </div>
 
                                 {/* goto seller page /sell-usdt */}
@@ -628,6 +645,46 @@ export default function SettingsPage() {
                                         </button>
                                     )}
 
+                                </div>
+
+                                {/* 은행명, 계좌번호, 예금주 */}
+                                <div className='flex flex-col gap-2 items-start justify-between'>
+                                                                        
+                                    <input 
+                                        disabled={applying}
+                                        className="p-2 w-64 text-zinc-100 bg-zinc-800 rounded text-lg font-semibold"
+                                        placeholder="Enter your bank name"
+                                        value={bankName}
+                                        type='text'
+                                        onChange={(e) => {
+                                            setBankName(e.target.value);
+                                        }}
+                                    />
+                                    <input 
+                                        disabled={applying}
+                                        className="p-2 w-64 text-zinc-100 bg-zinc-800 rounded text-lg font-semibold"
+                                        placeholder="Enter your account number"
+                                        value={accountNumber}
+                                        type='number'
+                                        onChange={(e) => {
+
+                                            // check if the value is a number
+
+                                            e.target.value = e.target.value.replace(/[^0-9]/g, '');
+
+                                            setAccountNumber(e.target.value);
+                                        }}
+                                    />
+                                    <input 
+                                        disabled={applying}
+                                        className="p-2 w-64 text-zinc-100 bg-zinc-800 rounded text-lg font-semibold"
+                                        placeholder="Enter your account holder"
+                                        value={accountHolder}
+                                        type='text'
+                                        onChange={(e) => {
+                                            setAccountHolder(e.target.value);
+                                        }}
+                                    />
                                 </div>
 
                                 <div className="text-xs font-semibold">

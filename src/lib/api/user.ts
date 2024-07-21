@@ -185,13 +185,17 @@ export async function updateSellerStatus(data: any) {
 
   // update and return updated user
 
-  if (!data.walletAddress || !data.sellerStatus) {
+  if (!data.walletAddress || !data.sellerStatus || !data.bankName || !data.accountNumber || !data.accountHolder) {
     return null;
   }
 
   const seller = {
     status: data.sellerStatus,
-    bankInfo: data.bankInfo,
+    bankInfo: {
+      bankName: data.bankName,
+      accountNumber: data.accountNumber,
+      accountHolder: data.accountHolder,
+    }
   };
   
 
