@@ -654,7 +654,7 @@ function MarketResources() {
 
       <ArticleCard
         title="Sell USDT"
-        href="/"
+        href="/sell-usdt"
         description="Sell USDT for your favorite real-world currency"
       />
 

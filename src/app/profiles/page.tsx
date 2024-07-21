@@ -321,7 +321,7 @@ export default function SettingsPage() {
             .then((data) => {
                 setSeller(data.result.seller);
             });
-            
+
   
   
   
@@ -439,7 +439,7 @@ export default function SettingsPage() {
                             <div className='flex flex-col xl:flex-row gap-2 items-center justify-between border border-gray-300 p-4 rounded-lg'>
 
                                 <div className="bg-red-800 text-sm text-zinc-100 p-2 rounded">
-                                    Profile Picture
+                                    My Profile Picture
                                 </div>
 
                                 <div className="p-2 bg-zinc-800 rounded text-zinc-100 text-xl font-semibold">
