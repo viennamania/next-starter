@@ -283,7 +283,35 @@ export default function Home() {
   }, [address]);
 
 
+  const [bestSellers, setBestSellers] = useState([]);
+  useEffect(() => {
+    const fetchData = async () => {
+        const response = await fetch("/api/user/getBestSellers", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+            }),
+        });
+
+        const data = await response.json();
+
+        //console.log("data", data);
+
+        if (data.result) {
+
+            setBestSellers(data.result.users);
+        }
+    };
+
+    fetchData();
+
+  }, []);  
   
+
+
+  console.log("bestSellers", bestSellers);
 
 
   return (
@@ -608,7 +636,34 @@ export default function Home() {
         </div>
 
 
+        {/* Best Sellers */}
+        <div className="bg-zinc-800 p-5 rounded-lg text-center mt-10">
+          <h2 className="text-3xl font-semibold text-zinc-100">
+            Best Sellers
+          </h2>
+          <p className="text-zinc-300">Check out the best sellers</p>
+
+          <div className="grid gap-4 lg:grid-cols-3 justify-center mt-4">
+
+
+            {bestSellers.map((seller: any) => (
+              <ArticleCard
+                key={seller.id}
+                title={seller.nickname}
+                avatar={seller.avatar}
+                href={`/profiles/${seller.walletAddress}`}
+                description="Check out the best sellers"
+              />
+            ))}
+ 
+
+          </div>
+        </div>
+
+
+
       </div>
+
     </main>
   );
 }
@@ -704,6 +759,7 @@ function MarketResources() {
 
 
 function ArticleCard(props: {
+  avatar?: string;
   title: string;
   href: string;
   description: string;
@@ -718,6 +774,17 @@ function ArticleCard(props: {
 
       className="flex flex-col border border-zinc-800 p-4 rounded-lg hover:bg-zinc-900 transition-colors hover:border-zinc-700"
     >
+
+      <div className="flex justify-center">
+        <Image
+          src={props.avatar || thirdwebIcon}
+          alt=""
+          width={50}
+          height={50}
+          className="rounded-full"
+        />
+      </div>
+
       <article>
         <h2 className="text-lg font-semibold mb-2">{props.title}</h2>
         <p className="text-sm text-zinc-400">{props.description}</p>

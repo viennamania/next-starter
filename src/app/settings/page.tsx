@@ -29,6 +29,7 @@ import GearSetupIcon from "@/components/gearSetupIcon";
 
 
 import Uploader from '@/components/uploader';
+import { add } from 'thirdweb/extensions/farcaster/keyGateway';
 
 
 const wallets = [
@@ -347,17 +348,19 @@ export default function SettingsPage() {
 
                         {/* Disconnect Wallet */}
 
-                        <button
-                            disabled={!activeWallet}
-                            onClick={() => {
-                                activeWallet?.disconnect();
+                        {address && (
+                            <button
+                                disabled={!activeWallet}
+                                onClick={() => {
+                                    activeWallet?.disconnect();
 
-                                window.location.reload();
-                            }}
-                            className="p-2 bg-red-500 text-zinc-100 rounded"
-                        >
-                            Disconnect Wallet
-                        </button>
+                                    window.location.reload();
+                                }}
+                                className="p-2 bg-red-500 text-zinc-100 rounded"
+                            >
+                                Disconnect Wallet
+                            </button>
+                        )}
 
 
 

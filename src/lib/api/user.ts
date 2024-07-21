@@ -305,6 +305,62 @@ export async function getAllUsers(
 
 
 
+export async function getBestSellers(
+  {
+    limit,
+    page,
+  }: {
+    limit: number;
+    page: number;
+  }
+): Promise<ResultProps> {
+
+
+  const client = await clientPromise;
+  const collection = client.db('vienna').collection('users');
+
+
+  console.log('limit: ' + limit);
+  console.log('page: ' + page);
+
+  // walletAddress is not empty and not null
+
+  const users = await collection
+    .find<UserProps>(
+      {
+
+
+        // seller is exist and seller status is 'confirmed'
+
+        seller: { $exists: true },
+        
+
+      },
+      {
+        limit: limit,
+        skip: (page - 1) * limit,
+      },
+      
+    )
+    .sort({ _id: -1 })
+    .toArray();
+
+
+  const totalCount = await collection.countDocuments(
+    {
+      seller: { $exists: true },
+    }
+  );
+
+  return {
+    totalCount,
+    users,
+  };
+
+  
+}
+
+
 
 
 
