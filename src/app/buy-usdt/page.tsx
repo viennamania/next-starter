@@ -85,28 +85,36 @@ const P2PTable = () => {
 
     
     return (
-        <main className="p-4 pb-10 min-h-[100vh] flex items-center justify-center container max-w-screen-lg mx-auto">
 
-            <div className="py-20 w-full">
+      <main className="p-4 pb-10 min-h-[100vh] flex items-start justify-center container max-w-screen-lg mx-auto">
 
-                {/* memnu: home, buy, sell, p2p, wallet, settings */}
-
-                <div className="flex justify-center space-x-4 mb-10">
-                    <a href="/" className="text-zinc-100 font-semibold">Home</a>
-                    <a href="/buy-usdt" className="text-zinc-100 font-semibold">Buy</a>
-                    <a href="/sell-usdt" className="text-zinc-100 font-semibold">Sell</a>
-                    <a href="/" className="text-zinc-100 font-semibold">Wallet</a>
-                    <a href="/" className="text-zinc-100 font-semibold">Settings</a>
-                </div>
-
+        <div className="py-20 w-full">
+  
+          {/* goto home button using go back icon
+          history back
+          */}
+  
+          <div className="flex justify-start space-x-4 mb-10">
+              <button onClick={() => window.history.back()} className="text-zinc-100 font-semibold">Go Back</button>
+          </div>
 
 
+          <div className="flex flex-col items-start justify-center space-y-4">
 
-                <h1 className="text-2xl md:text-6xl font-semibold md:font-bold tracking-tighter mb-6 text-zinc-100">
-                    Buy USDT
-                </h1>
+              <div className='flex flex-row items-center space-x-4'>
+                  <Image
+                    src="https://cryptologos.cc/logos/tether-usdt-logo.png"
+                    alt="USDT"
+                    width={32}
+                    height={32}
+                    className="rounded-lg"
+                  />
+                  <div className="text-2xl font-semibold">Buy USDT</div>
 
-                <div className="grid gap-4 lg:grid-cols-3 justify-center">
+              </div>
+
+
+                <div className="w-full grid gap-4 lg:grid-cols-3 justify-center">
 
                     {data.map((item, index) => (
 
@@ -168,16 +176,18 @@ const P2PTable = () => {
 
                 </div>
 
-            
             </div>
 
+            
+          </div>
 
-            <Modal isOpen={isModalOpen} onClose={closeModal}>
-                <TradeDetail
-                    closeModal={closeModal}
-                    goChat={goChat}
-                />
-            </Modal>
+
+          <Modal isOpen={isModalOpen} onClose={closeModal}>
+              <TradeDetail
+                  closeModal={closeModal}
+                  goChat={goChat}
+              />
+          </Modal>
 
 
         </main>
@@ -209,6 +219,7 @@ const TradeDetail = (
     const commission = 0.01; // example commission
   
     return (
+
       <div className="max-w-2xl mx-auto bg-white shadow-lg rounded-lg p-6">
         <div className="flex items-center">
           <span className="inline-block w-4 h-4 rounded-full bg-green-500 mr-2"></span>
@@ -298,7 +309,10 @@ const TradeDetail = (
                 Cancel
             </button>
           </div>
+
         </div>
+
+
       </div>
     );
   };

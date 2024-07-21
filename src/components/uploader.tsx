@@ -1,9 +1,10 @@
 'use client'
 
-import { useState, useCallback, useMemo, ChangeEvent } from 'react'
+import { useState, useCallback, useMemo, ChangeEvent, useEffect } from 'react'
 import toast from 'react-hot-toast'
 import LoadingDots from './loading-dots'
 import { PutBlobResult } from '@vercel/blob'
+
 
 
 export default function Uploader(
@@ -15,6 +16,9 @@ export default function Uploader(
   }
 
 ) {
+
+  const [fileUpdated, setFileUpdated] = useState(false);
+
 
   const [data, setData] = useState<{
     image: string | null
@@ -38,6 +42,9 @@ export default function Uploader(
             setData((prev) => ({ ...prev, image: e.target?.result as string }))
           }
           reader.readAsDataURL(file)
+
+          setFileUpdated(true);
+
         }
       }
     },
@@ -49,6 +56,41 @@ export default function Uploader(
   const saveDisabled = useMemo(() => {
     return !data.image || saving
   }, [data.image, saving])
+
+
+
+
+  useEffect(() => {
+    const fetchData = async () => {
+        const response = await fetch("/api/user/getUser", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                walletAddress: walletAddress,
+            }),
+        });
+
+        const data = await response.json();
+
+        ///console.log("data", data);
+
+        if (data.result) {
+            setData(
+              (prev) => ({
+                ...prev,
+                image: data.result.avatar,
+              })
+            );
+        }
+    };
+
+    fetchData();
+}, [walletAddress]);
+
+
+
 
   return (
     <form
@@ -88,7 +130,7 @@ export default function Uploader(
                 ) => (
                 <div className="relative">
                   <div className="p-2">
-                    <p className="font-semibold text-gray-900">
+                    <p className="font-semibold text-gray-900 mt-5">
                       File uploaded!
                     </p>
                     {/*
@@ -135,7 +177,12 @@ export default function Uploader(
             const error = await res.text()
             toast.error(error)
           }
+          
           setSaving(false)
+
+
+          setFileUpdated(false);
+
         })
       }}
     >
@@ -246,20 +293,22 @@ export default function Uploader(
         </div>
       </div>
 
-      <button
-        disabled={saveDisabled}
-        className={`${
-          saveDisabled
-            ? 'cursor-not-allowed border-gray-200 bg-gray-100 text-gray-400'
-            : 'border-black bg-black text-white hover:bg-white hover:text-black'
-        } flex h-10 w-full items-center justify-center rounded-md border text-sm transition-all focus:outline-none`}
-      >
-        {saving ? (
-          <LoadingDots color="#808080" />
-        ) : (
-          <p className="text-sm">Confirm upload</p>
-        )}
-      </button>
+      {fileUpdated && (
+        <button
+          disabled={saveDisabled}
+          className={`${
+            saveDisabled
+              ? 'cursor-not-allowed border-gray-200 bg-gray-100 text-gray-400'
+              : 'border-black bg-black text-white hover:bg-white hover:text-black'
+          } flex h-10 w-full items-center justify-center rounded-md border text-sm transition-all focus:outline-none`}
+        >
+          {saving ? (
+            <LoadingDots color="#808080" />
+          ) : (
+              <p className="text-sm">Confirm upload</p>
+          )}
+        </button>
+      )}
     </form>
   )
 }
