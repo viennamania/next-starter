@@ -49,6 +49,7 @@ import { getUserPhoneNumber } from "thirdweb/wallets/in-app";
 interface SellOrder {
   _id: string;
   createdAt: string;
+  walletAddress: string;
   nickname: string;
   avatar: string;
   trades: number;
@@ -66,6 +67,7 @@ interface SellOrder {
   seller: any;
 
   status: string;
+  acceptedAt: string;
 
   buyer: any;
 }
@@ -225,12 +227,15 @@ const P2PTable = () => {
     } , []);
 
 
+    const [acceptingSellOrder, setAcceptingSellOrder] = useState(false);
 
     const acceoptSellOrder = (orderId: string) => {
 
         if (!user) {
             return;
         }
+
+        setAcceptingSellOrder(true);
 
         fetch('/api/order/acceptSellOrder', {
             method: 'POST',
@@ -249,7 +254,7 @@ const P2PTable = () => {
         .then(data => {
 
             console.log('data', data);
-            
+
             //setSellOrders(data.result.orders);
             //openModal();
 
@@ -279,6 +284,8 @@ const P2PTable = () => {
         .catch((error) => {
             console.error('Error:', error);
         });
+
+        setAcceptingSellOrder(false);
     }
 
 
@@ -365,17 +372,30 @@ const P2PTable = () => {
                             <p className="text-xl text-white font-semibold">
                               Status: {item.status?.toUpperCase()}
                             </p>
+
+                            {item.status === 'accepted' && (
+                              <>
+                                <p className="text-sm text-zinc-400">Accepted at {
+                                  new Date(item.acceptedAt).toLocaleString()
+                                }</p>
+                            
+                                <p className="text-xl text-green-500 font-semibold">
+                                  Buyer: {item.buyer.nickname}
+                                </p>
+                              </>
+                            )}
                            
-                            <p className="text-sm text-zinc-400">Offered at {
+                            <p className="text-sm text-zinc-400">Ordered at {
                                 new Date(item.createdAt).toLocaleString()
                             }</p>
                             
                             <p className="mt-2 mb-2 flex items-center gap-2">
+                              <div className="flex items-center space-x-2">Selled by</div>
                               <Image
                                   src={item.avatar}
                                   alt="Avatar"
-                                  width={48}
-                                  height={48}
+                                  width={38}
+                                  height={38}
                                   priority={true} // Added priority property
 
                                   // cover, contain, fill, inside, outside
@@ -384,8 +404,8 @@ const P2PTable = () => {
 
                                   style={{
                                       objectFit: 'cover',
-                                      width: '48px',
-                                      height: '48px',
+                                      width: '38px',
+                                      height: '38px',
                                   }}
                               />
                               <h2 className="text-lg font-semibold">{item.nickname}</h2>
@@ -419,27 +439,58 @@ const P2PTable = () => {
                                 Buy USDT
                             </p>
                             */}
-                            <button
-                                disabled={!user}
-                                className="text-lg bg-green-500 text-white px-4 py-2 rounded-md mt-4"
-                                onClick={() => {
-                                    console.log('Buy USDT');
+                            
 
-                                    // open trade detail
-                                    // open modal of trade detail
+                            {item.status === 'ordered' && (
+                              <>
+
+                              {acceptingSellOrder ? (
+                                  <button
+                                      disabled={true}
+                                      className="text-lg bg-gray-200 text-gray-700 px-4 py-2 rounded-md mt-4"
+                                  >
+                                      Processing...
+                                  </button>
+                              ) : (
+                                <>
+                                  
+                                  {item.walletAddress === address ? (
+                                    <div className="flex flex-col space-y-4">
+                                      My Order
+                                    </div>
+                                  ) : (
+
+                                      <button
+                                          disabled={!user}
+                                          className="text-lg bg-green-500 text-white px-4 py-2 rounded-md mt-4"
+                                          onClick={() => {
+                                              console.log('Buy USDT');
+
+                                              // open trade detail
+                                              // open modal of trade detail
 
 
 
-                                    //openModal();
+                                              //openModal();
 
 
-                                    acceoptSellOrder(item._id);
-                               
+                                              acceoptSellOrder(item._id);
+                                        
 
-                                }}
-                            >
-                                Buy USDT
-                            </button>
+                                          }}
+                                      >
+                                          Buy USDT
+                                      </button>
+
+                                    )}
+
+                                  </>
+
+                                )}
+
+                              </>
+
+                            )}
 
                         </article>
 

@@ -442,7 +442,27 @@ const P2PTable = () => {
                             key={index}
                             className="bg-black p-4 rounded-md border border-gray-200 ">
 
-                            <p className="text-sm text-zinc-400">{item.status}</p>
+                            <p className="text-xl font-semibold text-white">
+                              Status: {item.status?.toUpperCase()}
+                            </p>
+                            {item.status === 'accepted' && (
+                                <div className="mt-2 mb-2 flex flex-row items-center space-x-4">
+                                  <p className="text-xl font-semibold text-white">
+                                    Buyer: {item.buyer.nickname}
+                                  </p>
+                                  <button
+                                      className="text-lg bg-blue-500 text-white px-4 py-2 rounded-md mt-4"
+                                      onClick={() => {
+                                          console.log('Commit Trade');
+                                          
+                                          ///router.push(`/chat?tradeId=12345`);
+
+                                      }}
+                                  >
+                                    Commit Trade
+                                  </button>
+                                </div>
+                            )}
 
                             <p className="text-sm text-zinc-400">
                               Order Date: {

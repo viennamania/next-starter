@@ -215,6 +215,7 @@ export async function acceptSellOrder(data: any) {
 
     { $set: {
       status: 'accepted',
+      acceptedAt: new Date().toISOString(),
       buyer: {
         walletAddress: data.buyerWalletAddress,
         nickname: data.buyerNickname,
