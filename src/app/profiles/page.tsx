@@ -371,37 +371,37 @@ export default function SettingsPage() {
                         {!address && (
                             <ConnectButton
 
-                            client={client}
+                                client={client}
 
-                            wallets={wallets}
-                            
-                            accountAbstraction={{        
-                            chain: polygon,
-                            //chain: arbitrum,
-                            factoryAddress: "0x9Bb60d360932171292Ad2b80839080fb6F5aBD97", // polygon, arbitrum
-                            gasless: true,
-                            }}
-                            
-                            theme={"light"}
-                            connectModal={{
-                            size: "wide",
-
-
-                            }}
+                                wallets={wallets}
+                                
+                                accountAbstraction={{        
+                                chain: polygon,
+                                //chain: arbitrum,
+                                factoryAddress: "0x9Bb60d360932171292Ad2b80839080fb6F5aBD97", // polygon, arbitrum
+                                gasless: true,
+                                }}
+                                
+                                theme={"light"}
+                                connectModal={{
+                                size: "wide",
 
 
-                            
-                            appMetadata={
-                            {
-                                logoUrl: "https://next.unove.space/logo.png",
-                                name: "Next App",
-                                url: "https://next.unove.space",
-                                description: "This is a Next App.",
+                                }}
 
-                            }
-                            }
 
-                        />
+                                
+                                appMetadata={
+                                {
+                                    logoUrl: "https://next.unove.space/logo.png",
+                                    name: "Next App",
+                                    url: "https://next.unove.space",
+                                    description: "This is a Next App.",
+
+                                }
+                                }
+
+                            />
 
                         )}
 

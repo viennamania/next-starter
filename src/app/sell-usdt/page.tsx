@@ -1,8 +1,71 @@
 'use client';
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, use } from "react";
 
-import Image from "next/image";
+
+
+import { toast } from 'react-hot-toast';
+
+import { client } from "../client";
+
+import {
+    getContract,
+    sendAndConfirmTransaction,
+} from "thirdweb";
+
+
+
+import {
+    polygon,
+} from "thirdweb/chains";
+
+import {
+    ConnectButton,
+    useActiveAccount,
+    useActiveWallet,
+} from "thirdweb/react";
+import { inAppWallet } from "thirdweb/wallets";
+
+
+import { getUserPhoneNumber } from "thirdweb/wallets/in-app";
+
+
+import Image from 'next/image';
+
+import GearSetupIcon from "@/components/gearSetupIcon";
+
+
+import Uploader from '@/components/uploader';
+
+import { balanceOf, transfer } from "thirdweb/extensions/erc20";
+ 
+
+
+
+const wallets = [
+    inAppWallet({
+      auth: {
+        options: ["phone"],
+      },
+    }),
+];
+
+
+
+const contractAddress = "0xc2132D05D31c914a87C6611C10748AEb04B58e8F"; // USDT on Polygon
+
+
+// get a contract
+const contract = getContract({
+    // the client you have created via `createThirdwebClient()`
+    client,
+    // the chain the contract is deployed on
+    chain: polygon,
+    // the contract's address
+    address: contractAddress,
+    // OPTIONAL: the contract's abi
+    //abi: [...],
+});
 
 
 
@@ -11,12 +74,26 @@ import Image from "next/image";
 import Modal from '../../components/modal';
 
 import { useRouter }from "next//navigation";
+import { create } from "domain";
 
 
 
 
 
 const P2PTable = () => {
+
+
+
+
+
+  const smartAccount = useActiveAccount();
+
+  const address = smartAccount?.address || "";
+
+
+
+
+
 
     const router = useRouter();
 
@@ -73,6 +150,63 @@ const P2PTable = () => {
       </article>
     */
 
+
+
+
+
+    interface SellOrder {
+      createdAt: string;
+      nickname: string;
+      trades: number;
+      price: number;
+      available: number;
+      limit: string;
+      paymentMethods: string[];
+
+      usdtAmount: number;
+      krwAmount: number;
+      rate: number;
+    }
+    
+    const [sellOrders, setSellOrders] = useState<SellOrder[]>([]);
+
+
+    useEffect(() => {
+
+        if (!address) {
+          return;
+        }
+        
+        const fetchSellOrders = async () => {
+          // api call
+          const response = await fetch('/api/order/getSellOrders', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              walletAddress: address
+            })
+          });
+  
+          const data = await response.json();
+  
+          console.log('data', data);
+  
+          if (data.result) {
+            setSellOrders(data.result.orders);
+          }
+  
+        };
+  
+        fetchSellOrders();
+  
+    }, [address]);
+
+
+
+
+
     const [isModalOpen, setModalOpen] = useState(false);
 
     const closeModal = () => setModalOpen(false);
@@ -82,6 +216,71 @@ const P2PTable = () => {
         console.log('Go Chat');
         router.push(`/chat?tradeId=12345`);
     }
+
+
+    const [usdtAmount, setUsdtAmount] = useState(0);
+    const [krwAmount, setKrwAmount] = useState(0);
+
+    console.log('usdtAmount', usdtAmount);
+
+
+    useEffect(() => {
+
+      if (usdtAmount === 0) {
+        setKrwAmount(0);
+        return;
+      }
+    
+        
+      setKrwAmount( Math.round(usdtAmount * 1355.17) );
+
+    } , [usdtAmount]);
+
+
+    const [sellOrdering, setSellOrdering] = useState(false);
+
+    const sellOrder = async () => {
+      // api call
+      // set sell order
+
+      if (sellOrdering) {
+        return;
+      }
+
+      setSellOrdering(true);
+
+      const response = await fetch('/api/order/setSellOrder', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          walletAddress: address,
+          usdtAmount: usdtAmount,
+          krwAmount: krwAmount,
+          rate: 1355.17
+        })
+      });
+
+      const data = await response.json();
+
+      //console.log('data', data);
+
+      if (data.result) {
+        toast.success('Sell order has been created');
+
+        setUsdtAmount(0);
+
+
+      } else {
+        toast.error('Sell order has been failed');
+      }
+
+      setSellOrdering(false);
+
+      
+
+    };
 
     
     return (
@@ -111,22 +310,128 @@ const P2PTable = () => {
                   />
                   <div className="text-2xl font-semibold">Sell USDT</div>
 
+
+
+                    {!address && (
+                        <ConnectButton
+
+                            client={client}
+
+                            wallets={wallets}
+                            
+                            accountAbstraction={{        
+                            chain: polygon,
+                            //chain: arbitrum,
+                            factoryAddress: "0x9Bb60d360932171292Ad2b80839080fb6F5aBD97", // polygon, arbitrum
+                            gasless: true,
+                            }}
+                            
+                            theme={"light"}
+                            connectModal={{
+                            size: "wide",
+
+
+                            }}
+
+
+                            
+                            appMetadata={
+                            {
+                                logoUrl: "https://next.unove.space/logo.png",
+                                name: "Next App",
+                                url: "https://next.unove.space",
+                                description: "This is a Next App.",
+
+                            }
+                            }
+
+                        />
+
+                    )}
+
+
+
               </div>
 
 
                 <div className="w-full grid gap-4 lg:grid-cols-3 justify-center">
 
-                    {data.map((item, index) => (
+
+                    {/* sell order */}
+                    <article className=" w-96 xl:w-full bg-black p-4 rounded-md border border-gray-200 ">
+       
+                        <p className="text-xl font-bold text-zinc-400">1 USDT = 1355.17 KRW</p>
+                        
+                        <p className="text-lg text-blue-500 font-bold mt-4">
+                          <input 
+                            type="number"
+                            className=" w-28  px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 "
+                            placeholder="Amount"
+                            onChange={(e) => {
+                              // check number
+                              e.target.value = e.target.value.replace(/[^0-9.]/g, '');
+
+                              if (e.target.value === '') {
+                                setUsdtAmount(0);
+                                return;
+                              }
+
+                              parseFloat(e.target.value) < 0 ? setUsdtAmount(0) : setUsdtAmount(parseFloat(e.target.value));
+
+                            } }
+
+
+                          /> USDT = {krwAmount} KRW
+                        </p>
+                        <p className="text-sm text-zinc-400">Payment method: Bank Transfer</p>
+
+
+                        {sellOrdering ? (
+                            <button
+                                className="text-lg bg-gray-300 text-gray-700 px-4 py-2 rounded-md mt-4"
+                                disabled
+                            >
+                                Ordering...
+                            </button>
+                        ) : (
+                            <button
+                                className="text-lg bg-green-500 text-white px-4 py-2 rounded-md mt-4"
+                                onClick={() => {
+                                    console.log('Sell USDT');
+                                    // open trade detail
+                                    // open modal of trade detail
+                                    ///openModal();
+
+                                    sellOrder();
+                                }}
+                            >
+                                Order Sell USDT
+                            </button>
+                        )}
+
+
+                    </article>
+
+
+                    {sellOrders.map((item, index) => (
 
                         <article
                             key={index}
                             className="bg-black p-4 rounded-md border border-gray-200 ">
+
+                            <p className="text-sm text-zinc-400">
+                              Order Date: {
+                                new Date(item.createdAt).toLocaleDateString() + ' ' + new Date(item.createdAt).toLocaleTimeString()
+                              }
+                            </p>
                             
-                            <h2 className="text-lg font-semibold mb-2">{item.advertiser}</h2>
+                            <h2 className="text-lg font-semibold mb-2">Seller: {item.nickname}</h2>
 
-                            <p className="text-sm text-zinc-400">{item.trades} trades</p>
+                            <p className="text-xl font-bold text-zinc-400">Sell Amount: {item.usdtAmount} USDT</p>
 
-                            <p className="text-xl font-bold text-zinc-400">{item.price} KRW</p>
+                            <p className="text-xl font-bold text-zinc-400">Sell Rate: 1 USDT = {item.rate} KRW</p>
+
+                            <p className="text-xl font-bold text-zinc-400">Sell Price: {item.krwAmount} KRW</p>
                             
                             {/*
                             <p className="text-sm text-zinc-400">{item.available} <br /> {item.limit}</p>
@@ -134,17 +439,19 @@ const P2PTable = () => {
                             {/*
                             Available: 7.24 USDT
                             Limit: 630.00 KRW - 630.00 KRW
-                            */}
+                           
                             <div className="flex flex-col">
                                 <p className="text-sm text-zinc-400">Available: {item.available}</p>
                                 <p className="text-sm text-zinc-400">Limit: {item.limit}</p>
                             </div>
+                           
 
                             <p className="text-sm text-zinc-400">
                                 {item.paymentMethods.map((method, idx) => (
                                     <span key={idx} className="inline-block bg-yellow-100 text-yellow-800 text-xs px-2 rounded-full mr-2 mb-1">{method}</span>
                                 ))}
                             </p>
+                              */}
                             {/*
                             <p className="text-lg text-green-500 cursor-pointer">
                                 Buy USDT
