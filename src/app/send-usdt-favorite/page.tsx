@@ -31,23 +31,17 @@ import {
     getContract,
     //readContract,
     sendTransaction,
+    sendAndConfirmTransaction,
 } from "thirdweb";
 
-import { balanceOf } from "thirdweb/extensions/erc20";
+import { balanceOf, transfer } from "thirdweb/extensions/erc20";
  
 
-
-
-import { sendAndConfirmTransaction } from "thirdweb";
 
 import {
   createWallet,
   inAppWallet,
 } from "thirdweb/wallets";
-
-
- 
-import { transfer } from "thirdweb/extensions/erc20";
 
 import Image from 'next/image';
 

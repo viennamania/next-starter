@@ -178,6 +178,44 @@ export async function updateAvatar(data: any) {
 
 
 
+export async function updateSellerStatus(data: any) {
+  const client = await clientPromise;
+  const collection = client.db('vienna').collection('users');
+
+
+  // update and return updated user
+
+  if (!data.walletAddress || !data.sellerStatus) {
+    return null;
+  }
+
+  const seller = {
+    status: data.sellerStatus,
+    bankInfo: data.bankInfo,
+  };
+  
+
+
+  const result = await collection.updateOne(
+    { walletAddress: data.walletAddress },
+    { $set: { seller: seller } }
+  );
+
+  if (result) {
+    const updated = await collection.findOne<UserProps>(
+      { walletAddress: data.walletAddress },
+      { projection: { _id: 0, emailVerified: 0 } }
+    );
+
+    return updated;
+  } else {
+    return null;
+  }
+
+
+}
+
+
 
 export async function getOneByWalletAddress(
   walletAddress: string,

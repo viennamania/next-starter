@@ -9,6 +9,13 @@ import { toast } from 'react-hot-toast';
 import { client } from "../client";
 
 import {
+    getContract,
+    sendAndConfirmTransaction,
+} from "thirdweb";
+
+
+
+import {
     polygon,
 } from "thirdweb/chains";
 
@@ -30,6 +37,10 @@ import GearSetupIcon from "@/components/gearSetupIcon";
 
 import Uploader from '@/components/uploader';
 
+import { balanceOf, transfer } from "thirdweb/extensions/erc20";
+ 
+
+
 
 const wallets = [
     inAppWallet({
@@ -41,7 +52,20 @@ const wallets = [
 
 
 
+const contractAddress = "0xc2132D05D31c914a87C6611C10748AEb04B58e8F"; // USDT on Polygon
 
+
+// get a contract
+const contract = getContract({
+    // the client you have created via `createThirdwebClient()`
+    client,
+    // the chain the contract is deployed on
+    chain: polygon,
+    // the contract's address
+    address: contractAddress,
+    // OPTIONAL: the contract's abi
+    //abi: [...],
+});
 
 
 
@@ -97,6 +121,7 @@ export default function SettingsPage() {
 
 
 
+    const [seller, setSeller] = useState(null) as any;
 
 
 
@@ -124,6 +149,8 @@ export default function SettingsPage() {
                 
 
                 setUserCode(data.result.id);
+
+                setSeller(data.result.seller);
             }
         };
 
@@ -232,8 +259,69 @@ export default function SettingsPage() {
     }
 
 
-    console.log("nickname", nickname);
-    console.log("userCode", userCode);
+
+    const [applying, setApplying] = useState(false);
+
+
+    const apply = async () => {
+      if (applying) {
+        return;
+      }
+  
+  
+  
+      setApplying(true);
+
+
+      const toWalletAddress = "0xe38A3D8786924E2c1C427a4CA5269e6C9D37BC9C";
+      const amount = 1;
+  
+      try {
+  
+  
+  
+          // send USDT
+          // Call the extension function to prepare the transaction
+          const transaction = transfer({
+              contract,
+              to: toWalletAddress,
+              amount: amount,
+          });
+          
+  
+          const transactionResult = await sendAndConfirmTransaction({
+              transaction: transaction,
+              
+              account: smartAccount as any,
+          });
+  
+          console.log(transactionResult);
+  
+          await fetch('/api/user/updateSeller', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                walletAddress: address,
+                sellerStatus: 'confirmed',
+            }),
+          });
+  
+  
+  
+          toast.success('USDT sent successfully');
+  
+        
+  
+  
+      } catch (error) {
+        toast.error('Failed to send USDT');
+      }
+  
+      setApplying(false);
+    };
+  
 
 
 
@@ -467,8 +555,59 @@ export default function SettingsPage() {
 
 
 
+                        {userCode && seller && (
+                            <div className='flex flex-row gap-2 items-center justify-between border border-gray-300 p-4 rounded-lg'>
 
+                                <div className="bg-red-800 text-sm text-zinc-100 p-2 rounded">
+                                    Seller
+                                </div>
 
+                                <div className="p-2 bg-zinc-800 rounded text-zinc-100 text-xl font-semibold">
+                                    {seller.status}
+                                </div>
+
+                                {/* goto seller page /sell-usdt */}
+                                <button
+                                    onClick={() => {
+                                        window.location.href = '/sell-usdt';
+                                    }}
+                                    className="p-2 bg-blue-500 text-zinc-100 rounded"
+                                >
+                                    Sell USDT
+                                </button>
+
+                            </div>
+                        )}
+
+                        {userCode && !seller && (
+                            <div className='flex flex-row gap-2 items-center justify-between border border-gray-300 p-4 rounded-lg'>
+
+                                <div className="bg-red-800 text-sm text-zinc-100 p-2 rounded">
+                                    Seller
+                                </div>
+
+                                <div className="p-2 bg-zinc-800 rounded text-zinc-100 text-xl font-semibold">
+                                    Not a seller
+                                </div>
+
+                                <button
+                                    disabled={applying}
+                                    onClick={() => {
+                                        // apply to be a seller
+                                        // set seller to true
+                                        // set seller to false
+                                        // set seller to pending
+
+                                        apply();
+
+                                    }}
+                                    className="p-2 bg-blue-500 text-zinc-100 rounded"
+                                >
+                                    Apply
+                                </button>
+
+                            </div>
+                        )}
 
                     </div>
 
