@@ -5,7 +5,17 @@ import toast from 'react-hot-toast'
 import LoadingDots from './loading-dots'
 import { PutBlobResult } from '@vercel/blob'
 
-export default function Uploader() {
+
+export default function Uploader(
+
+  {
+    walletAddress,
+  }: {
+    walletAddress: string  
+  }
+
+) {
+
   const [data, setData] = useState<{
     image: string | null
   }>({
@@ -51,8 +61,28 @@ export default function Uploader() {
           headers: { 'content-type': file?.type || 'application/octet-stream' },
           body: file,
         }).then(async (res) => {
+
           if (res.status === 200) {
+
             const { url } = (await res.json()) as PutBlobResult
+
+
+            const result = await fetch("/api/user/updateAvatar", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                walletAddress: walletAddress,
+                avatar: url,
+              }),
+            });
+
+            
+
+
+
+
             toast(
               (t: { id: string } 
                 ) => (
@@ -61,6 +91,7 @@ export default function Uploader() {
                     <p className="font-semibold text-gray-900">
                       File uploaded!
                     </p>
+                    {/*
                     <p className="mt-1 text-sm text-gray-500">
                       Your file has been uploaded to{' '}
                       <a
@@ -72,6 +103,8 @@ export default function Uploader() {
                         {url}
                       </a>
                     </p>
+                    */}
+
                   </div>
                   <button
                     onClick={() => toast.dismiss(t.id)}
@@ -95,8 +128,9 @@ export default function Uploader() {
                   </button>
                 </div>
               ),
-              { duration: 300000 }
+              { duration: 10000 }
             )
+
           } else {
             const error = await res.text()
             toast.error(error)

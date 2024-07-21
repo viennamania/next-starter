@@ -84,6 +84,8 @@ export default function SettingsPage() {
 
     
     const [nickname, setNickname] = useState("");
+    const [avatar, setAvatar] = useState("/profile-default.png");
+    const [userCode, setUserCode] = useState("");
 
 
     const [nicknameEdit, setNicknameEdit] = useState(false);
@@ -91,7 +93,8 @@ export default function SettingsPage() {
     const [editedNickname, setEditedNickname] = useState("");
 
 
-    const [userCode, setUserCode] = useState("");
+    const [avatarEdit, setAvatarEdit] = useState(false);
+
 
 
 
@@ -116,6 +119,10 @@ export default function SettingsPage() {
 
             if (data.result) {
                 setNickname(data.result.nickname);
+                
+                data.result.avatar && setAvatar(data.result.avatar);
+                
+
                 setUserCode(data.result.id);
             }
         };
@@ -234,7 +241,7 @@ export default function SettingsPage() {
 
         <main className="p-4 pb-10 min-h-[100vh] flex items-start justify-center container max-w-screen-lg mx-auto">
 
-            <div className="py-20 ">
+            <div className="py-20 w-full">
         
                 {/* goto home button using go back icon
                 history back
@@ -293,6 +300,51 @@ export default function SettingsPage() {
 
                     <div className='w-full  flex flex-col gap-5 '>
 
+                        {/* profile picture */}
+                        
+                            <div className='flex flex-row gap-2 items-center justify-between border border-gray-300 p-4 rounded-lg'>
+
+                                <div className="bg-red-800 text-sm text-zinc-100 p-2 rounded">
+                                    Profile Picture
+                                </div>
+
+                                <div className="p-2 bg-zinc-800 rounded text-zinc-100 text-xl font-semibold">
+                                    <Image src={avatar} width={100} height={100} alt="Profile Picture" />
+                                </div>
+
+                                <button
+                                    disabled={!address}
+                                    onClick={() => {
+                                        
+                                        avatarEdit ? setAvatarEdit(false) : setAvatarEdit(true);
+
+                                    }}
+                                    className="p-2 bg-blue-500 text-zinc-100 rounded"
+                                >
+                                    {avatarEdit ? 'Cancel' : 'Edit'}
+                                    
+                                </button>
+
+                            </div>
+                        
+
+                        {avatarEdit && (
+                            <div className='flex flex-col xl:flex-row gap-2 items-center justify-between border border-gray-300 p-4 rounded-lg'>
+
+                                <div className="bg-red-800 text-sm text-zinc-100 p-2 rounded">
+                                    Profile Picture
+                                </div>
+
+                                <div className="p-2 bg-zinc-800 rounded text-zinc-100 text-xl font-semibold">
+                                    <Uploader
+                                        
+                                        walletAddress={address}
+                                    />
+                                </div>
+
+                            </div>
+                        )}
+
 
 
                         {userCode && (
@@ -325,7 +377,7 @@ export default function SettingsPage() {
                         )}
 
 
-                        {(nicknameEdit || !userCode) && (
+                        {userCode && (nicknameEdit || !userCode) && (
                             <div className=' flex flex-col xl:flex-row gap-2 items-center justify-between border border-gray-300 p-4 rounded-lg'>
 
                                 <div

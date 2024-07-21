@@ -243,7 +243,9 @@ export default function Home() {
   
 
   const [nickname, setNickname] = useState("");
+  const [avatar, setAvatar] = useState("/profile-default.png");
   const [userCode, setUserCode] = useState("");
+
 
 
 
@@ -268,6 +270,7 @@ export default function Home() {
 
           if (data.result) {
               setNickname(data.result.nickname);
+              data.result.avatar && setAvatar(data.result.avatar);
               setUserCode(data.result.id);
           }
       };
@@ -437,7 +440,7 @@ export default function Home() {
 
                 <div className="flex flex-row justify-between items-start">
                   <Image
-                    src="/profile-default.png"
+                    src={avatar}
                     alt="Profile Image"
                     width={45}
                     height={45}
