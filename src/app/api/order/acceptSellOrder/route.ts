@@ -36,13 +36,6 @@ export async function POST(request: NextRequest) {
     tradeId: tradeId,
   } = result as UserProps;
 
-  //console.log("mobile", mobile);
-  //console.log("seller", seller);
-
-  
-
-
-
 
     // send sms
 
