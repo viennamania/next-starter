@@ -307,6 +307,21 @@ export default function SettingsPage() {
                 sellerStatus: 'confirmed',
             }),
           });
+
+
+          await fetch('/api/user/getUser', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                walletAddress: address,
+            }),
+          }).then((response) => response.json())
+            .then((data) => {
+                setSeller(data.result.seller);
+            });
+            
   
   
   
@@ -580,31 +595,44 @@ export default function SettingsPage() {
                         )}
 
                         {userCode && !seller && (
-                            <div className='flex flex-row gap-2 items-center justify-between border border-gray-300 p-4 rounded-lg'>
+                            <div className='flex flex-col gap-2 items-center justify-between border border-gray-300 p-4 rounded-lg'>
+                                
+                                <div className='w-full flex flex-row gap-2 items-center justify-between'>
 
-                                <div className="bg-red-800 text-sm text-zinc-100 p-2 rounded">
-                                    Seller
+                                    <div className="bg-red-800 text-sm text-zinc-100 p-2 rounded">
+                                        Seller
+                                    </div>
+
+                                    <div className="p-2 bg-zinc-800 rounded text-zinc-100 text-xl font-semibold">
+                                        Not a seller
+                                    </div>
+
+                                    {applying ? (
+                                        <div className="p-2 bg-zinc-800 rounded text-zinc-100 text-xl font-semibold">
+                                            Applying...
+                                        </div>
+                                    ) : (
+                                        <button
+                                            onClick={() => {
+                                                // apply to be a seller
+                                                // set seller to true
+                                                // set seller to false
+                                                // set seller to pending
+
+                                                apply();
+
+                                            }}
+                                            className="p-2 bg-blue-500 text-zinc-100 rounded"
+                                        >
+                                            Apply
+                                        </button>
+                                    )}
+
                                 </div>
 
-                                <div className="p-2 bg-zinc-800 rounded text-zinc-100 text-xl font-semibold">
-                                    Not a seller
+                                <div className="text-xs font-semibold">
+                                    To become a seller, you need to send 1 USDT to the contract address
                                 </div>
-
-                                <button
-                                    disabled={applying}
-                                    onClick={() => {
-                                        // apply to be a seller
-                                        // set seller to true
-                                        // set seller to false
-                                        // set seller to pending
-
-                                        apply();
-
-                                    }}
-                                    className="p-2 bg-blue-500 text-zinc-100 rounded"
-                                >
-                                    Apply
-                                </button>
 
                             </div>
                         )}
