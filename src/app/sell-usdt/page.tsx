@@ -42,30 +42,6 @@ import { balanceOf, transfer } from "thirdweb/extensions/erc20";
 
 
 
-const wallets = [
-    inAppWallet({
-      auth: {
-        options: ["phone"],
-      },
-    }),
-];
-
-
-
-const contractAddress = "0xc2132D05D31c914a87C6611C10748AEb04B58e8F"; // USDT on Polygon
-
-
-// get a contract
-const contract = getContract({
-    // the client you have created via `createThirdwebClient()`
-    client,
-    // the chain the contract is deployed on
-    chain: polygon,
-    // the contract's address
-    address: contractAddress,
-    // OPTIONAL: the contract's abi
-    //abi: [...],
-});
 
 
 
@@ -74,12 +50,11 @@ const contract = getContract({
 import Modal from '../../components/modal';
 
 import { useRouter }from "next//navigation";
-import { create } from "domain";
-
 
 
 
 interface SellOrder {
+  _id: string;
   createdAt: string;
   nickname: string;
   trades: number;
@@ -91,9 +66,42 @@ interface SellOrder {
   usdtAmount: number;
   krwAmount: number;
   rate: number;
+
+  seller: any;
+
+  status: string;
+
+  buyer: any;
 }
 
 
+
+
+
+const wallets = [
+  inAppWallet({
+    auth: {
+      options: ["phone"],
+    },
+  }),
+];
+
+
+
+const contractAddress = "0xc2132D05D31c914a87C6611C10748AEb04B58e8F"; // USDT on Polygon
+
+
+// get a contract
+const contract = getContract({
+  // the client you have created via `createThirdwebClient()`
+  client,
+  // the chain the contract is deployed on
+  chain: polygon,
+  // the contract's address
+  address: contractAddress,
+  // OPTIONAL: the contract's abi
+  //abi: [...],
+});
 
 
 
@@ -114,14 +122,6 @@ const P2PTable = () => {
 
     const router = useRouter();
 
-
-  const data = [
-    { advertiser: 'SeverskiY', trades: 60, price: 1354.82, available: '7.24 USDT', limit: '630.00 KRW - 630.00 KRW', paymentMethods: ['Bank', 'Tinkoff', 'SBP-Fast Bank Transfer'] },
-    { advertiser: 'Iskan9', trades: 318, price: 1355.17, available: '1085.91 USDT', limit: '40680.00 KRW - 99002.9 KRW', paymentMethods: ['Tinkoff'] },
-    { advertiser: 'Rusik163', trades: 946, price: 1365.35, available: '31.23 USDT', limit: '1019.00 KRW - 2853.23 KRW', paymentMethods: ['Raiffeisenbank'] },
-    { advertiser: 'Dimasik10', trades: 723, price: 1373.16, available: '125.81 USDT', limit: '10280.00 KRW - 11594.86 KRW', paymentMethods: ['Raiffeisenbank'] },
-    { advertiser: 'Soliev_03', trades: 137, price: 1345.33, available: '2922.37 USDT', limit: '82400.00 KRW - 269822.98 KRW', paymentMethods: ['Raiffeisenbank'] },
-  ];
 
   /*
   return (
@@ -276,6 +276,25 @@ const P2PTable = () => {
         setUsdtAmount(0);
 
 
+        await fetch('/api/order/getSellOrders', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            walletAddress: address
+          })
+        }).then(async (response) => {
+          const data = await response.json();
+          //console.log('data', data);
+          if (data.result) {
+            setSellOrders(data.result.orders);
+          }
+        });
+
+
+
+
       } else {
         toast.error('Sell order has been failed');
       }
@@ -422,6 +441,8 @@ const P2PTable = () => {
                         <article
                             key={index}
                             className="bg-black p-4 rounded-md border border-gray-200 ">
+
+                            <p className="text-sm text-zinc-400">{item.status}</p>
 
                             <p className="text-sm text-zinc-400">
                               Order Date: {

@@ -1,5 +1,8 @@
 import clientPromise from '../mongodb';
 
+// object id
+import { ObjectId } from 'mongodb';
+
 
 export interface UserProps {
   /*
@@ -102,6 +105,7 @@ export async function insertSellOrder(data: any) {
       krwAmount: data.krwAmount,
       rate: data.rate,
       createdAt: new Date().toISOString(),
+      status: 'ordered',
     }
   );
 
@@ -142,7 +146,9 @@ export async function getSellOrders(
 
   const results = await collection.find<UserProps>(
     {},
-    { projection: { _id: 0, emailVerified: 0 } }
+    
+    //{ projection: { _id: 0, emailVerified: 0 } }
+
   ).sort({ createdAt: -1 }).limit(limit).skip((page - 1) * limit).toArray();
 
   return {
@@ -183,6 +189,55 @@ export async function getSellOrdersByWalletAddress(
   };
 
 }
+
+
+
+// accept sell order
+// update order status to accepted
+
+export async function acceptSellOrder(data: any) {
+  
+  ///console.log('acceptSellOrder data: ' + JSON.stringify(data));
+
+  if (!data.orderId || !data.buyerWalletAddress || !data.buyerNickname || !data.buyerAvatar || !data.buyerMobile) {
+    return null;
+  }
+
+  const client = await clientPromise;
+  const collection = client.db('vienna').collection('orders');
+
+  // update and return updated user
+
+  const result = await collection.updateOne(
+    
+    { _id: new ObjectId(data.orderId) },
+
+
+    { $set: {
+      status: 'accepted',
+      buyer: {
+        walletAddress: data.buyerWalletAddress,
+        nickname: data.buyerNickname,
+        avatar: data.buyerAvatar,
+        mobile: data.buyerMobile,
+
+      },
+    } }
+  );
+
+  if (result) {
+    const updated = await collection.findOne<UserProps>(
+      { _id: data.orderId },
+      { projection: { _id: 0, emailVerified: 0 } }
+    );
+
+    return updated;
+  } else {
+    return null;
+  }
+  
+}
+
 
 
 

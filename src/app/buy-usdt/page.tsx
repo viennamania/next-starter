@@ -13,9 +13,41 @@ import Modal from '../../components/modal';
 import { useRouter }from "next//navigation";
 
 
+import { toast } from 'react-hot-toast';
+
+import { client } from "../client";
+
+
+
+import {
+  getContract,
+  sendAndConfirmTransaction,
+} from "thirdweb";
+
+
+
+import {
+  polygon,
+} from "thirdweb/chains";
+
+import {
+  ConnectButton,
+  useActiveAccount,
+  useActiveWallet,
+} from "thirdweb/react";
+import { inAppWallet } from "thirdweb/wallets";
+
+
+import { getUserPhoneNumber } from "thirdweb/wallets/in-app";
+
+
+
+
+
 
 
 interface SellOrder {
+  _id: string;
   createdAt: string;
   nickname: string;
   avatar: string;
@@ -32,22 +64,87 @@ interface SellOrder {
 
 
   seller: any;
+
+  status: string;
+
+  buyer: any;
 }
+
+
+
+const wallets = [
+  inAppWallet({
+    auth: {
+      options: ["phone"],
+    },
+  }),
+];
+
+
+
+const contractAddress = "0xc2132D05D31c914a87C6611C10748AEb04B58e8F"; // USDT on Polygon
+
+
+// get a contract
+const contract = getContract({
+  // the client you have created via `createThirdwebClient()`
+  client,
+  // the chain the contract is deployed on
+  chain: polygon,
+  // the contract's address
+  address: contractAddress,
+  // OPTIONAL: the contract's abi
+  //abi: [...],
+});
 
 
 
 const P2PTable = () => {
 
-    const router = useRouter();
+  const router = useRouter();
 
 
-  const data = [
-    { advertiser: 'SeverskiY', trades: 60, price: 1354.82, available: '7.24 USDT', limit: '630.00 KRW - 630.00 KRW', paymentMethods: ['Bank', 'Tinkoff', 'SBP-Fast Bank Transfer'] },
-    { advertiser: 'Iskan9', trades: 318, price: 1355.17, available: '1085.91 USDT', limit: '40680.00 KRW - 99002.9 KRW', paymentMethods: ['Tinkoff'] },
-    { advertiser: 'Rusik163', trades: 946, price: 1365.35, available: '31.23 USDT', limit: '1019.00 KRW - 2853.23 KRW', paymentMethods: ['Raiffeisenbank'] },
-    { advertiser: 'Dimasik10', trades: 723, price: 1373.16, available: '125.81 USDT', limit: '10280.00 KRW - 11594.86 KRW', paymentMethods: ['Raiffeisenbank'] },
-    { advertiser: 'Soliev_03', trades: 137, price: 1345.33, available: '2922.37 USDT', limit: '82400.00 KRW - 269822.98 KRW', paymentMethods: ['Raiffeisenbank'] },
-  ];
+
+  const smartAccount = useActiveAccount();
+
+  const address = smartAccount?.address || "";
+
+
+  console.log('address', address);
+
+
+  // get User by wallet address
+
+  const [user, setUser] = useState<any>(null);
+  useEffect(() => {
+
+    if (!address) {
+        return;
+    }
+
+    fetch('/api/user/getUser', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            walletAddress: address,
+        }),
+    })
+    .then(response => response.json())
+    .then(data => {
+        //console.log('data', data);
+        setUser(data.result);
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+    });
+  } , [address]);
+
+
+
+
+
 
   /*
   return (
@@ -119,7 +216,7 @@ const P2PTable = () => {
         })
         .then(response => response.json())
         .then(data => {
-            //console.log('data', data);
+            ///console.log('data', data);
             setSellOrders(data.result.orders);
         })
         .catch((error) => {
@@ -129,6 +226,60 @@ const P2PTable = () => {
 
 
 
+    const acceoptSellOrder = (orderId: string) => {
+
+        if (!user) {
+            return;
+        }
+
+        fetch('/api/order/acceptSellOrder', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                orderId: orderId,
+                buyerWalletAddress: user.walletAddress,
+                buyerNickname: user.nickname,
+                buyerAvatar: user.avatar,
+                buyerMobile: user.mobile,
+            }),
+        })
+        .then(response => response.json())
+        .then(data => {
+
+            console.log('data', data);
+            
+            //setSellOrders(data.result.orders);
+            //openModal();
+
+            toast.success('Order accepted successfully');
+
+
+
+            fetch('/api/order/getAllSellOrders', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                ///console.log('data', data);
+                setSellOrders(data.result.orders);
+            })
+
+
+
+
+
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
+    }
 
 
 
@@ -159,6 +310,46 @@ const P2PTable = () => {
                   />
                   <div className="text-2xl font-semibold">Buy USDT</div>
 
+
+
+
+                  {!address && (
+                        <ConnectButton
+
+                            client={client}
+
+                            wallets={wallets}
+                            
+                            accountAbstraction={{        
+                            chain: polygon,
+                            //chain: arbitrum,
+                            factoryAddress: "0x9Bb60d360932171292Ad2b80839080fb6F5aBD97", // polygon, arbitrum
+                            gasless: true,
+                            }}
+                            
+                            theme={"light"}
+                            connectModal={{
+                            size: "wide",
+
+
+                            }}
+
+
+                            
+                            appMetadata={
+                            {
+                                logoUrl: "https://next.unove.space/logo.png",
+                                name: "Next App",
+                                url: "https://next.unove.space",
+                                description: "This is a Next App.",
+
+                            }
+                            }
+
+                        />
+
+                    )}
+
               </div>
 
 
@@ -171,20 +362,34 @@ const P2PTable = () => {
                             className=" w-96 xl:w-full
                             bg-black p-4 rounded-md border border-gray-200 ">
 
+                            <p className="text-xl text-white font-semibold">
+                              Status: {item.status?.toUpperCase()}
+                            </p>
+                           
                             <p className="text-sm text-zinc-400">Offered at {
                                 new Date(item.createdAt).toLocaleString()
                             }</p>
                             
-                            <div className="flex items-center">
+                            <p className="mt-2 mb-2 flex items-center gap-2">
                               <Image
                                   src={item.avatar}
                                   alt="Avatar"
-                                  width={64}
-                                  height={64}
-                                  className="rounded-lg"
+                                  width={48}
+                                  height={48}
+                                  priority={true} // Added priority property
+
+                                  // cover, contain, fill, inside, outside
+                                  //layout="inside"
+                                  className="rounded-full"
+
+                                  style={{
+                                      objectFit: 'cover',
+                                      width: '48px',
+                                      height: '48px',
+                                  }}
                               />
-                              <h2 className="text-lg font-semibold mb-2">{item.nickname}</h2>
-                            </div>
+                              <h2 className="text-lg font-semibold">{item.nickname}</h2>
+                            </p>
 
 
                             <p className="text-2xl font-semibold text-white">{item.usdtAmount} USDT</p>
@@ -215,6 +420,7 @@ const P2PTable = () => {
                             </p>
                             */}
                             <button
+                                disabled={!user}
                                 className="text-lg bg-green-500 text-white px-4 py-2 rounded-md mt-4"
                                 onClick={() => {
                                     console.log('Buy USDT');
@@ -224,9 +430,10 @@ const P2PTable = () => {
 
 
 
-                                    openModal();
+                                    //openModal();
 
 
+                                    acceoptSellOrder(item._id);
                                
 
                                 }}
