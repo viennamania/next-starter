@@ -40,6 +40,14 @@ export interface UserProps {
   password: string,
 
   seller: any,
+
+  status: string,
+
+  tradeId: string,
+  
+  acceptedAt: string,
+
+  buyer: any,
 }
 
 export interface ResultProps {
@@ -237,7 +245,7 @@ export async function acceptSellOrder(data: any) {
 
   if (result) {
     const updated = await collection.findOne<UserProps>(
-      { _id: data.orderId },
+      { _id: new ObjectId(data.orderId) },
       { projection: { _id: 0, emailVerified: 0 } }
     );
 
