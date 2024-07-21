@@ -71,6 +71,8 @@ interface SellOrder {
 
   status: string;
 
+  acceptedAt: string;
+
   buyer: any;
 }
 
@@ -404,9 +406,14 @@ const P2PTable = () => {
                             } }
 
 
-                          /> USDT = {krwAmount} KRW
+                          /> USDT
                         </p>
-                        <p className="text-sm text-zinc-400">Payment method: Bank Transfer</p>
+
+                        <p className="mt-4 text-2xl text-zinc-400">
+                          = {krwAmount} KRW
+                        </p>
+                        
+                        <p className="mt-4 text-sm text-zinc-400">Payment method: Bank Transfer</p>
 
 
                         {sellOrdering ? (
@@ -445,9 +452,17 @@ const P2PTable = () => {
                             <p className="text-xl font-semibold text-white">
                               Status: {item.status?.toUpperCase()}
                             </p>
+
+                            {item.status === 'accepted' && (
+                              <p className="text-sm text-zinc-400">
+                                Accepted at {new Date(item.acceptedAt).toLocaleDateString() + ' ' + new Date(item.acceptedAt).toLocaleTimeString()}
+                              </p>
+                            )}
+
                             {item.status === 'accepted' && (
                                 <div className="mt-2 mb-2 flex flex-row items-center space-x-4">
-                                  <p className="text-xl font-semibold text-white">
+
+                                  <p className="text-xl text-green-500 font-semibold">
                                     Buyer: {item.buyer.nickname}
                                   </p>
                                   <button
@@ -472,11 +487,11 @@ const P2PTable = () => {
                             
                             <h2 className="text-lg font-semibold mb-2">Seller: {item.nickname}</h2>
 
-                            <p className="text-xl font-bold text-zinc-400">Sell Amount: {item.usdtAmount} USDT</p>
+                            <p className="text-xl font-bold text-zinc-400">Amount: {item.usdtAmount} USDT</p>
 
-                            <p className="text-xl font-bold text-zinc-400">Sell Rate: 1 USDT = {item.rate} KRW</p>
+                            <p className="text-xl font-bold text-zinc-400">Rate: 1 USDT = {item.rate} KRW</p>
 
-                            <p className="text-xl font-bold text-zinc-400">Sell Price: {item.krwAmount} KRW</p>
+                            <p className="text-xl font-bold text-zinc-400"> Price: {item.krwAmount} KRW</p>
                             
                             {/*
                             <p className="text-sm text-zinc-400">{item.available} <br /> {item.limit}</p>

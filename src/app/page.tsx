@@ -471,11 +471,17 @@ export default function Home() {
 
                 <div className="flex flex-row justify-between items-start">
                   <Image
-                    src={avatar}
+                    src={avatar || "/profile-default.png"}
                     alt="Profile Image"
-                    width={45}
-                    height={45}
+                    width={38}
+                    height={38}
+                    priority={true} // Added priority property
                     className="rounded-full"
+                    style={{
+                        objectFit: 'cover',
+                        width: '38px',
+                        height: '38px',
+                    }}
                   />
                   {/* Settings Button */}
                   <button
@@ -778,10 +784,16 @@ function ArticleCard(props: {
       <div className="flex justify-center">
         <Image
           src={props.avatar || thirdwebIcon}
-          alt=""
-          width={50}
-          height={50}
+          alt="avatar"
+          width={38}
+          height={38}
+          priority={true} // Added priority property
           className="rounded-full"
+          style={{
+              objectFit: 'cover',
+              width: '38px',
+              height: '38px',
+          }}
         />
       </div>
 

@@ -376,7 +376,7 @@ const P2PTable = () => {
                             {item.status === 'accepted' && (
                               <>
                                 <p className="text-sm text-zinc-400">Accepted at {
-                                  new Date(item.acceptedAt).toLocaleString()
+                                  item.acceptedAt && new Date(item.acceptedAt).toLocaleString()
                                 }</p>
                             
                                 <p className="text-xl text-green-500 font-semibold">
@@ -386,22 +386,18 @@ const P2PTable = () => {
                             )}
                            
                             <p className="text-sm text-zinc-400">Ordered at {
-                                new Date(item.createdAt).toLocaleString()
+                                item.createdAt && new Date(item.createdAt).toLocaleString()
                             }</p>
                             
                             <p className="mt-2 mb-2 flex items-center gap-2">
                               <div className="flex items-center space-x-2">Selled by</div>
                               <Image
-                                  src={item.avatar}
+                                  src={item.avatar || '/profile-default.png'}
                                   alt="Avatar"
                                   width={38}
                                   height={38}
                                   priority={true} // Added priority property
-
-                                  // cover, contain, fill, inside, outside
-                                  //layout="inside"
                                   className="rounded-full"
-
                                   style={{
                                       objectFit: 'cover',
                                       width: '38px',
