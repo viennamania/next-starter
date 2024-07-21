@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, use } from "react";
 
 import Image from "next/image";
 
@@ -13,6 +13,26 @@ import Modal from '../../components/modal';
 import { useRouter }from "next//navigation";
 
 
+
+
+interface SellOrder {
+  createdAt: string;
+  nickname: string;
+  avatar: string;
+  trades: number;
+  price: number;
+  available: number;
+  limit: string;
+  paymentMethods: string[];
+
+  usdtAmount: number;
+  krwAmount: number;
+  rate: number;
+
+
+
+  seller: any;
+}
 
 
 
@@ -84,6 +104,34 @@ const P2PTable = () => {
     }
 
     
+
+    
+    const [sellOrders, setSellOrders] = useState<SellOrder[]>([]);
+
+    useEffect(() => {
+        fetch('/api/order/getAllSellOrders', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+            }),
+        })
+        .then(response => response.json())
+        .then(data => {
+            //console.log('data', data);
+            setSellOrders(data.result.orders);
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
+    } , []);
+
+
+
+
+
+
     return (
 
       <main className="p-4 pb-10 min-h-[100vh] flex items-start justify-center container max-w-screen-lg mx-auto">
@@ -116,17 +164,32 @@ const P2PTable = () => {
 
                 <div className="w-full grid gap-4 lg:grid-cols-3 justify-center">
 
-                    {data.map((item, index) => (
+                    {sellOrders.map((item, index) => (
 
                         <article
                             key={index}
-                            className="bg-black p-4 rounded-md border border-gray-200 ">
+                            className=" w-96 xl:w-full
+                            bg-black p-4 rounded-md border border-gray-200 ">
+
+                            <p className="text-sm text-zinc-400">Offered at {
+                                new Date(item.createdAt).toLocaleString()
+                            }</p>
                             
-                            <h2 className="text-lg font-semibold mb-2">{item.advertiser}</h2>
+                            <div className="flex items-center">
+                              <Image
+                                  src={item.avatar}
+                                  alt="Avatar"
+                                  width={64}
+                                  height={64}
+                                  className="rounded-lg"
+                              />
+                              <h2 className="text-lg font-semibold mb-2">{item.nickname}</h2>
+                            </div>
 
-                            <p className="text-sm text-zinc-400">{item.trades} trades</p>
 
-                            <p className="text-xl font-bold text-zinc-400">{item.price} KRW</p>
+                            <p className="text-2xl font-semibold text-white">{item.usdtAmount} USDT</p>
+
+                            <p className="text-xl font-bold text-zinc-400">Price: {item.krwAmount} KRW</p>
                             
                             {/*
                             <p className="text-sm text-zinc-400">{item.available} <br /> {item.limit}</p>
@@ -134,7 +197,7 @@ const P2PTable = () => {
                             {/*
                             Available: 7.24 USDT
                             Limit: 630.00 KRW - 630.00 KRW
-                            */}
+                           
                             <div className="flex flex-col">
                                 <p className="text-sm text-zinc-400">Available: {item.available}</p>
                                 <p className="text-sm text-zinc-400">Limit: {item.limit}</p>
@@ -145,6 +208,7 @@ const P2PTable = () => {
                                     <span key={idx} className="inline-block bg-yellow-100 text-yellow-800 text-xs px-2 rounded-full mr-2 mb-1">{method}</span>
                                 ))}
                             </p>
+                             */}
                             {/*
                             <p className="text-lg text-green-500 cursor-pointer">
                                 Buy USDT

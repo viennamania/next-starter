@@ -118,6 +118,41 @@ export async function insertSellOrder(data: any) {
 
 }
 
+
+
+
+// get sell orders order by createdAt desc
+export async function getSellOrders(
+
+  {
+
+    limit,
+    page,
+  }: {
+
+    limit: number;
+    page: number;
+  
+  }
+
+): Promise<ResultProps> {
+
+  const client = await clientPromise;
+  const collection = client.db('vienna').collection('orders');
+
+  const results = await collection.find<UserProps>(
+    {},
+    { projection: { _id: 0, emailVerified: 0 } }
+  ).sort({ createdAt: -1 }).limit(limit).skip((page - 1) * limit).toArray();
+
+  return {
+    totalCount: results.length,
+    orders: results,
+  };
+
+}
+
+
 // get sell orders by wallet address order by createdAt desc
 export async function getSellOrdersByWalletAddress(
 
@@ -140,7 +175,7 @@ export async function getSellOrdersByWalletAddress(
   const results = await collection.find<UserProps>(
     { walletAddress: walletAddress },
     { projection: { _id: 0, emailVerified: 0 } }
-  ).toArray();
+  ).sort({ createdAt: -1 }).limit(limit).skip((page - 1) * limit).toArray();
 
   return {
     totalCount: results.length,

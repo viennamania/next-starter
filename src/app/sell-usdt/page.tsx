@@ -79,6 +79,23 @@ import { create } from "domain";
 
 
 
+interface SellOrder {
+  createdAt: string;
+  nickname: string;
+  trades: number;
+  price: number;
+  available: number;
+  limit: string;
+  paymentMethods: string[];
+
+  usdtAmount: number;
+  krwAmount: number;
+  rate: number;
+}
+
+
+
+
 
 const P2PTable = () => {
 
@@ -154,19 +171,6 @@ const P2PTable = () => {
 
 
 
-    interface SellOrder {
-      createdAt: string;
-      nickname: string;
-      trades: number;
-      price: number;
-      available: number;
-      limit: string;
-      paymentMethods: string[];
-
-      usdtAmount: number;
-      krwAmount: number;
-      rate: number;
-    }
     
     const [sellOrders, setSellOrders] = useState<SellOrder[]>([]);
 
