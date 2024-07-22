@@ -409,7 +409,10 @@ const P2PTable = () => {
                                       height: '20px',
                                   }}
                               />
-                              <h2 className="text-lg font-semibold">{item.nickname}</h2>
+                              <h2 className="text-lg font-semibold">
+                                {item.walletAddress === address ? 'Me' : item.nickname}
+                               
+                              </h2>
                             </p>
 
 
