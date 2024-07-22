@@ -795,11 +795,7 @@ const P2PTable = () => {
                             )}
 
 
-                            {confirmingPayment && (
-                              <div className="text-lg text-white">
-                                Confirming Payment...
-                              </div>
-                            )}
+                    
 
                             {item.status === 'paymentRequested' && (
 
