@@ -673,7 +673,8 @@ export default function Home() {
                       avatar={trade.avatar}
                       href={`/profiles/${trade.walletAddress}`}
                       description={
-                        `Trade ID: ${trade.tradeId} - ${trade.status?.toUpperCase()}`
+                        `TID: ${trade.tradeId} - 
+                        ${trade.status === 'pending' ? 'Pending' : trade.status === 'accepted' ? 'Waiting for payment' : trade.status === 'paymentRequested' ? 'You need to pay' : 'Rejected'}`
                       }
                     />
                   ))}
