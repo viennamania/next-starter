@@ -132,11 +132,6 @@ export async function POST(request: NextRequest) {
       console.log(`Transaction hash: ${sendDataStore.transactionHash}`);
     
 
-
-
-
-
-
       const result = await confirmPayment({
         orderId: orderId,
       });
