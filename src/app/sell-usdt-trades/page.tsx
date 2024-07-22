@@ -437,6 +437,17 @@ const P2PTable = () => {
           
 
 
+          // refresh balance
+
+          const result = await balanceOf({
+            contract,
+            address: address,
+          });
+
+          //console.log(result);
+
+          setBalance( Number(result) / 10 ** 6 );
+
 
           toast.success('Payment request has been sent');
         } else {
@@ -536,7 +547,7 @@ const P2PTable = () => {
                       height={40}
                       className="rounded-lg"
                     />
-                  <div className="text-2xl font-semibold">Sell USDT Trades</div>
+                  <div className="text-2xl font-semibold">My Sell USDT Trades</div>
 
 
 
@@ -677,10 +688,13 @@ const P2PTable = () => {
 
                                     
                                       <button
-                                          disabled={balance < item.usdtAmount}
+                                          disabled={
+                                            item.status === 'accepted' &&
+                                            balance < item.usdtAmount
+                                          }
                                           className={`
-                                              w-full text-lg
-                                              ${balance < item.usdtAmount ? 'bg-gray-500' : 'bg-green-500'}
+                                              w-full text-lg mt-5
+                                              ${ (item.status === 'accepted' && balance < item.usdtAmount) ? 'bg-gray-500' : 'bg-green-500'}
                                               text-white px-4 py-2 rounded-md`}
 
                                           onClick={() => {
@@ -693,7 +707,8 @@ const P2PTable = () => {
                                           }}
                                       >
                                           Chat with Buyer 
-                                          {balance >=item.usdtAmount && item.buyer.nickname && (
+                                          {
+                                             balance >=item.usdtAmount && item.buyer.nickname && (
                                             <span className="text-sm text-white ml-2">({item.buyer.nickname})</span>
                                           )}
                                           

@@ -323,7 +323,7 @@ const P2PTable = () => {
                       height={40}
                       className="rounded-lg"
                     />
-                  <div className="text-2xl font-semibold">Buy USDT Trades</div>
+                  <div className="text-2xl font-semibold">My Buy USDT Trades</div>
 
 
 
