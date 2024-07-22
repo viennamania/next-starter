@@ -659,7 +659,7 @@ export default function Home() {
                     <ArticleCard
                       key={trade.id}
                       title={`Buyer: ${trade.buyer.nickname} - ${trade.usdtAmount} USDT`}
-                      avatar={trade.avatar}
+                      avatar={trade.buyer.avatar}
                       href={`/profiles/${trade.buyer.walletAddress}`}
                       description={
                         `Trade ID: ${trade.tradeId} - ${trade.status?.toUpperCase()}`
