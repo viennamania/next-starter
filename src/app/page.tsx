@@ -621,6 +621,44 @@ export default function Home() {
 
               <div className="bg-zinc-800 p-5 rounded-lg text-center">
 
+
+
+                <div className="flex flex-row justify-between items-start">
+                    {/* Buy Trade logo */}
+
+                    <Image
+                      src="/trade-buy.png"
+                      alt="USDT"
+                      width={40}
+                      height={40}
+                      className="rounded-lg"
+                    />
+
+                    {/* Settings Button */}
+                    <button
+
+                      onClick={() => {
+
+                        if (!address) {
+                          toast.error('Please connect your wallet first');
+                          return;
+                        }
+
+                        // redirect to settings page
+                        router.push("/buy-usdt-trades");
+
+                      }}
+                      className="text-blue-500 hover:underline"
+                    >
+                      <GearSetupIcon />
+
+                    </button>
+
+                  </div>
+
+
+
+
                 <h2 className="text-3xl font-semibold text-zinc-100">
                   {buyTrades.length} EA
                 </h2>
@@ -647,6 +685,42 @@ export default function Home() {
               {/* My Sell Trades */}
 
               <div className="bg-zinc-800 p-5 rounded-lg text-center">
+
+
+                <div className="flex flex-row justify-between items-start">
+                    {/* Sell Trade logo */}
+
+                    <Image
+                      src="/trade-sell.png"
+                      alt="USDT"
+                      width={40}
+                      height={40}
+                      className="rounded-lg"
+                    />
+
+                    {/* Settings Button */}
+                    <button
+
+                      onClick={() => {
+
+                        if (!address) {
+                          toast.error('Please connect your wallet first');
+                          return;
+                        }
+
+                        // redirect to settings page
+                        router.push("/sell-usdt-trades");
+
+                      }}
+                      className="text-blue-500 hover:underline"
+                    >
+                      <GearSetupIcon />
+
+                    </button>
+
+                  </div>
+
+
 
                 <h2 className="text-3xl font-semibold text-zinc-100">
                   {sellTrades.length} EA
