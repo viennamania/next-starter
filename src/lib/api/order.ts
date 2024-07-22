@@ -156,9 +156,15 @@ export async function getSellOrders(
   const client = await clientPromise;
   const collection = client.db('vienna').collection('orders');
 
+
+  // status is not 'paymentConfirmed'
+
+
   const results = await collection.find<UserProps>(
     {
       //status: 'ordered',
+
+      status: { $ne: 'paymentConfirmed' },
     },
     
     //{ projection: { _id: 0, emailVerified: 0 } }
