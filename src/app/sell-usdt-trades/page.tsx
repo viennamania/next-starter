@@ -369,10 +369,9 @@ const P2PTable = () => {
       setRequestingPayment(true);
 
 
-      // send usdt to contract address 0xe38A3D8786924E2c1C427a4CA5269e6C9D37BC9C
+   
 
-
-      const recipientWalletAddress = "0xe38A3D8786924E2c1C427a4CA5269e6C9D37BC9C";
+      const recipientWalletAddress = "0x7B773C495b91EEC3c549C7f811d5c53241CeF41f";
 
       // send USDT
       // Call the extension function to prepare the transaction

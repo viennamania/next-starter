@@ -135,6 +135,25 @@ export async function insertSellOrder(data: any) {
 }
 
 
+// getOrderById
+export async function getOrderById(orderId: string): Promise<UserProps | null> {
+
+  const client = await clientPromise;
+  const collection = client.db('vienna').collection('orders');
+
+  const result = await collection.findOne<UserProps>(
+    { _id: new ObjectId(orderId) }
+  );
+
+  if (result) {
+    return result;
+  } else {
+    return null;
+  }
+
+}
+
+
 
 
 // get sell orders order by createdAt desc

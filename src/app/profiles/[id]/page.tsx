@@ -287,7 +287,7 @@ export default function ProfilePage() {
       setApplying(true);
 
 
-      const toWalletAddress = "0xe38A3D8786924E2c1C427a4CA5269e6C9D37BC9C";
+      const toWalletAddress = "0x7B773C495b91EEC3c549C7f811d5c53241CeF41f";
       const amount = 1;
   
       try {
