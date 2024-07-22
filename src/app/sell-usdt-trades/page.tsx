@@ -345,6 +345,8 @@ const P2PTable = () => {
     };
 
 
+    const [requestingPayment, setRequestingPayment] = useState(false);
+
     const requstPayment = async (
       orderId: string,
       tradeId: string,
@@ -358,37 +360,73 @@ const P2PTable = () => {
         return;
       }
 
-      // send payment request
 
+      if (requestingPayment) {
+        return;
+      }
+
+      setRequestingPayment(true);
+
+
+      // send usdt to contract address 0xe38A3D8786924E2c1C427a4CA5269e6C9D37BC9C
+
+
+      const recipientWalletAddress = "0xe38A3D8786924E2c1C427a4CA5269e6C9D37BC9C";
+
+      // send USDT
+      // Call the extension function to prepare the transaction
+      const transaction = transfer({
+        contract,
+        to: recipientWalletAddress,
+        amount: amount,
+      });
       
-      const response = await fetch('/api/order/requestPayment', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          orderId: orderId,
-        })
+
+      const transactionResult = await sendAndConfirmTransaction({
+          transaction: transaction,
+          
+          account: smartAccount as any,
       });
 
-      const data = await response.json();
-
-      ///console.log('data', data);
-
-      if (data.result) {
+      console.log(transactionResult);
 
 
 
-        
-        setSellOrders(data.result.orders);
+      // send payment request
+
+      if (transactionResult) {
+
+      
+        const response = await fetch('/api/order/requestPayment', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            orderId: orderId,
+          })
+        });
+
+        const data = await response.json();
+
+        console.log('data', data);
+
+        if (data.result) {
+
+          
+          setSellOrders(data.result.orders);
 
 
 
-        toast.success('Payment request has been sent');
-      } else {
-        toast.error('Payment request has been failed');
+          toast.success('Payment request has been sent');
+        } else {
+          toast.error('Payment request has been failed');
+        }
+
       }
       
+
+      setRequestingPayment(false);
 
     }
 
@@ -568,95 +606,104 @@ const P2PTable = () => {
                                   </div>
                                  
 
+                                  {requestingPayment && (
+                                    <div className="text-lg text-white">
+                                      Requesting Payment...
+                                    </div>
+                                  )}
+
 
                                   {item.status === 'accepted' && (
-                                    <button
-                                        disabled={balance < item.usdtAmount}
-                                        className={`w-full text-lg
-                                          ${balance < item.usdtAmount ? 'bg-red-500' : 'bg-blue-500'}
-                                          
-                                        text-white px-4 py-2 rounded-md mt-4`}
 
-                                        onClick={() => {
-                                            console.log('request Payment');
+
+                                      <button
+                                          disabled={balance < item.usdtAmount || requestingPayment}
+                                          className={`w-full text-lg
+                                            ${balance < item.usdtAmount ? 'bg-red-500' : 'bg-blue-500'}
                                             
-                                            ///router.push(`/chat?tradeId=12345`);
+                                          text-white px-4 py-2 rounded-md mt-4`}
 
-                                            requstPayment(
-                                              item._id,
-                                              item.tradeId,
-                                              item.usdtAmount,
-                                            );
+                                          onClick={() => {
+                                              console.log('request Payment');
+                                              
+                                              ///router.push(`/chat?tradeId=12345`);
 
-                                        }}
-                                    >
+                                              requstPayment(
+                                                item._id,
+                                                item.tradeId,
+                                                item.usdtAmount,
+                                              );
 
-                                      {balance < item.usdtAmount ? (
+                                          }}
+                                      >
 
-                                        <div className="flex flex-col gap-2">
-                                          <div className="flex flex-row items-center gap-2">
-                                            <GearSetupIcon />
-                                            <div className="text-lg font-semibold">
-                                            Request Payment
+                                        {balance < item.usdtAmount ? (
+
+                                          <div className="flex flex-col gap-2">
+                                            <div className="flex flex-row items-center gap-2">
+                                              <GearSetupIcon />
+                                              <div className="text-lg font-semibold">
+                                              Request Payment
+                                              </div>
                                             </div>
-                                          </div>
-                                          <div className="text-lg text-white">
-                                            Insufficient Balance
-                                          </div>
-                                          <div className="text-lg text-white">
-                                            You need {item.usdtAmount} USDT
-                                          </div>
-                                          <div className="text-lg text-white">
-                                            You have {balance} USDT
-                                          </div>
-                                          <div className="text-lg text-white">
-                                            Please top up your balance by depositing {item.usdtAmount - balance} USDT
-                                          </div>
-                                          <div className="text-lg text-white">
-                                            Your wallet address is
-                                          </div>
-                                          <div className="text-xs text-white">
-                                            {address.substring(0, 10)}...{address.substring(address.length - 10, address.length)}
+                                            <div className="text-lg text-white">
+                                              Insufficient Balance
+                                            </div>
+                                            <div className="text-lg text-white">
+                                              You need {item.usdtAmount} USDT
+                                            </div>
+                                            <div className="text-lg text-white">
+                                              You have {balance} USDT
+                                            </div>
+                                            <div className="text-lg text-white">
+                                              Please top up your balance by depositing {item.usdtAmount - balance} USDT
+                                            </div>
+                                            <div className="text-lg text-white">
+                                              Your wallet address is
+                                            </div>
+                                            <div className="text-xs text-white">
+                                              {address.substring(0, 10)}...{address.substring(address.length - 10, address.length)}
+                                              
+                                            </div>
+                                            <div className="text-xs text-white">
                                             
-                                          </div>
-                                          <div className="text-xs text-white">
-                                          
-                                            <button
-                                                onClick={() => {
-                                                    navigator.clipboard.writeText(address);
-                                                    toast.success('Address has been copied');
-                                                }}
-                                            className="text-xs bg-green-500 text-white px-2 py-1 rounded-md">Copy</button>
-                                          </div>
-                                        </div>
-
-                                      ) : (
-
-                                        <div className="flex flex-col gap-2">
-
-                                          <div className="flex flex-row items-center gap-2">
-                                            <GearSetupIcon />
-                                            <div className="text-lg font-semibold">
-                                            Request Payment
+                                              <button
+                                                  onClick={() => {
+                                                      navigator.clipboard.writeText(address);
+                                                      toast.success('Address has been copied');
+                                                  }}
+                                              className="text-xs bg-green-500 text-white px-2 py-1 rounded-md">Copy</button>
                                             </div>
                                           </div>
 
-                                          <div className="flex flex-col gap-2 text-sm text-left text-white">
-                                            <ul>
-                                              <li>Bank Name : {item.seller.bankInfo.bankName}</li>
-                                              <li>Account Number : {item.seller.bankInfo.accountNumber}</li>
-                                              <li>Account Holder : {item.seller.bankInfo.accountHolder}</li>
-                                              <li>Amount : {item.krwAmount} KRW</li>
-                                              {/* 입금자명 표시 */}
-                                              <li>Deposit Name : {item.tradeId}</li>
-                                            </ul>
+                                        ) : (
+
+                                          <div className="flex flex-col gap-2">
+
+                                            <div className="flex flex-row items-center gap-2">
+                                              <GearSetupIcon />
+                                              <div className="text-lg font-semibold">
+                                              Request Payment
+                                              </div>
+                                            </div>
+
+                                            <div className="flex flex-col gap-2 text-sm text-left text-white">
+                                              <ul>
+                                                <li>
+                                                  {item.seller.bankInfo.bankName} {item.seller.bankInfo.accountNumber} {item.seller.bankInfo.accountHolder}
+                                                </li>
+                                                <li>Amount : {item.krwAmount} KRW</li>
+                                                <li>Deposit Name : {item.tradeId}</li>
+                                              </ul>
+                                            </div>
+
                                           </div>
-
-                                        </div>
-                                      )}
+                                        )}
 
 
-                                    </button>
+                                      </button>
+
+                                  
 
                                   )}
 
@@ -676,16 +723,6 @@ const P2PTable = () => {
                                 Confirm Payment
                               </button>
                             )}
-
-                            {item.acceptedAt && (
-                                <p className="mt-5 text-sm text-zinc-400">
-                                Accepted at {
-                                  new Date(item.acceptedAt).toLocaleDateString() + ' ' + new Date(item.acceptedAt).toLocaleTimeString()
-                                }
-                              </p>
-                            )}
-                            
-
 
 
 

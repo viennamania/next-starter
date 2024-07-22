@@ -292,8 +292,7 @@ export async function requestPayment(data: any) {
 
   if (result) {
     const updated = await collection.findOne<UserProps>(
-      { _id: new ObjectId(data.orderId) },
-      { projection: { _id: 0, emailVerified: 0 } }
+      { _id: new ObjectId(data.orderId) }
     );
 
     return updated;

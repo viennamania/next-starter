@@ -67,6 +67,8 @@ interface SellOrder {
   krwAmount: number;
   rate: number;
 
+  walletAddress: string;
+
   seller: any;
 
   status: string;
@@ -187,13 +189,12 @@ const P2PTable = () => {
         
         const fetchSellOrders = async () => {
           // api call
-          const response = await fetch('/api/order/getSellOrders', {
+          const response = await fetch('/api/order/getAllSellOrders', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-              walletAddress: address
             })
           });
   
@@ -451,7 +452,7 @@ const P2PTable = () => {
                             key={index}
                             className="bg-black p-4 rounded-md border border-gray-200 ">
 
-                            <p className="text-xl font-semibold text-white">
+                            <p className="text-sm font-semibold text-zinc-400">
                               Status: {item.status?.toUpperCase()}
                             </p>
 
@@ -471,9 +472,13 @@ const P2PTable = () => {
                                 <div className="w-full mt-2 mb-2 flex flex-col items-start ">
 
                                   <p className="text-xl text-green-500 font-semibold">
-                                    Buyer: {item.buyer.nickname}
+                                    Buyer: {
+                                      item.buyer.walletAddress === address ? 'Me' :
+                                    
+                                      item.buyer.nickname.substring(0, 1) + '****'
+                                    }
                                   </p>
-                                  
+
                                   {/*
                                   <button
                                       className="w-full text-lg bg-blue-500 text-white px-4 py-2 rounded-md mt-4"
@@ -518,13 +523,24 @@ const P2PTable = () => {
                               }
                             </p>
                             
-                            <h2 className="text-lg font-semibold mb-2">Seller: {item.nickname}</h2>
+                            <h2 className="text-lg font-semibold mb-2">
+                              Seller: {
+
+                                item.walletAddress === address ? 'Me' :
+                                
+                                item.nickname
+
+                              }
+                            </h2>
 
                             <p className="text-xl font-bold text-zinc-400">Amount: {item.usdtAmount} USDT</p>
 
                             <p className="text-xl font-bold text-zinc-400">Rate: 1 USDT = {item.rate} KRW</p>
 
                             <p className="text-xl font-bold text-zinc-400"> Price: {item.krwAmount} KRW</p>
+
+                            <p className="mt-4 text-sm text-zinc-400">Payment method: Bank Transfer</p>
+
                             
                             {/*
                             <p className="text-sm text-zinc-400">{item.available} <br /> {item.limit}</p>
