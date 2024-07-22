@@ -373,9 +373,17 @@ const P2PTable = () => {
 
       const data = await response.json();
 
-      console.log('data', data);
+      ///console.log('data', data);
 
       if (data.result) {
+
+
+
+        
+        setSellOrders(data.result.orders);
+
+
+
         toast.success('Payment request has been sent');
       } else {
         toast.error('Payment request has been failed');
@@ -472,7 +480,7 @@ const P2PTable = () => {
 
 
 
-                    {sellOrders.map((item, index) => (
+                    {sellOrders?.map((item, index) => (
 
                         <article
                             key={index}
@@ -491,20 +499,25 @@ const P2PTable = () => {
                             </p>
                             */}
 
+     
+
 
                             {item.status === 'paymentRequested' && (
                               <div className="w-full flex flex-col items-start gap-2">
-                                <p className="text-sm font-semibold text-green-500">
+                                <p className="text-sm font-semibold text-gray-500">
                                   Pay rqsted at {new Date(item.paymentRequestedAt).toLocaleDateString() + ' ' + new Date(item.paymentRequestedAt).toLocaleTimeString()}
                                 </p>
 
+                                <p className="text-xl font-semibold text-green-500">
+                                  Payment Information
+                                </p>
 
                                 <div className="flex flex-col gap-2 text-sm text-left font-semibold text-white">
                                             
                                   <ul>
-                                    <li>Bank Name : {item.seller.bankInfo.bankName}</li>
-                                    <li>Account Number : {item.seller.bankInfo.accountNumber}</li>
-                                    <li>Account Holder : {item.seller.bankInfo.accountHolder}</li>
+                                    <li>
+                                      {item.seller.bankInfo.bankName} {item.seller.bankInfo.accountNumber} {item.seller.bankInfo.accountHolder}
+                                    </li>
                                     <li>Amount : {item.krwAmount} KRW</li>
                                     {/* 입금자명 표시 */}
                                     <li>Deposit Name : {item.tradeId}</li>
@@ -589,6 +602,31 @@ const P2PTable = () => {
                                           </div>
                                           <div className="text-lg text-white">
                                             Insufficient Balance
+                                          </div>
+                                          <div className="text-lg text-white">
+                                            You need {item.usdtAmount} USDT
+                                          </div>
+                                          <div className="text-lg text-white">
+                                            You have {balance} USDT
+                                          </div>
+                                          <div className="text-lg text-white">
+                                            Please top up your balance by depositing {item.usdtAmount - balance} USDT
+                                          </div>
+                                          <div className="text-lg text-white">
+                                            Your wallet address is
+                                          </div>
+                                          <div className="text-xs text-white">
+                                            {address.substring(0, 10)}...{address.substring(address.length - 10, address.length)}
+                                            
+                                          </div>
+                                          <div className="text-xs text-white">
+                                          
+                                            <button
+                                                onClick={() => {
+                                                    navigator.clipboard.writeText(address);
+                                                    toast.success('Address has been copied');
+                                                }}
+                                            className="text-xs bg-green-500 text-white px-2 py-1 rounded-md">Copy</button>
                                           </div>
                                         </div>
 

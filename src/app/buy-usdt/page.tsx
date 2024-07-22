@@ -382,7 +382,10 @@ const P2PTable = () => {
                                 }</p>
                             
                                 <p className="text-xl text-green-500 font-semibold">
-                                  Buyer: {item.buyer.nickname}
+                                  Buyer: {
+                                    item.buyer.walletAddress === address ? 'Me' :
+                                    item.buyer.nickname.substring(0, 1) + '***'
+                                  }
                                 </p>
                               </>
                             )}

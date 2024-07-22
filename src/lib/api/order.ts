@@ -158,7 +158,7 @@ export async function getSellOrders(
 
   const results = await collection.find<UserProps>(
     {
-      status: 'ordered',
+      //status: 'ordered',
     },
     
     //{ projection: { _id: 0, emailVerified: 0 } }
