@@ -44,8 +44,12 @@ export interface UserProps {
   status: string,
 
   tradeId: string,
+
+  usdtAmount: number,
+  krwAmount: number,
   
   acceptedAt: string,
+  paymentRequestedAt: string,
 
   buyer: any,
 }
@@ -257,6 +261,45 @@ export async function acceptSellOrder(data: any) {
 }
 
 
+
+
+
+
+export async function requestPayment(data: any) {
+  
+  ///console.log('acceptSellOrder data: ' + JSON.stringify(data));
+
+  if (!data.orderId) {
+    return null;
+  }
+
+  const client = await clientPromise;
+  const collection = client.db('vienna').collection('orders');
+
+
+  const result = await collection.updateOne(
+    
+    { _id: new ObjectId(data.orderId) },
+
+
+    { $set: {
+      status: 'paymentRequested',
+      paymentRequestedAt: new Date().toISOString(),
+    } }
+  );
+
+  if (result) {
+    const updated = await collection.findOne<UserProps>(
+      { _id: new ObjectId(data.orderId) },
+      { projection: { _id: 0, emailVerified: 0 } }
+    );
+
+    return updated;
+  } else {
+    return null;
+  }
+  
+}
 
 
 

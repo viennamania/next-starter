@@ -1,0 +1,85 @@
+import { NextResponse, type NextRequest } from "next/server";
+
+import {
+  UserProps,
+	requestPayment,
+} from '@lib/api/order';
+
+// Download the helper library from https://www.twilio.com/docs/node/install
+import twilio from "twilio";
+
+
+export async function POST(request: NextRequest) {
+
+  const body = await request.json();
+  /*
+            orderId: orderId,
+          tradeId: tradeId,
+          amount: amount
+  */
+
+  const { orderId } = body;
+
+  console.log("orderId", orderId);
+  
+
+  const result = await requestPayment({
+    orderId: orderId,
+  });
+
+
+  //console.log("result", JSON.stringify(result));
+
+  const {
+    mobile: mobile,
+    seller: seller,
+    buyer: buyer,
+    tradeId: tradeId,
+    krwAmount: krwAmount,
+  } = result as UserProps;
+
+
+  const bankName = seller.bankInfo.bankName;
+  const accountNumber = seller.bankInfo.accountNumber;
+  const accountHolder = seller.bankInfo.accountHolder;
+  const depositName = tradeId;
+  const amount = krwAmount;
+
+
+    // send sms
+
+    const to = buyer.mobile;
+
+
+    const accountSid = process.env.TWILIO_ACCOUNT_SID;
+    const authToken = process.env.TWILIO_AUTH_TOKEN;
+    const client = twilio(accountSid, authToken);
+
+
+
+    let message = null;
+
+
+    const msgBody = `[UNOVE] ${bankName} ${accountNumber} ${accountHolder} 입금자명:[${depositName}] ${amount}원 입금 부탁드립니다.`;
+
+    message = await client.messages.create({
+      ///body: "This is the ship that made the Kessel Run in fourteen parsecs?",
+      body: msgBody,
+      from: "+17622254217",
+      to: to,
+    });
+
+    console.log(message.sid);
+
+
+
+
+
+ 
+  return NextResponse.json({
+
+    result,
+    
+  });
+  
+}

@@ -73,6 +73,7 @@ interface SellOrder {
   status: string;
 
   acceptedAt: string;
+  paymentRequestedAt: string;
 
   tradeId: string;
 
@@ -357,11 +358,9 @@ const P2PTable = () => {
         return;
       }
 
-      toast.success('Payment request has been sent');
-
       // send payment request
 
-      /*
+      
       const response = await fetch('/api/order/requestPayment', {
         method: 'POST',
         headers: {
@@ -369,8 +368,6 @@ const P2PTable = () => {
         },
         body: JSON.stringify({
           orderId: orderId,
-          tradeId: tradeId,
-          amount: amount
         })
       });
 
@@ -383,7 +380,7 @@ const P2PTable = () => {
       } else {
         toast.error('Payment request has been failed');
       }
-      */
+      
 
     }
 
@@ -482,7 +479,7 @@ const P2PTable = () => {
                             className="bg-black p-4 rounded-md border border-gray-200 ">
 
 
-                            {item.status === 'accepted' && (
+                            { (item.status === 'accepted' || item.status === 'paymentRequested') && (
                               <p className="text-2xl font-semibold text-green-500">
                                 TID: {item.tradeId}
                               </p>
@@ -495,6 +492,28 @@ const P2PTable = () => {
                             */}
 
 
+                            {item.status === 'paymentRequested' && (
+                              <div className="w-full flex flex-col items-start gap-2">
+                                <p className="text-sm font-semibold text-green-500">
+                                  Pay rqsted at {new Date(item.paymentRequestedAt).toLocaleDateString() + ' ' + new Date(item.paymentRequestedAt).toLocaleTimeString()}
+                                </p>
+
+
+                                <div className="flex flex-col gap-2 text-sm text-left font-semibold text-white">
+                                            
+                                  <ul>
+                                    <li>Bank Name : {item.seller.bankInfo.bankName}</li>
+                                    <li>Account Number : {item.seller.bankInfo.accountNumber}</li>
+                                    <li>Account Holder : {item.seller.bankInfo.accountHolder}</li>
+                                    <li>Amount : {item.krwAmount} KRW</li>
+                                    {/* 입금자명 표시 */}
+                                    <li>Deposit Name : {item.tradeId}</li>
+                                  </ul>
+
+                                </div>
+
+                              </div>
+                            )}
 
                             {item.status === 'accepted' && (
                               <p className="text-sm text-zinc-400">
@@ -502,7 +521,7 @@ const P2PTable = () => {
                               </p>
                             )}
 
-                            {item.status === 'accepted' && (
+                            {(item.status === 'accepted' || item.status === 'paymentRequested') && (
                                 <div className="w-full mt-2 mb-2 flex flex-col items-start ">
 
                                   <div className="flex flex-row items-center gap-2">
@@ -537,72 +556,100 @@ const P2PTable = () => {
                                  
 
 
-                                  <button
-                                      disabled={balance < item.usdtAmount}
-                                      className={`w-full text-lg
-                                        ${balance < item.usdtAmount ? 'bg-red-500' : 'bg-blue-500'}
-                                        
-                                      text-white px-4 py-2 rounded-md mt-4`}
-
-                                      onClick={() => {
-                                          console.log('request Payment');
+                                  {item.status === 'accepted' && (
+                                    <button
+                                        disabled={balance < item.usdtAmount}
+                                        className={`w-full text-lg
+                                          ${balance < item.usdtAmount ? 'bg-red-500' : 'bg-blue-500'}
                                           
-                                          ///router.push(`/chat?tradeId=12345`);
+                                        text-white px-4 py-2 rounded-md mt-4`}
 
-                                          requstPayment(
-                                            item._id,
-                                            item.tradeId,
-                                            item.usdtAmount,
-                                          );
+                                        onClick={() => {
+                                            console.log('request Payment');
+                                            
+                                            ///router.push(`/chat?tradeId=12345`);
 
-                                      }}
-                                  >
+                                            requstPayment(
+                                              item._id,
+                                              item.tradeId,
+                                              item.usdtAmount,
+                                            );
 
-                                    {balance < item.usdtAmount ? (
+                                        }}
+                                    >
 
-                                      <div className="flex flex-col gap-2">
-                                        <div className="flex flex-row items-center gap-2">
-                                          <GearSetupIcon />
-                                          <div className="text-lg font-semibold">
-                                          Request Payment
+                                      {balance < item.usdtAmount ? (
+
+                                        <div className="flex flex-col gap-2">
+                                          <div className="flex flex-row items-center gap-2">
+                                            <GearSetupIcon />
+                                            <div className="text-lg font-semibold">
+                                            Request Payment
+                                            </div>
+                                          </div>
+                                          <div className="text-lg text-white">
+                                            Insufficient Balance
                                           </div>
                                         </div>
-                                        <div className="text-lg text-white">
-                                          Insufficient Balance
-                                        </div>
-                                      </div>
 
-                                    ) : (
+                                      ) : (
 
-                                      <div className="flex flex-col gap-2">
+                                        <div className="flex flex-col gap-2">
 
-                                        <div className="flex flex-row items-center gap-2">
-                                          <GearSetupIcon />
-                                          <div className="text-lg font-semibold">
-                                          Request Payment
+                                          <div className="flex flex-row items-center gap-2">
+                                            <GearSetupIcon />
+                                            <div className="text-lg font-semibold">
+                                            Request Payment
+                                            </div>
+                                          </div>
+                                          <div className="flex flex-col gap-2 text-sm text-left font-semibold text-white">
+                                            
+                                            <ul>
+                                              <li>Bank Name : {item.seller.bankInfo.bankName}</li>
+                                              <li>Account Number : {item.seller.bankInfo.accountNumber}</li>
+                                              <li>Account Holder : {item.seller.bankInfo.accountHolder}</li>
+                                              <li>Amount : {item.krwAmount} KRW</li>
+                                              {/* 입금자명 표시 */}
+                                              <li>Deposit Name : {item.tradeId}</li>
+                                            </ul>
+
                                           </div>
                                         </div>
-                                        <div className="flex flex-col gap-2 text-sm text-left font-semibold text-white">
-                                          
-                                          <ul>
-                                            <li>Bank Name : {item.seller.bankInfo.bankName}</li>
-                                            <li>Account Number : {item.seller.bankInfo.accountNumber}</li>
-                                            <li>Account Holder : {item.seller.bankInfo.accountHolder}</li>
-                                            <li>Amount : {item.krwAmount} KRW</li>
-                                            {/* 입금자명 표시 */}
-                                            <li>Deposit Name : {item.tradeId}</li>
-                                          </ul>
+                                      )}
 
 
+                                    </button>
 
-                                        </div>
-                                      </div>
-                                    )}
+                                  )}
 
-
-                                  </button>
                                 </div>
                             )}
+
+                            {item.status === 'paymentRequested' && (
+                              <button
+                                  className="w-full text-lg bg-green-500 text-white px-4 py-2 rounded-md mt-4"
+                                  onClick={() => {
+                                      console.log('Canfirm Payment');
+
+                                      toast.success('Payment has been confirmed');
+                                      
+                                  }}
+                              >
+                                Confirm Payment
+                              </button>
+                            )}
+
+                            {item.acceptedAt && (
+                                <p className="mt-5 text-sm text-zinc-400">
+                                Accepted at {
+                                  new Date(item.acceptedAt).toLocaleDateString() + ' ' + new Date(item.acceptedAt).toLocaleTimeString()
+                                }
+                              </p>
+                            )}
+                            
+
+
+
 
                             <p className="mt-5 text-sm text-zinc-400">
                               Ordered at {
