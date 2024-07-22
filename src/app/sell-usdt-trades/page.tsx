@@ -149,10 +149,6 @@ const P2PTable = () => {
   } , [address]);
 
 
-  console.log(balance);
-
-
-  console.log('address', address, 'balance', balance);
 
 
 
@@ -538,7 +534,7 @@ const P2PTable = () => {
 
           <div className="flex flex-col gap-5 items-start justify-center ">
 
-              <div className='flex flex-row items-center space-x-4'>
+                <div className='flex flex-row items-center space-x-4'>
                   <Image
                       src="/trade-sell.png"
                       alt="USDT"
@@ -548,48 +544,42 @@ const P2PTable = () => {
                     />
                   <div className="text-2xl font-semibold">My Sell USDT Trades</div>
 
+                  {!address && (
+                    <ConnectButton
+
+                        client={client}
+
+                        wallets={wallets}
+                        
+                        accountAbstraction={{        
+                        chain: polygon,
+                        //chain: arbitrum,
+                        factoryAddress: "0x9Bb60d360932171292Ad2b80839080fb6F5aBD97", // polygon, arbitrum
+                        gasless: true,
+                        }}
+                        
+                        theme={"light"}
+                        connectModal={{
+                        size: "wide",
 
 
-                    {!address && (
-                        <ConnectButton
-
-                            client={client}
-
-                            wallets={wallets}
-                            
-                            accountAbstraction={{        
-                            chain: polygon,
-                            //chain: arbitrum,
-                            factoryAddress: "0x9Bb60d360932171292Ad2b80839080fb6F5aBD97", // polygon, arbitrum
-                            gasless: true,
-                            }}
-                            
-                            theme={"light"}
-                            connectModal={{
-                            size: "wide",
+                        }}
 
 
-                            }}
+                        
+                        appMetadata={
+                        {
+                            logoUrl: "https://next.unove.space/logo.png",
+                            name: "Next App",
+                            url: "https://next.unove.space",
+                            description: "This is a Next App.",
 
+                        }
+                        }
 
-                            
-                            appMetadata={
-                            {
-                                logoUrl: "https://next.unove.space/logo.png",
-                                name: "Next App",
-                                url: "https://next.unove.space",
-                                description: "This is a Next App.",
-
-                            }
-                            }
-
-                        />
-
-                    )}
-
-
-
-              </div>
+                    />
+                  )}
+                </div>
 
 
 
@@ -612,7 +602,7 @@ const P2PTable = () => {
 
                         <article
                             key={index}
-                            className="bg-black p-4 rounded-md border border-gray-200 ">
+                            className="w-96 xl:w-full bg-black p-4 rounded-md border border-gray-200 ">
 
 
                             { (item.status === 'accepted' || item.status === 'paymentRequested' || item.status === 'paymentConfirmed') && (

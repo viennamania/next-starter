@@ -42,6 +42,9 @@ import { getUserPhoneNumber } from "thirdweb/wallets/in-app";
 
 
 
+import { balanceOf, transfer } from "thirdweb/extensions/erc20";
+ 
+
 
 
 
@@ -115,7 +118,33 @@ const P2PTable = () => {
   const address = smartAccount?.address || "";
 
 
-  console.log('address', address);
+
+
+  const [balance, setBalance] = useState(0);
+
+
+
+  useEffect(() => {
+
+    // get the balance
+    const getBalance = async () => {
+      const result = await balanceOf({
+        contract,
+        address: address,
+      });
+  
+      //console.log(result);
+  
+      setBalance( Number(result) / 10 ** 6 );
+
+    };
+
+    if (address) getBalance();
+
+  } , [address]);
+
+
+  
 
 
   // get User by wallet address
@@ -368,6 +397,16 @@ const P2PTable = () => {
               </div>
 
 
+                {/* my usdt balance */}
+                <div className="flex flex-row gap-2 items-center">
+                  <div className="text-xl font-semibold">My USDT Balance:</div>
+                  <div className="text-xl font-semibold text-green-500">
+                    {balance} USDT
+                  </div>
+                </div>
+
+
+
                 <div className="w-full grid gap-4 lg:grid-cols-3 justify-center">
 
                     {sellOrders.map((item, index) => (
@@ -377,8 +416,8 @@ const P2PTable = () => {
                             className=" w-96 xl:w-full
                             bg-black p-4 rounded-md border border-gray-200 ">
 
-                            <p className="text-xl font-semibold text-green-500">
-                              Trade ID: {item.tradeId}
+                            <p className="text-2xl font-semibold text-green-500">
+                              TID: {item.tradeId}
                             </p>
 
                             {item.paymentRequestedAt && (
@@ -408,9 +447,12 @@ const P2PTable = () => {
                                   </li>
                                 </ul>
 
+                                {/*
                                 <button className="m-2 bg-green-500 text-white px-4 py-2 rounded-lg">
                                   Payment Completed
                                 </button>
+                                */}
+
                               </div>
                             )}
 
