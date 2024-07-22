@@ -281,7 +281,7 @@ const P2PTable = () => {
         setUsdtAmount(0);
 
 
-        await fetch('/api/order/getSellOrders', {
+        await fetch('/api/order/getAllSellOrders', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
