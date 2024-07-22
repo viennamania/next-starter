@@ -584,10 +584,10 @@ const P2PTable = () => {
 
 
                 {/* my usdt balance */}
-                <div className="flex flex-row gap-2 items-center">
-                  <div className="text-xl font-semibold">My USDT Balance:</div>
-                  <div className="text-xl font-semibold text-green-500">
-                    {balance} USDT
+                <div className="flex flex-col gap-2 items-start">
+                  <div className="text-sm">My Balance</div>
+                  <div className="text-5xl font-semibold text-white">
+                    {balance} <span className="text-lg">USDT</span>
                   </div>
                 </div>
 
@@ -604,12 +604,26 @@ const P2PTable = () => {
                             key={index}
                             className="w-96 xl:w-full bg-black p-4 rounded-md border border-gray-200 ">
 
-
                             { (item.status === 'accepted' || item.status === 'paymentRequested' || item.status === 'paymentConfirmed') && (
-                              <p className="text-2xl font-semibold text-green-500">
+                              <p className="text-lg text-green-500">
                                 TID: {item.tradeId}
                               </p>
                             )}
+
+                            <p className="mt-5 text-sm text-zinc-400">
+                              Accepted at {
+                                new Date(item.acceptedAt).toLocaleDateString() + ' ' + new Date(item.acceptedAt).toLocaleTimeString()
+                              }
+                            </p>
+                          
+                            <p className="text-2xl font-bold text-white">{item.usdtAmount} USDT</p>
+
+                            {/*
+                            <p className="text-xl font-bold text-zinc-400">Rate: 1 USDT = {item.rate} KRW</p>
+                            */}
+
+                            <p className="mb-5 text-xl font-bold text-zinc-400"> Price: {item.krwAmount} KRW</p>
+                            
 
                             {/*
                             <p className="text-xl font-semibold text-white">
@@ -617,6 +631,22 @@ const P2PTable = () => {
                             </p>
                             */}
 
+                            {item.status === 'paymentConfirmed' && (
+                              <div className="w-full flex flex-col items-start gap-2">
+                                <div className="flex flex-row items-center gap-2">
+                                  <div className="text-lg font-semibold text-red-500">
+                                    - {item.usdtAmount} USDT
+                                  </div>
+                                  <div className="text-lg font-semibold text-white">
+                                    /
+                                  </div>
+                                  <div className="text-lg font-semibold text-green-500">
+                                    + {item.krwAmount} KRW
+                                  </div>
+                                </div>
+
+                              </div>
+                            )}
      
 
 
@@ -626,20 +656,20 @@ const P2PTable = () => {
                               <div className="w-full flex flex-col items-start gap-2">
 
                                 {item.paymentConfirmedAt && (
-                                  <p className="text-sm font-semibold text-gray-500">
-                                    Pay confirmed at {new Date(item.paymentConfirmedAt).toLocaleDateString() + ' ' + new Date(item.paymentConfirmedAt).toLocaleTimeString()}
+                                  <p className="text-sm font-semibold text-green-500">
+                                    Completed at {new Date(item.paymentConfirmedAt).toLocaleDateString() + ' ' + new Date(item.paymentConfirmedAt).toLocaleTimeString()}
                                   </p> 
                                 )}                               
 
-                                <p className="text-sm font-semibold text-gray-500">
+                                <p className="text-sm  text-gray-400">
                                   Pay rqsted at {new Date(item.paymentRequestedAt).toLocaleDateString() + ' ' + new Date(item.paymentRequestedAt).toLocaleTimeString()}
                                 </p>
 
-                                <p className="text-xl font-semibold text-green-500">
+                                <p className="text-xl text-green-500">
                                   Payment Information
                                 </p>
 
-                                <div className="flex flex-col gap-2 text-sm text-left font-semibold text-white">
+                                <div className="flex flex-col gap-2 text-sm text-left text-white">
                                             
                                   <ul>
                                     <li>
@@ -663,7 +693,7 @@ const P2PTable = () => {
 
 
                             {item.status === 'paymentConfirmed' && (
-                              <p className="mt-5 text-xl text-green-500 font-semibold">
+                              <p className="mt-5 text-xl text-green-500">
                                 Buyer: {item.buyer.nickname}
                               </p>
                             )}
@@ -830,64 +860,8 @@ const P2PTable = () => {
 
 
 
-                            <p className="mt-5 text-sm text-zinc-400">
-                              Ordered at {
-                                new Date(item.createdAt).toLocaleDateString() + ' ' + new Date(item.createdAt).toLocaleTimeString()
-                              }
-                            </p>
-                          
-
-                            <p className="text-xl font-bold text-zinc-400">Amount: {item.usdtAmount} USDT</p>
-
-                            <p className="text-xl font-bold text-zinc-400">Rate: 1 USDT = {item.rate} KRW</p>
-
-                            <p className="text-xl font-bold text-zinc-400"> Price: {item.krwAmount} KRW</p>
-                            
-                            {/*
-                            <p className="text-sm text-zinc-400">{item.available} <br /> {item.limit}</p>
-                            */}
-                            {/*
-                            Available: 7.24 USDT
-                            Limit: 630.00 KRW - 630.00 KRW
-                           
-                            <div className="flex flex-col">
-                                <p className="text-sm text-zinc-400">Available: {item.available}</p>
-                                <p className="text-sm text-zinc-400">Limit: {item.limit}</p>
-                            </div>
-                           
-
-                            <p className="text-sm text-zinc-400">
-                                {item.paymentMethods.map((method, idx) => (
-                                    <span key={idx} className="inline-block bg-yellow-100 text-yellow-800 text-xs px-2 rounded-full mr-2 mb-1">{method}</span>
-                                ))}
-                            </p>
-                              */}
-                            {/*
-                            <p className="text-lg text-green-500 cursor-pointer">
-                                Buy USDT
-                            </p>
-                            */}
-                            {/*
-                            <button
-                                className="text-lg bg-green-500 text-white px-4 py-2 rounded-md mt-4"
-                                onClick={() => {
-                                    console.log('Buy USDT');
-
-                                    // open trade detail
-                                    // open modal of trade detail
 
 
-
-                                    openModal();
-
-
-                               
-
-                                }}
-                            >
-                                Buy USDT
-                            </button>
-                            */}
 
                         </article>
 

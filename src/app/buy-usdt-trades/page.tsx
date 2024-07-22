@@ -72,6 +72,7 @@ interface SellOrder {
   status: string;
   acceptedAt: string;
   paymentRequestedAt: string;
+  paymentConfirmedAt: string;
 
   tradeId: string;
 
@@ -398,10 +399,10 @@ const P2PTable = () => {
 
 
                 {/* my usdt balance */}
-                <div className="flex flex-row gap-2 items-center">
-                  <div className="text-xl font-semibold">My USDT Balance:</div>
-                  <div className="text-xl font-semibold text-green-500">
-                    {balance} USDT
+                <div className="flex flex-col gap-2 items-start">
+                  <div className="text-sm">My Balance</div>
+                  <div className="text-5xl font-semibold text-white">
+                    {balance} <span className="text-lg">USDT</span>
                   </div>
                 </div>
 
@@ -416,64 +417,26 @@ const P2PTable = () => {
                             className=" w-96 xl:w-full
                             bg-black p-4 rounded-md border border-gray-200 ">
 
-                            <p className="text-2xl font-semibold text-green-500">
+                            <p className="text-xl text-green-500">
                               TID: {item.tradeId}
                             </p>
 
-                            {item.paymentRequestedAt && (
-                              <p className="text-sm text-zinc-400">Pay rqsted at {
-                                item.paymentRequestedAt && new Date(item.paymentRequestedAt).toLocaleString()
-                              }</p>
-                            )}
-
-                            {item.status === 'paymentRequested' && (
-                              <div className="mt-2 mb-2 flex flex-col gap-2 text-sm text-left bg-gray-800 p-4 rounded-md">
-                                <p className="text-xl text-white font-semibold">
-                                  Payment Infomation
-                                </p>
-
-                              
-                                <ul>
-
-                                  <li className="text-lg" >{item.seller.bankInfo.bankName} {item.seller.bankInfo.accountNumber} {item.seller.bankInfo.accountHolder}</li>
-                                  <li className="text-lg">Amount : {item.krwAmount} KRW</li>
-                                  
-                                  <li className="mt-2">You must deposit to the above account using deposit name
-                                    {' '}<span className="text-red-500 font-semibold text-lg">{item.tradeId}</span>
-                                  </li>
-
-                                  <li className="mt-2">
-                                    After deposit, click the button below.
-                                  </li>
-                                </ul>
-
-                                {/*
-                                <button className="m-2 bg-green-500 text-white px-4 py-2 rounded-lg">
-                                  Payment Completed
-                                </button>
-                                */}
-
-                              </div>
-                            )}
-
-
-                            {item.status === 'accepted' && (
-                              <button className="mt-2 mb-2 bg-green-500 text-white px-4 py-2 rounded-lg">
-                                Cancel Trade
-                              </button>
-                            )}
-
-
-
-
-                            <p className="text-sm text-zinc-400">Accepted at {
-                                item.createdAt && new Date(item.acceptedAt).toLocaleString()
-                            }</p>
-                           
-                            <p className="text-sm text-zinc-400">Ordered at {
+                            {/*
+                            <p className="mt-5 text-sm text-zinc-400">Ordered at {
                                 item.createdAt && new Date(item.createdAt).toLocaleString()
                             }</p>
-                            
+                            */}
+
+                            <p className="mt-5 text-sm text-zinc-400">Accepted at {
+                                item.createdAt && new Date(item.acceptedAt).toLocaleString()
+                            }</p>
+
+                            <p className="text-2xl font-semibold text-white">{item.usdtAmount} USDT</p>
+
+                            <p className="mb-5 text-xl font-bold text-zinc-400">Price: {item.krwAmount} KRW</p>
+                        
+
+
                             <p className="mt-2 mb-2 flex items-center gap-2">
                               <div className="flex items-center space-x-2">Seller: </div>
                               <Image
@@ -504,41 +467,98 @@ const P2PTable = () => {
                                     goChat(item.tradeId);
 
                                 }}
-                            >
+                              >
                                 Chat
-                            </button>
+                              </button>
 
                             </p>
 
 
-                            <p className="text-2xl font-semibold text-white">{item.usdtAmount} USDT</p>
 
-                            <p className="text-xl font-bold text-zinc-400">Price: {item.krwAmount} KRW</p>
-                            
+
+                            {item.status === 'paymentConfirmed' && (
+                              <div className="w-full flex flex-col items-start gap-2">
+                                <div className="flex flex-row items-center gap-2">
+                                  <div className="text-lg font-semibold text-red-500">
+                                    - {item.krwAmount} KRW
+                                  </div>
+                                  <div className="text-lg font-semibold text-white">
+                                    /
+                                  </div>
+                                  <div className="text-lg font-semibold text-green-500">
+                                    + {item.usdtAmount} USDT
+                                  </div>
+                                </div>
+
+                                
+                                  <p className="text-sm font-semibold text-green-500">
+                                    Completed at {new Date(item.paymentConfirmedAt).toLocaleDateString() + ' ' + new Date(item.paymentConfirmedAt).toLocaleTimeString()}
+                                  </p> 
+                                
+
+                              </div>
+                            )}
+
+
+                            {item.paymentRequestedAt && (
+                              <p className="text-sm text-zinc-400">Pay rqsted at {
+                                item.paymentRequestedAt && new Date(item.paymentRequestedAt).toLocaleString()
+                              }</p>
+                            )}
+
+                            {item.status === 'paymentRequested' && (
+                              <div className="mt-2 mb-2 flex flex-col gap-2 text-sm text-left bg-gray-800 p-4 rounded-md">
+                                <p className="text-xl text-white font-semibold">
+                                  Payment Infomation
+                                </p>
+
+                              
+                                <ul>
+
+                                  <li className="text-lg" >{item.seller.bankInfo.bankName} {item.seller.bankInfo.accountNumber} {item.seller.bankInfo.accountHolder}</li>
+                                  <li className="text-lg">Amount : {item.krwAmount} KRW</li>
+                                  
+                                  <li className="mt-2">You must deposit to the above account using deposit name<br /><br />
+                                    <span className="text-red-500 font-semibold text-xl">{item.tradeId}</span>
+                                  </li>
+
+                                  {/*
+                                  <li className="mt-2">
+                                    After deposit, click the button below.
+                                  </li>
+                                  */}
+
+                                </ul>
+
+                                {/*
+                                <button className="m-2 bg-green-500 text-white px-4 py-2 rounded-lg">
+                                  Payment Completed
+                                </button>
+                                */}
+
+                              </div>
+                            )}
+
+
                             {/*
-                            <p className="text-sm text-zinc-400">{item.available} <br /> {item.limit}</p>
+                            {item.status === 'accepted' && (
+                              <button className="mt-2 mb-2 bg-green-500 text-white px-4 py-2 rounded-lg">
+                                Cancel Trade
+                              </button>
+                            )}
                             */}
-                            {/*
-                            Available: 7.24 USDT
-                            Limit: 630.00 KRW - 630.00 KRW
+                            
+
+
+
+
+
                            
-                            <div className="flex flex-col">
-                                <p className="text-sm text-zinc-400">Available: {item.available}</p>
-                                <p className="text-sm text-zinc-400">Limit: {item.limit}</p>
-                            </div>
 
-                            <p className="text-sm text-zinc-400">
-                                {item.paymentMethods.map((method, idx) => (
-                                    <span key={idx} className="inline-block bg-yellow-100 text-yellow-800 text-xs px-2 rounded-full mr-2 mb-1">{method}</span>
-                                ))}
-                            </p>
-                             */}
-                            {/*
-                            <p className="text-lg text-green-500 cursor-pointer">
-                                Buy USDT
-                            </p>
-                            */}
                             
+
+
+
 
                             {item.status === 'ordered' && (
                               <>
