@@ -41,6 +41,10 @@ import {
 } from "thirdweb";
 
 
+import { balanceOf, transfer } from "thirdweb/extensions/erc20";
+ 
+
+
 import { getUserPhoneNumber } from "thirdweb/wallets/in-app";
 
 
@@ -161,8 +165,35 @@ export default function Home() {
 
   const [balance, setBalance] = useState(0);
 
+  useEffect(() => {
 
+    // get the balance
+    const getBalance = async () => {
+      const result = await balanceOf({
+        contract,
+        address: address,
+      });
   
+      //console.log(result);
+  
+      setBalance( Number(result) / 10 ** 6 );
+
+    };
+
+    if (address) getBalance();
+
+    // get the balance in the interval
+
+    const interval = setInterval(() => {
+      if (address) getBalance();
+    }, 10000);
+
+
+
+  } , [address]);
+
+
+  /*
   const { data: balanceData } = useReadContract({
     contract, 
     method: "function balanceOf(address account) view returns (uint256)", 
@@ -183,6 +214,7 @@ export default function Home() {
 
 
   console.log(balance);
+  */
 
 
 

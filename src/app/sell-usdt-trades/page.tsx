@@ -138,7 +138,7 @@ const P2PTable = () => {
         address: address,
       });
   
-      console.log(result);
+      //console.log(result);
   
       setBalance( Number(result) / 10 ** 6 );
 
