@@ -661,6 +661,14 @@ const P2PTable = () => {
                               </p>
                             )}
 
+
+                            {item.status === 'paymentConfirmed' && (
+                              <p className="mt-5 text-xl text-green-500 font-semibold">
+                                Buyer: {item.buyer.nickname}
+                              </p>
+                            )}
+
+
                             {(item.status === 'accepted' || item.status === 'paymentRequested') && (
                                 <div className="w-full mt-2 mb-2 flex flex-col items-start ">
 
