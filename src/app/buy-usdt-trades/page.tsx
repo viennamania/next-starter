@@ -376,7 +376,7 @@ const P2PTable = () => {
                             className=" w-96 xl:w-full
                             bg-black p-4 rounded-md border border-gray-200 ">
 
-                            <p className="text-xl text-white font-semibold">
+                            <p className="text-xl font-semibold text-green-500">
                               Trade ID: {item.tradeId}
                             </p>
 

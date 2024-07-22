@@ -1,5 +1,6 @@
 'use client';
 
+
 import { useState, useEffect, use } from "react";
 
 
@@ -122,6 +123,36 @@ const P2PTable = () => {
 
 
 
+  const [balance, setBalance] = useState(0);
+
+
+
+  useEffect(() => {
+
+    // get the balance
+    const getBalance = async () => {
+      const result = await balanceOf({
+        contract,
+        address: address,
+      });
+  
+      console.log(result);
+  
+      setBalance( Number(result) / 10 ** 6 );
+
+    };
+
+    if (address) getBalance();
+
+  } , [address]);
+
+
+  console.log(balance);
+
+
+  console.log('address', address, 'balance', balance);
+
+
 
 
     const router = useRouter();
@@ -170,6 +201,7 @@ const P2PTable = () => {
         <p className="text-sm text-zinc-400">{props.description}</p>
       </article>
     */
+
 
 
 
@@ -312,6 +344,48 @@ const P2PTable = () => {
     };
 
 
+    const requstPayment = async (
+      orderId: string,
+      tradeId: string,
+      amount: number,
+    ) => {
+      // check balance
+      // send payment request
+
+      if (balance < amount) {
+        toast.error('Insufficient balance');
+        return;
+      }
+
+      toast.success('Payment request has been sent');
+
+      // send payment request
+
+      /*
+      const response = await fetch('/api/order/requestPayment', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          orderId: orderId,
+          tradeId: tradeId,
+          amount: amount
+        })
+      });
+
+      const data = await response.json();
+
+      console.log('data', data);
+
+      if (data.result) {
+        toast.success('Payment request has been sent');
+      } else {
+        toast.error('Payment request has been failed');
+      }
+      */
+
+    }
 
     
     return (
@@ -329,7 +403,7 @@ const P2PTable = () => {
           </div>
 
 
-          <div className="flex flex-col items-start justify-center space-y-4">
+          <div className="flex flex-col gap-5 items-start justify-center ">
 
               <div className='flex flex-row items-center space-x-4'>
                   <Image
@@ -385,7 +459,21 @@ const P2PTable = () => {
               </div>
 
 
+
+                {/* my usdt balance */}
+                <div className="flex flex-row gap-2 items-center">
+                  <div className="text-xl font-semibold">My USDT Balance:</div>
+                  <div className="text-xl font-semibold text-green-500">
+                    {balance} USDT
+                  </div>
+                </div>
+
+
                 <div className="w-full grid gap-4 lg:grid-cols-3 justify-center">
+
+
+
+
 
                     {sellOrders.map((item, index) => (
 
@@ -393,15 +481,20 @@ const P2PTable = () => {
                             key={index}
                             className="bg-black p-4 rounded-md border border-gray-200 ">
 
-                            <p className="text-xl font-semibold text-white">
-                              Status: {item.status?.toUpperCase()}
-                            </p>
 
                             {item.status === 'accepted' && (
                               <p className="text-2xl font-semibold text-green-500">
-                                Trade ID: {item.tradeId}
+                                TID: {item.tradeId}
                               </p>
                             )}
+
+                            {/*
+                            <p className="text-xl font-semibold text-white">
+                              Status: {item.status?.toUpperCase()}
+                            </p>
+                            */}
+
+
 
                             {item.status === 'accepted' && (
                               <p className="text-sm text-zinc-400">
@@ -413,57 +506,100 @@ const P2PTable = () => {
                                 <div className="w-full mt-2 mb-2 flex flex-col items-start ">
 
                                   <div className="flex flex-row items-center gap-2">
-                                    <p className="text-xl text-green-500 font-semibold">
-                                      Buyer: {item.buyer.nickname}
-                                    </p>
+                    
 
-                                    <button
-                                        className="bg-green-500 text-white px-4 py-2 rounded-lg"
-                                        onClick={() => {
-                                            //console.log('Buy USDT');
-                                            // go to chat
-                                            // close modal
-                                            //closeModal();
-                                            goChat(item.tradeId);
+                                    
+                                      <button
+                                          disabled={balance < item.usdtAmount}
+                                          className={`
+                                              w-full text-lg
+                                              ${balance < item.usdtAmount ? 'bg-gray-500' : 'bg-green-500'}
+                                              text-white px-4 py-2 rounded-md`}
 
-                                        }}
-                                    >
-                                        Chat
-                                    </button>
+                                          onClick={() => {
+                                              //console.log('Buy USDT');
+                                              // go to chat
+                                              // close modal
+                                              //closeModal();
+                                              goChat(item.tradeId);
+
+                                          }}
+                                      >
+                                          Chat with Buyer 
+                                          {balance >=item.usdtAmount && item.buyer.nickname && (
+                                            <span className="text-sm text-white ml-2">({item.buyer.nickname})</span>
+                                          )}
+                                          
+
+                                      </button>
+
                                   </div>
+                                 
 
 
                                   <button
-                                      className="w-full text-lg bg-blue-500 text-white px-4 py-2 rounded-md mt-4"
+                                      disabled={balance < item.usdtAmount}
+                                      className={`w-full text-lg
+                                        ${balance < item.usdtAmount ? 'bg-red-500' : 'bg-blue-500'}
+                                        
+                                      text-white px-4 py-2 rounded-md mt-4`}
+
                                       onClick={() => {
                                           console.log('request Payment');
                                           
                                           ///router.push(`/chat?tradeId=12345`);
 
+                                          requstPayment(
+                                            item._id,
+                                            item.tradeId,
+                                            item.usdtAmount,
+                                          );
+
                                       }}
                                   >
-                                    <div className="flex flex-col gap-2">
-                                      <div className="flex flex-row items-center gap-2">
-                                        <GearSetupIcon />
-                                        <div className="text-lg font-semibold">
-                                        Request Payment
+
+                                    {balance < item.usdtAmount ? (
+
+                                      <div className="flex flex-col gap-2">
+                                        <div className="flex flex-row items-center gap-2">
+                                          <GearSetupIcon />
+                                          <div className="text-lg font-semibold">
+                                          Request Payment
+                                          </div>
+                                        </div>
+                                        <div className="text-lg text-white">
+                                          Insufficient Balance
                                         </div>
                                       </div>
-                                      <div className="flex flex-col gap-2 text-sm text-left font-semibold text-white">
-                                        
-                                        <ul>
-                                          <li>Bank Name : {item.seller.bankInfo.bankName}</li>
-                                          <li>Account Number : {item.seller.bankInfo.accountNumber}</li>
-                                          <li>Account Holder : {item.seller.bankInfo.accountHolder}</li>
-                                          <li>Amount : {item.krwAmount} KRW</li>
-                                          {/* 입금자명 표시 */}
-                                          <li>Deposit Name : {item.tradeId}</li>
-                                        </ul>
+
+                                    ) : (
+
+                                      <div className="flex flex-col gap-2">
+
+                                        <div className="flex flex-row items-center gap-2">
+                                          <GearSetupIcon />
+                                          <div className="text-lg font-semibold">
+                                          Request Payment
+                                          </div>
+                                        </div>
+                                        <div className="flex flex-col gap-2 text-sm text-left font-semibold text-white">
+                                          
+                                          <ul>
+                                            <li>Bank Name : {item.seller.bankInfo.bankName}</li>
+                                            <li>Account Number : {item.seller.bankInfo.accountNumber}</li>
+                                            <li>Account Holder : {item.seller.bankInfo.accountHolder}</li>
+                                            <li>Amount : {item.krwAmount} KRW</li>
+                                            {/* 입금자명 표시 */}
+                                            <li>Deposit Name : {item.tradeId}</li>
+                                          </ul>
 
 
 
+                                        </div>
                                       </div>
-                                    </div>
+                                    )}
+
+
                                   </button>
                                 </div>
                             )}
@@ -473,8 +609,7 @@ const P2PTable = () => {
                                 new Date(item.createdAt).toLocaleDateString() + ' ' + new Date(item.createdAt).toLocaleTimeString()
                               }
                             </p>
-                            
-                            <h2 className="text-lg font-semibold mb-2">Seller: {item.nickname}</h2>
+                          
 
                             <p className="text-xl font-bold text-zinc-400">Amount: {item.usdtAmount} USDT</p>
 

@@ -162,7 +162,7 @@ export default function Home() {
   const [balance, setBalance] = useState(0);
 
 
-
+  
   const { data: balanceData } = useReadContract({
     contract, 
     method: "function balanceOf(address account) view returns (uint256)", 
