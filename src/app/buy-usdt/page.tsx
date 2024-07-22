@@ -375,7 +375,9 @@ const P2PTable = () => {
                             </p>
                             */}
 
-                            {item.status === 'accepted' && (
+                            
+
+                            {(item.status === 'accepted' || item.status === 'paymentRequested') && (
                               <>
                                 <p className="text-sm text-zinc-400">Accepted at {
                                   item.acceptedAt && new Date(item.acceptedAt).toLocaleString()
