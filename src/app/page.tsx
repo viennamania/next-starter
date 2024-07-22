@@ -358,7 +358,7 @@ export default function Home() {
     }
 
     const fetchData = async () => {
-        const response = await fetch("/api/order/getBuyTrades", {
+        const response = await fetch("/api/order/getBuyTradesProcessing", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
