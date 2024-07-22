@@ -503,6 +503,53 @@ export async function getSellTradesByWalletAddress(
 
 
 
+// get sell trades by wallet address order by createdAt desc
+// status is not 'paymentConfirmed'
+export async function getSellTradesByWalletAddressProcessing(
+
+  {
+    walletAddress,
+    limit,
+    page,
+  }: {
+    walletAddress: string;
+    limit: number;
+    page: number;
+  
+  }
+
+): Promise<ResultProps> {
+
+
+
+  const client = await clientPromise;
+  const collection = client.db('vienna').collection('orders');
+
+
+  // get orders by buyer.walletAddress = walletAddress 
+  // tradeId is not null
+
+  const results = await collection.find<UserProps>(
+
+    {
+      'walletAddress': walletAddress,
+      tradeId: { $ne: null },
+      status: { $ne: 'paymentConfirmed' },
+    },
+
+  ).sort({ createdAt: -1 }).limit(limit).skip((page - 1) * limit).toArray();
+
+
+  return {
+    totalCount: results.length,
+    orders: results,
+  };
+
+}
+
+
+
+
 
 
 
