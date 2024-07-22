@@ -74,6 +74,7 @@ interface SellOrder {
 
   acceptedAt: string;
   paymentRequestedAt: string;
+  paymentConfirmedAt: string;
 
   tradeId: string;
 
@@ -232,7 +233,7 @@ const P2PTable = () => {
   
           const data = await response.json();
   
-          console.log('data', data);
+          ///console.log('data', data);
   
           if (data.result) {
             setSellOrders(data.result.orders);
@@ -413,8 +414,27 @@ const P2PTable = () => {
 
         if (data.result) {
 
+
+
+
+          const response = await fetch('/api/order/getSellTrades', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              walletAddress: address
+            })
+          });
+  
+          const data = await response.json();
+  
+          ///console.log('data', data);
+  
+          if (data.result) {
+            setSellOrders(data.result.orders);
+          }
           
-          setSellOrders(data.result.orders);
 
 
 
@@ -429,6 +449,66 @@ const P2PTable = () => {
       setRequestingPayment(false);
 
     }
+
+
+
+    const [confirmingPayment, setConfirmingPayment] = useState(false);
+
+    const confirmPayment = async (
+      orderId: string
+    ) => {
+      // confirm payment
+      // send usdt to buyer wallet address
+
+      if (confirmingPayment) {
+        return;
+      }
+
+      setConfirmingPayment(true);
+
+      const response = await fetch('/api/order/confirmPayment', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          orderId: orderId,
+        })
+      });
+
+      const data = await response.json();
+
+      //console.log('data', data);
+
+      if (data.result) {
+
+        const response = await fetch('/api/order/getSellTrades', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            walletAddress: address
+          })
+        });
+
+        const data = await response.json();
+
+        ///console.log('data', data);
+
+        if (data.result) {
+          setSellOrders(data.result.orders);
+        }
+
+        toast.success('Payment has been confirmed');
+      } else {
+        toast.error('Payment has been failed');
+      }
+
+      setConfirmingPayment(false);
+    }
+
+
 
     
     return (
@@ -525,7 +605,7 @@ const P2PTable = () => {
                             className="bg-black p-4 rounded-md border border-gray-200 ">
 
 
-                            { (item.status === 'accepted' || item.status === 'paymentRequested') && (
+                            { (item.status === 'accepted' || item.status === 'paymentRequested' || item.status === 'paymentConfirmed') && (
                               <p className="text-2xl font-semibold text-green-500">
                                 TID: {item.tradeId}
                               </p>
@@ -540,8 +620,17 @@ const P2PTable = () => {
      
 
 
-                            {item.status === 'paymentRequested' && (
+                            { (item.status === 'paymentRequested' || item.status === 'paymentConfirmed')
+                              && (
+
                               <div className="w-full flex flex-col items-start gap-2">
+
+                                {item.paymentConfirmedAt && (
+                                  <p className="text-sm font-semibold text-gray-500">
+                                    Pay confirmed at {new Date(item.paymentConfirmedAt).toLocaleDateString() + ' ' + new Date(item.paymentConfirmedAt).toLocaleTimeString()}
+                                  </p> 
+                                )}                               
+
                                 <p className="text-sm font-semibold text-gray-500">
                                   Pay rqsted at {new Date(item.paymentRequestedAt).toLocaleDateString() + ' ' + new Date(item.paymentRequestedAt).toLocaleTimeString()}
                                 </p>
@@ -606,12 +695,7 @@ const P2PTable = () => {
                                   </div>
                                  
 
-                                  {requestingPayment && (
-                                    <div className="text-lg text-white">
-                                      Requesting Payment...
-                                    </div>
-                                  )}
-
+                         
 
                                   {item.status === 'accepted' && (
 
@@ -710,13 +794,25 @@ const P2PTable = () => {
                                 </div>
                             )}
 
+
+                            {confirmingPayment && (
+                              <div className="text-lg text-white">
+                                Confirming Payment...
+                              </div>
+                            )}
+
                             {item.status === 'paymentRequested' && (
+
+                              
                               <button
+                                  disabled={confirmingPayment}
                                   className="w-full text-lg bg-green-500 text-white px-4 py-2 rounded-md mt-4"
                                   onClick={() => {
                                       console.log('Canfirm Payment');
 
-                                      toast.success('Payment has been confirmed');
+                                      //toast.success('Payment has been confirmed');
+
+                                      confirmPayment(item._id);
                                       
                                   }}
                               >

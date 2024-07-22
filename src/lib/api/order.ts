@@ -306,6 +306,45 @@ export async function requestPayment(data: any) {
 
 
 
+export async function confirmPayment(data: any) {
+  
+  ///console.log('acceptSellOrder data: ' + JSON.stringify(data));
+
+  if (!data.orderId) {
+    return null;
+  }
+
+  const client = await clientPromise;
+  const collection = client.db('vienna').collection('orders');
+
+
+  const result = await collection.updateOne(
+    
+    { _id: new ObjectId(data.orderId) },
+
+
+    { $set: {
+      status: 'paymentConfirmed',
+      paymentConfirmedAt: new Date().toISOString(),
+    } }
+  );
+
+  if (result) {
+    const updated = await collection.findOne<UserProps>(
+      { _id: new ObjectId(data.orderId) }
+    );
+
+    return updated;
+  } else {
+    return null;
+  }
+  
+}
+
+
+
+
+
 // get sell orders by wallet address order by createdAt desc
 export async function getTradesByWalletAddress(
 
