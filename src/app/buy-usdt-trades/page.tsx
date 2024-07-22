@@ -524,7 +524,11 @@ const P2PTable = () => {
           <Modal isOpen={isModalOpen} onClose={closeModal}>
               <TradeDetail
                   closeModal={closeModal}
-                  goChat={goChat}
+                  goChat={
+                    () => {
+                      goChat('12345');
+                    }
+                  }
               />
           </Modal>
 
