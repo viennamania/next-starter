@@ -473,6 +473,8 @@ const P2PTable = () => {
                                   <p className="text-xl text-green-500 font-semibold">
                                     Buyer: {item.buyer.nickname}
                                   </p>
+                                  
+                                  {/*
                                   <button
                                       className="w-full text-lg bg-blue-500 text-white px-4 py-2 rounded-md mt-4"
                                       onClick={() => {
@@ -496,7 +498,7 @@ const P2PTable = () => {
                                           <li>Account Number : {item.seller.bankInfo.accountNumber}</li>
                                           <li>Account Holder : {item.seller.bankInfo.accountHolder}</li>
                                           <li>Amount : {item.krwAmount} KRW</li>
-                                          {/* 입금자명 표시 */}
+                                          
                                           <li>Deposit Name : {item.tradeId}</li>
                                         </ul>
 
@@ -505,6 +507,8 @@ const P2PTable = () => {
                                       </div>
                                     </div>
                                   </button>
+                                  */}
+
                                 </div>
                             )}
 
