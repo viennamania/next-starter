@@ -356,6 +356,44 @@ export default function Home() {
 
 
 
+  const [sellTrades, setSellTrades] = useState([]);
+
+  useEffect(() => {
+
+    if (!address) {
+      return;
+    }
+
+    const fetchData = async () => {
+        const response = await fetch("/api/order/getSellTrades", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              walletAddress: address,
+              limit: 10,
+              page: 1,
+            }),
+        });
+
+        const data = await response.json();
+
+        //console.log("data", data);
+
+        if (data.result) {
+
+          setSellTrades(data.result.orders);
+        }
+    };
+
+    fetchData();
+
+  } , [address]);
+
+
+
+
   return (
 
 
@@ -489,21 +527,44 @@ export default function Home() {
 
 
                 {/* send button */}
+                <div className="flex flex-row gap-2 justify-center items-center mt-4">
+                  <button
+                    disabled={!address}
+                    onClick={() => {
+                      // send USDT
+                      console.log("send USDT");
 
-                <button
-                  disabled={!address}
-                  onClick={() => {
-                    // send USDT
-                    console.log("send USDT");
+                      // redirect to send USDT page
+                      router.push("/send-usdt-favorite");
 
-                    // redirect to send USDT page
-                    router.push("/send-usdt-favorite");
+                    }}
+                    className="mt-4 w-40 bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
+                  >
+                    Send USDT
+                  </button>
 
-                  }}
-                  className="mt-4 bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
-                >
-                  Send USDT
-                </button>
+                  <button
+                    disabled={!address}
+                    onClick={() => {
+                      // pay USDT
+                      console.log("pay USDT");
+
+                      // redirect to send USDT page
+                      //router.push("/send-usdt-favorite");
+
+                      // comming soon
+
+                      toast.success('Coming soon');
+
+
+                    }}
+                    className="mt-4 w-40 bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
+                  >
+                    Pay USDT
+                  </button>
+                </div>
+
+
 
 
               </div>
@@ -556,12 +617,12 @@ export default function Home() {
 
 
 
-              {/* My Trades */}
+              {/* My Buy Trades */}
 
               <div className="bg-zinc-800 p-5 rounded-lg text-center">
 
                 <h2 className="text-3xl font-semibold text-zinc-100">
-                  {buyTrades.length}
+                  {buyTrades.length} EA
                 </h2>
                 <p className="text-zinc-300">My Buy Trades</p>
 
@@ -583,6 +644,32 @@ export default function Home() {
 
               </div>
 
+              {/* My Sell Trades */}
+
+              <div className="bg-zinc-800 p-5 rounded-lg text-center">
+
+                <h2 className="text-3xl font-semibold text-zinc-100">
+                  {sellTrades.length} EA
+                </h2>
+                <p className="text-zinc-300">My Sell Trades</p>
+
+                <div className="grid gap-4 lg:grid-cols-3 justify-center mt-4">
+
+                  {sellTrades.map((trade: any) => (
+                    <ArticleCard
+                      key={trade.id}
+                      title={`Buyer: ${trade.buyer.nickname} - ${trade.usdtAmount} USDT`}
+                      avatar={trade.avatar}
+                      href={`/profiles/${trade.buyer.walletAddress}`}
+                      description={
+                        `Trade ID: ${trade.tradeId} - ${trade.status?.toUpperCase()}`
+                      }
+                    />
+                  ))}
+
+                </div>
+
+              </div>
 
            
  
