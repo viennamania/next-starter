@@ -602,8 +602,8 @@ const P2PTable = () => {
                                             Request Payment
                                             </div>
                                           </div>
-                                          <div className="flex flex-col gap-2 text-sm text-left font-semibold text-white">
-                                            
+
+                                          <div className="flex flex-col gap-2 text-sm text-left text-white">
                                             <ul>
                                               <li>Bank Name : {item.seller.bankInfo.bankName}</li>
                                               <li>Account Number : {item.seller.bankInfo.accountNumber}</li>
@@ -612,8 +612,8 @@ const P2PTable = () => {
                                               {/* 입금자명 표시 */}
                                               <li>Deposit Name : {item.tradeId}</li>
                                             </ul>
-
                                           </div>
+
                                         </div>
                                       )}
 

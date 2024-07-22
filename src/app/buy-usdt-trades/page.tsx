@@ -68,6 +68,7 @@ interface SellOrder {
 
   status: string;
   acceptedAt: string;
+  paymentRequestedAt: string;
 
   tradeId: string;
 
@@ -380,9 +381,48 @@ const P2PTable = () => {
                               Trade ID: {item.tradeId}
                             </p>
 
-                            <p className="text-xl text-white font-semibold">
-                              Status: {item.status?.toUpperCase()}
-                            </p>
+                            {item.paymentRequestedAt && (
+                              <p className="text-sm text-zinc-400">Pay rqsted at {
+                                item.paymentRequestedAt && new Date(item.paymentRequestedAt).toLocaleString()
+                              }</p>
+                            )}
+
+                            {item.status === 'paymentRequested' && (
+                              <div className="mt-2 mb-2 flex flex-col gap-2 text-sm text-left border bg-gray-800 p-4 rounded-md">
+                                <p className="text-xl text-white font-semibold">
+                                  Payment Infomation
+                                </p>
+
+                              
+                                <ul>
+                                  <li>Bank Name : {item.seller.bankInfo.bankName}</li>
+                                  <li>Account Number : {item.seller.bankInfo.accountNumber}</li>
+                                  <li>Account Holder : {item.seller.bankInfo.accountHolder}</li>
+                                  <li>Amount : {item.krwAmount} KRW</li>
+                                  {/* 입금자명 표시 */}
+                                  <li>You must deposit to the above account using deposit name
+                                    {' '}<span className="text-red-500 font-semibold">{item.tradeId}</span>
+                                  </li>
+                                  <li>
+                                    After deposit, click the button below.
+                                  </li>
+                                </ul>
+
+                                <button className="m-2 bg-green-500 text-white px-4 py-2 rounded-lg">
+                                  Payment Completed
+                                </button>
+                              </div>
+                            )}
+
+
+                            {item.status === 'accepted' && (
+                              <button className="mt-2 mb-2 bg-green-500 text-white px-4 py-2 rounded-lg">
+                                Cancel Trade
+                              </button>
+                            )}
+
+
+
 
                             <p className="text-sm text-zinc-400">Accepted at {
                                 item.createdAt && new Date(item.acceptedAt).toLocaleString()
