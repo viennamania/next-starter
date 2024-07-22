@@ -388,22 +388,22 @@ const P2PTable = () => {
                             )}
 
                             {item.status === 'paymentRequested' && (
-                              <div className="mt-2 mb-2 flex flex-col gap-2 text-sm text-left border bg-gray-800 p-4 rounded-md">
+                              <div className="mt-2 mb-2 flex flex-col gap-2 text-sm text-left bg-gray-800 p-4 rounded-md">
                                 <p className="text-xl text-white font-semibold">
                                   Payment Infomation
                                 </p>
 
                               
                                 <ul>
-                                  <li>Bank Name : {item.seller.bankInfo.bankName}</li>
-                                  <li>Account Number : {item.seller.bankInfo.accountNumber}</li>
-                                  <li>Account Holder : {item.seller.bankInfo.accountHolder}</li>
-                                  <li>Amount : {item.krwAmount} KRW</li>
-                                  {/* 입금자명 표시 */}
-                                  <li>You must deposit to the above account using deposit name
-                                    {' '}<span className="text-red-500 font-semibold">{item.tradeId}</span>
+
+                                  <li className="text-lg" >{item.seller.bankInfo.bankName} {item.seller.bankInfo.accountNumber} {item.seller.bankInfo.accountHolder}</li>
+                                  <li className="text-lg">Amount : {item.krwAmount} KRW</li>
+                                  
+                                  <li className="mt-2">You must deposit to the above account using deposit name
+                                    {' '}<span className="text-red-500 font-semibold text-lg">{item.tradeId}</span>
                                   </li>
-                                  <li>
+
+                                  <li className="mt-2">
                                     After deposit, click the button below.
                                   </li>
                                 </ul>
