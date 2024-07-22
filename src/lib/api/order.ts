@@ -157,7 +157,9 @@ export async function getSellOrders(
   const collection = client.db('vienna').collection('orders');
 
   const results = await collection.find<UserProps>(
-    {},
+    {
+      status: 'ordered',
+    },
     
     //{ projection: { _id: 0, emailVerified: 0 } }
 

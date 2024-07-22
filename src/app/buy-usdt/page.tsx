@@ -369,9 +369,11 @@ const P2PTable = () => {
                             className=" w-96 xl:w-full
                             bg-black p-4 rounded-md border border-gray-200 ">
 
+                            {/*
                             <p className="text-xl text-white font-semibold">
                               Status: {item.status?.toUpperCase()}
                             </p>
+                            */}
 
                             {item.status === 'accepted' && (
                               <>
@@ -385,23 +387,23 @@ const P2PTable = () => {
                               </>
                             )}
                            
-                            <p className="text-sm text-zinc-400">Ordered at {
+                            <p className="text-sm text-zinc-400">Registered at {
                                 item.createdAt && new Date(item.createdAt).toLocaleString()
                             }</p>
                             
                             <p className="mt-2 mb-2 flex items-center gap-2">
-                              <div className="flex items-center space-x-2">Selled by</div>
+                              <div className="flex items-center space-x-2">Seller:</div>
                               <Image
                                   src={item.avatar || '/profile-default.png'}
                                   alt="Avatar"
-                                  width={38}
-                                  height={38}
+                                  width={20}
+                                  height={20}
                                   priority={true} // Added priority property
                                   className="rounded-full"
                                   style={{
                                       objectFit: 'cover',
-                                      width: '38px',
-                                      height: '38px',
+                                      width: '20px',
+                                      height: '20px',
                                   }}
                               />
                               <h2 className="text-lg font-semibold">{item.nickname}</h2>
