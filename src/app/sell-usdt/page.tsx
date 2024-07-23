@@ -129,51 +129,35 @@ const P2PTable = () => {
     const router = useRouter();
 
 
-  /*
-  return (
-    <div className="overflow-x-auto">
-      <table className="min-w-full bg-white border border-gray-200">
-        <thead>
-          <tr>
-            <th className="px-4 py-2 border-b">Advertiser (Completion rate)</th>
-            <th className="px-4 py-2 border-b">Price</th>
-            <th className="px-4 py-2 border-b">Limit/Available</th>
-            <th className="px-4 py-2 border-b">Payment method</th>
-            <th className="px-4 py-2 border-b">Trade</th>
-          </tr>
-        </thead>
-        <tbody>
-          {data.map((item, index) => (
-            <tr key={index} className="border-b">
-              <td className="px-4 py-2">
-                <span className={`inline-block w-2 h-2 rounded-full ${item.trades > 300 ? 'bg-green-500' : 'bg-gray-300'}`}></span>
-                <span className="ml-2">{item.advertiser}</span>
-                <span className="ml-2 text-gray-500">{item.trades} trades</span>
-              </td>
-              <td className="px-4 py-2">{item.price} KRW</td>
-              <td className="px-4 py-2">{item.limit} <br /> {item.available}</td>
-              <td className="px-4 py-2">
-                {item.paymentMethods.map((method, idx) => (
-                  <span key={idx} className="inline-block bg-yellow-100 text-yellow-800 text-xs px-2 rounded-full mr-2 mb-1">{method}</span>
-                ))}
-              </td>
-              <td className="px-4 py-2 text-green-500 cursor-pointer">Buy USDT</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
-  );
-    */
-
-  /*
-        <article>
-        <h2 className="text-lg font-semibold mb-2">{props.title}</h2>
-        <p className="text-sm text-zinc-400">{props.description}</p>
-      </article>
-    */
 
 
+
+    const [balance, setBalance] = useState(0);
+
+
+
+    useEffect(() => {
+  
+      // get the balance
+      const getBalance = async () => {
+        const result = await balanceOf({
+          contract,
+          address: address,
+        });
+    
+        //console.log(result);
+    
+        setBalance( Number(result) / 10 ** 6 );
+  
+      };
+  
+      if (address) getBalance();
+  
+      const interval = setInterval(() => {
+        if (address) getBalance();
+      } , 1000);
+  
+    } , [address]);
 
 
 
@@ -382,6 +366,15 @@ const P2PTable = () => {
               </div>
 
 
+                {/* my usdt balance */}
+                <div className="flex flex-col gap-2 items-start">
+                  <div className="text-sm">My Balance</div>
+                  <div className="text-5xl font-semibold text-white">
+                    {balance} <span className="text-lg">USDT</span>
+                  </div>
+                </div>
+
+
                 <div className="w-full grid gap-4 lg:grid-cols-3 justify-center">
 
 
@@ -419,28 +412,49 @@ const P2PTable = () => {
                         <p className="mt-4 text-sm text-zinc-400">Payment method: Bank Transfer</p>
 
 
-                        {sellOrdering ? (
-                            <button
-                                className="text-lg bg-gray-300 text-gray-700 px-4 py-2 rounded-md mt-4"
-                                disabled
-                            >
-                                Ordering...
-                            </button>
-                        ) : (
-                            <button
-                                className="text-lg bg-green-500 text-white px-4 py-2 rounded-md mt-4"
-                                onClick={() => {
-                                    console.log('Sell USDT');
-                                    // open trade detail
-                                    // open modal of trade detail
-                                    ///openModal();
+                        <div className="mt-4 flex flex-col gap-2">
+                  
+                          {sellOrdering ? (
 
-                                    sellOrder();
-                                }}
-                            >
-                                Order Sell USDT
-                            </button>
-                        )}
+                            <div className="flex flex-col items-center gap-2">
+                                <div className="
+                                  w-6 h-6
+                                  border-2 border-zinc-800
+                                  rounded-full
+                                  animate-spin
+                                ">
+                                  <Image
+                                    src="/loading.png"
+                                    alt="loading"
+                                    width={24}
+                                    height={24}
+                                  />
+                                </div>
+                                <div className="text-white">
+                                  Placing order...
+                                </div>
+                  
+                            </div>
+
+
+                          ) : (
+                              <button
+                                  disabled={usdtAmount === 0}
+                                  className="text-lg bg-green-500 text-white px-4 py-2 rounded-md "
+                                  onClick={() => {
+                                      console.log('Sell USDT');
+                                      // open trade detail
+                                      // open modal of trade detail
+                                      ///openModal();
+
+                                      sellOrder();
+                                  }}
+                              >
+                                  Order Sell USDT
+                              </button>
+                          )}
+
+                        </div>
 
 
                     </article>
@@ -450,7 +464,12 @@ const P2PTable = () => {
 
                         <article
                             key={index}
-                            className="bg-black p-4 rounded-md border border-gray-200 ">
+                            className={`bg-black p-4 rounded-md border
+                              
+                               ${item.walletAddress === address ? 'border-green-500' : 'border-gray-200'}
+                               w-96 xl:w-full`
+                            }
+                        >
 
                             <p className="text-sm font-semibold text-zinc-400">
                               Status: {item.status?.toUpperCase()}
@@ -473,7 +492,7 @@ const P2PTable = () => {
 
                                   <p className="text-xl text-green-500 font-semibold">
                                     Buyer: {
-                                      item.buyer.walletAddress === address ? 'Me' :
+                                      item.buyer.walletAddress === address ? item.nickname + ' :Me' :
                                     
                                       item.buyer.nickname.substring(0, 1) + '****'
                                     }
@@ -526,7 +545,7 @@ const P2PTable = () => {
                             <h2 className="text-lg font-semibold mb-2">
                               Seller: {
 
-                                item.walletAddress === address ? 'Me' :
+                                item.walletAddress === address ? item.nickname + ' :Me' :
                                 
                                 item.nickname
 
