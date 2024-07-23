@@ -378,8 +378,8 @@ const P2PTable = () => {
                 <div className="w-full grid gap-4 lg:grid-cols-3 justify-center">
 
 
-                    {/* sell order */}
-                    <article className=" w-96 xl:w-full bg-black p-4 rounded-md border border-gray-200 ">
+                    {/* sell order is different border color */}
+                    <article className=" w-96 xl:w-full bg-black p-4 rounded-md border-2 border-gray-200">
        
                         <p className="text-xl font-bold text-zinc-400">1 USDT = 1355.17 KRW</p>
                         
@@ -470,22 +470,31 @@ const P2PTable = () => {
                                w-96 xl:w-full`
                             }
                         >
-
-                            <p className="text-sm font-semibold text-zinc-400">
-                              Status: {item.status?.toUpperCase()}
-                            </p>
-
-                            {item.status === 'accepted' && (
-                              <p className="text-2xl font-semibold text-green-500">
-                                Trade ID: {item.tradeId}
+                            { (item.status === 'accepted' || item.status === 'paymentRequested') && (
+                              <p className="text-xl font-semibold text-green-500 bg-white px-2 py-1 rounded-md">
+                                TID: {item.tradeId}
                               </p>
                             )}
 
-                            {item.status === 'accepted' && (
-                              <p className="text-sm text-zinc-400">
+                            {item.acceptedAt && (
+                              <p className="mb-4 text-sm text-zinc-400">
                                 Accepted at {new Date(item.acceptedAt).toLocaleDateString() + ' ' + new Date(item.acceptedAt).toLocaleTimeString()}
                               </p>
                             )}
+
+
+                            <p className=" text-2xl font-bold text-white">{item.usdtAmount} USDT</p>
+
+                            <p className="text-xl font-bold text-zinc-400"> Price: {item.krwAmount} KRW</p>
+
+                            <p className="text-sm text-zinc-400">Rate: 1 USDT = {item.rate} KRW</p>
+
+
+                            <p className="mt-4 text-sm font-semibold text-zinc-400">
+                              Status: {item.status?.toUpperCase()}
+                            </p>
+
+
 
                             {item.status === 'accepted' && (
                                 <div className="w-full mt-2 mb-2 flex flex-col items-start ">
@@ -552,11 +561,7 @@ const P2PTable = () => {
                               }
                             </h2>
 
-                            <p className="text-xl font-bold text-zinc-400">Amount: {item.usdtAmount} USDT</p>
 
-                            <p className="text-xl font-bold text-zinc-400">Rate: 1 USDT = {item.rate} KRW</p>
-
-                            <p className="text-xl font-bold text-zinc-400"> Price: {item.krwAmount} KRW</p>
 
                             <p className="mt-4 text-sm text-zinc-400">Payment method: Bank Transfer</p>
 
