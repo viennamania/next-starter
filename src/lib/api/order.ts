@@ -240,7 +240,10 @@ export async function acceptSellOrder(data: any) {
   
   ///console.log('acceptSellOrder data: ' + JSON.stringify(data));
 
-  if (!data.orderId || !data.buyerWalletAddress || !data.buyerNickname || !data.buyerAvatar || !data.buyerMobile) {
+
+
+
+  if (!data.orderId || !data.buyerWalletAddress || !data.buyerMobile) {
     return null;
   }
 
@@ -252,9 +255,25 @@ export async function acceptSellOrder(data: any) {
 
   const tradeId = Math.floor(Math.random() * 900000) + 100000 + '';
 
+
+
+  /*
+    const result = await collection.findOne<UserProps>(
+    { _id: new ObjectId(orderId) }
+  );
+  */
+
+
+  ///console.log('acceptSellOrder data.orderId: ' + data.orderId);
+
+ 
   const result = await collection.updateOne(
     
-    { _id: new ObjectId(data.orderId) },
+    //{ _id: new ObjectId(data.orderId) },
+
+    { _id: new ObjectId( data.orderId + '' ) },
+
+
 
 
     { $set: {
@@ -274,13 +293,24 @@ export async function acceptSellOrder(data: any) {
     } }
   );
 
+
+  ////console.log('acceptSellOrder result: ' + result);
+
+
+
+
   if (result) {
+
     const updated = await collection.findOne<UserProps>(
-      { _id: new ObjectId(data.orderId) },
-      { projection: { _id: 0, emailVerified: 0 } }
+      { _id: new ObjectId(data.orderId + '') }
     );
 
+    ///console.log('acceptSellOrder updated: ' + JSON.stringify(updated));
+
+
+
     return updated;
+
   } else {
     return null;
   }
@@ -306,7 +336,7 @@ export async function requestPayment(data: any) {
 
   const result = await collection.updateOne(
     
-    { _id: new ObjectId(data.orderId) },
+    { _id: new ObjectId(data.orderId + '') },
 
 
     { $set: {
@@ -317,7 +347,7 @@ export async function requestPayment(data: any) {
 
   if (result) {
     const updated = await collection.findOne<UserProps>(
-      { _id: new ObjectId(data.orderId) }
+      { _id: new ObjectId(data.orderId + '') }
     );
 
     return updated;
