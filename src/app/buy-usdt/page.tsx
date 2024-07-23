@@ -41,6 +41,9 @@ import { inAppWallet } from "thirdweb/wallets";
 import { getUserPhoneNumber } from "thirdweb/wallets/in-app";
 
 
+import { balanceOf, transfer } from "thirdweb/extensions/erc20";
+ 
+
 
 
 
@@ -66,8 +69,10 @@ interface SellOrder {
 
   seller: any;
 
+  tradeId: string;
   status: string;
   acceptedAt: string;
+  paymentRequestedAt: string;
 
   buyer: any;
 }
@@ -112,7 +117,32 @@ const P2PTable = () => {
   const address = smartAccount?.address || "";
 
 
-  console.log('address', address);
+  const [balance, setBalance] = useState(0);
+
+
+
+  useEffect(() => {
+
+    // get the balance
+    const getBalance = async () => {
+      const result = await balanceOf({
+        contract,
+        address: address,
+      });
+  
+      //console.log(result);
+  
+      setBalance( Number(result) / 10 ** 6 );
+
+    };
+
+    if (address) getBalance();
+
+    const interval = setInterval(() => {
+      if (address) getBalance();
+    } , 1000);
+
+  } , [address]);
 
 
   // get User by wallet address
@@ -360,14 +390,26 @@ const P2PTable = () => {
               </div>
 
 
+                {/* my usdt balance */}
+                <div className="flex flex-col gap-2 items-start">
+                  <div className="text-sm">My Balance</div>
+                  <div className="text-5xl font-semibold text-white">
+                    {balance} <span className="text-lg">USDT</span>
+                  </div>
+                </div>
+
                 <div className="w-full grid gap-4 lg:grid-cols-3 justify-center">
 
                     {sellOrders.map((item, index) => (
 
                         <article
                             key={index}
-                            className=" w-96 xl:w-full
-                            bg-black p-4 rounded-md border border-gray-200 ">
+                            className={` w-96 xl:w-full
+                              ${item.walletAddress === address ? 'border-green-500' : 'border-gray-200'}
+                           
+                            p-4 rounded-md border bg-black bg-opacity-50
+                          `}
+                        >
 
                             {/*
                             <p className="text-xl text-white font-semibold">
@@ -375,7 +417,23 @@ const P2PTable = () => {
                             </p>
                             */}
 
+
+                            { (item.status === 'accepted' || item.status === 'paymentRequested') && (
+                              <p className="text-xl font-semibold text-green-500 bg-white px-2 py-1 rounded-md">
+                                TID: {item.tradeId}
+                              </p>
+                            )}
+
+                            {item.acceptedAt && (
+                              <p className="mb-4 text-sm text-zinc-400">
+                                Accepted at {new Date(item.acceptedAt).toLocaleDateString() + ' ' + new Date(item.acceptedAt).toLocaleTimeString()}
+                              </p>
+                            )}
+
                             
+                            <p className="text-2xl font-semibold text-white">{item.usdtAmount} USDT</p>
+
+                            <p className="text-xl font-bold text-zinc-400">Price: {item.krwAmount} KRW</p>
 
                             {(item.status === 'accepted' || item.status === 'paymentRequested') && (
                               <>
@@ -418,9 +476,7 @@ const P2PTable = () => {
                             </p>
 
 
-                            <p className="text-2xl font-semibold text-white">{item.usdtAmount} USDT</p>
 
-                            <p className="text-xl font-bold text-zinc-400">Price: {item.krwAmount} KRW</p>
                             
                             {/*
                             <p className="text-sm text-zinc-400">{item.available} <br /> {item.limit}</p>
