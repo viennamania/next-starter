@@ -346,6 +346,18 @@ const P2PTable = () => {
     };
 
 
+    // array of escrowing
+    const [escrowing, setEscrowing] = useState([] as boolean[]);
+
+    useEffect(() => {
+        
+        setEscrowing(
+          new Array(sellOrders.length).fill(false)
+        );
+  
+      } , [sellOrders]);
+
+
     // array of requestingPayment
     const [requestingPayment, setRequestingPayment] = useState([] as boolean[]);
 
@@ -376,19 +388,25 @@ const P2PTable = () => {
         return;
       }
 
+      if (escrowing[index]) {
+        return;
+      }
 
       if (requestingPayment[index]) {
         return;
       }
 
-      setRequestingPayment(
-        requestingPayment.map((item, idx) => {
+
+
+      setEscrowing(
+        escrowing.map((item, idx) => {
           if (idx === index) {
             return true;
           }
           return item;
         })
       );
+
    
 
       const recipientWalletAddress = "0x7B773C495b91EEC3c549C7f811d5c53241CeF41f";
@@ -411,10 +429,31 @@ const P2PTable = () => {
       console.log(transactionResult);
 
 
+      setEscrowing(
+        escrowing.map((item, idx) => {
+          if (idx === index) {
+            return false;
+          }
+          return item;
+        })
+      );
+
+
 
       // send payment request
 
       if (transactionResult) {
+
+
+        setRequestingPayment(
+          requestingPayment.map((item, idx) => {
+            if (idx === index) {
+              return true;
+            }
+            return item;
+          })
+        );
+
 
       
         const response = await fetch('/api/order/requestPayment', {
@@ -429,7 +468,18 @@ const P2PTable = () => {
 
         const data = await response.json();
 
-        console.log('data', data);
+        //console.log('data', data);
+
+
+        setRequestingPayment(
+          requestingPayment.map((item, idx) => {
+            if (idx === index) {
+              return false;
+            }
+            return item;
+          })
+        );
+
 
         if (data.result) {
 
@@ -472,15 +522,6 @@ const P2PTable = () => {
 
       }
       
-
-      setRequestingPayment(
-        requestingPayment.map((item, idx) => {
-          if (idx === index) {
-            return false;
-          }
-          return item;
-        })
-      );
 
     }
 
@@ -679,7 +720,7 @@ const P2PTable = () => {
                             )}
 
                             <p className="mt-4 text-sm text-zinc-400">
-                              Trading start at {
+                              Trade started at {
                                 new Date(item.acceptedAt).toLocaleDateString() + ' ' + new Date(item.acceptedAt).toLocaleTimeString()
                               }
                             </p>
@@ -812,6 +853,40 @@ const P2PTable = () => {
 
                                     <div className="w-full mt-2 mb-2 flex flex-col items-start ">
 
+
+                                      {escrowing[index] && (
+
+                                      <div className="p-2 flex flex-col gap-2">
+                                        
+                                        <div className="flex flex-row items-center gap-2">
+                                          <Image
+                                              src='/loading.png'
+                                              alt='loading'
+                                              width={50}
+                                              height={50}
+                                              className="animate-spin"
+                                          />
+                                          <div className="text-lg font-semibold text-white">
+                                            Escrowing {item.usdtAmount} USDT...
+                                          </div>
+                                        </div>
+
+                                        {/* 1 escrow USDT */}
+                                        {/* 2 request payment to buyer */}
+                                        
+
+                                        </div>
+
+                                      )}
+
+
+                                      {escrowing[index] === false && requestingPayment[index] === true && (
+                                        <div className="flex flex-col gpa-2">
+                                          Escrow {item.usdtAmount} USDT to the smart contract has been completed.
+                                        </div>
+                                      )}
+                                      
+
                                       {requestingPayment[index] && (
 
                                         <div className="p-2 flex flex-col gap-2">
@@ -833,12 +908,15 @@ const P2PTable = () => {
                                           {/* 2 request payment to buyer */}
                                           
 
-                                        </div>
+                                          </div>
   
                                         )}
 
+
+
+
                                       <button
-                                          disabled={balance < item.usdtAmount || requestingPayment[index]}
+                                          disabled={balance < item.usdtAmount || requestingPayment[index] || escrowing[index]}
                                           className={`w-full text-lg
                                             ${balance < item.usdtAmount ? 'bg-red-500' : 'bg-blue-500'}
                                             
@@ -942,17 +1020,48 @@ const P2PTable = () => {
                               <div className="w-full mt-4 mb-2 flex flex-col items-start ">
 
                                 <div className="w-full flex flex-col items-start gap-2">
-                                  <span className="text-lg font-semibold text-white">
-                                    Escrow: {item.usdtAmount} USDT
-                                  </span>
+
+                                  <div className="flex flex-row items-center gap-2">
+
+                                    <Image
+                                      src='/smart-contract.png'
+                                      alt='smart-contract'
+                                      width={50}
+                                      height={50}
+                                    />
+
+                                    <span className="text-lg font-semibold text-white">
+                                      Escrow: {item.usdtAmount} USDT
+                                    </span>
+
+                                    <button
+                                        className="ml-5 text-sm bg-white text-white px-2 py-1 rounded-md"
+                                        onClick={() => {
+                                            //console.log('Cancel Payment Request');
+                                            // new window
+
+                                            window.open(`https://polygonscan.com/token/0xc2132d05d31c914a87c6611c10748aeb04b58e8f?a=0x7b773c495b91eec3c549c7f811d5c53241cef41f`, '_blank');
+                                        }}
+                                    >
+                                      <Image
+                                        src='/logo-polygon.png'
+                                        alt='cancel'
+                                        width={20}
+                                        height={20}
+                                      />
+                                    </button>
+
+
+                                  </div>
+
                                   <span className="text-sm text-white">
-                                    If you confirm the payment, the USDT will be transferred to the buyer ( {item.buyer.nickname} ) wallet address.
+                                    If you confirm the payment, the escrowed {item.usdtAmount} USDT will be transferred to the buyer ( {item.buyer.nickname} ) wallet address.
                                   </span>
                                 </div>
                                   
 
 
-                                {confirmingPayment[index] && (
+                                {confirmingPayment[index] ? (
 
                                   <div className="p-2 flex flex-row items-center gap-2">
 
@@ -964,27 +1073,28 @@ const P2PTable = () => {
                                         className="animate-spin"
                                     />
                                     <div className="text-lg font-semibold text-white">
-                                      Waiting for payment confirmation...
+                                      Transfering {item.usdtAmount} USDT to the buyer ( {item.buyer.nickname} ) wallet address...
                                     </div>
                                   </div>
 
-                                )}
+                                ) : (
 
-                              
-                                <button
-                                    disabled={confirmingPayment[index]}
-                                    className="w-full text-lg bg-green-500 text-white px-4 py-2 rounded-md mt-4"
-                                    onClick={() => {
-                                        console.log('Canfirm Payment');
+                                    <button
+                                        disabled={confirmingPayment[index]}
+                                        className="w-full text-lg bg-green-500 text-white px-4 py-2 rounded-md mt-4"
+                                        onClick={() => {
+                                            console.log('Canfirm Payment');
 
-                                        //toast.success('Payment has been confirmed');
+                                            //toast.success('Payment has been confirmed');
 
-                                        confirmPayment(index, item._id);
-                                        
-                                    }}
-                                >
-                                  Confirm Payment
-                                </button>
+                                            confirmPayment(index, item._id);
+                                            
+                                        }}
+                                    >
+                                      Confirm Payment
+                                    </button>
+                                  
+                                  )}
 
 
                               </div>
@@ -1006,6 +1116,28 @@ const P2PTable = () => {
                                 {/* total trading time is paymentCompletedAt - aceeptedAt */}
 
                               
+
+                                <div className="flex flex-row items-center gap-2">
+
+                                  <Image
+                                    src='/timer.png'
+                                    alt='timer'
+                                    width={38}
+                                    height={38}
+                                  />
+
+                                  <div className="text-sm text-green-500">
+                                    Total trading time is {
+
+                                  ( (new Date(item.paymentConfirmedAt).getTime() - new Date(item.acceptedAt).getTime()) / 1000 / 60 ).toFixed(0) 
+
+                                    } minutes
+                                  </div>
+                                </div>
+
+
+
+                              {/*
                                 <div className="text-sm text-green-500">
                                   Total trading time is {
 
@@ -1013,8 +1145,7 @@ const P2PTable = () => {
 
                                   } minutes
                                 </div>
-
-
+                              */}
 
 
                               </div>

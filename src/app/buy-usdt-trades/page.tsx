@@ -418,8 +418,13 @@ const P2PTable = () => {
 
                         <article
                             key={index}
-                            className=" w-96 xl:w-full
-                            bg-black p-4 rounded-md border border-gray-200 ">
+                            className={`
+                              w-96 xl:w-full bg-black p-4 rounded-md
+                              ${item.status === 'paymentConfirmed' ? 'bg-gray-800' : 'bg-black border border-gray-200'}
+                              
+                            `}
+                            
+                          >
 
                             <p className="text-xl text-green-500">
                               TID: {item.tradeId}
@@ -431,13 +436,13 @@ const P2PTable = () => {
                             }</p>
                             */}
 
-                            <p className="mt-5 text-sm text-zinc-400">Accepted at {
+                            <p className="mt-4 text-sm text-zinc-400">Trade started at {
                                 item.createdAt && new Date(item.acceptedAt).toLocaleString()
                             }</p>
 
-                            <p className="text-2xl font-semibold text-white">{item.usdtAmount} USDT</p>
+                            <p className="mt-4 text-2xl font-semibold text-white">{item.usdtAmount} USDT</p>
 
-                            <p className="mb-5 text-xl font-bold text-zinc-400">Price: {item.krwAmount} KRW</p>
+                            <p className="mb-4 text-xl font-bold text-zinc-400">Price: {item.krwAmount} KRW</p>
                         
 
 
@@ -446,14 +451,14 @@ const P2PTable = () => {
                               <Image
                                   src={item.avatar || '/profile-default.png'}
                                   alt="Avatar"
-                                  width={38}
-                                  height={38}
+                                  width={28}
+                                  height={18}
                                   priority={true} // Added priority property
                                   className="rounded-full"
                                   style={{
                                       objectFit: 'cover',
-                                      width: '38px',
-                                      height: '38px',
+                                      width: '28px',
+                                      height: '28px',
                                   }}
                               />
                               <h2 className="text-lg font-semibold text-green-500">
@@ -614,6 +619,41 @@ const P2PTable = () => {
                               </>
 
                             )}
+
+
+                            {item.status === 'paymentConfirmed' && (
+                              <div className="w-full mt-2 mb-2 flex flex-col items-start ">
+                                <Image
+                                  src='/confirmed.png'
+                                  alt='confirmed'
+                                  width={200}
+                                  height={200}
+                                />
+
+                                {/* total trading time is paymentCompletedAt - aceeptedAt */}
+
+                                <div className="flex flex-row items-center gap-2">
+
+                                  <Image
+                                    src='/timer.png'
+                                    alt='timer'
+                                    width={38}
+                                    height={38}
+                                  />
+
+                                  <div className="text-sm text-green-500">
+                                    Total trading time is {
+
+                                  ( (new Date(item.paymentConfirmedAt).getTime() - new Date(item.acceptedAt).getTime()) / 1000 / 60 ).toFixed(0) 
+
+                                    } minutes
+                                  </div>
+                                </div>
+
+
+                              </div>
+                            )}
+
 
                         </article>
 

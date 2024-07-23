@@ -257,15 +257,38 @@ const P2PTable = () => {
     } , []);
 
 
-    const [acceptingSellOrder, setAcceptingSellOrder] = useState(false);
+    
+    
+    //const [acceptingSellOrder, setAcceptingSellOrder] = useState(false);
 
-    const acceoptSellOrder = (orderId: string) => {
+    const [acceptingSellOrder, setAcceptingSellOrder] = useState([] as boolean[]);
+
+    useEffect(() => {
+        setAcceptingSellOrder (
+            sellOrders.map((item, idx) => {
+                return false;
+            })
+        );
+    } , [sellOrders]);
+
+
+
+    const acceoptSellOrder = (index: number, orderId: string) => {
 
         if (!user) {
             return;
         }
 
-        setAcceptingSellOrder(true);
+        setAcceptingSellOrder (
+            sellOrders.map((item, idx) => {
+                if (idx === index) {
+                    return true;
+                } else {
+                    return false;
+                }
+            })
+        );
+
 
         fetch('/api/order/acceptSellOrder', {
             method: 'POST',
@@ -306,16 +329,19 @@ const P2PTable = () => {
                 setSellOrders(data.result.orders);
             })
 
-
-
-
-
         })
         .catch((error) => {
             console.error('Error:', error);
-        });
+        })
+        .finally(() => {
+            setAcceptingSellOrder (
+                sellOrders.map((item, idx) => {
+                    return false;
+                })
+            );
+        } );
 
-        setAcceptingSellOrder(false);
+
     }
 
 
@@ -411,11 +437,11 @@ const P2PTable = () => {
                           `}
                         >
 
-                            {/*
-                            <p className="text-xl text-white font-semibold">
-                              Status: {item.status?.toUpperCase()}
-                            </p>
-                            */}
+                          {item.status === 'ordered' && (
+                            <p className="text-sm text-zinc-400">Sell ordered at {
+                                item.createdAt && new Date(item.createdAt).toLocaleString()
+                            }</p>
+                          )}
 
 
                             { (item.status === 'accepted' || item.status === 'paymentRequested') && (
@@ -426,7 +452,7 @@ const P2PTable = () => {
 
                             {item.acceptedAt && (
                               <p className="mb-4 text-sm text-zinc-400">
-                                Trading start at {new Date(item.acceptedAt).toLocaleDateString() + ' ' + new Date(item.acceptedAt).toLocaleTimeString()}
+                                Trade started at {new Date(item.acceptedAt).toLocaleDateString() + ' ' + new Date(item.acceptedAt).toLocaleTimeString()}
                               </p>
                             )}
 
@@ -437,9 +463,6 @@ const P2PTable = () => {
 
                             {(item.status === 'accepted' || item.status === 'paymentRequested') && (
                               <>
-                                <p className="text-sm text-zinc-400">Accepted at {
-                                  item.acceptedAt && new Date(item.acceptedAt).toLocaleString()
-                                }</p>
                             
                                 <p className="text-xl text-green-500 font-semibold">
                                   Buyer: {
@@ -450,9 +473,7 @@ const P2PTable = () => {
                               </>
                             )}
                            
-                            <p className="text-sm text-zinc-400">Registered at {
-                                item.createdAt && new Date(item.createdAt).toLocaleString()
-                            }</p>
+
                             
                             <p className="mt-2 mb-2 flex items-center gap-2">
                               <div className="flex items-center space-x-2">Seller:</div>
@@ -525,13 +546,20 @@ const P2PTable = () => {
                             {item.status === 'ordered' && (
                               <>
 
-                              {acceptingSellOrder ? (
-                                  <button
-                                      disabled={true}
-                                      className="text-lg bg-gray-200 text-gray-700 px-4 py-2 rounded-md mt-4"
-                                  >
-                                      Processing...
-                                  </button>
+                              {acceptingSellOrder[index] ? (
+
+                                <div className="flex flex-row items-center gap-2">
+                                  <Image
+                                    src='/loading.png'
+                                    alt='loading'
+                                    width={38}
+                                    height={38}
+                                    className="animate-spin"
+                                  />
+                                  <div>Accepting...</div>
+                                </div>
+
+
                               ) : (
                                 <>
                                   
@@ -555,13 +583,13 @@ const P2PTable = () => {
                                               //openModal();
 
 
-                                              acceoptSellOrder(item._id);
+                                              acceoptSellOrder(index, item._id);
                                         
 
                                           }}
-                                      >
+                                        >
                                           Buy USDT
-                                      </button>
+                                        </button>
 
                                     )}
 

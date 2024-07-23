@@ -482,6 +482,16 @@ const P2PTable = () => {
                                w-96 xl:w-full`
                             }
                         >
+
+                            {item.status === 'ordered' && (
+                              <p className=" text-sm text-zinc-400">
+                                Sell ordered at {
+                                  new Date(item.createdAt).toLocaleDateString() + ' ' + new Date(item.createdAt).toLocaleTimeString()
+                                }
+                              </p>
+                            )}
+
+
                             { (item.status === 'accepted' || item.status === 'paymentRequested') && (
                               <p className="mb-4 text-xl font-semibold text-green-500 bg-white px-2 py-1 rounded-md">
                                 TID: {item.tradeId}
@@ -490,7 +500,7 @@ const P2PTable = () => {
 
                             {item.acceptedAt && (
                               <p className="mb-4 text-sm text-zinc-400">
-                                Accepted at {new Date(item.acceptedAt).toLocaleDateString() + ' ' + new Date(item.acceptedAt).toLocaleTimeString()}
+                                Trade started at {new Date(item.acceptedAt).toLocaleDateString() + ' ' + new Date(item.acceptedAt).toLocaleTimeString()}
                               </p>
                             )}
 
@@ -501,10 +511,11 @@ const P2PTable = () => {
 
                             <p className="text-sm text-zinc-400">Rate: 1 USDT = {item.rate} KRW</p>
 
-
+                            {/*
                             <p className="mt-4 text-sm font-semibold text-zinc-400">
                               Status: {item.status?.toUpperCase()}
                             </p>
+                            */}
 
 
 
@@ -557,11 +568,7 @@ const P2PTable = () => {
                                 </div>
                             )}
 
-                            <p className="mt-5 text-sm text-zinc-400">
-                              Ordered at {
-                                new Date(item.createdAt).toLocaleDateString() + ' ' + new Date(item.createdAt).toLocaleTimeString()
-                              }
-                            </p>
+
                             
                             <h2 className="text-lg font-semibold mb-2">
                               Seller: {

@@ -26,7 +26,7 @@ export async function POST(request: NextRequest) {
     buyerMobile: buyerMobile,
   });
 
-  console.log("result", result);
+  ////console.log("result", result);
 
 
 
