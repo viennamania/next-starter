@@ -391,6 +391,7 @@ export default function SendUsdt() {
 
   };
   
+  const [wantToReceiveWalletAddress, setWantToReceiveWalletAddress] = useState(false);
 
 
   return (
@@ -466,10 +467,29 @@ export default function SendUsdt() {
 
 
             {/* my usdt balance */}
-            <div className="flex flex-col gap-2 items-start">
+            <div className="w-full flex flex-col gap-2 items-start">
               <div className="text-sm">My Balance</div>
-              <div className="text-5xl font-semibold text-white">
-                {Number(balance).toFixed(2)} <span className="text-lg">USDT</span>
+              <div className='w-full flex flex-row items-center justify-between'>
+                <div className="text-5xl font-semibold text-white">
+                  {Number(balance).toFixed(2)} <span className="text-lg">USDT</span>
+                </div>
+
+                <div className="text-xs font-semibold text-white">
+                  {/* check box for receiver address input box */}
+                  <input
+                    type="checkbox"
+                    className="mr-2 w-5 h-5"
+                    checked={wantToReceiveWalletAddress}
+                    onChange={(e) => (
+                      setWantToReceiveWalletAddress(e.target.checked),
+                      setRecipient({
+                        ...recipient,
+                        walletAddress: '',
+                      })
+                    )}
+                  />
+                  <div className="text-xs">Enter wallet address</div>
+                </div>
               </div>
             </div>
 
@@ -518,92 +538,115 @@ export default function SendUsdt() {
               */}
               {/* user list and select one */}
 
-              <div className='flex flex-row gap-5 items-center justify-between'>
-                <select
-                  disabled={sending}
-                  className="w-full p-2 border border-gray-300 rounded text-black text-2xl font-semibold"
-                  value={
-                    recipient.nickname
-                  }
+              {!wantToReceiveWalletAddress ? (
+                <>
+                <div className='flex flex-row gap-5 items-center justify-between'>
+                  <select
+                    disabled={sending}
+                    className="w-full p-2 border border-gray-300 rounded text-black text-2xl font-semibold"
+                    value={
+                      recipient.nickname
+                    }
 
 
+                    onChange={(e) => {
+
+                      const selectedUser = users.find((user) => user.nickname === e.target.value) as any;
+
+                      console.log("selectedUser", selectedUser);
+
+                      setRecipient(selectedUser);
+
+                    } } 
+
+                  >
+                    <option value="">Select a user</option>
+                    
+
+                    {users.map((user) => (
+                      <option key={user.id} value={user.nickname}>{user.nickname}</option>
+                    ))}
+                  </select>
+
+                  {/* select user profile image */}
+
+                    <Image
+                      src={recipient?.avatar || '/profile-default.png'}
+                      alt="profile"
+                      width={60}
+                      height={60}
+                      className="rounded-full"
+                      style={{
+                        objectFit: 'cover',
+                        width: '38px',
+                        height: '38px',
+                    }}
+                    />
+
+                    {recipient.walletAddress && (
+                      <Image
+                        src="/verified.png"
+                        alt="check"
+                        width={30}
+                        height={30}
+                      />
+                    )}
+
+
+                </div>
+             
+
+                {/* input wallet address */}
+                
+                <input
+                  disabled={true}
+                  type="text"
+                  placeholder="User wallet address"
+                  className="w-full p-2 border border-gray-300 rounded text-white text-sm xl:text-lg font-semibold"
+                  value={recipient.walletAddress}
                   onChange={(e) => {
+  
+                    
+                    
+                      getUserByWalletAddress(e.target.value)
 
-                    const selectedUser = users.find((user) => user.nickname === e.target.value) as any;
+                      .then((data) => {
 
-                    console.log("selectedUser", selectedUser);
+                        console.log("data", data);
 
-                    setRecipient(selectedUser);
+                        const checkUser = data;
 
-                  } } 
+                        if (checkUser) {
+                          setRecipient(checkUser as any);
+                        } else {
+                          
+                          setRecipient({
+                            ...recipient,
+                            walletAddress: e.target.value,
+                          });
+                          
+                        }
 
-                >
-                  <option value="">Select a user</option>
-                  
+                      });
 
-                  {users.map((user) => (
-                    <option key={user.id} value={user.nickname}>{user.nickname}</option>
-                  ))}
-                </select>
+                  } }
+                />
 
-                {/* select user profile image */}
+              </>
 
-                  <Image
-                    src={recipient?.avatar || '/profile-default.png'}
-                    alt="profile"
-                    width={60}
-                    height={60}
-                    className="rounded-full"
-                    style={{
-                      objectFit: 'cover',
-                      width: '38px',
-                      height: '38px',
-                  }}
-                  />
-
-
-              </div>
-
-              {/* input wallet address */}
-              
-              <input
-                disabled={true}
-                type="text"
-                placeholder="User wallet address"
-                className="w-full p-2 border border-gray-300 rounded text-white text-xs xl:text-lg font-semibold"
-                value={recipient.walletAddress}
-                onChange={(e) => {
- 
-                  
-                  
-                    getUserByWalletAddress(e.target.value)
-
-                    .then((data) => {
-
-                      console.log("data", data);
-
-                      const checkUser = data;
-
-                      if (checkUser) {
-                        setRecipient(checkUser as any);
-                      } else {
-                        
-                        setRecipient({
-                          ...recipient,
-                          walletAddress: e.target.value,
-                        });
-                        
-                      }
-
-
-                    });
-                  
-
-
-
-                } }
-
-              />
+              ) : (
+                <input
+                  disabled={sending}
+                  type="text"
+                  placeholder="Enter wallet address"
+                  className="w-full p-2 border border-gray-300 rounded text-black text-sm xl:text-2xl font-semibold"
+                  value={recipient.walletAddress}
+                  onChange={(e) => setRecipient({
+                    ...recipient,
+                    walletAddress: e.target.value,
+                  })}
+                />
+              )} 
 
 
 
