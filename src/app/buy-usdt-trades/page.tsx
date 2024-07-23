@@ -622,7 +622,8 @@ const P2PTable = () => {
 
 
                             {item.status === 'paymentConfirmed' && (
-                              <div className="w-full mt-2 mb-2 flex flex-col items-start ">
+                              <div className="w-full mt-2 mb-2 flex flex-col items-center ">
+                                
                                 <Image
                                   src='/confirmed.png'
                                   alt='confirmed'
