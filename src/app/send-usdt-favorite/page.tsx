@@ -265,6 +265,7 @@ export default function SendUsdt() {
     id: 0,
     email: '',
     nickname: '',
+    avatar: '',
     mobile: '',
     walletAddress: '',
     createdAt: '',
@@ -517,47 +518,62 @@ export default function SendUsdt() {
               */}
               {/* user list and select one */}
 
-              <select
-                disabled={sending}
-                className="w-full p-2 border border-gray-300 rounded text-black text-2xl font-semibold"
-                value={
-                  recipient.nickname
-                }
+              <div className='flex flex-row gap-5 items-center justify-between'>
+                <select
+                  disabled={sending}
+                  className="w-full p-2 border border-gray-300 rounded text-black text-2xl font-semibold"
+                  value={
+                    recipient.nickname
+                  }
 
 
-                onChange={(e) => {
+                  onChange={(e) => {
 
-                  const selectedUser = users.find((user) => user.nickname === e.target.value) as any;
+                    const selectedUser = users.find((user) => user.nickname === e.target.value) as any;
 
-                  console.log("selectedUser", selectedUser);
+                    console.log("selectedUser", selectedUser);
 
-                  setRecipient(selectedUser);
+                    setRecipient(selectedUser);
 
-                } } 
+                  } } 
 
-              >
-                <option value="">Select a user</option>
-                
+                >
+                  <option value="">Select a user</option>
+                  
 
-                {users.map((user) => (
-                  <option key={user.id} value={user.nickname}>{user.nickname}</option>
-                ))}
-              </select>
+                  {users.map((user) => (
+                    <option key={user.id} value={user.nickname}>{user.nickname}</option>
+                  ))}
+                </select>
+
+                {/* select user profile image */}
+
+                  <Image
+                    src={recipient?.avatar || '/profile-default.png'}
+                    alt="profile"
+                    width={60}
+                    height={60}
+                    className="rounded-full"
+                    style={{
+                      objectFit: 'cover',
+                      width: '38px',
+                      height: '38px',
+                  }}
+                  />
+
+
+              </div>
 
               {/* input wallet address */}
+              
               <input
-                disabled={sending}
+                disabled={true}
                 type="text"
-                placeholder="Enter address"
-                className="w-full p-2 border border-gray-300 rounded text-black text-sm xl:text-lg font-semibold"
+                placeholder="User wallet address"
+                className="w-full p-2 border border-gray-300 rounded text-white text-xs xl:text-lg font-semibold"
                 value={recipient.walletAddress}
                 onChange={(e) => {
-                  /*
-                  setRecipient({
-                    ...recipient,
-                    walletAddress: e.target.value,
-                  });
-                  */
+ 
                   
                   
                     getUserByWalletAddress(e.target.value)
@@ -588,6 +604,7 @@ export default function SendUsdt() {
                 } }
 
               />
+
 
 
 
