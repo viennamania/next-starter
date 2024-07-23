@@ -90,9 +90,6 @@ export async function insertOne(data: any) {
   const userMobile = user.mobile;
 
 
-  
-
-
 
   const collection = client.db('vienna').collection('transactions');
 
@@ -123,6 +120,47 @@ export async function insertOne(data: any) {
   
 
 }
+
+
+
+// get send transactions by wallet address
+export async function getSendTransactionsByWalletAddress(
+  { walletAddress }: { walletAddress: string }
+): Promise<any> {
+
+  const client = await clientPromise;
+  const collection = client.db('vienna').collection('transactions');
+
+  const results = await collection.find(
+    {
+      walletAddress: walletAddress,
+    }
+  ).sort({ _id: -1 }).toArray();
+
+  return results;
+
+}
+
+
+// get receive transactions by wallet address
+export async function getReceiveTransactionsByWalletAddress(
+  { walletAddress }: { walletAddress: string }
+): Promise<any> {
+
+  const client = await clientPromise;
+  const collection = client.db('vienna').collection('transactions');
+
+  const results = await collection.find(
+    {
+      toWalletAddress: walletAddress,
+    }
+  ).sort({ _id: -1 }).toArray();
+
+  return results;
+
+}
+
+
 
 
 

@@ -673,15 +673,19 @@ export default function Home() {
                 <div className="flex flex-row justify-between items-start">
                     {/* Buy Trade logo */}
 
-                    <Image
-                      src="/trade-buy.png"
-                      alt="USDT"
-                      width={40}
-                      height={40}
-                      className="rounded-lg"
-                    />
+                    <div className="flex flex-row gap-2 justify-center items-center">
+                      <Image
+                        src="/trade-buy.png"
+                        alt="buy"
+                        width={40}
+                        height={40}
+                        className="rounded-lg"
+                      />
+
+                    </div>
 
                     {/* Settings Button */}
+                    
                     <button
 
                       onClick={() => {
@@ -700,6 +704,7 @@ export default function Home() {
                       <GearSetupIcon />
 
                     </button>
+                    
 
                   </div>
 
@@ -716,9 +721,9 @@ export default function Home() {
                   {buyTrades.map((trade: any) => (
                     <ArticleCard
                       key={trade.id}
-                      title={`Seller: ${trade.nickname} - ${trade.usdtAmount} USDT`}
+                      title={`${trade.usdtAmount} USDT - Seller: ${trade.nickname}`}
                       avatar={trade.avatar}
-                      href={`/profiles/${trade.walletAddress}`}
+                      href={`/buy-usdt-trades`}
                       description={
                         `TID: ${trade.tradeId} - 
                         ${trade.status === 'pending' ? 'Pending' : trade.status === 'accepted' ? 'Waiting for payment' : trade.status === 'paymentRequested' ? 'You need to pay' : 'Rejected'}`
@@ -780,9 +785,9 @@ export default function Home() {
                   {sellTrades.map((trade: any) => (
                     <ArticleCard
                       key={trade.id}
-                      title={`Buyer: ${trade.buyer.nickname} - ${trade.usdtAmount} USDT`}
+                      title={`${trade.usdtAmount} USDT - Buyer: ${trade.buyer.nickname}`}
                       avatar={trade.buyer.avatar}
-                      href={`/profiles/${trade.buyer.walletAddress}`}
+                      href={`/sell-usdt-trades`}
                       description={
                         `Trade ID: ${trade.tradeId} - ${trade.status?.toUpperCase()}`
                       }

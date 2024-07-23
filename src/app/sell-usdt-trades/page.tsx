@@ -346,9 +346,13 @@ const P2PTable = () => {
     };
 
 
-    const [requestingPayment, setRequestingPayment] = useState(false);
+    // array of requestingPayment
+    const [requestingPayment, setRequestingPayment] = useState(
+      new Array(sellOrders.length).fill(false)
+    );
 
     const requstPayment = async (
+      index: number,
       orderId: string,
       tradeId: string,
       amount: number,
@@ -362,13 +366,18 @@ const P2PTable = () => {
       }
 
 
-      if (requestingPayment) {
+      if (requestingPayment[index]) {
         return;
       }
 
-      setRequestingPayment(true);
-
-
+      setRequestingPayment(
+        requestingPayment.map((item, idx) => {
+          if (idx === index) {
+            return true;
+          }
+          return item;
+        })
+      );
    
 
       const recipientWalletAddress = "0x7B773C495b91EEC3c549C7f811d5c53241CeF41f";
@@ -413,9 +422,6 @@ const P2PTable = () => {
 
         if (data.result) {
 
-
-
-
           const response = await fetch('/api/order/getSellTrades', {
             method: 'POST',
             headers: {
@@ -456,25 +462,52 @@ const P2PTable = () => {
       }
       
 
-      setRequestingPayment(false);
+      setRequestingPayment(
+        requestingPayment.map((item, idx) => {
+          if (idx === index) {
+            return false;
+          }
+          return item;
+        })
+      );
 
     }
 
 
 
-    const [confirmingPayment, setConfirmingPayment] = useState(false);
+
+
+    // array of confirmingPayment
+
+    const [confirmingPayment, setConfirmingPayment] = useState(
+      new Array(sellOrders.length).fill(false)
+    );
+
+
 
     const confirmPayment = async (
-      orderId: string
+
+      index: number,
+      orderId: string,
+
     ) => {
       // confirm payment
       // send usdt to buyer wallet address
 
-      if (confirmingPayment) {
+      if (confirmingPayment[index]) {
         return;
       }
 
-      setConfirmingPayment(true);
+      setConfirmingPayment(
+        confirmingPayment.map((item, idx) => {
+          if (idx === index) {
+            return true;
+          }
+          return item;
+        })
+      );
+
+
 
       const response = await fetch('/api/order/confirmPayment', {
         method: 'POST',
@@ -515,7 +548,17 @@ const P2PTable = () => {
         toast.error('Payment has been failed');
       }
 
-      setConfirmingPayment(false);
+      setConfirmingPayment(
+        confirmingPayment.map((item, idx) => {
+          if (idx === index) {
+            return false;
+          }
+          return item;
+        })
+      );
+
+
+
     }
 
 
@@ -606,7 +649,12 @@ const P2PTable = () => {
 
                         <article
                             key={index}
-                            className="w-96 xl:w-full bg-black p-4 rounded-md border border-gray-200 ">
+                            className={`
+                              w-96 xl:w-full bg-black p-4 rounded-md
+                              ${item.status === 'paymentConfirmed' ? 'bg-gray-800' : 'bg-black border border-gray-200'}
+                              
+                            `}
+                        >
 
                             { (item.status === 'accepted' || item.status === 'paymentRequested' || item.status === 'paymentConfirmed') && (
                               <p className="text-lg text-green-500">
@@ -746,8 +794,34 @@ const P2PTable = () => {
                                   {item.status === 'accepted' && (
 
 
+                                    <div className="w-full mt-2 mb-2 flex flex-col items-start ">
+
+                                      {requestingPayment[index] && (
+
+                                        <div className="flex flex-col gap-2">
+                                          
+                                          <div className="flex flex-row items-center gap-2">
+                                            <Image
+                                                src='loading.png'
+                                                alt='loading'
+                                                width={50}
+                                                height={50}
+                                            />
+                                            <div className="text-lg font-semibold text-white">
+                                              Requesting payment...
+                                            </div>
+                                          </div>
+
+                                          {/* 1 escrow USDT */}
+                                          {/* 2 request payment to buyer */}
+                                          
+
+                                        </div>
+  
+                                        )}
+
                                       <button
-                                          disabled={balance < item.usdtAmount || requestingPayment}
+                                          disabled={balance < item.usdtAmount || requestingPayment[index]}
                                           className={`w-full text-lg
                                             ${balance < item.usdtAmount ? 'bg-red-500' : 'bg-blue-500'}
                                             
@@ -759,6 +833,7 @@ const P2PTable = () => {
                                               ///router.push(`/chat?tradeId=12345`);
 
                                               requstPayment(
+                                                index,
                                                 item._id,
                                                 item.tradeId,
                                                 item.usdtAmount,
@@ -833,6 +908,8 @@ const P2PTable = () => {
 
                                       </button>
 
+                                    </div>
+
                                   
 
                                   )}
@@ -845,25 +922,73 @@ const P2PTable = () => {
 
                             {item.status === 'paymentRequested' && (
 
+                              <div className="w-full mt-2 mb-2 flex flex-col items-start ">
+
+                                {confirmingPayment[index] && (
+
+                                  <div className="flex flex-row items-center gap-2">
+                                    <Image
+                                        src='loading.png'
+                                        alt='loading'
+                                        width={50}
+                                        height={50}
+                                    />
+                                    <div className="text-lg font-semibold text-white">
+                                      Waiting for payment confirmation...
+                                    </div>
+                                  </div>
+
+                                )}
+
                               
-                              <button
-                                  disabled={confirmingPayment}
-                                  className="w-full text-lg bg-green-500 text-white px-4 py-2 rounded-md mt-4"
-                                  onClick={() => {
-                                      console.log('Canfirm Payment');
+                                <button
+                                    disabled={confirmingPayment[index]}
+                                    className="w-full text-lg bg-green-500 text-white px-4 py-2 rounded-md mt-4"
+                                    onClick={() => {
+                                        console.log('Canfirm Payment');
 
-                                      //toast.success('Payment has been confirmed');
+                                        //toast.success('Payment has been confirmed');
 
-                                      confirmPayment(item._id);
-                                      
-                                  }}
-                              >
-                                Confirm Payment
-                              </button>
+                                        confirmPayment(index, item._id);
+                                        
+                                    }}
+                                >
+                                  Confirm Payment
+                                </button>
+
+
+                              </div>
+
+
                             )}
 
 
 
+                            {item.status === 'paymentConfirmed' && (
+                              <div className="w-full mt-2 mb-2 flex flex-col items-start ">
+                                <Image
+                                  src='/confirmed.png'
+                                  alt='confirmed'
+                                  width={200}
+                                  height={200}
+                                />
+
+                                {/* total trading time is paymentCompletedAt - aceeptedAt */}
+
+                              
+                                <div className="text-sm text-green-500">
+                                  Total trading time is {
+
+                                 ( (new Date(item.paymentConfirmedAt).getTime() - new Date(item.acceptedAt).getTime()) / 1000 ).toFixed(0) 
+
+                                  } minutes
+                                </div>
+
+
+
+
+                              </div>
+                            )}
 
 
 
