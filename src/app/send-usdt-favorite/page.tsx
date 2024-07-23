@@ -44,6 +44,7 @@ import {
 } from "thirdweb/wallets";
 
 import Image from 'next/image';
+import { get } from 'http';
 
 
 const wallets = [
@@ -367,6 +368,27 @@ export default function SendUsdt() {
   };
 
 
+
+  // get user by wallet address
+  const getUserByWalletAddress = async (walletAddress: string) => {
+
+    const response = await fetch('/api/user/getUserByWalletAddress', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        walletAddress: walletAddress,
+      }),
+    });
+
+    const data = await response.json();
+
+    console.log("getUserByWalletAddress", data);
+
+    return data.result;
+
+  };
   
 
 
@@ -498,7 +520,9 @@ export default function SendUsdt() {
               <select
                 disabled={sending}
                 className="w-full p-2 border border-gray-300 rounded text-black text-2xl font-semibold"
-                value={recipient.nickname}
+                value={
+                  recipient.nickname
+                }
 
 
                 onChange={(e) => {
@@ -513,10 +537,59 @@ export default function SendUsdt() {
 
               >
                 <option value="">Select a user</option>
+                
+
                 {users.map((user) => (
                   <option key={user.id} value={user.nickname}>{user.nickname}</option>
                 ))}
               </select>
+
+              {/* input wallet address */}
+              <input
+                disabled={sending}
+                type="text"
+                placeholder="Enter address"
+                className="w-full p-2 border border-gray-300 rounded text-black text-sm xl:text-lg font-semibold"
+                value={recipient.walletAddress}
+                onChange={(e) => {
+                  /*
+                  setRecipient({
+                    ...recipient,
+                    walletAddress: e.target.value,
+                  });
+                  */
+                  
+                  
+                    getUserByWalletAddress(e.target.value)
+
+                    .then((data) => {
+
+                      console.log("data", data);
+
+                      const checkUser = data;
+
+                      if (checkUser) {
+                        setRecipient(checkUser as any);
+                      } else {
+                        
+                        setRecipient({
+                          ...recipient,
+                          walletAddress: e.target.value,
+                        });
+                        
+                      }
+
+
+                    });
+                  
+
+
+
+                } }
+
+              />
+
+
 
               <button
                 disabled={!address || !recipient.walletAddress || !amount || sending}
