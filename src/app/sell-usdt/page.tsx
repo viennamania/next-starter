@@ -379,9 +379,21 @@ const P2PTable = () => {
 
 
                     {/* sell order is different border color */}
-                    <article className=" w-96 xl:w-full bg-black p-4 rounded-md border-2 border-gray-200">
+                    <article className="mb-10 w-96 xl:w-full bg-black p-4 rounded-md border-2 border-green-500">
        
-                        <p className="text-xl font-bold text-zinc-400">1 USDT = 1355.17 KRW</p>
+
+                        {/* sell icon */}
+                        <div className=" flex flex-row items-center gap-2">
+                          <Image
+                            src="/trade-sell.png"
+                            alt="Sell"
+                            width={32}
+                            height={32}
+                          />
+                          <h2 className="text-2xl font-semibold text-white">Place Order</h2>
+                        </div>
+
+                        <p className="mt-4 text-xl font-bold text-zinc-400">1 USDT = 1355.17 KRW</p>
                         
                         <p className="text-lg text-blue-500 font-bold mt-4">
                           <input 
@@ -471,7 +483,7 @@ const P2PTable = () => {
                             }
                         >
                             { (item.status === 'accepted' || item.status === 'paymentRequested') && (
-                              <p className="text-xl font-semibold text-green-500 bg-white px-2 py-1 rounded-md">
+                              <p className="mb-4 text-xl font-semibold text-green-500 bg-white px-2 py-1 rounded-md">
                                 TID: {item.tradeId}
                               </p>
                             )}
