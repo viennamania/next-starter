@@ -914,6 +914,10 @@ const P2PTable = () => {
 
 
 
+                                      <span className="text-sm text-white">
+                                        If you request payment, the {item.usdtAmount} USDT will be escrowed to the smart contract and then the buyer ( {item.buyer.nickname} ) will be requested to pay.
+                                      </span>
+
 
                                       <button
                                           disabled={balance < item.usdtAmount || requestingPayment[index] || escrowing[index]}
@@ -1057,6 +1061,7 @@ const P2PTable = () => {
                                   <span className="text-sm text-white">
                                     If you confirm the payment, the escrowed {item.usdtAmount} USDT will be transferred to the buyer ( {item.buyer.nickname} ) wallet address.
                                   </span>
+
                                 </div>
                                   
 
