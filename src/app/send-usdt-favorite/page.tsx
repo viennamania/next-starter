@@ -396,6 +396,7 @@ export default function SendUsdt() {
 
   const [isWhateListedUser, setIsWhateListedUser] = useState(false);
 
+  
   useEffect(() => {
     // check recipient.walletAddress is in the user list
     getUserByWalletAddress(recipient.walletAddress)
@@ -434,6 +435,7 @@ export default function SendUsdt() {
     });
 
   } , [recipient.walletAddress]);
+  
 
 
 
@@ -698,7 +700,7 @@ export default function SendUsdt() {
                     })}
                   />
 
-                  {isWhateListedUser && (
+                  {isWhateListedUser ? (
                     <div className="flex flex-row gap-2 items-center justify-center">
 
 
@@ -723,6 +725,16 @@ export default function SendUsdt() {
                       />
                       
                     </div>
+                  ) : (
+                    <>
+
+                    {recipient.walletAddress && (
+                    <div className="text-red-500">
+                      Warnning: This address is not white listed
+                    </div>
+                    )}
+
+                    </>
                   )}
 
 
