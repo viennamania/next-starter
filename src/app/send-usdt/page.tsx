@@ -255,7 +255,7 @@ export default function SendUsdt() {
         */}
 
         <div className="flex justify-start space-x-4 mb-10">
-            <button onClick={() => window.history.back()} className="text-zinc-100 font-semibold">Go Back</button>
+            <button onClick={() => window.history.back()} className="text-zinc-100 font-semibold underline">Go Back</button>
         </div>
         
 

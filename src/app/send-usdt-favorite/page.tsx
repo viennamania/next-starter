@@ -456,7 +456,7 @@ export default function SendUsdt() {
         */}
 
         <div className="flex justify-start space-x-4 mb-10">
-            <button onClick={() => window.history.back()} className="text-zinc-100 font-semibold">Go Back</button>
+            <button onClick={() => window.history.back()} className="text-zinc-100 font-semibold underline">Go Back</button>
         </div>
         
 
@@ -519,7 +519,13 @@ export default function SendUsdt() {
 
               {/* goto buy usdt page */}
               <div className="text-sm font-semibold text-zinc-100 mt-2 w-full text-right">
-                <a href="/buy-usdt" className="text-zinc-100">Go Buy USDT</a>
+   
+                <a
+                  href="/buy-usdt"
+                  className="text-zinc-100 underline"
+                >
+                  Go Buy USDT
+                </a>
               </div>
 
 
