@@ -473,6 +473,25 @@ const P2PTable = () => {
                                 {item.walletAddress === address ? 'Me' : item.nickname}
                                
                               </h2>
+
+                              <Image
+                                src="/verified.png"
+                                alt="Verified"
+                                width={20}
+                                height={20}
+                                className="rounded-lg"
+                              />
+
+                              <Image
+                                src="/best-seller.png"
+                                alt="Verified"
+                                width={20}
+                                height={20}
+                                className="rounded-lg"
+                              />
+
+                              
+
                             </p>
 
 

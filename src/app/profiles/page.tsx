@@ -473,6 +473,7 @@ export default function SettingsPage() {
                                 </div>
 
 
+
                                 
                                 <button
                                     onClick={() => {
@@ -486,12 +487,22 @@ export default function SettingsPage() {
                                 >
                                     {nicknameEdit ? 'Cancel' : 'Edit'}
                                 </button>
+
+                                <Image
+                                src="/verified.png"
+                                alt="Verified"
+                                width={20}
+                                height={20}
+                                className="rounded-lg"
+                                />
+
+
                                 
                             </div>
                         )}
 
 
-                        { (nicknameEdit || !userCode) && (
+                        { (address && (nicknameEdit || !userCode)) && (
                             <div className=' flex flex-col xl:flex-row gap-2 items-center justify-between border border-gray-300 p-4 rounded-lg'>
 
                                 <div
@@ -544,6 +555,8 @@ export default function SettingsPage() {
                                     Save
                                 </button>
 
+                                
+
                             </div>
                         )}
 
@@ -561,6 +574,8 @@ export default function SettingsPage() {
                                     {userCode}
                                 </div>
 
+ 
+
                                 <button
                                     onClick={() => {
                                         navigator.clipboard.writeText(userCode);
@@ -570,6 +585,15 @@ export default function SettingsPage() {
                                 >
                                     Copy
                                 </button>
+
+                                <Image
+                                src="/verified.png"
+                                alt="Verified"
+                                width={20}
+                                height={20}
+                                className="rounded-lg"
+                                />
+
 
                             </div>
 
@@ -607,6 +631,16 @@ export default function SettingsPage() {
                                 >
                                     Sell USDT
                                 </button>
+
+
+                                <Image
+                                src="/verified.png"
+                                alt="Verified"
+                                width={20}
+                                height={20}
+                                className="rounded-lg"
+                                />
+
 
                             </div>
                         )}

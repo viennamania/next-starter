@@ -642,9 +642,22 @@ export default function Home() {
 
                 </div>
 
-                <h2 className="text-3xl font-semibold text-zinc-100">
-                  {nickname}
-                </h2>
+                <div className="flex flex-row gap-2 justify-center items-center">
+                  <h2 className="text-3xl font-semibold text-zinc-100">
+                    {nickname}
+                  </h2>
+                  {userCode && (
+                    <Image
+                      src="/verified.png"
+                      alt="Verified"
+                      width={20}
+                      height={20}
+                      className="rounded-lg"
+                    />
+                  )}
+                </div>
+
+
                 <p className="text-zinc-300">My Nickname</p>
 
               </div>
