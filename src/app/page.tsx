@@ -524,11 +524,13 @@ export default function Home() {
 
                 </div>
 
-
-                <h2 className="text-3xl font-semibold text-zinc-100">
-                  {balance} USDT
-                </h2>
-                <p className="text-zinc-300">My Balance</p>
+                <div className="flex flex-row gap-2 justify-center items-center">
+                  <div className="text-4xl font-semibold text-zinc-100">
+                    {Number(balance).toFixed(2)}
+                  </div>
+                  <p className="text-sm text-zinc-300">USDT</p>
+                </div>
+                <p className="text-sm text-zinc-300">My Balance</p>
 
 
                 {/* my address and copy button */}

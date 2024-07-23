@@ -468,7 +468,7 @@ export default function SendUsdt() {
             <div className="flex flex-col gap-2 items-start">
               <div className="text-sm">My Balance</div>
               <div className="text-5xl font-semibold text-white">
-                {balance} <span className="text-lg">USDT</span>
+                {Number(balance).toFixed(2)} <span className="text-lg">USDT</span>
               </div>
             </div>
 

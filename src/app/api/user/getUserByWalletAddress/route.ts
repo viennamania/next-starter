@@ -13,7 +13,7 @@ export async function POST(request: NextRequest) {
   const { walletAddress } = body;
 
 
-  console.log("walletAddress", walletAddress);
+  //console.log("walletAddress", walletAddress);
 
 
   const result = await getOneByWalletAddress(walletAddress);
