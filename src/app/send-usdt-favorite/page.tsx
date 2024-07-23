@@ -162,7 +162,7 @@ export default function SendUsdt() {
         address: address,
       });
   
-      console.log(result);
+      //console.log(result);
   
       setBalance( Number(result) / 10 ** 6 );
 
@@ -170,10 +170,11 @@ export default function SendUsdt() {
 
     if (address) getBalance();
 
+    const interval = setInterval(() => {
+      if (address) getBalance();
+    } , 1000);
+
   } , [address]);
-
-
-  console.log(balance);
 
 
 
@@ -437,8 +438,18 @@ export default function SendUsdt() {
 
               )}
 
-
             </div>
+
+
+
+            {/* my usdt balance */}
+            <div className="flex flex-col gap-2 items-start">
+              <div className="text-sm">My Balance</div>
+              <div className="text-5xl font-semibold text-white">
+                {balance} <span className="text-lg">USDT</span>
+              </div>
+            </div>
+
 
             <div className='w-full  flex flex-col gap-5 border border-gray-300 p-4 rounded-lg'>
 
@@ -507,23 +518,6 @@ export default function SendUsdt() {
                 ))}
               </select>
 
-
-              {/* sending rotate animation with white color*/}
-              {sending && (
-                <div className="
-                  w-6 h-6
-                  border-2 border-zinc-800
-                  rounded-full
-                  animate-spin
-                  mx-auto
-                  text-2xl
-                  font-semibold
-                ">
-                  ...
-                </div>
-
-
-              )}
               <button
                 disabled={!address || !recipient.walletAddress || !amount || sending}
                 onClick={sendUsdt}
@@ -532,8 +526,28 @@ export default function SendUsdt() {
                   Send
               </button>
 
-              <div className="text-xl font-semibold">
-                  Balance: {balance} USDT
+              <div className="w-full flex flex-row gap-2 text-xl font-semibold">
+
+                {/* sending rotate animation with white color*/}
+                {sending && (
+                  <div className="
+                    w-6 h-6
+                    border-2 border-zinc-800
+                    rounded-full
+                    animate-spin
+                  ">
+                    <Image
+                      src="/loading.png"
+                      alt="loading"
+                      width={24}
+                      height={24}
+                    />
+                  </div>
+                )}
+                <div className="text-white">
+                  {sending ? 'Sending...' : ''}
+                </div>
+
               </div>
 
             </div>

@@ -163,7 +163,7 @@ export default function SendUsdt() {
   } , [address]);
 
 
-  console.log(balance);
+ 
 
 
 

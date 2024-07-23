@@ -146,6 +146,10 @@ const P2PTable = () => {
 
     if (address) getBalance();
 
+    const interval = setInterval(() => {
+      if (address) getBalance();
+    } , 1000);
+
   } , [address]);
 
 

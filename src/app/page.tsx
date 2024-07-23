@@ -186,7 +186,7 @@ export default function Home() {
 
     const interval = setInterval(() => {
       if (address) getBalance();
-    }, 10000);
+    }, 1000);
 
 
 
