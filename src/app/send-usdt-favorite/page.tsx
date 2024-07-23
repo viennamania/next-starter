@@ -513,8 +513,14 @@ export default function SendUsdt() {
 
               )}
 
+
+
             </div>
 
+              {/* goto buy usdt page */}
+              <div className="text-sm font-semibold text-zinc-100 mt-2 w-full text-right">
+                <a href="/buy-usdt" className="text-zinc-100">Go Buy USDT</a>
+              </div>
 
 
             {/* my usdt balance */}
