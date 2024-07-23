@@ -2,7 +2,7 @@
 'use client';
 
 
-import React, { useEffect, useState } from 'react';
+import React, { use, useEffect, useState } from 'react';
 
 import { toast } from 'react-hot-toast';
 import { client } from '../client';
@@ -394,6 +394,55 @@ export default function SendUsdt() {
   const [wantToReceiveWalletAddress, setWantToReceiveWalletAddress] = useState(false);
 
 
+  const [isWhateListedUser, setIsWhateListedUser] = useState(false);
+
+  useEffect(() => {
+    // check recipient.walletAddress is in the user list
+    getUserByWalletAddress(recipient.walletAddress)
+    .then((data) => {
+        
+        console.log("data============", data);
+  
+        const checkUser = data
+
+        if (checkUser) {
+          setIsWhateListedUser(true);
+
+          setRecipient(checkUser as any);
+
+        } else {
+          setIsWhateListedUser(false);
+
+          setRecipient({
+
+
+            _id: '',
+            id: 0,
+            email: '',
+            nickname: '',
+            avatar: '',
+            mobile: '',
+            walletAddress: recipient.walletAddress,
+            createdAt: '',
+            settlementAmountOfFee: '',
+
+          });
+
+
+        }
+
+    });
+
+  } , [recipient.walletAddress]);
+
+
+
+  console.log("isWhateListedUser", isWhateListedUser);
+  console.log("recipient", recipient);
+
+
+
+
   return (
 
     <main className="p-4 pb-10 min-h-[100vh] flex items-start justify-center container max-w-screen-lg mx-auto">
@@ -635,17 +684,51 @@ export default function SendUsdt() {
               </>
 
               ) : (
-                <input
-                  disabled={sending}
-                  type="text"
-                  placeholder="Enter wallet address"
-                  className="w-full p-2 border border-gray-300 rounded text-black text-sm xl:text-2xl font-semibold"
-                  value={recipient.walletAddress}
-                  onChange={(e) => setRecipient({
-                    ...recipient,
-                    walletAddress: e.target.value,
-                  })}
-                />
+
+                <div className='flex flex-col gap-5 items-center justify-between'>
+                  <input
+                    disabled={sending}
+                    type="text"
+                    placeholder="Enter wallet address"
+                    className="w-full p-2 border border-gray-300 rounded text-black text-sm xl:text-2xl font-semibold"
+                    value={recipient.walletAddress}
+                    onChange={(e) => setRecipient({
+                      ...recipient,
+                      walletAddress: e.target.value,
+                    })}
+                  />
+
+                  {isWhateListedUser && (
+                    <div className="flex flex-row gap-2 items-center justify-center">
+
+
+                      <Image
+                        src={recipient.avatar || '/profile-default.png'}
+                        alt="profile"
+                        width={30}
+                        height={30}
+                        className="rounded-full"
+                        style={{
+                          objectFit: 'cover',
+                          width: '38px',
+                          height: '38px',
+                        }}
+                      />
+                      <div className="text-white">{recipient.nickname}</div>
+                      <Image
+                        src="/verified.png"
+                        alt="check"
+                        width={30}
+                        height={30}
+                      />
+                      
+                    </div>
+                  )}
+
+
+
+                </div>
+
               )} 
 
 
