@@ -394,7 +394,7 @@ const P2PTable = () => {
                 <div className="flex flex-col gap-2 items-start">
                   <div className="text-sm">My Balance</div>
                   <div className="text-5xl font-semibold text-white">
-                    {balance} <span className="text-lg">USDT</span>
+                    {Number(balance).toFixed(2)} <span className="text-lg">USDT</span>
                   </div>
                 </div>
 
@@ -419,14 +419,14 @@ const P2PTable = () => {
 
 
                             { (item.status === 'accepted' || item.status === 'paymentRequested') && (
-                              <p className="text-xl font-semibold text-green-500 bg-white px-2 py-1 rounded-md">
+                              <p className="mb-4 text-xl font-semibold text-green-500 bg-white px-2 py-1 rounded-md">
                                 TID: {item.tradeId}
                               </p>
                             )}
 
                             {item.acceptedAt && (
                               <p className="mb-4 text-sm text-zinc-400">
-                                Accepted at {new Date(item.acceptedAt).toLocaleDateString() + ' ' + new Date(item.acceptedAt).toLocaleTimeString()}
+                                Trading start at {new Date(item.acceptedAt).toLocaleDateString() + ' ' + new Date(item.acceptedAt).toLocaleTimeString()}
                               </p>
                             )}
 

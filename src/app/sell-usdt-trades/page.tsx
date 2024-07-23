@@ -347,9 +347,20 @@ const P2PTable = () => {
 
 
     // array of requestingPayment
-    const [requestingPayment, setRequestingPayment] = useState(
-      new Array(sellOrders.length).fill(false)
-    );
+    const [requestingPayment, setRequestingPayment] = useState([] as boolean[]);
+
+
+    ///console.log('requestingPayment', requestingPayment);
+
+
+    useEffect(() => {
+
+      setRequestingPayment(
+        new Array(sellOrders.length).fill(false)
+      );
+
+    } , [sellOrders]);
+
 
     const requstPayment = async (
       index: number,
@@ -479,10 +490,15 @@ const P2PTable = () => {
 
     // array of confirmingPayment
 
-    const [confirmingPayment, setConfirmingPayment] = useState(
-      new Array(sellOrders.length).fill(false)
-    );
+    const [confirmingPayment, setConfirmingPayment] = useState([] as boolean[]);
 
+    useEffect(() => {
+        
+        setConfirmingPayment(
+          new Array(sellOrders.length).fill(false)
+        );
+  
+      } , [sellOrders]);
 
 
     const confirmPayment = async (
@@ -662,19 +678,19 @@ const P2PTable = () => {
                               </p>
                             )}
 
-                            <p className="mt-5 text-sm text-zinc-400">
-                              Accepted at {
+                            <p className="mt-4 text-sm text-zinc-400">
+                              Trading start at {
                                 new Date(item.acceptedAt).toLocaleDateString() + ' ' + new Date(item.acceptedAt).toLocaleTimeString()
                               }
                             </p>
                           
-                            <p className="text-2xl font-bold text-white">{item.usdtAmount} USDT</p>
+                            <p className="mt-4 text-2xl font-bold text-white">{item.usdtAmount} USDT</p>
 
                             {/*
                             <p className="text-xl font-bold text-zinc-400">Rate: 1 USDT = {item.rate} KRW</p>
                             */}
 
-                            <p className="mb-5 text-xl font-bold text-zinc-400"> Price: {item.krwAmount} KRW</p>
+                            <p className="mb-4 text-xl font-bold text-zinc-400"> Price: {item.krwAmount} KRW</p>
                             
 
                             {/*
@@ -798,14 +814,15 @@ const P2PTable = () => {
 
                                       {requestingPayment[index] && (
 
-                                        <div className="flex flex-col gap-2">
+                                        <div className="p-2 flex flex-col gap-2">
                                           
                                           <div className="flex flex-row items-center gap-2">
                                             <Image
-                                                src='loading.png'
+                                                src='/loading.png'
                                                 alt='loading'
                                                 width={50}
                                                 height={50}
+                                                className="animate-spin"
                                             />
                                             <div className="text-lg font-semibold text-white">
                                               Requesting payment...
@@ -922,16 +939,29 @@ const P2PTable = () => {
 
                             {item.status === 'paymentRequested' && (
 
-                              <div className="w-full mt-2 mb-2 flex flex-col items-start ">
+                              <div className="w-full mt-4 mb-2 flex flex-col items-start ">
+
+                                <div className="w-full flex flex-col items-start gap-2">
+                                  <span className="text-lg font-semibold text-white">
+                                    Escrow: {item.usdtAmount} USDT
+                                  </span>
+                                  <span className="text-sm text-white">
+                                    If you confirm the payment, the USDT will be transferred to the buyer ( {item.buyer.nickname} ) wallet address.
+                                  </span>
+                                </div>
+                                  
+
 
                                 {confirmingPayment[index] && (
 
-                                  <div className="flex flex-row items-center gap-2">
+                                  <div className="p-2 flex flex-row items-center gap-2">
+
                                     <Image
-                                        src='loading.png'
+                                        src='/loading.png'
                                         alt='loading'
                                         width={50}
                                         height={50}
+                                        className="animate-spin"
                                     />
                                     <div className="text-lg font-semibold text-white">
                                       Waiting for payment confirmation...
@@ -979,7 +1009,7 @@ const P2PTable = () => {
                                 <div className="text-sm text-green-500">
                                   Total trading time is {
 
-                                 ( (new Date(item.paymentConfirmedAt).getTime() - new Date(item.acceptedAt).getTime()) / 1000 ).toFixed(0) 
+                                 ( (new Date(item.paymentConfirmedAt).getTime() - new Date(item.acceptedAt).getTime()) / 1000 / 60 ).toFixed(0) 
 
                                   } minutes
                                 </div>
