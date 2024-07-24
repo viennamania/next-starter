@@ -956,7 +956,7 @@ export default function Home() {
                 key={seller.id}
                 title={seller.nickname}
                 avatar={seller.avatar}
-                href={`/profiles/${seller.walletAddress}`}
+                href={`/buy-usdt`}
                 description="Check out the best sellers"
               />
             ))}

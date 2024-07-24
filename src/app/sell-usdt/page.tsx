@@ -475,8 +475,9 @@ const P2PTable = () => {
                             -
                           </button>
                           <input 
+                            disabled
                             type="number"
-                            className=" w-36  px-3 py-2 text-black text-xl border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 "
+                            className=" w-36  px-3 py-2 text-white text-xl font-bold border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 "
                             value={krwAmount}
                             onChange={(e) => {
                               // check number
