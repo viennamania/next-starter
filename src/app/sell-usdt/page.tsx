@@ -430,15 +430,24 @@ const P2PTable = () => {
                               type="number"
                               className=" w-28 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 "
                               placeholder="Amount"
+                              value={usdtAmount}
                               onChange={(e) => {
                                 // check number
                                 e.target.value = e.target.value.replace(/[^0-9.]/g, '');
 
+                                // if the value is start with 0, then remove 0
+                                if (e.target.value.startsWith('0')) {
+                                  e.target.value = e.target.value.substring(1);
+                                }
+
+                                
                                 if (e.target.value === '') {
                                   setUsdtAmount(0);
                                   return;
                                 }
 
+                                
+                            
 
 
                                 parseFloat(e.target.value) < 0 ? setUsdtAmount(0) : setUsdtAmount(parseFloat(e.target.value));
