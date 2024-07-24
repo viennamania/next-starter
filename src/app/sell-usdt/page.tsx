@@ -212,6 +212,9 @@ const P2PTable = () => {
 
 
     const [usdtAmount, setUsdtAmount] = useState(0);
+
+    const [defaultKrWAmount, setDefaultKrwAmount] = useState(0);
+
     const [krwAmount, setKrwAmount] = useState(0);
 
     console.log('usdtAmount', usdtAmount);
@@ -220,14 +223,24 @@ const P2PTable = () => {
     useEffect(() => {
 
       if (usdtAmount === 0) {
+
+        setDefaultKrwAmount(0);
+
         setKrwAmount(0);
+
         return;
       }
     
         
-      setKrwAmount( Math.round(usdtAmount * 1355.17) );
+      setDefaultKrwAmount( Math.round(usdtAmount * rate) );
+
+
+      setKrwAmount( Math.round(usdtAmount * rate) );
 
     } , [usdtAmount]);
+
+
+
 
 
     const [sellOrdering, setSellOrdering] = useState(false);
@@ -263,6 +276,7 @@ const P2PTable = () => {
         toast.success('Sell order has been created');
 
         setUsdtAmount(0);
+     
 
 
         await fetch('/api/order/getAllSellOrders', {
@@ -410,31 +424,87 @@ const P2PTable = () => {
                           })
                         }</p>
                         
-                        <p className="text-lg text-blue-500 font-bold mt-4">
+                        <div className="mt-4 flex flex-row items-center gap-2">
+                          <p className="text-lg text-blue-500 font-bold">
+                            <input 
+                              type="number"
+                              className=" w-28 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 "
+                              placeholder="Amount"
+                              onChange={(e) => {
+                                // check number
+                                e.target.value = e.target.value.replace(/[^0-9.]/g, '');
+
+                                if (e.target.value === '') {
+                                  setUsdtAmount(0);
+                                  return;
+                                }
+
+
+
+                                parseFloat(e.target.value) < 0 ? setUsdtAmount(0) : setUsdtAmount(parseFloat(e.target.value));
+
+                                parseFloat(e.target.value) > 1000 ? setUsdtAmount(1000) : setUsdtAmount(parseFloat(e.target.value));
+
+                              } }
+
+
+                            /> USDT
+                          </p>
+
+                          <p className=" text-sm text-zinc-400">
+                            = {
+                            Number(defaultKrWAmount).toLocaleString('en-US', {
+                              style: 'currency',
+                              currency: 'KRW'
+                            })
+                            }
+                          </p>
+                        </div>
+
+
+                        {/* input krw amount */}
+                        {/* left side decrease button and center is input and  right side increase button */}
+
+                        <div className="mt-4 flex flex-row items-center justify-center gap-2">
+                          <button
+                            className="bg-gray-200 text-gray-700 px-4 py-2 rounded-md"
+                            onClick={() => {
+                              setKrwAmount(krwAmount - 1);
+                            }}
+                          >
+                            -
+                          </button>
                           <input 
                             type="number"
-                            className=" w-28  px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 "
-                            placeholder="Amount"
+                            className=" w-36  px-3 py-2 text-black text-xl border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 "
+                            value={krwAmount}
                             onChange={(e) => {
                               // check number
                               e.target.value = e.target.value.replace(/[^0-9.]/g, '');
 
                               if (e.target.value === '') {
-                                setUsdtAmount(0);
+                                setKrwAmount(0);
                                 return;
                               }
 
-                              parseFloat(e.target.value) < 0 ? setUsdtAmount(0) : setUsdtAmount(parseFloat(e.target.value));
+                              parseFloat(e.target.value) < 0 ? setKrwAmount(0) : setKrwAmount(parseFloat(e.target.value));
+
+                              parseFloat(e.target.value) > 1000 ? setKrwAmount(1000) : setKrwAmount(parseFloat(e.target.value));
 
                             } }
+                          />
+                          <button
+                            className="bg-gray-200 text-gray-700 px-4 py-2 rounded-md"
+                            onClick={() => {
+                              setKrwAmount(krwAmount + 1);
+                            }}
+                          >
+                            +
+                          </button>
+
+                        </div>
 
 
-                          /> USDT
-                        </p>
-
-                        <p className="mt-4 text-2xl text-zinc-400">
-                          = {krwAmount} KRW
-                        </p>
 
                         <p className="mt-4 text-sm text-zinc-400">
                             Sell order is expired in 24 hours
