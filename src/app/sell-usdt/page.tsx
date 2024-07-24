@@ -294,6 +294,8 @@ const P2PTable = () => {
 
     };
 
+    const [rate, setRate] = useState(1385.67);
+
     
     return (
 
@@ -400,7 +402,13 @@ const P2PTable = () => {
                           <h2 className="text-2xl font-semibold text-white">Place Order</h2>
                         </div>
 
-                        <p className="mt-4 text-xl font-bold text-zinc-400">1 USDT = 1355.17 KRW</p>
+                        <p className="mt-4 text-xl font-bold text-zinc-400">1 USDT = {
+                          // currency format
+                          Number(rate).toLocaleString('en-US', {
+                            style: 'currency',
+                            currency: 'KRW'
+                          })
+                        }</p>
                         
                         <p className="text-lg text-blue-500 font-bold mt-4">
                           <input 
@@ -426,6 +434,10 @@ const P2PTable = () => {
 
                         <p className="mt-4 text-2xl text-zinc-400">
                           = {krwAmount} KRW
+                        </p>
+
+                        <p className="mt-4 text-sm text-zinc-400">
+                            Sell order is expired in 24 hours
                         </p>
                         
                         <p className="mt-4 text-sm text-zinc-400">Payment method: Bank Transfer</p>
@@ -491,11 +503,17 @@ const P2PTable = () => {
                         >
 
                             {item.status === 'ordered' && (
-                              <p className=" text-sm text-zinc-400">
-                                Sell ordered at {
-                                  new Date(item.createdAt).toLocaleDateString() + ' ' + new Date(item.createdAt).toLocaleTimeString()
-                                }
-                              </p>
+                              <div className="flex flex-col items-start gap-1">
+                                <p className=" text-sm text-zinc-400">
+                                  Sell ordered at {
+                                    new Date(item.createdAt).toLocaleDateString() + ' ' + new Date(item.createdAt).toLocaleTimeString()
+                                  }
+                                </p>
+                                {/* Expired in 24 hours */}
+                                <p className=" text-sm text-zinc-400">
+                                  Expired in {24 - Math.floor((new Date().getTime() - new Date(item.createdAt).getTime()) / 1000 / 60 / 60)} hours
+                                </p>
+                              </div>
                             )}
 
 
@@ -514,9 +532,26 @@ const P2PTable = () => {
 
                             <p className=" text-2xl font-bold text-white">{item.usdtAmount} USDT</p>
 
-                            <p className="text-xl font-bold text-zinc-400"> Price: {item.krwAmount} KRW</p>
+                            <p className="text-xl text-zinc-400"> Price: {
+                              Number(item.krwAmount).toLocaleString('en-US', {
+                                style: 'currency',
+                                currency: 'KRW'
+                              })
+                            }</p>
 
-                            <p className="text-sm text-zinc-400">Rate: 1 USDT = {item.rate} KRW</p>
+                            
+                            <p className="text-sm text-zinc-400">Rate: 1 USDT = {
+
+                                // currency format
+                                Number((item.krwAmount / item.usdtAmount).toFixed(2)).toLocaleString('en-US', {
+                                  style: 'currency',
+                                  currency: 'KRW'
+                                })
+
+
+
+                              }</p>
+                            
 
                             {/*
                             <p className="mt-4 text-sm font-semibold text-zinc-400">
@@ -586,6 +621,7 @@ const P2PTable = () => {
 
                               }
                             </h2>
+
 
 
 
