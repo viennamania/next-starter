@@ -264,7 +264,7 @@ const P2PTable = () => {
           walletAddress: address,
           usdtAmount: usdtAmount,
           krwAmount: krwAmount,
-          rate: 1355.17
+          rate: rate,
         })
       });
 
