@@ -424,6 +424,13 @@ const P2PTable = () => {
                   </div>
                 </div>
 
+                {/* Sell Orders: 2 EA (132 USDT), Trades: 10 EA (43 USDT) */}
+                {/* trades is the status is accepted or paymentRequested */}
+                <div className="flex flex-col gap-2 items-start">
+                  <div className="text-sm">Sell Orders: {sellOrders.length} EA ({sellOrders.reduce((acc, item) => acc + item.usdtAmount, 0)} USDT)</div>
+                  <div className="text-sm">Trades: {sellOrders.filter(item => item.status === 'accepted' || item.status === 'paymentRequested').length} EA ({sellOrders.filter(item => item.status === 'accepted' || item.status === 'paymentRequested').reduce((acc, item) => acc + item.usdtAmount, 0)} USDT)</div>
+                </div>
+
                 <div className="w-full grid gap-4 lg:grid-cols-3 justify-center">
 
                     {sellOrders.map((item, index) => (
@@ -438,9 +445,14 @@ const P2PTable = () => {
                         >
 
                           {item.status === 'ordered' && (
-                            <p className="text-sm text-zinc-400">Sell ordered at {
-                                item.createdAt && new Date(item.createdAt).toLocaleString()
-                            }</p>
+                            <div className="flex flex-col gpa-2 items-start justify-start">
+                              <p className="text-sm text-zinc-400">Sell ordered at {
+                                  item.createdAt && new Date(item.createdAt).toLocaleString()
+                              }</p>
+                              <p className="text-sm text-zinc-400">Expires in {
+                                  item.createdAt && Number((new Date(item.createdAt).getTime() + 1000 * 60 * 60 * 24 - new Date().getTime()) / 1000 / 60 / 60).toFixed(0) + ' hours'
+                              }</p>
+                            </div>
                           )}
 
 
