@@ -450,6 +450,9 @@ const P2PTable = () => {
                               ${item.walletAddress === address ? 'border-green-500' : 'border-gray-200'}
 
                               ${item.status === 'accepted' || item.status === 'paymentRequested' ? 'border-red-600' : 'border-gray-200'}
+
+                              ${item.status === 'ordered' && (new Date().getTime() - new Date(item.createdAt).getTime() > 1000 * 60 * 60 * 24) && 'border-gray-800'}
+
                            
                             p-4 rounded-md border bg-black bg-opacity-50
                           `}
@@ -503,20 +506,37 @@ const P2PTable = () => {
                               </p>
                             )}
 
-                            
-                            <p className="text-2xl font-semibold text-white">{item.usdtAmount} USDT</p>
+                            <div className="flex flex-row items-between space-x-2">
 
-                            <p className="text-xl text-zinc-400">
-                              Price: {
-                                // currency
-                              
-                                Number(item.krwAmount).toLocaleString('ko-KR', {
-                                  style: 'currency',
-                                  currency: 'KRW',
-                                })
+                              <div className="flex flex-col items-start">
+                                <p className="text-2xl font-semibold text-white">{item.usdtAmount} USDT</p>
 
-                              }
-                            </p>
+                                <p className="text-xl text-zinc-400">
+                                  Price: {
+                                    // currency
+                                  
+                                    Number(item.krwAmount).toLocaleString('ko-KR', {
+                                      style: 'currency',
+                                      currency: 'KRW',
+                                    })
+
+                                  }
+                                </p>
+                              </div>
+
+                              <div className="flex flex-col items-start">
+                                <p className="text-lg font-semibold text-white">Rate: {
+
+                                  Number(item.krwAmount / item.usdtAmount).toFixed(2)
+
+                                }</p>
+                              </div>
+
+                            </div>
+
+                            <div className="flex flex-col items-start">
+                              Payment: Bank Transfer
+                            </div>
 
                             {(item.status === 'accepted' || item.status === 'paymentRequested') && (
                               <>
@@ -625,8 +645,27 @@ const P2PTable = () => {
                                       My Order
                                     </div>
                                   ) : (
+                                    <div className="w-full flex items-center justify-center">
 
-                                      <button
+                                      {item.status === 'ordered' && (
+                                        
+                                        // check if the order is expired
+                                        new Date().getTime() - new Date(item.createdAt).getTime() > 1000 * 60 * 60 * 24
+
+                                      ) ? (
+                                        
+                                        <Image
+                                          src="/icon-expired.png"
+                                          alt="Expired"
+                                          width={80}
+                                          height={80}
+                                        />
+                                       
+                                      ) : (
+
+
+                                        
+                                        <button
                                           disabled={!user}
                                           className="text-lg bg-green-500 text-white px-4 py-2 rounded-md mt-4"
                                           onClick={() => {
@@ -647,6 +686,12 @@ const P2PTable = () => {
                                         >
                                           Buy USDT
                                         </button>
+
+                                      )}
+
+                                    </div>
+
+
 
                                     )}
 
