@@ -448,6 +448,8 @@ const P2PTable = () => {
                             key={index}
                             className={` w-96 xl:w-full
                               ${item.walletAddress === address ? 'border-green-500' : 'border-gray-200'}
+
+                              ${item.status === 'accepted' || item.status === 'paymentRequested' ? 'border-red-600' : 'border-gray-200'}
                            
                             p-4 rounded-md border bg-black bg-opacity-50
                           `}
@@ -455,9 +457,25 @@ const P2PTable = () => {
 
                           {item.status === 'ordered' && (
                             <div className="flex flex-col gpa-2 items-start justify-start">
-                              <p className="text-sm text-zinc-400">Sell ordered at {
-                                  item.createdAt && new Date(item.createdAt).toLocaleString()
-                              }</p>
+
+
+                              <div className="flex flex-row items-center space-x-2">
+                                {/* if createdAt is recent 1 hours, show new badge */}
+                                {new Date().getTime() - new Date(item.createdAt).getTime() < 1000 * 60 * 60 && (
+                                  <Image
+                                    src="/icon-new.png"
+                                    alt="New"
+                                    width={28}
+                                    height={28}
+                                  />
+                                )}
+                                <p className="text-sm text-zinc-400">Sell ordered at {
+                                    item.createdAt && new Date(item.createdAt).toLocaleString()
+                                }</p>
+                              </div>
+
+
+
                               <p className="text-sm text-zinc-400">Expires in {
                                   item.createdAt && Number((new Date(item.createdAt).getTime() + 1000 * 60 * 60 * 24 - new Date().getTime()) / 1000 / 60 / 60).toFixed(0) + ' hours'
                               }</p>
@@ -466,9 +484,17 @@ const P2PTable = () => {
 
 
                             { (item.status === 'accepted' || item.status === 'paymentRequested') && (
-                              <p className="mb-4 text-xl font-semibold text-green-500 bg-white px-2 py-1 rounded-md">
-                                TID: {item.tradeId}
-                              </p>
+                              <div className="mb-4 flex flex-row items-center space-x-2">
+                                <Image
+                                  src="/icon-trade.png"
+                                  alt="Trade"
+                                  width={28}
+                                  height={28}
+                                />
+                                <p className="text-xl font-semibold text-green-500 bg-white px-2 py-1 rounded-md">
+                                  TID: {item.tradeId}
+                                </p>
+                              </div>
                             )}
 
                             {item.acceptedAt && (
