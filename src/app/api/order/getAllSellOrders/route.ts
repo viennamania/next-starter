@@ -13,7 +13,7 @@ export async function POST(request: NextRequest) {
 
 
   const result = await getSellOrders({
-    limit: 20,
+    limit: 100,
     page: 1,
   });
 
