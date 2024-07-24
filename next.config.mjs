@@ -2,7 +2,7 @@
 
 
 /*
-Error: Invalid src prop (https://cryptologos.cc/logos/tether-usdt-logo.png) on `next/image`, hostname "cryptologos.cc" is not configured under images in your `next.config.js`
+Error: Invalid src prop (/logo-tether.png) on `next/image`, hostname "cryptologos.cc" is not configured under images in your `next.config.js`
 */
 
 const nextConfig = {

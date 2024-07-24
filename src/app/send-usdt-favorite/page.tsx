@@ -464,12 +464,23 @@ export default function SendUsdt() {
         <div className="flex flex-col items-start justify-center space-y-4">
 
             <div className='flex flex-row items-center space-x-4'>
-              <Image
-                src="https://cryptologos.cc/logos/tether-usdt-logo.png"
-                alt="USDT"
-                width={30}
-                height={30}
-              />
+
+              <div className='flex flex-row items-center space-x-2'>
+                <Image
+                  src="/logo-tether.png"
+                  alt="USDT"
+                  width={35}
+                  height={35}
+                />
+                <Image
+                  src="/logo-polygon.png"
+                  alt="Polygon"
+                  width={32}
+                  height={32}
+                  className="rounded-lg"
+                />
+              </div>
+
               <div className="text-2xl font-semibold">Send USDT</div>
 
 
@@ -633,27 +644,30 @@ export default function SendUsdt() {
 
                   {/* select user profile image */}
 
+                  <div className=" w-48 flex flex-row gap-2 items-center justify-center">
                     <Image
                       src={recipient?.avatar || '/profile-default.png'}
                       alt="profile"
-                      width={60}
-                      height={60}
+                      width={38}
+                      height={38}
                       className="rounded-full"
                       style={{
                         objectFit: 'cover',
                         width: '38px',
                         height: '38px',
-                    }}
+                      }}
                     />
 
                     {recipient.walletAddress && (
                       <Image
                         src="/verified.png"
                         alt="check"
-                        width={30}
-                        height={30}
+                        width={28}
+                        height={28}
                       />
                     )}
+
+                  </div>
 
 
                 </div>

@@ -365,10 +365,10 @@ const P2PTable = () => {
 
               <div className='flex flex-row items-center space-x-4'>
                   <Image
-                    src="https://cryptologos.cc/logos/tether-usdt-logo.png"
+                    src="/logo-tether.png"
                     alt="USDT"
-                    width={32}
-                    height={32}
+                    width={35}
+                    height={35}
                     className="rounded-lg"
                   />
 
@@ -480,7 +480,17 @@ const P2PTable = () => {
                             
                             <p className="text-2xl font-semibold text-white">{item.usdtAmount} USDT</p>
 
-                            <p className="text-xl font-bold text-zinc-400">Price: {item.krwAmount} KRW</p>
+                            <p className="text-xl text-zinc-400">
+                              Price: {
+                                // currency
+                              
+                                Number(item.krwAmount).toLocaleString('ko-KR', {
+                                  style: 'currency',
+                                  currency: 'KRW',
+                                })
+
+                              }
+                            </p>
 
                             {(item.status === 'accepted' || item.status === 'paymentRequested') && (
                               <>

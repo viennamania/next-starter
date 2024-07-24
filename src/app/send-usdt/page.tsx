@@ -263,12 +263,24 @@ export default function SendUsdt() {
         <div className="flex flex-col items-center space-y-4">
 
             <div className='flex flex-row items-center space-x-4'>
-              <Image
-                src="https://cryptologos.cc/logos/tether-usdt-logo.png"
-                alt="USDT"
-                width={30}
-                height={30}
-              />
+
+              <div className='flex flex-row items-center space-x-2'>
+                <Image
+                  src="/logo-tether.png"
+                  alt="USDT"
+                  width={35}
+                  height={35}
+                />
+                <Image
+                  src="/logo-polygon.png"
+                  alt="Polygon"
+                  width={32}
+                  height={32}
+                  className="rounded-lg"
+                />
+              </div>
+
+
               <div className="text-2xl font-semibold">Send USDT</div>
             </div>
 

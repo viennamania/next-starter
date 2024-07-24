@@ -314,8 +314,15 @@ const P2PTable = () => {
 
               <div className='flex flex-row items-center space-x-4'>
                   <Image
-                    src="https://cryptologos.cc/logos/tether-usdt-logo.png"
+                    src="/logo-tether.png"
                     alt="USDT"
+                    width={35}
+                    height={35}
+                    className="rounded-lg"
+                  />
+                  <Image
+                    src="/logo-polygon.png"
+                    alt="Polygon"
                     width={32}
                     height={32}
                     className="rounded-lg"

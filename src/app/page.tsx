@@ -492,14 +492,26 @@ export default function Home() {
 
 
                 <div className="flex flex-row justify-between items-start">
-                  {/* Tether USDT logo */}
-                  <Image
-                    src="https://cryptologos.cc/logos/tether-usdt-logo.png"
-                    alt="USDT"
-                    width={50}
-                    height={50}
-                    className="rounded-lg"
-                  />
+
+                  <div className="flex flex-row gap-2 justify-center items-center">
+                    {/* Tether USDT logo */}
+                    <Image
+                      src="/logo-tether.png"
+                      alt="USDT"
+                      width={35}
+                      height={35}
+                      className="rounded-lg"
+                    />
+
+                    <Image
+                      src="/logo-polygon.png"
+                      alt="Polygon"
+                      width={30}
+                      height={30}
+                      className="rounded-lg"
+                    />
+                  </div>
+
                   {/* Settings Button */}
                   <button
 
