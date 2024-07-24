@@ -473,14 +473,17 @@ const P2PTable = () => {
 
                         {/* input krw amount */}
                         {/* left side decrease button and center is input and  right side increase button */}
+                        {/* -1, -10, -100, +1, +10, +100 */}
+                        {/* if - button change bg color red */}
+                        {/* if + button change bg color */}
 
-                        <div className="mt-4 flex flex-row items-center justify-center gap-2">
+                        <div className="mt-4 flex flex-row items-center justify-between gap-2">
 
 
                           <div className="flex flex-col gap-2">
 
                             <button
-                              className="bg-gray-200 text-gray-700 px-4 py-2 rounded-md"
+                              className="bg-red-400 text-white px-2 py-2 rounded-md"
                               onClick={() => {
                                 krwAmount > 0 && setKrwAmount(krwAmount - 1);
                               }}
@@ -489,7 +492,7 @@ const P2PTable = () => {
                             </button>
 
                             <button
-                              className="bg-gray-200 text-gray-700 px-4 py-2 rounded-md"
+                              className="bg-red-600 text-white px-2 py-2 rounded-md"
                               onClick={() => {
                                 krwAmount > 10 && setKrwAmount(krwAmount - 10);
                               }}
@@ -498,7 +501,7 @@ const P2PTable = () => {
                             </button>
 
                             <button
-                              className="bg-gray-200 text-gray-700 px-4 py-2 rounded-md"
+                              className="bg-red-800 text-white px-2 py-2 rounded-md"
                               onClick={() => {
                                 krwAmount > 100 && setKrwAmount(krwAmount - 100);
                               }}
@@ -508,30 +511,46 @@ const P2PTable = () => {
 
                           </div>
 
-                          <input 
-                            disabled
-                            type="number"
-                            className=" w-32  px-3 py-2 text-white text-xl font-bold border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 "
-                            value={krwAmount}
-                            onChange={(e) => {
-                              // check number
-                              e.target.value = e.target.value.replace(/[^0-9.]/g, '');
+                          <div className="flex flex-col gap-2">
+                            <input 
+                              disabled
+                              type="number"
+                              className=" w-36  px-3 py-2 text-white text-xl font-bold border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 "
+                              value={krwAmount}
+                              onChange={(e) => {
+                                // check number
+                                e.target.value = e.target.value.replace(/[^0-9.]/g, '');
 
-                              if (e.target.value === '') {
-                                setKrwAmount(0);
-                                return;
-                              }
+                                if (e.target.value === '') {
+                                  setKrwAmount(0);
+                                  return;
+                                }
 
-                              parseFloat(e.target.value) < 0 ? setKrwAmount(0) : setKrwAmount(parseFloat(e.target.value));
+                                parseFloat(e.target.value) < 0 ? setKrwAmount(0) : setKrwAmount(parseFloat(e.target.value));
 
-                              parseFloat(e.target.value) > 1000 ? setKrwAmount(1000) : setKrwAmount(parseFloat(e.target.value));
+                                parseFloat(e.target.value) > 1000 ? setKrwAmount(1000) : setKrwAmount(parseFloat(e.target.value));
 
-                            } }
-                          />
+                              } }
+                            />
+
+                            {krwAmount > 0 && (
+                              <div className="text-xl text-zinc-400">
+                                Rate: {
+
+                                  // currency format
+                                  Number((krwAmount / usdtAmount).toFixed(2)).toLocaleString('en-US', {
+                                    style: 'currency',
+                                    currency: 'KRW'
+                                  })
+
+                                } 
+                              </div>
+                            )}
+                          </div>
 
                           <div className="flex flex-col gap-2">
                             <button
-                              className="bg-gray-200 text-gray-700 px-4 py-2 rounded-md"
+                              className="bg-green-400 text-white px-2 py-2 rounded-md"
                               onClick={() => {
                                 setKrwAmount(krwAmount + 1);
                               }}
@@ -539,7 +558,7 @@ const P2PTable = () => {
                               +1
                             </button>
                             <button
-                              className="bg-gray-200 text-gray-700 px-4 py-2 rounded-md"
+                              className="bg-green-600 text-white px-2 py-2 rounded-md"
                               onClick={() => {
                                 setKrwAmount(krwAmount + 10);
                               }}
@@ -548,7 +567,7 @@ const P2PTable = () => {
                             </button>
 
                             <button
-                              className="bg-gray-200 text-gray-700 px-4 py-2 rounded-md"
+                              className="bg-green-800 text-white px-2 py-2 rounded-md"
                               onClick={() => {
                                 setKrwAmount(krwAmount + 100);
                               }}
