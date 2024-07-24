@@ -475,18 +475,43 @@ const P2PTable = () => {
                         {/* left side decrease button and center is input and  right side increase button */}
 
                         <div className="mt-4 flex flex-row items-center justify-center gap-2">
-                          <button
-                            className="bg-gray-200 text-gray-700 px-4 py-2 rounded-md"
-                            onClick={() => {
-                              setKrwAmount(krwAmount - 1);
-                            }}
-                          >
-                            -
-                          </button>
+
+
+                          <div className="flex flex-col gap-2">
+
+                            <button
+                              className="bg-gray-200 text-gray-700 px-4 py-2 rounded-md"
+                              onClick={() => {
+                                krwAmount > 0 && setKrwAmount(krwAmount - 1);
+                              }}
+                            >
+                              -1
+                            </button>
+
+                            <button
+                              className="bg-gray-200 text-gray-700 px-4 py-2 rounded-md"
+                              onClick={() => {
+                                krwAmount > 10 && setKrwAmount(krwAmount - 10);
+                              }}
+                            >
+                              -10
+                            </button>
+
+                            <button
+                              className="bg-gray-200 text-gray-700 px-4 py-2 rounded-md"
+                              onClick={() => {
+                                krwAmount > 100 && setKrwAmount(krwAmount - 100);
+                              }}
+                            >
+                              -100
+                            </button>
+
+                          </div>
+
                           <input 
                             disabled
                             type="number"
-                            className=" w-36  px-3 py-2 text-white text-xl font-bold border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 "
+                            className=" w-32  px-3 py-2 text-white text-xl font-bold border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 "
                             value={krwAmount}
                             onChange={(e) => {
                               // check number
@@ -503,14 +528,35 @@ const P2PTable = () => {
 
                             } }
                           />
-                          <button
-                            className="bg-gray-200 text-gray-700 px-4 py-2 rounded-md"
-                            onClick={() => {
-                              setKrwAmount(krwAmount + 1);
-                            }}
-                          >
-                            +
-                          </button>
+
+                          <div className="flex flex-col gap-2">
+                            <button
+                              className="bg-gray-200 text-gray-700 px-4 py-2 rounded-md"
+                              onClick={() => {
+                                setKrwAmount(krwAmount + 1);
+                              }}
+                            >
+                              +1
+                            </button>
+                            <button
+                              className="bg-gray-200 text-gray-700 px-4 py-2 rounded-md"
+                              onClick={() => {
+                                setKrwAmount(krwAmount + 10);
+                              }}
+                            >
+                              +10
+                            </button>
+
+                            <button
+                              className="bg-gray-200 text-gray-700 px-4 py-2 rounded-md"
+                              onClick={() => {
+                                setKrwAmount(krwAmount + 100);
+                              }}
+                            >
+                              +100
+                            </button>
+
+                          </div>
 
                         </div>
 
