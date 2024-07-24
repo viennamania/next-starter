@@ -274,9 +274,10 @@ export default function SendUsdt() {
 
 
 
+  console.log("recipient", recipient);
 
-  console.log("recipient.walletAddress", recipient.walletAddress);
-  console.log("amount", amount);
+  //console.log("recipient.walletAddress", recipient.walletAddress);
+  //console.log("amount", amount);
 
 
   const [sending, setSending] = useState(false);
@@ -399,7 +400,7 @@ export default function SendUsdt() {
   
   useEffect(() => {
     // check recipient.walletAddress is in the user list
-    getUserByWalletAddress(recipient.walletAddress)
+    getUserByWalletAddress(recipient?.walletAddress)
     .then((data) => {
         
         console.log("data============", data);
@@ -423,7 +424,7 @@ export default function SendUsdt() {
             nickname: '',
             avatar: '',
             mobile: '',
-            walletAddress: recipient.walletAddress,
+            walletAddress: recipient?.walletAddress,
             createdAt: '',
             settlementAmountOfFee: '',
 
@@ -434,7 +435,7 @@ export default function SendUsdt() {
 
     });
 
-  } , [recipient.walletAddress]);
+  } , [recipient?.walletAddress]);
   
 
 
@@ -619,7 +620,7 @@ export default function SendUsdt() {
                     disabled={sending}
                     className="w-full p-2 border border-gray-300 rounded text-black text-2xl font-semibold"
                     value={
-                      recipient.nickname
+                      recipient?.nickname
                     }
 
 
@@ -658,7 +659,7 @@ export default function SendUsdt() {
                       }}
                     />
 
-                    {recipient.walletAddress && (
+                    {recipient?.walletAddress && (
                       <Image
                         src="/verified.png"
                         alt="check"
@@ -680,7 +681,7 @@ export default function SendUsdt() {
                   type="text"
                   placeholder="User wallet address"
                   className="w-full p-2 border border-gray-300 rounded text-white text-sm xl:text-lg font-semibold"
-                  value={recipient.walletAddress}
+                  value={recipient?.walletAddress}
                   onChange={(e) => {
   
                     
@@ -742,7 +743,7 @@ export default function SendUsdt() {
                           height: '38px',
                         }}
                       />
-                      <div className="text-white">{recipient.nickname}</div>
+                      <div className="text-white">{recipient?.nickname}</div>
                       <Image
                         src="/verified.png"
                         alt="check"
@@ -754,7 +755,7 @@ export default function SendUsdt() {
                   ) : (
                     <>
 
-                    {recipient.walletAddress && (
+                    {recipient?.walletAddress && (
                     <div className="text-red-500">
                       Warnning: This address is not white listed
                     </div>
@@ -773,12 +774,12 @@ export default function SendUsdt() {
 
 
               <button
-                disabled={!address || !recipient.walletAddress || !amount || sending}
+                disabled={!address || !recipient?.walletAddress || !amount || sending}
                 onClick={sendUsdt}
                 className={`mt-10 w-full p-2 rounded-lg text-xl font-semibold
 
                     ${
-                    !address || !recipient.walletAddress || !amount || sending
+                    !address || !recipient?.walletAddress || !amount || sending
                     ?'bg-gray-300 text-gray-400'
                     : 'bg-green-500 text-white'
                     }
