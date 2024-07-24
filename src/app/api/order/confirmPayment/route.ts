@@ -168,7 +168,7 @@ export async function POST(request: NextRequest) {
         let message = null;
     
     
-        const msgBody = `[UNOVE] You received ${amount} USDT from ${nickname}. TID: ${tradeId}.`;
+        const msgBody = `[UNOVE] TID[${tradeId}] You received ${amount} USDT from ${nickname}!`;
     
         message = await client.messages.create({
           ///body: "This is the ship that made the Kessel Run in fourteen parsecs?",

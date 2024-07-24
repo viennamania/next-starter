@@ -52,7 +52,7 @@ export async function POST(request: NextRequest) {
     let message = null;
 
 
-    const msgBody = `[UNOVE] Your sell order has been accepted by ${buyer?.nickname}! TID: ${tradeId}`;
+    const msgBody = `[UNOVE] TID[${tradeId}] Your sell order has been accepted by ${buyer?.nickname}!`;
 
     message = await client.messages.create({
       ///body: "This is the ship that made the Kessel Run in fourteen parsecs?",
