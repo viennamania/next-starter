@@ -371,6 +371,15 @@ const P2PTable = () => {
                     height={32}
                     className="rounded-lg"
                   />
+
+                  <Image
+                    src="/logo-polygon.png"
+                    alt="Polygon"
+                    width={32}
+                    height={32}
+                    className="rounded-lg"
+                  />
+
                   <div className="text-2xl font-semibold">Buy USDT</div>
 
 
