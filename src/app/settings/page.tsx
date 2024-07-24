@@ -349,18 +349,39 @@ export default function SettingsPage() {
                         {/* Disconnect Wallet */}
 
                         {address && (
-                            <button
-                                disabled={!activeWallet}
-                                onClick={() => {
-                                    activeWallet?.disconnect();
+                            <div className='flex flex-col items-center justify-center gap-2'>
+                                <button
+                                    disabled={!activeWallet}
+                                    onClick={() => {
+                                        activeWallet?.disconnect();
 
-                                    window.location.reload();
-                                }}
-                                className="p-2 bg-red-500 text-zinc-100 rounded"
-                            >
-                                Disconnect Wallet
-                            </button>
+                                        window.location.reload();
+                                    }}
+                                    className="p-2 bg-red-500 text-zinc-100 rounded"
+                                >
+                                    Disconnect Wallet
+                                </button>
+
+
+                                {/*
+                                <iframe
+                                    src='https://withpaper.com/sdk/2022-08-12/embedded-wallet/export?clientId=fbef5750f91259d17fc33469695bd744'
+
+
+                                    width='100%'
+                                    height='600px'
+                                />
+                                */}
+
+
+
+                            </div>
                         )}
+
+
+
+
+
 
 
 
