@@ -775,7 +775,15 @@ export default function SendUsdt() {
               <button
                 disabled={!address || !recipient.walletAddress || !amount || sending}
                 onClick={sendUsdt}
-                className="mt-10 w-full bg-zinc-800 text-white p-2 rounded text-center text-2xl font-semibold hover:bg-zinc-700 hover:text-white"
+                className={`mt-10 w-full p-2 rounded-lg text-xl font-semibold
+
+                    ${
+                    !address || !recipient.walletAddress || !amount || sending
+                    ?'bg-gray-300 text-gray-400'
+                    : 'bg-green-500 text-white'
+                    }
+                   
+                   `}
               >
                   Send
               </button>
