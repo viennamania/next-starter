@@ -120,6 +120,7 @@ export async function insertSellOrder(data: any) {
       rate: data.rate,
       createdAt: new Date().toISOString(),
       status: 'ordered',
+      privateSale: data.privateSale,
     }
   );
 

@@ -10,7 +10,7 @@ export async function POST(request: NextRequest) {
 
   const body = await request.json();
 
-  const { walletAddress, usdtAmount, krwAmount, rate } = body;
+  const { walletAddress, usdtAmount, krwAmount, rate, privateSale } = body;
 
   console.log("walletAddress", walletAddress);
   
@@ -20,6 +20,7 @@ export async function POST(request: NextRequest) {
     usdtAmount: usdtAmount,
     krwAmount: krwAmount,
     rate: rate,
+    privateSale: privateSale,
   });
 
 

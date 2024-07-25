@@ -241,6 +241,7 @@ const P2PTable = () => {
 
 
 
+    const [privateSale, setprivateSale] = useState(false);
 
 
     const [sellOrdering, setSellOrdering] = useState(false);
@@ -265,6 +266,7 @@ const P2PTable = () => {
           usdtAmount: usdtAmount,
           krwAmount: krwAmount,
           rate: rate,
+          privateSale: privateSale,
         })
       });
 
@@ -276,6 +278,7 @@ const P2PTable = () => {
         toast.success('Sell order has been created');
 
         setUsdtAmount(0);
+        setprivateSale(false);
      
 
 
@@ -438,15 +441,28 @@ const P2PTable = () => {
                     <article className="mb-10 w-96 xl:w-full bg-black p-4 rounded-md border-2 border-green-500">
        
 
-                        {/* sell icon */}
-                        <div className=" flex flex-row items-center gap-2">
-                          <Image
-                            src="/trade-sell.png"
-                            alt="Sell"
-                            width={32}
-                            height={32}
-                          />
-                          <h2 className="text-2xl font-semibold text-white">Place Order</h2>
+                        <div className=" flex flex-row items-center justify-between gap-4">
+                          {/* sell icon */}
+                          <div className=" flex flex-row items-center gap-2">
+                            <Image
+                              src="/trade-sell.png"
+                              alt="Sell"
+                              width={28}
+                              height={28}
+                            />
+                            <h2 className="text-lg font-semibold text-white">Place Order</h2>
+                          </div>
+
+                          {/* check box for private sale */}
+                          <div className="flex flex-row items-center gap-2">
+                            <input
+                              type="checkbox"
+                              checked={privateSale}
+                              onChange={(e) => setprivateSale(e.target.checked)}
+                            />
+                            <div className="text-sm text-zinc-400">Private Sale</div>
+                          </div>
+
                         </div>
 
                         <p className="mt-4 text-xl font-bold text-zinc-400">1 USDT = {
@@ -516,6 +532,7 @@ const P2PTable = () => {
                           <div className="flex flex-col gap-2">
 
                             <button
+                              disabled={usdtAmount === 0}
                               className="bg-red-400 text-white px-2 py-2 rounded-md"
                               onClick={() => {
                                 krwAmount > 0 && setKrwAmount(krwAmount - 1);
@@ -525,6 +542,7 @@ const P2PTable = () => {
                             </button>
 
                             <button
+                              disabled={usdtAmount === 0}
                               className="bg-red-600 text-white px-2 py-2 rounded-md"
                               onClick={() => {
                                 krwAmount > 10 && setKrwAmount(krwAmount - 10);
@@ -534,12 +552,23 @@ const P2PTable = () => {
                             </button>
 
                             <button
+                              disabled={usdtAmount === 0}
                               className="bg-red-800 text-white px-2 py-2 rounded-md"
                               onClick={() => {
                                 krwAmount > 100 && setKrwAmount(krwAmount - 100);
                               }}
                             >
                               -100
+                            </button>
+
+                            <button
+                              disabled={usdtAmount === 0}
+                              className="bg-green-400 text-white px-2 py-2 rounded-md"
+                              onClick={() => {
+                                krwAmount > 1000 && setKrwAmount(krwAmount - 1000);
+                              }}
+                            >
+                              -1000
                             </button>
 
                           </div>
@@ -583,6 +612,7 @@ const P2PTable = () => {
 
                           <div className="flex flex-col gap-2">
                             <button
+                              disabled={usdtAmount === 0}
                               className="bg-green-400 text-white px-2 py-2 rounded-md"
                               onClick={() => {
                                 setKrwAmount(krwAmount + 1);
@@ -591,6 +621,7 @@ const P2PTable = () => {
                               +1
                             </button>
                             <button
+                              disabled={usdtAmount === 0}
                               className="bg-green-600 text-white px-2 py-2 rounded-md"
                               onClick={() => {
                                 setKrwAmount(krwAmount + 10);
@@ -600,12 +631,23 @@ const P2PTable = () => {
                             </button>
 
                             <button
+                              disabled={usdtAmount === 0}
                               className="bg-green-800 text-white px-2 py-2 rounded-md"
                               onClick={() => {
                                 setKrwAmount(krwAmount + 100);
                               }}
                             >
                               +100
+                            </button>
+
+                            <button
+                              disabled={usdtAmount === 0}
+                              className="bg-green-900 text-white px-2 py-2 rounded-md"
+                              onClick={() => {
+                                setKrwAmount(krwAmount + 1000);
+                              }}
+                            >
+                              +1000
                             </button>
 
                           </div>
