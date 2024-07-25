@@ -206,6 +206,59 @@ export async function getSellOrders(
 
 
 
+
+export async function getOneSellOrder(
+
+  {
+    orderId,
+    limit,
+    page,
+  }: {
+    orderId: string;
+    limit: number;
+    page: number;
+  
+  }
+
+): Promise<ResultProps> {
+
+  const client = await clientPromise;
+  const collection = client.db('vienna').collection('orders');
+
+
+  // status is not 'paymentConfirmed'
+
+
+  const results = await collection.find<UserProps>(
+    {
+
+      _id: new ObjectId(orderId),
+
+      //status: 'ordered',
+
+      ///status: { $ne: 'paymentConfirmed' },
+
+      // exclude private sale
+      //privateSale: { $ne: true },
+    },
+    
+    //{ projection: { _id: 0, emailVerified: 0 } }
+
+  ).sort({ createdAt: -1 }).limit(limit).skip((page - 1) * limit).toArray();
+
+  return {
+    totalCount: results.length,
+    orders: results,
+  };
+
+}
+
+
+
+
+
+
+
 // get sell orders order by createdAt desc
 export async function getSellOrdersForBuyer(
 

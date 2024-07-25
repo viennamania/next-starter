@@ -6,7 +6,7 @@ import { useState, useEffect, use } from "react";
 
 import { toast } from 'react-hot-toast';
 
-import { client } from "../client";
+import { client } from "../../client";
 
 import {
     getContract,
@@ -47,7 +47,7 @@ import { balanceOf, transfer } from "thirdweb/extensions/erc20";
 
 // open modal
 
-import Modal from '../../components/modal';
+import Modal from '../../../components/modal';
 
 import { useRouter }from "next//navigation";
 
@@ -113,9 +113,14 @@ const contract = getContract({
 
 
 
-const P2PTable = () => {
+const P2PTable = (
+
+  { orderId }: { orderId: string }
+
+) => {
 
 
+  console.log("orderId", orderId);
 
 
 
@@ -175,12 +180,13 @@ const P2PTable = () => {
         
         const fetchSellOrders = async () => {
           // api call
-          const response = await fetch('/api/order/getAllSellOrders', {
+          const response = await fetch('/api/order/getOneSellOrder', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json'
             },
             body: JSON.stringify({
+              orderId: orderId
             })
           });
   
@@ -887,9 +893,8 @@ const P2PTable = () => {
                               <button
                                   className="text-sm bg-blue-500 text-white px-2 py-1 rounded-md"
                                   onClick={() => {
-                                    
-                                    router.push(`/sell-usdt/${item._id}`);
-
+                                    console.log('Share');
+                                    toast.success('Share');
                                   }}
                               >
                                 <Image
