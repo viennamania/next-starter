@@ -436,9 +436,24 @@ const P2PTable = () => {
 
                 {/* Sell Orders: 2 EA (132 USDT), Trades: 10 EA (43 USDT) */}
                 {/* trades is the status is accepted or paymentRequested */}
-                <div className="flex flex-col gap-2 items-start">
-                  <div className="text-sm">Sell Orders: {sellOrders.length} EA ({sellOrders.reduce((acc, item) => acc + item.usdtAmount, 0)} USDT)</div>
-                  <div className="text-sm">Trades: {sellOrders.filter(item => item.status === 'accepted' || item.status === 'paymentRequested').length} EA ({sellOrders.filter(item => item.status === 'accepted' || item.status === 'paymentRequested').reduce((acc, item) => acc + item.usdtAmount, 0)} USDT)</div>
+
+                <div className="flex flex-col xl:flex-row gap-2 xl:gap-5 items-start">
+                  <div className="text-sm">
+                    {/* dot */}
+                    <span className="inline-block w-2 h-2 rounded-full bg-green-500 mr-2"></span>
+                    Total: {sellOrders.length} EA ({sellOrders.reduce((acc, item) => acc + item.usdtAmount, 0)} USDT)</div>
+                  {/* open orders */}
+
+                  <div className="text-sm">
+                    {/* dot */}
+                    <span className="inline-block w-2 h-2 rounded-full bg-green-500 mr-2"></span>
+                    Open Orders: {sellOrders.filter(item => item.status === 'ordered').length} EA</div>
+
+                  <div className="text-sm">
+                    {/* dot */}
+                    <span className="inline-block w-2 h-2 rounded-full bg-green-500 mr-2"></span>
+                    Trades: {sellOrders.filter(item => item.status === 'accepted' || item.status === 'paymentRequested').length} EA ({sellOrders.filter(item => item.status === 'accepted' || item.status === 'paymentRequested').reduce((acc, item) => acc + item.usdtAmount, 0)} USDT)</div>
+                  
                 </div>
 
                 <div className="w-full grid gap-4 lg:grid-cols-3 justify-center">
@@ -473,7 +488,7 @@ const P2PTable = () => {
                                     height={28}
                                   />
                                 )}
-                                <p className="text-sm text-zinc-400">Sell ordered at {
+                                <p className="text-sm text-zinc-400">Order opened at {
                                     item.createdAt && new Date(item.createdAt).toLocaleString()
                                 }</p>
                               </div>

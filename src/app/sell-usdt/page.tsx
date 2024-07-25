@@ -650,7 +650,7 @@ const P2PTable = () => {
                             {item.status === 'ordered' && (
                               <div className="flex flex-col items-start gap-1">
                                 <p className=" text-sm text-zinc-400">
-                                  Sell ordered at {
+                                  Order opened at {
                                     new Date(item.createdAt).toLocaleDateString() + ' ' + new Date(item.createdAt).toLocaleTimeString()
                                   }
                                 </p>

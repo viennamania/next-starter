@@ -709,6 +709,28 @@ const P2PTable = () => {
                 </div>
 
 
+
+
+                {/* Sell Orders: 2 EA (132 USDT), Trades: 10 EA (43 USDT) */}
+                {/* trades is the status is accepted or paymentRequested */}
+                <div className="flex flex-col xl:flex-row gap-2 xl:gap-5 items-start">
+                  <div className="text-sm">
+                    {/* dot */}
+                    <span className="inline-block w-2 h-2 rounded-full bg-green-500 mr-2"></span>
+                    Total Trades: {sellOrders.length} EA ({sellOrders.reduce((acc, item) => acc + item.usdtAmount, 0)} USDT)</div>
+                  <div className="text-sm">
+                    {/* dot */}
+                    <span className="inline-block w-2 h-2 rounded-full bg-green-500 mr-2"></span>
+                    Accepted Trades: {sellOrders.filter(item => item.status === 'accepted' || item.status === 'paymentRequested').length} EA ({sellOrders.filter(item => item.status === 'accepted' || item.status === 'paymentRequested').reduce((acc, item) => acc + item.usdtAmount, 0)} USDT)</div>
+
+                  <div className="text-sm">
+                    {/* dot */}
+                    <span className="inline-block w-2 h-2 rounded-full bg-green-500 mr-2"></span>
+                    Completed Trades: {sellOrders.filter(item => item.status === 'paymentConfirmed').length} EA ({sellOrders.filter(item => item.status === 'paymentConfirmed').reduce((acc, item) => acc + item.usdtAmount, 0)} USDT)</div>
+
+                </div>
+
+
                 <div className="w-full grid gap-4 lg:grid-cols-3 justify-center">
 
 
