@@ -78,6 +78,8 @@ interface SellOrder {
   tradeId: string;
 
   buyer: any;
+
+  privateSale: boolean;
 }
 
 
@@ -456,6 +458,7 @@ const P2PTable = () => {
                           {/* check box for private sale */}
                           <div className="flex flex-row items-center gap-2">
                             <input
+                              className="w-6 h-6"
                               type="checkbox"
                               checked={privateSale}
                               onChange={(e) => setprivateSale(e.target.checked)}
@@ -563,7 +566,7 @@ const P2PTable = () => {
 
                             <button
                               disabled={usdtAmount === 0}
-                              className="bg-green-400 text-white px-2 py-2 rounded-md"
+                              className="bg-red-900 text-white px-2 py-2 rounded-md"
                               onClick={() => {
                                 krwAmount > 1000 && setKrwAmount(krwAmount - 1000);
                               }}
@@ -724,15 +727,36 @@ const P2PTable = () => {
 
                             {item.status === 'ordered' && (
                               <div className="flex flex-col items-start gap-1">
+
+                                <div className="flex flex-row items-center gap-2">
+                                  {item.privateSale ? (
+                                      <Image
+                                        src="/icon-private-sale.png"
+                                        alt="Private Sale"
+                                        width={32}
+                                        height={32}
+                                      />
+                                  ) : (
+                                      <Image
+                                        src="/icon-public-sale.png"
+                                        alt="Public Sale"
+                                        width={32}
+                                        height={32}
+                                      />
+                                  )}
+                                  {/* Expired in 24 hours */}
+                                  <p className=" text-sm text-zinc-400">
+                                    Expired in {24 - Math.floor((new Date().getTime() - new Date(item.createdAt).getTime()) / 1000 / 60 / 60)} hours
+                                  </p>
+
+                                </div>
+
                                 <p className=" text-sm text-zinc-400">
                                   Order opened at {
                                     new Date(item.createdAt).toLocaleDateString() + ' ' + new Date(item.createdAt).toLocaleTimeString()
                                   }
                                 </p>
-                                {/* Expired in 24 hours */}
-                                <p className=" text-sm text-zinc-400">
-                                  Expired in {24 - Math.floor((new Date().getTime() - new Date(item.createdAt).getTime()) / 1000 / 60 / 60)} hours
-                                </p>
+
                               </div>
                             )}
 
