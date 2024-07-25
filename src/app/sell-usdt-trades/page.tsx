@@ -1165,7 +1165,11 @@ const P2PTable = () => {
 
 
                                 
-                                  {item.status === 'paymentRequested' && requestingPayment[index] && (
+                                  {
+                                    item.status === 'paymentRequested'
+                                    && requestingPayment[index]
+                                    && confirmingPayment[index] === false
+                                    && (
 
                                     <div className="p-2 flex flex-col gap-2">
                                       
