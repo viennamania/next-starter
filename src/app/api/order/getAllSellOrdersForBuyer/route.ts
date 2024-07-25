@@ -1,7 +1,7 @@
 import { NextResponse, type NextRequest } from "next/server";
 
 import {
-	getSellOrders,
+	getSellOrdersForBuyer,
 } from '@lib/api/order';
 
 
@@ -12,7 +12,7 @@ export async function POST(request: NextRequest) {
 
 
 
-  const result = await getSellOrders({
+  const result = await getSellOrdersForBuyer({
     limit: 100,
     page: 1,
   });

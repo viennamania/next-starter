@@ -238,7 +238,7 @@ const P2PTable = () => {
     const [sellOrders, setSellOrders] = useState<SellOrder[]>([]);
 
     useEffect(() => {
-        fetch('/api/order/getAllSellOrders', {
+        fetch('/api/order/getAllSellOrdersForBuyer', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
