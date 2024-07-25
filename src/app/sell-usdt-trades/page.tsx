@@ -1224,7 +1224,7 @@ const P2PTable = () => {
                                     </div>
                                     <span className="text-xl text-white font-semibold">
 
-                                      I agree to check the bank transfer of {item.krwAmount} KRW from buyer {item.buyer.nickname}
+                                      I agree to check the bank transfer of {item.krwAmount} KRW from buyer ( {item.buyer.nickname} ) and transfer {item.usdtAmount} USDT to the buyer wallet address.
 
                                     </span>
                                   </div>

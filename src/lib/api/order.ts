@@ -52,6 +52,8 @@ export interface UserProps {
   paymentRequestedAt: string,
 
   buyer: any,
+
+  transactionHash: string,
 }
 
 export interface ResultProps {
@@ -330,6 +332,7 @@ export async function requestPayment(data: any) {
     return null;
   }
 
+
   const client = await clientPromise;
   const collection = client.db('vienna').collection('orders');
 
@@ -369,24 +372,29 @@ export async function confirmPayment(data: any) {
     return null;
   }
 
+  if (!data.transactionHash) {
+    return null;
+  }
+
   const client = await clientPromise;
   const collection = client.db('vienna').collection('orders');
 
 
   const result = await collection.updateOne(
     
-    { _id: new ObjectId(data.orderId) },
+    { _id: new ObjectId(data.orderId+'') },
 
 
     { $set: {
       status: 'paymentConfirmed',
+      transactionHash: data.transactionHash,
       paymentConfirmedAt: new Date().toISOString(),
     } }
   );
 
   if (result) {
     const updated = await collection.findOne<UserProps>(
-      { _id: new ObjectId(data.orderId) }
+      { _id: new ObjectId(data.orderId+'') }
     );
 
     return updated;

@@ -14,6 +14,7 @@ import twilio from "twilio";
 
 import {
   createThirdwebClient,
+  eth_getTransactionByHash,
   getContract,
   sendAndConfirmTransaction,
   
@@ -134,6 +135,7 @@ export async function POST(request: NextRequest) {
 
       const result = await confirmPayment({
         orderId: orderId,
+        transactionHash: sendDataStore.transactionHash,
       });
     
     
@@ -147,6 +149,7 @@ export async function POST(request: NextRequest) {
         tradeId: tradeId,
         usdtAmount: usdtAmount,
         krwAmount: krwAmount,
+        transactionHash: transactionHash,
       } = result as UserProps;
     
     
