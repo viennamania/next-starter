@@ -667,6 +667,15 @@ export default function Home() {
                       className="rounded-lg"
                     />
                   )}
+                  {seller && (
+                    <Image
+                      src="/icon-seller.png"
+                      alt="Seller"
+                      width={20}
+                      height={20}
+                      className="rounded-lg"
+                    />
+                  )}
                 </div>
 
 
@@ -678,12 +687,13 @@ export default function Home() {
 
               {/* My Buy Trades */}
 
+              {/*
+
               <div className="bg-zinc-800 p-5 rounded-lg text-center">
 
 
 
                 <div className="flex flex-row justify-between items-start">
-                    {/* Buy Trade logo */}
 
                     <div className="flex flex-row gap-2 justify-center items-center">
                       <Image
@@ -696,8 +706,7 @@ export default function Home() {
 
                     </div>
 
-                    {/* Settings Button */}
-                    
+         
                     <button
 
                       onClick={() => {
@@ -746,14 +755,15 @@ export default function Home() {
                 </div>
 
               </div>
+              */}
 
               {/* My Sell Trades */}
+              {/*
 
               <div className="bg-zinc-800 p-5 rounded-lg text-center">
 
 
                 <div className="flex flex-row justify-between items-start">
-                    {/* Sell Trade logo */}
 
                     <Image
                       src="/trade-sell.png"
@@ -763,7 +773,7 @@ export default function Home() {
                       className="rounded-lg"
                     />
 
-                    {/* Settings Button */}
+
                     <button
 
                       onClick={() => {
@@ -809,6 +819,7 @@ export default function Home() {
                 </div>
 
               </div>
+              */}
 
            
  
@@ -932,16 +943,20 @@ export default function Home() {
             
             )}
 
+          {/*
           <ArticleCard
             title="How to use USDT"
             href="/"
             description="Learn how to use USDT in your favorite DeFi apps"
           />
+          */}
+
 
         </div>
 
 
         {/* Best Sellers */}
+        {/*
         <div className="bg-zinc-800 p-5 rounded-lg text-center mt-10">
           <h2 className="text-3xl font-semibold text-zinc-100">
             Best Sellers
@@ -964,6 +979,7 @@ export default function Home() {
 
           </div>
         </div>
+        */}
 
 
 

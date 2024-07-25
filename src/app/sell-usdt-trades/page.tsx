@@ -806,7 +806,7 @@ const P2PTable = () => {
                                 )}                               
 
                                 <p className="text-sm  text-gray-400">
-                                  Pay rqsted at {new Date(item.paymentRequestedAt).toLocaleDateString() + ' ' + new Date(item.paymentRequestedAt).toLocaleTimeString()}
+                                  Payment requested at<br />{new Date(item.paymentRequestedAt).toLocaleDateString() + ' ' + new Date(item.paymentRequestedAt).toLocaleTimeString()}
                                 </p>
 
                                 <p className="text-xl text-green-500">

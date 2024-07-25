@@ -510,7 +510,7 @@ const P2PTable = () => {
 
 
                             {item.paymentRequestedAt && (
-                              <p className="text-sm text-zinc-400">Pay rqsted at {
+                              <p className="text-sm text-zinc-400">Payment requested at<br />{
                                 item.paymentRequestedAt && new Date(item.paymentRequestedAt).toLocaleString()
                               }</p>
                             )}
