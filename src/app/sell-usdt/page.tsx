@@ -444,6 +444,7 @@ const P2PTable = () => {
        
 
                         <div className=" flex flex-row items-center justify-between gap-4">
+                
                           {/* sell icon */}
                           <div className=" flex flex-row items-center gap-2">
                             <Image
@@ -728,7 +729,22 @@ const P2PTable = () => {
                             {item.status === 'ordered' && (
                               <div className="flex flex-col items-start gap-1">
 
+
                                 <div className="flex flex-row items-center gap-2">
+                                  {/* new order icon */}
+                                  {
+                                    (new Date(item.createdAt).getTime() - new Date().getTime()) / 1000 / 60 / 60 < 24 && (
+                                      <Image
+                                        src="/icon-new.png"
+                                        alt="New Order"
+                                        width={32}
+                                        height={32}
+                                      />
+                                    )
+                                  } 
+
+
+
                                   {item.privateSale ? (
                                       <Image
                                         src="/icon-private-sale.png"
@@ -866,10 +882,23 @@ const P2PTable = () => {
                               }
                             </h2>
 
+                            {/* share button */}
+                            {item.walletAddress === address && item.privateSale && (
+                              <button
+                                  className="text-sm bg-blue-500 text-white px-2 py-1 rounded-md"
+                                  onClick={() => {
+                                    console.log('Share');
+                                    toast.success('Share');
+                                  }}
+                              >
+                                Share
+                              </button>
+                            )}
 
 
 
-                            <p className="mt-4 text-sm text-zinc-400">Payment method: Bank Transfer</p>
+
+                            <p className="mt-2 text-sm text-zinc-400">Payment method: Bank Transfer</p>
 
                             
                             {/*
