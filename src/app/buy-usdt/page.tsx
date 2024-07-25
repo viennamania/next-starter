@@ -259,9 +259,7 @@ const P2PTable = () => {
 
 
     
-    
-    //const [acceptingSellOrder, setAcceptingSellOrder] = useState(false);
-
+  
     const [acceptingSellOrder, setAcceptingSellOrder] = useState([] as boolean[]);
 
     useEffect(() => {
@@ -609,33 +607,6 @@ const P2PTable = () => {
                             </p>
 
 
-
-                            
-                            {/*
-                            <p className="text-sm text-zinc-400">{item.available} <br /> {item.limit}</p>
-                            */}
-                            {/*
-                            Available: 7.24 USDT
-                            Limit: 630.00 KRW - 630.00 KRW
-                           
-                            <div className="flex flex-col">
-                                <p className="text-sm text-zinc-400">Available: {item.available}</p>
-                                <p className="text-sm text-zinc-400">Limit: {item.limit}</p>
-                            </div>
-
-                            <p className="text-sm text-zinc-400">
-                                {item.paymentMethods.map((method, idx) => (
-                                    <span key={idx} className="inline-block bg-yellow-100 text-yellow-800 text-xs px-2 rounded-full mr-2 mb-1">{method}</span>
-                                ))}
-                            </p>
-                             */}
-                            {/*
-                            <p className="text-lg text-green-500 cursor-pointer">
-                                Buy USDT
-                            </p>
-                            */}
-                            
-
                             {item.status === 'ordered' && (
                               <>
 
@@ -718,6 +689,8 @@ const P2PTable = () => {
                               </>
 
                             )}
+
+
 
                         </article>
 

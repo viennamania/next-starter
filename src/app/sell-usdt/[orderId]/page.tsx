@@ -10,7 +10,7 @@ import { useState, useEffect, use } from "react";
 
 import { toast } from 'react-hot-toast';
 
-import { client } from "../client";
+import { client } from "../../client";
 
 import {
     getContract,
@@ -51,7 +51,7 @@ import { balanceOf, transfer } from "thirdweb/extensions/erc20";
 
 // open modal
 
-import Modal from '../../components/modal';
+import Modal from '../../../components/modal';
 
 import { useRouter }from "next//navigation";
 
@@ -124,7 +124,7 @@ const contract = getContract({
 //function SellUsdt(orderId: string) {
 
 
-
+/*
 export async function getStaticProps(context: any) {
     const orderId = context.params.orderId;
     return {
@@ -136,10 +136,21 @@ export async function getStaticProps(context: any) {
 
 
 export default function SellUsdt({ orderId }: InferGetStaticPropsType<typeof getStaticProps>) {
+*/
 
+///export default function SellUsdt() {
+
+
+
+export default function SellUsdt({ params }: { params: { orderId: string } }) {
+
+  const router = useRouter();
     
 
-    console.log('orderId', orderId);
+  const orderId = params.orderId;
+
+  
+  console.log('orderId', orderId);
 
 
 
@@ -147,15 +158,6 @@ export default function SellUsdt({ orderId }: InferGetStaticPropsType<typeof get
   const smartAccount = useActiveAccount();
 
   const address = smartAccount?.address || "";
-
-
-
-
-
-
-    const router = useRouter();
-
-
 
 
 
@@ -188,13 +190,47 @@ export default function SellUsdt({ orderId }: InferGetStaticPropsType<typeof get
 
 
 
+
+
+    // get User by wallet address
+
+    const [user, setUser] = useState<any>(null);
+    useEffect(() => {
+
+        if (!address) {
+            return;
+        }
+
+        fetch('/api/user/getUser', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                walletAddress: address,
+            }),
+        })
+        .then(response => response.json())
+        .then(data => {
+            //console.log('data', data);
+            setUser(data.result);
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
+    } , [address]);
+
+
+
+
+
     
     const [sellOrders, setSellOrders] = useState<SellOrder[]>([]);
 
 
     useEffect(() => {
 
-        if (!address) {
+        if (!orderId) {
           return;
         }
         
@@ -206,6 +242,7 @@ export default function SellUsdt({ orderId }: InferGetStaticPropsType<typeof get
               'Content-Type': 'application/json'
             },
             body: JSON.stringify({
+                orderId: orderId,
             })
           });
   
@@ -221,7 +258,7 @@ export default function SellUsdt({ orderId }: InferGetStaticPropsType<typeof get
   
         fetchSellOrders();
   
-    }, [address]);
+    }, [orderId]);
 
 
 
@@ -247,6 +284,12 @@ export default function SellUsdt({ orderId }: InferGetStaticPropsType<typeof get
     console.log('usdtAmount', usdtAmount);
 
 
+
+    const [rate, setRate] = useState(1385.67);
+
+
+
+
     useEffect(() => {
 
       if (usdtAmount === 0) {
@@ -264,7 +307,97 @@ export default function SellUsdt({ orderId }: InferGetStaticPropsType<typeof get
 
       setKrwAmount( Math.round(usdtAmount * rate) );
 
-    } , [usdtAmount]);
+    } , [usdtAmount, rate]);
+
+
+
+    const [acceptingSellOrder, setAcceptingSellOrder] = useState([] as boolean[]);
+
+    useEffect(() => {
+        setAcceptingSellOrder (
+            sellOrders.map((item, idx) => {
+                return false;
+            })
+        );
+    } , [sellOrders]);
+
+
+
+
+    const acceoptSellOrder = (index: number, orderId: string) => {
+
+        if (!user) {
+            return;
+        }
+
+        setAcceptingSellOrder (
+            sellOrders.map((item, idx) => {
+                if (idx === index) {
+                    return true;
+                } else {
+                    return false;
+                }
+            })
+        );
+
+
+        fetch('/api/order/acceptSellOrder', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                orderId: orderId,
+                buyerWalletAddress: user.walletAddress,
+                buyerNickname: user.nickname,
+                buyerAvatar: user.avatar,
+                buyerMobile: user.mobile,
+            }),
+        })
+        .then(response => response.json())
+        .then(data => {
+
+            console.log('data', data);
+
+            //setSellOrders(data.result.orders);
+            //openModal();
+
+            toast.success('Order accepted successfully');
+
+
+
+            fetch('/api/order/getAllSellOrders', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                ///console.log('data', data);
+                setSellOrders(data.result.orders);
+            })
+
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        })
+        .finally(() => {
+            setAcceptingSellOrder (
+                sellOrders.map((item, idx) => {
+                    return false;
+                })
+            );
+        } );
+
+
+    }
+
+
+
+
 
 
 
@@ -338,7 +471,8 @@ export default function SellUsdt({ orderId }: InferGetStaticPropsType<typeof get
 
     };
 
-    const [rate, setRate] = useState(1385.67);
+
+
 
     
     return (
@@ -426,39 +560,6 @@ export default function SellUsdt({ orderId }: InferGetStaticPropsType<typeof get
                     {Number(balance).toFixed(2)} <span className="text-lg">USDT</span>
                   </div>
                 </div>
-
-
-
-                {/* total sell orders */}
-                <div className="flex flex-row items-start justify-between gap-4">
-
-                  <div className="flex flex-col gap-2">
-                    <div className="text-sm">Total Sell Orders</div>
-                    <div className="text-xl font-semibold text-white">
-                      {sellOrders.length}
-                    </div>
-                  </div>
-
-                  <div className="flex flex-col gap-2">
-                    <div className="text-sm">Opened Trades</div>
-                    <div className="text-xl font-semibold text-white">
-                      {sellOrders.filter((item) => item.status === 'ordered').length}
-                    </div>
-                  </div>
-
-                  <div className="flex flex-col gap-2">
-                    <div className="text-sm">Accepted Trades</div>
-                    <div className="text-xl font-semibold text-white">
-                      {sellOrders.filter((item) => item.status === 'accepted').length}
-                    </div>
-                  </div>
-
-
-                </div>
-
-
-
-
 
 
                 <div className="w-full grid gap-4 lg:grid-cols-3 justify-center">
@@ -619,16 +720,30 @@ export default function SellUsdt({ orderId }: InferGetStaticPropsType<typeof get
                             )}
 
 
-                            
-                            <h2 className="text-lg font-semibold mb-2">
-                              Seller: {
+                            <div className='flex flex-row items-center gap-2 mb-2'>
+                                <h2 className="text-lg font-semibold">
+                                    Seller: {
 
-                                item.walletAddress === address ? item.nickname + ' :Me' :
-                                
-                                item.nickname
+                                        item.walletAddress === address ? item.nickname + ' :Me' :
+                                        
+                                        item.nickname
 
-                              }
-                            </h2>
+                                    }
+                                </h2>
+                                <Image
+                                    src="/verified.png"
+                                    alt="Verified"
+                                    width={24}
+                                    height={24}
+                                />
+                                <Image
+                                    src="/best-seller.png"
+                                    alt="Best Seller"
+                                    width={24}
+                                    height={24}
+                                />
+                            </div>
+
 
                             {/* share button */}
                             {item.walletAddress === address && item.privateSale && (
@@ -656,51 +771,92 @@ export default function SellUsdt({ orderId }: InferGetStaticPropsType<typeof get
                             <p className="mt-2 text-sm text-zinc-400">Payment method: Bank Transfer</p>
 
                             
-                            {/*
-                            <p className="text-sm text-zinc-400">{item.available} <br /> {item.limit}</p>
-                            */}
-                            {/*
-                            Available: 7.24 USDT
-                            Limit: 630.00 KRW - 630.00 KRW
-                           
-                            <div className="flex flex-col">
-                                <p className="text-sm text-zinc-400">Available: {item.available}</p>
-                                <p className="text-sm text-zinc-400">Limit: {item.limit}</p>
-                            </div>
-                           
-
-                            <p className="text-sm text-zinc-400">
-                                {item.paymentMethods.map((method, idx) => (
-                                    <span key={idx} className="inline-block bg-yellow-100 text-yellow-800 text-xs px-2 rounded-full mr-2 mb-1">{method}</span>
-                                ))}
-                            </p>
-                              */}
-                            {/*
-                            <p className="text-lg text-green-500 cursor-pointer">
-                                Buy USDT
-                            </p>
-                            */}
-                            {/*
-                            <button
-                                className="text-lg bg-green-500 text-white px-4 py-2 rounded-md mt-4"
-                                onClick={() => {
-                                    console.log('Buy USDT');
-
-                                    // open trade detail
-                                    // open modal of trade detail
 
 
+                            {item.status === 'ordered' && (
+                              <>
 
-                                    openModal();
+                              {acceptingSellOrder[index] ? (
+
+                                <div className="flex flex-row items-center gap-2">
+                                  <Image
+                                    src='/loading.png'
+                                    alt='loading'
+                                    width={38}
+                                    height={38}
+                                    className="animate-spin"
+                                  />
+                                  <div>Accepting...</div>
+                                </div>
 
 
-                               
+                              ) : (
+                                <>
+                                  
+                                  {item.walletAddress === address ? (
+                                    <div className="flex flex-col space-y-4">
+                                      My Order
+                                    </div>
+                                  ) : (
+                                    <div className="w-full flex items-center justify-center">
 
-                                }}
-                            >
-                                Buy USDT
-                            </button>
-                            */}
+                                      {item.status === 'ordered' && (
+                                        
+                                        // check if the order is expired
+                                        new Date().getTime() - new Date(item.createdAt).getTime() > 1000 * 60 * 60 * 24
+
+                                      ) ? (
+                                        
+                                        <Image
+                                          src="/icon-expired.png"
+                                          alt="Expired"
+                                          width={80}
+                                          height={80}
+                                        />
+                                       
+                                      ) : (
+
+
+                                        
+                                        <button
+                                          disabled={!user}
+                                          className="text-lg bg-green-500 text-white px-4 py-2 rounded-md mt-4"
+                                          onClick={() => {
+                                              console.log('Buy USDT');
+
+                                              // open trade detail
+                                              // open modal of trade detail
+
+
+
+                                              //openModal();
+
+
+                                              acceoptSellOrder(index, item._id);
+                                        
+
+                                          }}
+                                        >
+                                          Buy USDT
+                                        </button>
+
+                                      )}
+
+                                    </div>
+
+
+
+                                    )}
+
+                                  </>
+
+                                )}
+
+                              </>
+
+                            )}
+
+
 
                         </article>
 

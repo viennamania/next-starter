@@ -222,6 +222,9 @@ const P2PTable = () => {
     console.log('usdtAmount', usdtAmount);
 
 
+    const [rate, setRate] = useState(1385.67);
+
+
     useEffect(() => {
 
       if (usdtAmount === 0) {
@@ -239,7 +242,7 @@ const P2PTable = () => {
 
       setKrwAmount( Math.round(usdtAmount * rate) );
 
-    } , [usdtAmount]);
+    } , [usdtAmount, rate]);
 
 
 
@@ -257,6 +260,8 @@ const P2PTable = () => {
       }
 
       setSellOrdering(true);
+
+      
 
       const response = await fetch('/api/order/setSellOrder', {
         method: 'POST',
@@ -313,7 +318,6 @@ const P2PTable = () => {
 
     };
 
-    const [rate, setRate] = useState(1385.67);
 
     
     return (
@@ -898,6 +902,7 @@ const P2PTable = () => {
                                   alt="Share"
                                   width={16}
                                   height={16}
+                                  className="mr-2"
                                 />
                                 Share
                               </button>
