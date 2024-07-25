@@ -259,7 +259,9 @@ const P2PTable = () => {
 
 
     
-  
+    
+    //const [acceptingSellOrder, setAcceptingSellOrder] = useState(false);
+
     const [acceptingSellOrder, setAcceptingSellOrder] = useState([] as boolean[]);
 
     useEffect(() => {
@@ -689,8 +691,7 @@ const P2PTable = () => {
                               </>
 
                             )}
-
-
+                            
 
                         </article>
 

@@ -782,9 +782,30 @@ const P2PTable = () => {
 
 
                             { (item.status === 'accepted' || item.status === 'paymentRequested') && (
-                              <p className="mb-4 text-xl font-semibold text-green-500 bg-white px-2 py-1 rounded-md">
-                                TID: {item.tradeId}
-                              </p>
+
+                              <div className="flex flex-row items-center gap-2 mb-4">
+
+                                {item.privateSale ? (
+                                    <Image
+                                      src="/icon-private-sale.png"
+                                      alt="Private Sale"
+                                      width={32}
+                                      height={32}
+                                    />
+                                ) : (
+                                    <Image
+                                      src="/icon-public-sale.png"
+                                      alt="Public Sale"
+                                      width={32}
+                                      height={32}
+                                    />
+                                )}
+
+                                <p className="text-xl font-semibold text-green-500 bg-white px-2 py-1 rounded-md">
+                                  TID: {item.tradeId}
+                                </p>
+                              </div>
+
                             )}
 
                             {item.acceptedAt && (
@@ -892,7 +913,11 @@ const P2PTable = () => {
                                   className="flex flex-row text-sm bg-blue-500 text-white px-2 py-1 rounded-md"
                                   onClick={() => {
                                     
-                                    router.push(`/sell-usdt/${item._id}`);
+                                    ////router.push(`/sell-usdt/${item._id}`);
+
+                                    // copy to clipboard
+                                    navigator.clipboard.writeText(`https://next.unove.space/sell-usdt/${item._id}`);
+                                    toast.success('Link has been copied to clipboard');
 
                                   }}
                               >
