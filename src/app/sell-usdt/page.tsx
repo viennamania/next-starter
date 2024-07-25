@@ -885,13 +885,14 @@ const P2PTable = () => {
                             {/* share button */}
                             {item.walletAddress === address && item.privateSale && (
                               <button
-                                  className="text-sm bg-blue-500 text-white px-2 py-1 rounded-md"
+                                  className="flex flex-row text-sm bg-blue-500 text-white px-2 py-1 rounded-md"
                                   onClick={() => {
                                     
                                     router.push(`/sell-usdt/${item._id}`);
 
                                   }}
                               >
+
                                 <Image
                                   src="/icon-share.png"
                                   alt="Share"
