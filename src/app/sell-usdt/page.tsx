@@ -331,7 +331,7 @@ const P2PTable = () => {
           */}
   
           <div className="flex justify-start space-x-4 mb-10">
-              <button onClick={() => window.history.back()} className="text-zinc-100 font-semibold underline">Go Back</button>
+              <button onClick={() => router.push('/')} className="text-zinc-100 font-semibold underline">Go Home</button>
           </div>
 
 
@@ -737,10 +737,17 @@ const P2PTable = () => {
                                 <div className="flex flex-row items-center gap-2">
                                   {/* new order icon */}
                                   {
-                                    (new Date(item.createdAt).getTime() - new Date().getTime()) / 1000 / 60 / 60 < 24 && (
+                                    (new Date().getTime() - new Date(item.createdAt).getTime()) / 1000 / 60 / 60 < 24 ? (
                                       <Image
                                         src="/icon-new.png"
                                         alt="New Order"
+                                        width={32}
+                                        height={32}
+                                      />
+                                    ) : (
+                                      <Image
+                                        src="/icon-expired.png"
+                                        alt="Expired Order"
                                         width={32}
                                         height={32}
                                       />
@@ -765,9 +772,11 @@ const P2PTable = () => {
                                       />
                                   )}
                                   {/* Expired in 24 hours */}
-                                  <p className=" text-sm text-zinc-400">
-                                    Expired in {24 - Math.floor((new Date().getTime() - new Date(item.createdAt).getTime()) / 1000 / 60 / 60)} hours
-                                  </p>
+                                  { (new Date().getTime() - new Date(item.createdAt).getTime()) / 1000 / 60 / 60 < 24 && (
+                                    <p className=" text-sm text-zinc-400">
+                                      Expired in {24 - Math.floor((new Date().getTime() - new Date(item.createdAt).getTime()) / 1000 / 60 / 60)} hours
+                                    </p>
+                                  )}
 
                                 </div>
 

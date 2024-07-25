@@ -338,12 +338,9 @@ const P2PTable = () => {
 
         <div className="py-20 w-full">
   
-          {/* goto home button using go back icon
-          history back
-          */}
   
           <div className="flex justify-start space-x-4 mb-10">
-              <button onClick={() => window.history.back()} className="text-zinc-100 font-semibold underline">Go Back</button>
+              <button onClick={() => router.push('/')} className="text-zinc-100 font-semibold underline">Go Home</button>
           </div>
 
 

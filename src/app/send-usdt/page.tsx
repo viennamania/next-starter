@@ -74,8 +74,12 @@ const smartAccount = await smartWallet.connect({
 */
 
 
+import { useRouter }from "next//navigation";
+
 
 export default function SendUsdt() {
+
+  const router = useRouter();
 
 
 
@@ -255,7 +259,7 @@ export default function SendUsdt() {
         */}
 
         <div className="flex justify-start space-x-4 mb-10">
-            <button onClick={() => window.history.back()} className="text-zinc-100 font-semibold underline">Go Back</button>
+            <button onClick={() => router.push('/')} className="text-zinc-100 font-semibold underline">Go Home</button>
         </div>
         
 

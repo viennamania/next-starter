@@ -73,10 +73,13 @@ const contract = getContract({
 
 
 
+import { useRouter }from "next//navigation";
+
 
 
 export default function ProfilePage() {
 
+    const router = useRouter();
 
 
 
@@ -173,6 +176,8 @@ export default function ProfilePage() {
 
 
     const setUserData = async () => {
+
+
 
 
         // check nickname length and alphanumeric
@@ -363,12 +368,10 @@ export default function ProfilePage() {
 
             <div className="py-20 w-full">
         
-                {/* goto home button using go back icon
-                history back
-                */}
+
         
                 <div className="flex justify-start space-x-4 mb-10">
-                    <button onClick={() => window.history.back()} className="text-zinc-100 font-semibold underline">Go Back</button>
+                    <button onClick={() => router.push('/')} className="text-zinc-100 font-semibold underline">Go Home</button>
                 </div>
 
 
