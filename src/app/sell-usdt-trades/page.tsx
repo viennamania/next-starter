@@ -368,7 +368,21 @@ const P2PTable = () => {
     useEffect(() => {
 
       setRequestingPayment(
-        new Array(sellOrders.length).fill(false)
+        
+        
+        //new Array(sellOrders.length).fill(false)
+
+        sellOrders.map((item) => {
+          
+          if (item.status === 'paymentRequested') {
+            return true;
+          }
+          return false;
+        } )
+
+  
+
+
       );
 
     } , [sellOrders]);
@@ -391,6 +405,7 @@ const P2PTable = () => {
       if (escrowing[index]) {
         return;
       }
+
 
       if (requestingPayment[index]) {
         return;
@@ -444,7 +459,7 @@ const P2PTable = () => {
 
       if (transactionResult) {
 
-
+        /*
         setRequestingPayment(
           requestingPayment.map((item, idx) => {
             if (idx === index) {
@@ -453,6 +468,9 @@ const P2PTable = () => {
             return item;
           })
         );
+        */
+        
+        
 
 
       
@@ -471,6 +489,7 @@ const P2PTable = () => {
         //console.log('data', data);
 
 
+        /*
         setRequestingPayment(
           requestingPayment.map((item, idx) => {
             if (idx === index) {
@@ -479,6 +498,8 @@ const P2PTable = () => {
             return item;
           })
         );
+        */
+        
 
 
         if (data.result) {
@@ -525,6 +546,17 @@ const P2PTable = () => {
 
     }
 
+
+
+    // request payment check box
+    const [requestPaymentCheck, setRequestPaymentCheck] = useState([] as boolean[]);
+    useEffect(() => {
+        
+        setRequestPaymentCheck(
+          new Array(sellOrders.length).fill(false)
+        );
+  
+    } , [sellOrders]);
 
 
 
@@ -943,9 +975,9 @@ const P2PTable = () => {
                                           {/* 2 request payment to buyer */}
                                           
 
-                                          </div>
+                                        </div>
   
-                                        )}
+                                      )}
 
 
 
@@ -953,11 +985,42 @@ const P2PTable = () => {
                                         If you request payment, the {item.usdtAmount} USDT will be escrowed to the smart contract and then the buyer ( {item.buyer.nickname} ) will be requested to pay.
                                       </span>
 
+                                      <div className="mt-5 flex flex-row items-center gap-2">
+                                          
+                                          <div className="flex flex-row items-center gap-2">
+                                            <input
+                                                type="checkbox"
+                                                checked={requestPaymentCheck[index]}
+                                                onChange={(e) => {
+                                                  setRequestPaymentCheck(
+                                                    requestPaymentCheck.map((item, idx) => {
+                                                      if (idx === index) {
+                                                        return e.target.checked;
+                                                      }
+                                                      return item;
+                                                    })
+                                                  );
+                                                }}
+                                                className=" w-6 h-6 rounded-md border border-gray-200"
+                                            />
+                                          </div>
+                                          <span className="text-xl text-white font-semibold">
+
+                                            I agree to escrow {item.usdtAmount} USDT to the smart contract and request payment to the buyer ( {item.buyer.nickname} )
+
+
+                                          </span>
+                                      </div>
 
                                       <button
-                                          disabled={balance < item.usdtAmount || requestingPayment[index] || escrowing[index]}
+                                          disabled={
+                                            balance < item.usdtAmount || requestingPayment[index] || escrowing[index]
+                                            || !requestPaymentCheck[index]
+                                          }
                                           className={`w-full text-lg
                                             ${balance < item.usdtAmount ? 'bg-red-500' : 'bg-blue-500'}
+
+                                            ${requestPaymentCheck[index] ? 'bg-green-500' : 'bg-gray-500'}
                                             
                                           text-white px-4 py-2 rounded-md mt-4`}
 
@@ -974,7 +1037,9 @@ const P2PTable = () => {
                                               );
 
                                           }}
-                                      >
+                                        >
+
+
 
                                         {balance < item.usdtAmount ? (
 
@@ -1058,6 +1123,9 @@ const P2PTable = () => {
 
                               <div className="w-full mt-4 mb-2 flex flex-col items-start ">
 
+
+                                
+                                
                                 <div className="w-full flex flex-col items-start gap-2">
 
                                   <div className="flex flex-row items-center gap-2">
@@ -1093,6 +1161,38 @@ const P2PTable = () => {
 
                                   </div>
 
+
+
+
+                                
+                                  {item.status === 'paymentRequested' && requestingPayment[index] && (
+
+                                    <div className="p-2 flex flex-col gap-2">
+                                      
+                                      <div className="flex flex-row items-center gap-2">
+                                        <Image
+                                            src='/loading.png'
+                                            alt='loading'
+                                            width={50}
+                                            height={50}
+                                            className="animate-spin"
+                                        />
+                                        <div className="text-lg font-semibold text-white">
+                                          
+                                          Checking the bank transfer from the buyer ( {item.buyer.nickname} )...
+
+
+                                        </div>
+                                      </div>
+
+                                    </div>
+
+                                  )}
+
+
+
+
+
                                   <span className="mt-5 text-sm text-white">
                                     If you confirm the payment, the escrowed {item.usdtAmount} USDT will be transferred to the buyer ( {item.buyer.nickname} ) wallet address.
                                   </span>
@@ -1119,7 +1219,9 @@ const P2PTable = () => {
                                       />
                                     </div>
                                     <span className="text-xl text-white font-semibold">
-                                      I confirm the payment of {item.krwAmount} KRW from buyer {item.buyer.nickname}
+
+                                      I agree to check the bank transfer of {item.krwAmount} KRW from buyer {item.buyer.nickname}
+
                                     </span>
                                   </div>
 
@@ -1179,6 +1281,7 @@ const P2PTable = () => {
 
 
                             {item.status === 'paymentConfirmed' && (
+
                               <div className="w-full mt-2 mb-2 flex flex-col items-center ">
                                 <Image
                                   src='/confirmed.png'
