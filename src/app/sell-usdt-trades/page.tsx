@@ -539,7 +539,20 @@ const P2PTable = () => {
           new Array(sellOrders.length).fill(false)
         );
   
-      } , [sellOrders]);
+    } , [sellOrders]);
+
+
+
+    // confirm payment check box
+    const [confirmPaymentCheck, setConfirmPaymentCheck] = useState([] as boolean[]);
+    useEffect(() => {
+        
+        setConfirmPaymentCheck(
+          new Array(sellOrders.length).fill(false)
+        );
+  
+    } , [sellOrders]);
+
 
 
     const confirmPayment = async (
@@ -1058,9 +1071,38 @@ const P2PTable = () => {
 
                                   </div>
 
-                                  <span className="text-sm text-white">
+                                  <span className="mt-5 text-sm text-white">
                                     If you confirm the payment, the escrowed {item.usdtAmount} USDT will be transferred to the buyer ( {item.buyer.nickname} ) wallet address.
                                   </span>
+
+                                  {/* check box for confirming payment */}
+
+                                  <div className="flex flex-row items-center gap-2">
+
+                                    <div className="flex flex-row items-center gap-2">
+                                      <input
+                                          type="checkbox"
+                                          checked={confirmPaymentCheck[index]}
+                                          onChange={(e) => {
+                                            setConfirmPaymentCheck(
+                                              confirmPaymentCheck.map((item, idx) => {
+                                                if (idx === index) {
+                                                  return e.target.checked;
+                                                }
+                                                return item;
+                                              })
+                                            );
+                                          }}
+                                          className=" w-6 h-6 rounded-md border border-gray-200"
+                                      />
+                                    </div>
+                                    <span className="text-xl text-white font-semibold">
+                                      I confirm the payment of {item.krwAmount} KRW from buyer {item.buyer.nickname}
+                                    </span>
+                                  </div>
+
+
+
 
                                 </div>
                                   
@@ -1085,8 +1127,13 @@ const P2PTable = () => {
                                 ) : (
 
                                     <button
-                                        disabled={confirmingPayment[index]}
-                                        className="w-full text-lg bg-green-500 text-white px-4 py-2 rounded-md mt-4"
+                                        disabled={
+                                          confirmingPayment[index]
+                                          || !confirmPaymentCheck[index]
+                                      }
+                                        className={`w-full text-lg
+                                          ${confirmPaymentCheck[index] ? 'bg-green-500' : 'bg-gray-500'}
+                                          text-white px-4 py-2 rounded-md mt-4`}
                                         onClick={() => {
                                             console.log('Canfirm Payment');
 
