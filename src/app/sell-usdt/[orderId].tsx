@@ -1,12 +1,16 @@
 'use client';
 
+import type { GetStaticProps, InferGetStaticPropsType } from 'next';
+
+
+
 import { useState, useEffect, use } from "react";
 
 
 
 import { toast } from 'react-hot-toast';
 
-import { client } from "../../client";
+import { client } from "../client";
 
 import {
     getContract,
@@ -47,7 +51,7 @@ import { balanceOf, transfer } from "thirdweb/extensions/erc20";
 
 // open modal
 
-import Modal from '../../../components/modal';
+import Modal from '../../components/modal';
 
 import { useRouter }from "next//navigation";
 
@@ -113,14 +117,30 @@ const contract = getContract({
 
 
 
-const P2PTable = (
-
-  { orderId }: { orderId: string }
-
-) => {
 
 
-  console.log("orderId", orderId);
+// [orderId].tsx
+
+//function SellUsdt(orderId: string) {
+
+
+
+export async function getStaticProps(context: any) {
+    const orderId = context.params.orderId;
+    return {
+      props: {
+        orderId,
+      },
+    };
+}
+
+
+export default function SellUsdt({ orderId }: InferGetStaticPropsType<typeof getStaticProps>) {
+
+    
+
+    console.log('orderId', orderId);
+
 
 
 
@@ -186,7 +206,6 @@ const P2PTable = (
               'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-              orderId: orderId
             })
           });
   
@@ -290,7 +309,7 @@ const P2PTable = (
      
 
 
-        await fetch('/api/order/getAllSellOrders', {
+        await fetch('/api/order/getOneSellOrder', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
@@ -443,283 +462,6 @@ const P2PTable = (
 
 
                 <div className="w-full grid gap-4 lg:grid-cols-3 justify-center">
-
-
-                    {/* sell order is different border color */}
-                    <article className="mb-10 w-96 xl:w-full bg-black p-4 rounded-md border-2 border-green-500">
-       
-
-                        <div className=" flex flex-row items-center justify-between gap-4">
-                
-                          {/* sell icon */}
-                          <div className=" flex flex-row items-center gap-2">
-                            <Image
-                              src="/trade-sell.png"
-                              alt="Sell"
-                              width={28}
-                              height={28}
-                            />
-                            <h2 className="text-lg font-semibold text-white">Place Order</h2>
-                          </div>
-
-                          {/* check box for private sale */}
-                          <div className="flex flex-row items-center gap-2">
-                            <input
-                              className="w-6 h-6"
-                              type="checkbox"
-                              checked={privateSale}
-                              onChange={(e) => setprivateSale(e.target.checked)}
-                            />
-                            <div className="text-sm text-zinc-400">Private Sale</div>
-                          </div>
-
-                        </div>
-
-                        <p className="mt-4 text-xl font-bold text-zinc-400">1 USDT = {
-                          // currency format
-                          Number(rate).toLocaleString('en-US', {
-                            style: 'currency',
-                            currency: 'KRW'
-                          })
-                        }</p>
-                        
-                        <div className="mt-4 flex flex-row items-center gap-2">
-                          <p className="text-lg text-blue-500 font-bold">
-                            <input 
-                              type="number"
-                              className=" w-28 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 "
-                              placeholder="Amount"
-                              value={usdtAmount}
-                              onChange={(e) => {
-                                // check number
-                                e.target.value = e.target.value.replace(/[^0-9.]/g, '');
-
-                                // if the value is start with 0, then remove 0
-                                if (e.target.value.startsWith('0')) {
-                                  e.target.value = e.target.value.substring(1);
-                                }
-
-                                
-                                if (e.target.value === '') {
-                                  setUsdtAmount(0);
-                                  return;
-                                }
-
-                                
-                            
-
-
-                                parseFloat(e.target.value) < 0 ? setUsdtAmount(0) : setUsdtAmount(parseFloat(e.target.value));
-
-                                parseFloat(e.target.value) > 1000 ? setUsdtAmount(1000) : setUsdtAmount(parseFloat(e.target.value));
-
-                              } }
-
-
-                            /> USDT
-                          </p>
-
-                          <p className=" text-sm text-zinc-400">
-                            = {
-                            Number(defaultKrWAmount).toLocaleString('en-US', {
-                              style: 'currency',
-                              currency: 'KRW'
-                            })
-                            }
-                          </p>
-                        </div>
-
-
-                        {/* input krw amount */}
-                        {/* left side decrease button and center is input and  right side increase button */}
-                        {/* -1, -10, -100, +1, +10, +100 */}
-                        {/* if - button change bg color red */}
-                        {/* if + button change bg color */}
-
-                        <div className="mt-4 flex flex-row items-center justify-between gap-2">
-
-
-                          <div className="flex flex-col gap-2">
-
-                            <button
-                              disabled={usdtAmount === 0}
-                              className="bg-red-400 text-white px-2 py-2 rounded-md"
-                              onClick={() => {
-                                krwAmount > 0 && setKrwAmount(krwAmount - 1);
-                              }}
-                            >
-                              -1
-                            </button>
-
-                            <button
-                              disabled={usdtAmount === 0}
-                              className="bg-red-600 text-white px-2 py-2 rounded-md"
-                              onClick={() => {
-                                krwAmount > 10 && setKrwAmount(krwAmount - 10);
-                              }}
-                            >
-                              -10
-                            </button>
-
-                            <button
-                              disabled={usdtAmount === 0}
-                              className="bg-red-800 text-white px-2 py-2 rounded-md"
-                              onClick={() => {
-                                krwAmount > 100 && setKrwAmount(krwAmount - 100);
-                              }}
-                            >
-                              -100
-                            </button>
-
-                            <button
-                              disabled={usdtAmount === 0}
-                              className="bg-red-900 text-white px-2 py-2 rounded-md"
-                              onClick={() => {
-                                krwAmount > 1000 && setKrwAmount(krwAmount - 1000);
-                              }}
-                            >
-                              -1000
-                            </button>
-
-                          </div>
-
-                          <div className="flex flex-col gap-2">
-                            <input 
-                              disabled
-                              type="number"
-                              className=" w-36  px-3 py-2 text-white text-xl font-bold border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 "
-                              value={krwAmount}
-                              onChange={(e) => {
-                                // check number
-                                e.target.value = e.target.value.replace(/[^0-9.]/g, '');
-
-                                if (e.target.value === '') {
-                                  setKrwAmount(0);
-                                  return;
-                                }
-
-                                parseFloat(e.target.value) < 0 ? setKrwAmount(0) : setKrwAmount(parseFloat(e.target.value));
-
-                                parseFloat(e.target.value) > 1000 ? setKrwAmount(1000) : setKrwAmount(parseFloat(e.target.value));
-
-                              } }
-                            />
-
-                            {krwAmount > 0 && (
-                              <div className="text-xl text-zinc-400">
-                                Rate: {
-
-                                  // currency format
-                                  Number((krwAmount / usdtAmount).toFixed(2)).toLocaleString('en-US', {
-                                    style: 'currency',
-                                    currency: 'KRW'
-                                  })
-
-                                } 
-                              </div>
-                            )}
-                          </div>
-
-                          <div className="flex flex-col gap-2">
-                            <button
-                              disabled={usdtAmount === 0}
-                              className="bg-green-400 text-white px-2 py-2 rounded-md"
-                              onClick={() => {
-                                setKrwAmount(krwAmount + 1);
-                              }}
-                            >
-                              +1
-                            </button>
-                            <button
-                              disabled={usdtAmount === 0}
-                              className="bg-green-600 text-white px-2 py-2 rounded-md"
-                              onClick={() => {
-                                setKrwAmount(krwAmount + 10);
-                              }}
-                            >
-                              +10
-                            </button>
-
-                            <button
-                              disabled={usdtAmount === 0}
-                              className="bg-green-800 text-white px-2 py-2 rounded-md"
-                              onClick={() => {
-                                setKrwAmount(krwAmount + 100);
-                              }}
-                            >
-                              +100
-                            </button>
-
-                            <button
-                              disabled={usdtAmount === 0}
-                              className="bg-green-900 text-white px-2 py-2 rounded-md"
-                              onClick={() => {
-                                setKrwAmount(krwAmount + 1000);
-                              }}
-                            >
-                              +1000
-                            </button>
-
-                          </div>
-
-                        </div>
-
-
-
-                        <p className="mt-4 text-sm text-zinc-400">
-                            Sell order is expired in 24 hours
-                        </p>
-                        
-                        <p className="mt-4 text-sm text-zinc-400">Payment method: Bank Transfer</p>
-
-
-                        <div className="mt-4 flex flex-col gap-2">
-                  
-                          {sellOrdering ? (
-
-                            <div className="flex flex-col items-center gap-2">
-                                <div className="
-                                  w-6 h-6
-                                  border-2 border-zinc-800
-                                  rounded-full
-                                  animate-spin
-                                ">
-                                  <Image
-                                    src="/loading.png"
-                                    alt="loading"
-                                    width={24}
-                                    height={24}
-                                  />
-                                </div>
-                                <div className="text-white">
-                                  Placing order...
-                                </div>
-                  
-                            </div>
-
-
-                          ) : (
-                              <button
-                                  disabled={usdtAmount === 0}
-                                  className="text-lg bg-green-500 text-white px-4 py-2 rounded-md "
-                                  onClick={() => {
-                                      console.log('Sell USDT');
-                                      // open trade detail
-                                      // open modal of trade detail
-                                      ///openModal();
-
-                                      sellOrder();
-                                  }}
-                              >
-                                  Order Sell USDT
-                              </button>
-                          )}
-
-                        </div>
-
-
-                    </article>
-
 
                     {sellOrders.map((item, index) => (
 
@@ -893,8 +635,9 @@ const P2PTable = (
                               <button
                                   className="text-sm bg-blue-500 text-white px-2 py-1 rounded-md"
                                   onClick={() => {
-                                    console.log('Share');
-                                    toast.success('Share');
+                                    
+                                    router.push(`/sell-usdt/${item._id}`);
+
                                   }}
                               >
                                 <Image
@@ -1107,6 +850,3 @@ const TradeDetail = (
   };
 
 
-
-
-export default P2PTable;
