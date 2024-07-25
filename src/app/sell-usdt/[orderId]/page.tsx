@@ -78,6 +78,7 @@ interface SellOrder {
   status: string;
 
   acceptedAt: string;
+  paymentRequestedAt: string;
 
   tradeId: string;
 
@@ -257,6 +258,11 @@ export default function SellUsdt({ params }: { params: { orderId: string } }) {
         };
   
         fetchSellOrders();
+
+        // fetch sell orders every 10 seconds
+        const interval = setInterval(() => {
+          fetchSellOrders();
+        }, 10000);
   
     }, [orderId]);
 
@@ -508,7 +514,7 @@ export default function SellUsdt({ params }: { params: { orderId: string } }) {
                     height={32}
                     className="rounded-lg"
                   />
-                  <div className="text-2xl font-semibold">Sell USDT</div>
+                  <div className="text-2xl font-semibold">Buy USDT</div>
 
 
 
@@ -628,9 +634,31 @@ export default function SellUsdt({ params }: { params: { orderId: string } }) {
 
 
                             { (item.status === 'accepted' || item.status === 'paymentRequested') && (
-                              <p className="mb-4 text-xl font-semibold text-green-500 bg-white px-2 py-1 rounded-md">
-                                TID: {item.tradeId}
-                              </p>
+
+                              <div className='flex flex-row items-center gap-2 mb-4'>
+
+                                {item.privateSale ? (
+                                    <Image
+                                      src="/icon-private-sale.png"
+                                      alt="Private Sale"
+                                      width={32}
+                                      height={32}
+                                    />
+                                ) : (
+                                    <Image
+                                      src="/icon-public-sale.png"
+                                      alt="Public Sale"
+                                      width={32}
+                                      height={32}
+                                    />
+                                )}
+
+
+                                <p className=" text-xl font-semibold text-green-500 bg-white px-2 py-1 rounded-md">
+                                  TID: {item.tradeId}
+                                </p>
+                              </div>
+
                             )}
 
                             {item.acceptedAt && (
@@ -671,54 +699,7 @@ export default function SellUsdt({ params }: { params: { orderId: string } }) {
 
 
 
-                            {item.status === 'accepted' && (
-                                <div className="w-full mt-2 mb-2 flex flex-col items-start ">
 
-                                  <p className="text-xl text-green-500 font-semibold">
-                                    Buyer: {
-                                      item.buyer.walletAddress === address ? item.nickname + ' :Me' :
-                                    
-                                      item.buyer.nickname.substring(0, 1) + '****'
-                                    }
-                                  </p>
-
-                                  {/*
-                                  <button
-                                      className="w-full text-lg bg-blue-500 text-white px-4 py-2 rounded-md mt-4"
-                                      onClick={() => {
-                                          console.log('request Payment');
-                                          
-                                          ///router.push(`/chat?tradeId=12345`);
-
-                                      }}
-                                  >
-                                    <div className="flex flex-col gap-2">
-                                      <div className="flex flex-row items-center gap-2">
-                                        <GearSetupIcon />
-                                        <div className="text-lg font-semibold">
-                                        Request Payment
-                                        </div>
-                                      </div>
-                                      <div className="flex flex-col gap-2 text-sm text-left font-semibold text-white">
-                                        
-                                        <ul>
-                                          <li>Bank Name : {item.seller.bankInfo.bankName}</li>
-                                          <li>Account Number : {item.seller.bankInfo.accountNumber}</li>
-                                          <li>Account Holder : {item.seller.bankInfo.accountHolder}</li>
-                                          <li>Amount : {item.krwAmount} KRW</li>
-                                          
-                                          <li>Deposit Name : {item.tradeId}</li>
-                                        </ul>
-
-
-
-                                      </div>
-                                    </div>
-                                  </button>
-                                  */}
-
-                                </div>
-                            )}
 
 
                             <div className='flex flex-row items-center gap-2 mb-2'>
@@ -768,9 +749,24 @@ export default function SellUsdt({ params }: { params: { orderId: string } }) {
 
 
 
+                            {/* waiting for escrow */}
+                            {item.status === 'accepted' && (
+                                <div className="mt-4 flex flex-row gap-2 items-center justify-start">
 
-                            <p className="mt-2 text-sm text-zinc-400">Payment method: Bank Transfer</p>
+                                  {/* rotate loading icon */}
+                                
+                                  <Image
+                                    src="/loading.png"
+                                    alt="Escrow"
+                                    width={32}
+                                    height={32}
+                                    className="animate-spin"
+                                  />
 
+                                  <div>Waiting for seller to deposit {item.usdtAmount} USDT to escrow...</div>
+
+                                </div>
+                            )}
                             
 
 
@@ -856,6 +852,68 @@ export default function SellUsdt({ params }: { params: { orderId: string } }) {
                               </>
 
                             )}
+
+
+
+                            {/* bank transfer infomation */}
+                            {item.status === 'paymentRequested' && (
+
+                              <div className="mt-4 flex flex-col items-start gap-2">
+
+
+                                <div className="text-lg font-semibold text-green-500">Bank Transfer Information</div>
+
+                                {/* dot */}
+                                <div className='flex flex-row items-center gap-2'>
+                                  <div className="w-4 h-4 rounded-full bg-green-500"></div>
+                                  <div className="text-lg font-semibold">
+                                    Bank Name: {item.seller.bankInfo.bankName}
+                                  </div>
+                                </div>
+
+                                <div className='flex flex-row items-center gap-2'>
+                                  <div className="w-4 h-4 rounded-full bg-green-500"></div>
+                                  <div className="text-lg font-semibold">
+                                    Account Number: {item.seller.bankInfo.accountNumber}
+                                  </div>
+                                </div>
+
+                                <div className='flex flex-row items-center gap-2'>
+                                  <div className="w-4 h-4 rounded-full bg-green-500"></div>
+                                  <div className="text-lg font-semibold">
+                                    Account Holder: {item.seller.bankInfo.accountHolder}
+                                  </div>
+                                </div>
+
+                                <div className='flex flex-row items-center gap-2'>
+                                  <div className="w-4 h-4 rounded-full bg-green-500"></div>
+                                  <div className="text-lg font-semibold">
+                                    Deposit Name: {item.tradeId}
+                                  </div>
+                                </div>
+
+                                <div className='flex flex-row items-center gap-2'>
+                                  <div className="w-4 h-4 rounded-full bg-green-500"></div>
+                                  <div className="text-lg font-semibold">
+                                    Deposit Amount: {item.usdtAmount} USDT
+                                  </div>
+                                </div>
+
+                                <div className='flex flex-row items-center gap-2'>
+                                  <div className="w-4 h-4 rounded-full bg-green-500"></div>
+                                  <div className="text-lg font-semibold">
+                                    Deposit Deadline: {
+                                     
+                                      new Date(new Date(item.paymentRequestedAt).getTime() + 1000 * 60 * 60 * 1).toLocaleString()
+                                    
+                                    }
+                                  </div>
+                                </div>
+
+
+                              </div>
+                            )}
+                              
 
 
 
