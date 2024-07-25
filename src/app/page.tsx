@@ -536,7 +536,7 @@ export default function Home() {
 
                 </div>
 
-                <div className="flex flex-row gap-2 justify-center items-center">
+                <div className="mt-4 flex flex-row gap-2 justify-center items-center">
                   <div className="text-4xl font-semibold text-zinc-100">
                     {Number(balance).toFixed(2)}
                   </div>
@@ -632,6 +632,7 @@ export default function Home() {
                         height: '38px',
                     }}
                   />
+
                   {/* Settings Button */}
                   <button
 
@@ -652,9 +653,12 @@ export default function Home() {
 
                   </button>
 
+
+
+
                 </div>
 
-                <div className="flex flex-row gap-2 justify-center items-center">
+                <div className=" flex flex-row gap-2 justify-center items-center">
                   <h2 className="text-3xl font-semibold text-zinc-100">
                     {nickname}
                   </h2>
@@ -680,6 +684,42 @@ export default function Home() {
 
 
                 <p className="text-zinc-300">My Nickname</p>
+
+
+                {/* my buy trades button and my sell trades button */}
+                <div className="flex flex-row gap-2 justify-center items-center mt-10">
+                  <button
+                    disabled={!address}
+                    onClick={() => {
+                      // my buy trades
+                      console.log("my buy trades");
+
+                      // redirect to buy trades page
+                      router.push("/buy-usdt-trades");
+
+                    }}
+                    className="w-40 bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
+                  >
+                    My Buy Trades
+                  </button>
+
+                  <button
+                    disabled={!address}
+                    onClick={() => {
+                      // my sell trades
+                      console.log("my sell trades");
+
+                      // redirect to sell trades page
+                      router.push("/sell-usdt-trades");
+
+                    }}
+                    className="w-40 bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
+                  >
+                    My Sell Trades
+                  </button>
+
+                </div>
+
 
               </div>
 

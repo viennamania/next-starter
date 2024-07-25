@@ -398,6 +398,39 @@ const P2PTable = () => {
                 </div>
 
 
+
+                {/* total sell orders */}
+                <div className="flex flex-row items-start justify-between gap-4">
+
+                  <div className="flex flex-col gap-2">
+                    <div className="text-sm">Total Sell Orders</div>
+                    <div className="text-xl font-semibold text-white">
+                      {sellOrders.length}
+                    </div>
+                  </div>
+
+                  <div className="flex flex-col gap-2">
+                    <div className="text-sm">Opened Trades</div>
+                    <div className="text-xl font-semibold text-white">
+                      {sellOrders.filter((item) => item.status === 'ordered').length}
+                    </div>
+                  </div>
+
+                  <div className="flex flex-col gap-2">
+                    <div className="text-sm">Accepted Trades</div>
+                    <div className="text-xl font-semibold text-white">
+                      {sellOrders.filter((item) => item.status === 'accepted').length}
+                    </div>
+                  </div>
+
+
+                </div>
+
+
+
+
+
+
                 <div className="w-full grid gap-4 lg:grid-cols-3 justify-center">
 
 
