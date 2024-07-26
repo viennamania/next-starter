@@ -263,14 +263,10 @@ export default function SellUsdt({ params }: { params: { orderId: string } }) {
         // fetch sell orders every 10 seconds
         const interval = setInterval(() => {
 
-          if (sellOrders[0]?.status === 'paymentConfirmed') {
-            clearInterval(interval);
-          }
-
           fetchSellOrders();
         }, 10000);
   
-    }, [orderId]);
+    }, [orderId]
 
 
 
