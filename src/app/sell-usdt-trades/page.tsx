@@ -481,6 +481,7 @@ const P2PTable = () => {
           },
           body: JSON.stringify({
             orderId: orderId,
+            transactionHash: transactionResult.transactionHash,
           })
         });
 

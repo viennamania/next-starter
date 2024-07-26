@@ -437,6 +437,10 @@ export async function requestPayment(data: any) {
     return null;
   }
 
+  if (!data.transactionHash) {
+    return null;
+  }
+
 
   const client = await clientPromise;
   const collection = client.db('vienna').collection('orders');
@@ -449,6 +453,7 @@ export async function requestPayment(data: any) {
 
     { $set: {
       status: 'paymentRequested',
+      escrowTransactionHash: data.transactionHash,
       paymentRequestedAt: new Date().toISOString(),
     } }
   );
@@ -687,6 +692,48 @@ export async function getSellTradesByWalletAddressProcessing(
     totalCount: results.length,
     orders: results,
   };
+
+}
+
+
+
+// get paymentRequested trades by wallet address
+// and sum of usdtAmount
+export async function getPaymentRequestedUsdtAmountByWalletAddress(
+
+  {
+    walletAddress,
+  }: {
+    walletAddress: string;
+  
+  }
+
+): Promise<any> {
+
+  const client = await clientPromise;
+  const collection = client.db('vienna').collection('orders');
+
+  const results = await collection.aggregate([
+    {
+      $match: {
+        'walletAddress': walletAddress,
+        status: 'paymentRequested',
+      }
+    },
+    {
+      $group: {
+        _id: null,
+        totalUsdtAmount: { $sum: '$usdtAmount' },
+      }
+    }
+  ]).toArray();
+
+  if (results.length > 0) {
+    return results[0];
+  } else {
+    return null;
+  }
+
 
 }
 

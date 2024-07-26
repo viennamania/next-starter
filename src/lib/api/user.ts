@@ -45,7 +45,7 @@ export interface ResultProps {
 
 export async function insertOne(data: any) {
 
-  console.log('insertOne data: ' + JSON.stringify(data));
+  //console.log('insertOne data: ' + JSON.stringify(data));
 
   if (!data.walletAddress || !data.nickname || !data.mobile) {
     return null;
@@ -67,7 +67,7 @@ export async function insertOne(data: any) {
     { projection: { _id: 0, emailVerified: 0 } }
   );
 
-  console.log('checkUser: ' + checkUser);
+  ///console.log('checkUser: ' + checkUser);
 
 
   if (checkUser) {

@@ -18,13 +18,14 @@ export async function POST(request: NextRequest) {
           amount: amount
   */
 
-  const { orderId } = body;
+  const { orderId, transactionHash } = body;
 
   console.log("orderId", orderId);
   
 
   const result = await requestPayment({
     orderId: orderId,
+    transactionHash: transactionHash,
   });
 
 

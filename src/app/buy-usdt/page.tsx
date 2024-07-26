@@ -75,6 +75,9 @@ interface SellOrder {
   paymentRequestedAt: string;
 
   buyer: any;
+
+  escrowTransactionHash: string;
+  transactionHash: string;
 }
 
 
@@ -613,9 +616,80 @@ const P2PTable = () => {
                                 className="rounded-lg"
                               />
 
-                              
-
                             </p>
+
+
+
+                            {/* waiting for escrow */}
+                            {item.status === 'accepted' && (
+                                <div className="mt-4 flex flex-row gap-2 items-center justify-start">
+
+                                  {/* rotate loading icon */}
+                                
+                                  <Image
+                                    src="/loading.png"
+                                    alt="Escrow"
+                                    width={32}
+                                    height={32}
+                                    className="animate-spin"
+                                  />
+
+                                  <div>Waiting for seller to deposit {item.usdtAmount} USDT to escrow...</div>
+
+                                </div>
+                            )}
+
+                            {/* waiting for payment */}
+                            {item.status === 'paymentRequested' && (
+
+                                <div className="mt-4 flex flex-col gap-2 items-start justify-start">
+
+                                  <div className="flex flex-row items-center gap-2">
+
+                                    <Image
+                                      src="/smart-contract.png"
+                                      alt="Smart Contract"
+                                      width={32}
+                                      height={32}
+                                    />
+                                    <div>Escrow: {item.usdtAmount} USDT</div>
+                                    <button
+                                      className="text-lg bg-green-500 text-white px-4 py-2 rounded-md"
+                                      onClick={() => {
+                                          // new window for smart contract
+                                          window.open(`https://polygonscan.com/tx/${item.escrowTransactionHash}`);
+                                      }}
+                                    >
+                                      <Image
+                                        src="/logo-polygon.png"
+                                        alt="Polygon"
+                                        width={20}
+                                        height={20}
+                                      />
+                                    </button>
+                                  </div>
+
+                                  <div className="flex flex-row gap-2 items-center justify-start">
+
+                                    {/* rotate loading icon */}
+                                  
+                                    <Image
+                                      src="/loading.png"
+                                      alt="Escrow"
+                                      width={32}
+                                      height={32}
+                                      className="animate-spin"
+                                    />
+
+                                    <div>Waiting for buyer to send {item.krwAmount} KRW to seller...</div>
+
+                                  </div>
+
+                                </div>
+                            )}
+
+
+
 
 
                             {item.status === 'ordered' && (
@@ -700,6 +774,12 @@ const P2PTable = () => {
                               </>
 
                             )}
+
+
+
+
+
+
                             
 
                         </article>
