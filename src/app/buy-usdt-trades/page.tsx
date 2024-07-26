@@ -524,13 +524,55 @@ const P2PTable = () => {
                             }</p>
                             */}
 
+                            
                             <p className="mt-4 text-sm text-zinc-400">Trade started at {
-                                item.createdAt && new Date(item.acceptedAt).toLocaleString()
+                              item.acceptedAt && new Date(item.acceptedAt).toLocaleString()
                             }</p>
 
-                            <p className="mt-4 text-2xl font-semibold text-white">{item.usdtAmount} USDT</p>
+                            {item.status === 'paymentRequested' && (
+                              <p className="mt-4 text-sm text-zinc-400">Trade ended at {
+                                item.paymentConfirmedAt && new Date(item.paymentConfirmedAt).toLocaleString()
+                              }</p>
+                            )}
 
-                            <p className="mb-4 text-xl font-bold text-zinc-400">Price: {item.krwAmount} KRW</p>
+
+
+                            {/* total trading time is paymentCompletedAt - aceeptedAt */}
+
+                            {item.status === 'paymentConfirmed' && (
+                              <div className="mt-4 flex flex-row items-center gap-2">
+
+                                <Image
+                                  src='/timer.png'
+                                  alt='timer'
+                                  width={28}
+                                  height={28}
+                                />
+
+                                <div className="text-sm text-green-500">
+                                  Total trading time is {
+
+                                ( (new Date(item.paymentConfirmedAt).getTime() - new Date(item.acceptedAt).getTime()) / 1000 / 60 ).toFixed(0) 
+
+                                  } minutes
+                                </div>
+                                
+                              </div>
+                            )}
+
+
+
+
+                            <p className="mt-4 text-2xl font-semibold text-white">
+                              {item.usdtAmount} USDT
+                            </p>
+
+                            <p className="mb-4 text-xl text-zinc-400">
+                              Price: { item.krwAmount.toLocaleString('en-US', {
+                                style: 'currency',
+                                currency: 'KRW',
+                              }) }
+                            </p>
                         
 
 
@@ -608,20 +650,18 @@ const P2PTable = () => {
                                 </div>
 
                                 
-                                  <p className="text-sm font-semibold text-green-500">
-                                    Completed at {new Date(item.paymentConfirmedAt).toLocaleDateString() + ' ' + new Date(item.paymentConfirmedAt).toLocaleTimeString()}
-                                  </p> 
+
                                 
 
                               </div>
                             )}
 
 
-                            {item.paymentRequestedAt && (
+                            {/*item.paymentRequestedAt && (
                               <p className="text-sm text-zinc-400">Payment requested at<br />{
                                 item.paymentRequestedAt && new Date(item.paymentRequestedAt).toLocaleString()
                               }</p>
-                            )}
+                            )*/}
 
                             {item.status === 'paymentRequested' && (
                               <div className="mt-2 mb-2 flex flex-col gap-2 text-sm text-left bg-gray-800 p-4 rounded-md">
@@ -738,26 +778,6 @@ const P2PTable = () => {
                                   width={200}
                                   height={200}
                                 />
-
-                                {/* total trading time is paymentCompletedAt - aceeptedAt */}
-
-                                <div className="flex flex-row items-center gap-2">
-
-                                  <Image
-                                    src='/timer.png'
-                                    alt='timer'
-                                    width={38}
-                                    height={38}
-                                  />
-
-                                  <div className="text-sm text-green-500">
-                                    Total trading time is {
-
-                                  ( (new Date(item.paymentConfirmedAt).getTime() - new Date(item.acceptedAt).getTime()) / 1000 / 60 ).toFixed(0) 
-
-                                    } minutes
-                                  </div>
-                                </div>
 
 
                               </div>

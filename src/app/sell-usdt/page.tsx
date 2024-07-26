@@ -167,6 +167,54 @@ const P2PTable = () => {
 
 
 
+
+
+    const [nickname, setNickname] = useState("");
+    const [avatar, setAvatar] = useState("/profile-default.png");
+    const [userCode, setUserCode] = useState("");
+  
+  
+    const [seller, setSeller] = useState(null) as any;
+  
+  
+    useEffect(() => {
+        const fetchData = async () => {
+            const response = await fetch("/api/user/getUser", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    walletAddress: address,
+                }),
+            });
+  
+            const data = await response.json();
+  
+            //console.log("data", data);
+  
+            if (data.result) {
+                setNickname(data.result.nickname);
+                data.result.avatar && setAvatar(data.result.avatar);
+                setUserCode(data.result.id);
+  
+                setSeller(data.result.seller);
+  
+            }
+        };
+  
+        fetchData();
+  
+    }, [address]);
+
+
+
+
+
+
+
+
+
     
     const [sellOrders, setSellOrders] = useState<SellOrder[]>([]);
 
@@ -415,26 +463,42 @@ const P2PTable = () => {
                 {/* total sell orders */}
                 <div className="flex flex-row items-start justify-between gap-4">
 
-                  <div className="flex flex-col gap-2">
-                    <div className="text-sm">Total Sell Orders</div>
+                  <div className="flex flex-col gap-2 items-center">
+                    <div className="text-sm">Total Sales</div>
                     <div className="text-xl font-semibold text-white">
                       {sellOrders.length}
                     </div>
                   </div>
 
-                  <div className="flex flex-col gap-2">
-                    <div className="text-sm">Opened Trades</div>
+                  <div className="flex flex-col gap-2 items-center">
+                    <div className="text-sm">Opened Orders</div>
                     <div className="text-xl font-semibold text-white">
                       {sellOrders.filter((item) => item.status === 'ordered').length}
                     </div>
                   </div>
 
-                  <div className="flex flex-col gap-2">
+                  <div className="flex flex-col gap-2 items-center">
                     <div className="text-sm">Accepted Trades</div>
                     <div className="text-xl font-semibold text-white">
-                      {sellOrders.filter((item) => item.status === 'accepted').length}
+
+                      {
+                        //sellOrders.filter((item) => item.status === 'accepted').length
+                        sellOrders.filter((item) => item.status === 'accepted' || item.status === 'paymentRequested').length
+
+                      }
+
                     </div>
                   </div>
+
+                  {/* completed trades */}
+                  <div className="flex flex-col gap-2 items-center">
+                    <div className="text-sm">Completed Trades</div>
+                    <div className="text-xl font-semibold text-white">
+                      {sellOrders.filter((item) => item.status === 'paymentConfirmed').length}
+                    </div>
+                  </div>
+
+
 
 
                 </div>
@@ -447,8 +511,14 @@ const P2PTable = () => {
                 <div className="w-full grid gap-4 lg:grid-cols-3 justify-center">
 
 
-                    {/* sell order is different border color */}
-                    <article className="mb-10 w-96 xl:w-full bg-black p-4 rounded-md border-2 border-green-500">
+                    {/* sell order is different border color
+                    */}
+                    <article
+                      className="w-96 xl:w-full bg-black p-4 rounded-md border-2 border-green-500"
+                    >
+
+
+            
        
 
                         <div className=" flex flex-row items-center justify-between gap-4">
@@ -476,6 +546,29 @@ const P2PTable = () => {
                           </div>
 
                         </div>
+
+
+                      {/* my seller info */}
+                      <div className="mt-4 flex flex-row items-center gap-2">
+                        <Image
+                          src={avatar}
+                          alt="Profile"
+                          width={32}
+                          height={32}
+                          className="rounded-full"
+                          style={{
+                            objectFit: 'cover',
+                            width: '38px',
+                            height: '38px',
+                          }}
+
+                        />
+                        <div className="text-lg font-semibold text-white">{nickname}</div>
+                      </div>
+
+
+
+
 
                         <p className="mt-4 text-xl font-bold text-zinc-400">1 USDT = {
                           // currency format
@@ -732,6 +825,7 @@ const P2PTable = () => {
                         <article
                             key={index}
                             className={`
+
                               w-96 xl:w-full
 
                               bg-black p-4 rounded-md border
@@ -762,8 +856,8 @@ const P2PTable = () => {
                                       <Image
                                         src="/icon-expired.png"
                                         alt="Expired Order"
-                                        width={32}
-                                        height={32}
+                                        width={52}
+                                        height={52}
                                       />
                                     )
                                   } 
@@ -848,21 +942,21 @@ const P2PTable = () => {
 
                             { (item.status === 'paymentConfirmed') && (
 
-                            <div className="flex flex-row items-center gap-2  bg-white px-2 py-1 rounded-md mb-4">
+                              <div className="flex flex-row items-center gap-2  bg-white px-2 py-1 rounded-md mb-4">
 
-                              <Image
-                                src="/confirmed.png"
-                                alt="Payment Confirmed"
-                                width={50}
-                                height={50}
-                              />
+                                <Image
+                                  src="/confirmed.png"
+                                  alt="Payment Confirmed"
+                                  width={50}
+                                  height={50}
+                                />
 
-                              <p className="text-xl font-semibold text-green-500 ">
-                                TID: {item.tradeId}
-                              </p>
-                            </div>
+                                <p className="text-xl font-semibold text-green-500 ">
+                                  TID: {item.tradeId}
+                                </p>
+                              </div>
 
-                            )}
+                              )}
 
 
 
@@ -882,7 +976,7 @@ const P2PTable = () => {
                               </p>
                             )}
 
-                            <p className=" text-2xl font-bold text-white">{item.usdtAmount} USDT</p>
+                            <p className="mt-4 text-2xl font-bold text-white">{item.usdtAmount} USDT</p>
 
                             <p className="text-xl text-zinc-400"> Price: {
                               Number(item.krwAmount).toLocaleString('en-US', {
@@ -943,11 +1037,13 @@ const P2PTable = () => {
                             )}
 
 
+                            <p className="mt-2 text-sm text-zinc-400">Payment method: Bank Transfer</p>
+
 
                             {/* share button */}
                             {item.walletAddress === address && item.privateSale && (
                               <button
-                                  className="flex flex-row text-sm bg-blue-500 text-white px-2 py-1 rounded-md"
+                                  className="mt-4 flex flex-row text-sm bg-blue-500 text-white px-2 py-1 rounded-md"
                                   onClick={() => {
                                     
                                     ////router.push(`/sell-usdt/${item._id}`);
@@ -971,9 +1067,6 @@ const P2PTable = () => {
                             )}
 
 
-                            <p className="mt-2 text-sm text-zinc-400">Payment method: Bank Transfer</p>
-
-                            
 
 
 

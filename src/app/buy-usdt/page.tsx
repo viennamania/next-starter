@@ -181,49 +181,6 @@ const P2PTable = () => {
 
 
 
-  /*
-  return (
-    <div className="overflow-x-auto">
-      <table className="min-w-full bg-white border border-gray-200">
-        <thead>
-          <tr>
-            <th className="px-4 py-2 border-b">Advertiser (Completion rate)</th>
-            <th className="px-4 py-2 border-b">Price</th>
-            <th className="px-4 py-2 border-b">Limit/Available</th>
-            <th className="px-4 py-2 border-b">Payment method</th>
-            <th className="px-4 py-2 border-b">Trade</th>
-          </tr>
-        </thead>
-        <tbody>
-          {data.map((item, index) => (
-            <tr key={index} className="border-b">
-              <td className="px-4 py-2">
-                <span className={`inline-block w-2 h-2 rounded-full ${item.trades > 300 ? 'bg-green-500' : 'bg-gray-300'}`}></span>
-                <span className="ml-2">{item.advertiser}</span>
-                <span className="ml-2 text-gray-500">{item.trades} trades</span>
-              </td>
-              <td className="px-4 py-2">{item.price} KRW</td>
-              <td className="px-4 py-2">{item.limit} <br /> {item.available}</td>
-              <td className="px-4 py-2">
-                {item.paymentMethods.map((method, idx) => (
-                  <span key={idx} className="inline-block bg-yellow-100 text-yellow-800 text-xs px-2 rounded-full mr-2 mb-1">{method}</span>
-                ))}
-              </td>
-              <td className="px-4 py-2 text-green-500 cursor-pointer">Buy USDT</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
-  );
-    */
-
-  /*
-        <article>
-        <h2 className="text-lg font-semibold mb-2">{props.title}</h2>
-        <p className="text-sm text-zinc-400">{props.description}</p>
-      </article>
-    */
 
     const [isModalOpen, setModalOpen] = useState(false);
 
@@ -319,7 +276,7 @@ const P2PTable = () => {
 
 
 
-            fetch('/api/order/getAllSellOrders', {
+            fetch('/api/order/getAllSellOrdersForBuyer', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -450,7 +407,7 @@ const P2PTable = () => {
                   <div className="text-sm">
                     {/* dot */}
                     <span className="inline-block w-2 h-2 rounded-full bg-green-500 mr-2"></span>
-                    Open Orders: {sellOrders.filter(item => item.status === 'ordered').length} EA</div>
+                    Open Orders: {sellOrders.filter(item => item.status === 'ordered').length} EA ({sellOrders.filter(item => item.status === 'ordered').reduce((acc, item) => acc + item.usdtAmount, 0)} USDT)</div>
 
                   <div className="text-sm">
                     {/* dot */}
@@ -459,21 +416,41 @@ const P2PTable = () => {
                   
                 </div>
 
-                <div className="w-full grid gap-4 lg:grid-cols-3 justify-center">
+                <div className="w-full grid gap-4 lg:grid-cols-2 xl:grid-cols-3 justify-center ">
 
                     {sellOrders.map((item, index) => (
+        
+                      <div
+                        key={index}
+                        className="relative flex flex-col items-center justify-center"
+                      >
+
+
+                        {item.status === 'ordered' && (new Date().getTime() - new Date(item.createdAt).getTime() > 1000 * 60 * 60 * 24) && (
+                          <div className="absolute inset-0 flex justify-center items-center z-10
+                            bg-black bg-opacity-50
+                          ">
+                            <Image
+                              src="/icon-expired.png"
+                              alt="Expired"
+                              width={100}
+                              height={100}
+                              className="opacity-50"
+                            />
+                          </div>
+                        )}
+
 
                         <article
-                            key={index}
-                            className={` w-96 xl:w-full
+                            //key={index}
+                            className={` w-96 xl:w-full h-full
                               ${item.walletAddress === address ? 'border-green-500' : 'border-gray-200'}
 
                               ${item.status === 'accepted' || item.status === 'paymentRequested' ? 'border-red-600' : 'border-gray-200'}
 
-                              ${item.status === 'ordered' && (new Date().getTime() - new Date(item.createdAt).getTime() > 1000 * 60 * 60 * 24) && 'border-gray-800'}
-
+                         
                            
-                            p-4 rounded-md border bg-black bg-opacity-50
+                              p-4 rounded-md border bg-black bg-opacity-50
                           `}
                         >
 
@@ -500,16 +477,44 @@ const P2PTable = () => {
                                     height={28}
                                   />
                                 )}
-                                <p className="text-sm text-zinc-400">Order opened at {
+                                <p className="text-sm text-zinc-400">Opened at {
                                     item.createdAt && new Date(item.createdAt).toLocaleString()
                                 }</p>
+
                               </div>
 
 
+                              {24 - Math.floor((new Date().getTime() - new Date(item.createdAt).getTime()) / 1000 / 60 / 60) > 0 ? (
 
-                              <p className="text-sm text-zinc-400">Expires in {
-                                  item.createdAt && Number((new Date(item.createdAt).getTime() + 1000 * 60 * 60 * 24 - new Date().getTime()) / 1000 / 60 / 60).toFixed(0) + ' hours'
-                              }</p>
+                                <div className="mt-2 flex flex-row items-center space-x-2">
+                                  <Image
+                                    src="/icon-timer.webp"
+                                    alt="Timer"
+                                    width={28}
+                                    height={28}
+                                  />
+                                  <p className="text-sm text-zinc-400">Expires in {
+  
+                                    24 - Math.floor((new Date().getTime() - new Date(item.createdAt).getTime()) / 1000 / 60 / 60)
+
+                                  } hours</p>
+                                </div>
+
+                              ) : (
+                                <div className="mt-2 flex flex-row items-center space-x-2">
+                                  <Image
+                                    src="/icon-timer.webp"
+                                    alt="Expired"
+                                    width={28}
+                                    height={28}
+                                  />
+                                  <p className="text-sm text-zinc-400">Expired</p>
+                                </div>
+                              )}
+
+
+                                 
+                            
                             </div>
                           )}
 
@@ -534,12 +539,12 @@ const P2PTable = () => {
                               </p>
                             )}
 
-                            <div className="flex flex-row items-between space-x-2">
+                            <div className="mt-4 flex flex-row items-between space-x-2">
 
                               <div className="flex flex-col items-start">
                                 <p className="text-2xl font-semibold text-white">{item.usdtAmount} USDT</p>
 
-                                <p className="text-xl text-zinc-400">
+                                <p className="text-lg text-zinc-400">
                                   Price: {
                                     // currency
                                   
@@ -562,22 +567,11 @@ const P2PTable = () => {
 
                             </div>
 
-                            <div className="flex flex-col items-start">
+                            <div className="mb-4 flex flex-col items-start">
                               Payment: Bank Transfer
                             </div>
 
-                            {(item.status === 'accepted' || item.status === 'paymentRequested') && (
-                              <>
-                            
-                                <p className="text-xl text-green-500 font-semibold">
-                                  Buyer: {
-                                    item.buyer.walletAddress === address ? 'Me' :
-                                    item.buyer.nickname.substring(0, 1) + '***'
-                                  }
-                                </p>
-                              </>
-                            )}
-                           
+
 
                             
                             <p className="mt-2 mb-2 flex items-center gap-2">
@@ -619,6 +613,19 @@ const P2PTable = () => {
                             </p>
 
 
+
+                            {(item.status === 'accepted' || item.status === 'paymentRequested') && (
+                         
+                            
+                                <p className="text-xl text-green-500 font-semibold">
+                                  Buyer: {
+                                    item.buyer.walletAddress === address ? 'Me' :
+                                    item.buyer.nickname.substring(0, 1) + '***'
+                                  }
+                                </p>
+                            
+                            )}
+                           
 
                             {/* waiting for escrow */}
                             {item.status === 'accepted' && (
@@ -725,14 +732,18 @@ const P2PTable = () => {
                                         new Date().getTime() - new Date(item.createdAt).getTime() > 1000 * 60 * 60 * 24
 
                                       ) ? (
-                                        
-                                        <Image
-                                          src="/icon-expired.png"
-                                          alt="Expired"
-                                          width={80}
-                                          height={80}
-                                        />
+
+                                        <>
+                                          {/*
+                                          <Image
+                                            src="/icon-expired.png"
+                                            alt="Expired"
+                                            width={80}
+                                            height={80}
+                                          />
+                                          */}
                                        
+                                       </>
                                       ) : (
 
 
@@ -776,14 +787,12 @@ const P2PTable = () => {
                             )}
 
 
-
-
-
-
-                            
-
                         </article>
 
+
+
+                      </div>
+                 
                     ))}
 
                 </div>

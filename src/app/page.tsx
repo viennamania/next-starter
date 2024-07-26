@@ -283,8 +283,6 @@ export default function Home() {
   const [seller, setSeller] = useState(null) as any;
 
 
-
-
   useEffect(() => {
       const fetchData = async () => {
           const response = await fetch("/api/user/getUser", {
