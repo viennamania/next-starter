@@ -623,7 +623,11 @@ export default function SendUsdt() {
                 <div className='flex flex-row gap-5 items-center justify-between'>
                   <select
                     disabled={sending}
-                    className="w-full p-2 border border-gray-300 rounded text-black text-2xl font-semibold"
+
+                    className="
+                      
+                      w-full p-2 border border-gray-300 rounded text-black text-2xl font-semibold "
+                      
                     value={
                       recipient?.nickname
                     }

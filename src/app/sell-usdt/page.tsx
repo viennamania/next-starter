@@ -970,56 +970,85 @@ const P2PTable = () => {
                             )}
 
 
-
-
                             <p className="mt-2 text-sm text-zinc-400">Payment method: Bank Transfer</p>
 
                             
-                            {/*
-                            <p className="text-sm text-zinc-400">{item.available} <br /> {item.limit}</p>
-                            */}
-                            {/*
-                            Available: 7.24 USDT
-                            Limit: 630.00 KRW - 630.00 KRW
-                           
-                            <div className="flex flex-col">
-                                <p className="text-sm text-zinc-400">Available: {item.available}</p>
-                                <p className="text-sm text-zinc-400">Limit: {item.limit}</p>
-                            </div>
-                           
-
-                            <p className="text-sm text-zinc-400">
-                                {item.paymentMethods.map((method, idx) => (
-                                    <span key={idx} className="inline-block bg-yellow-100 text-yellow-800 text-xs px-2 rounded-full mr-2 mb-1">{method}</span>
-                                ))}
-                            </p>
-                              */}
-                            {/*
-                            <p className="text-lg text-green-500 cursor-pointer">
-                                Buy USDT
-                            </p>
-                            */}
-                            {/*
-                            <button
-                                className="text-lg bg-green-500 text-white px-4 py-2 rounded-md mt-4"
-                                onClick={() => {
-                                    console.log('Buy USDT');
-
-                                    // open trade detail
-                                    // open modal of trade detail
 
 
 
-                                    openModal();
+                            {/* waiting for escrow */}
+                            {item.status === 'accepted' && (
+                                <div className="mt-4 flex flex-row gap-2 items-center justify-start">
+
+                                  {/* rotate loading icon */}
+                                
+                                  <Image
+                                    src="/loading.png"
+                                    alt="Escrow"
+                                    width={32}
+                                    height={32}
+                                    className="animate-spin"
+                                  />
+
+                                  <div>Waiting for seller to deposit {item.usdtAmount} USDT to escrow...</div>
+
+                                </div>
+                            )}
+
+                            {/* waiting for payment */}
+                            {item.status === 'paymentRequested' && (
+
+                                <div className="mt-4 flex flex-col gap-2 items-start justify-start">
+
+                                  <div className="flex flex-row items-center gap-2">
+
+                                    <Image
+                                      src="/smart-contract.png"
+                                      alt="Smart Contract"
+                                      width={32}
+                                      height={32}
+                                    />
+                                    <div>Escrow: {item.usdtAmount} USDT</div>
+                                    <button
+                                      className="bg-white text-black px-2 py-2 rounded-md"
+                                      onClick={() => {
+                                          // new window for smart contract
+                                          window.open(`https://polygonscan.com/tx/${item.escrowTransactionHash}`);
+                                      }}
+                                    >
+                                      <Image
+                                        src="/logo-polygon.png"
+                                        alt="Polygon"
+                                        width={20}
+                                        height={20}
+                                      />
+                                    </button>
+                                  </div>
+
+                                  <div className="flex flex-row gap-2 items-center justify-start">
+
+                                    {/* rotate loading icon */}
+                                  
+                                    <Image
+                                      src="/loading.png"
+                                      alt="Escrow"
+                                      width={32}
+                                      height={32}
+                                      className="animate-spin"
+                                    />
+
+                                    <div>Waiting for buyer to send {item.krwAmount} KRW to seller...</div>
+
+                                  </div>
+
+                                </div>
+                            )}
 
 
-                               
 
-                                }}
-                            >
-                                Buy USDT
-                            </button>
-                            */}
+
+
+
 
                         </article>
 
