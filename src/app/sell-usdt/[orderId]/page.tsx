@@ -764,7 +764,22 @@ export default function SellUsdt({ params }: { params: { orderId: string } }) {
 
 
 
-                            <div className='flex flex-row items-center gap-2 mb-2'>
+                            <div className='mt-4 flex flex-row items-center gap-2 mb-2'>
+
+                              <Image
+                                    src="/best-seller.png"
+                                    alt="Best Seller"
+                                    width={24}
+                                    height={24}
+                                />
+                                <Image
+                                    src="/verified.png"
+                                    alt="Verified"
+                                    width={24}
+                                    height={24}
+                                />
+
+
                                 <h2 className="text-lg font-semibold">
                                     Seller: {
 
@@ -774,19 +789,36 @@ export default function SellUsdt({ params }: { params: { orderId: string } }) {
 
                                     }
                                 </h2>
+
+                            </div>
+
+                            {/* buyer */}
+                            <div className='flex flex-row items-center gap-2 mb-2'>
+
+
+                                <Image
+                                    src="/icon-buyer.png"
+                                    alt="Best Buyer"
+                                    width={24}
+                                    height={24}
+                                />
+
                                 <Image
                                     src="/verified.png"
                                     alt="Verified"
                                     width={24}
                                     height={24}
                                 />
-                                <Image
-                                    src="/best-seller.png"
-                                    alt="Best Seller"
-                                    width={24}
-                                    height={24}
-                                />
-                            </div>
+
+                                <h2 className="text-lg font-semibold">
+                                    Buyer: {
+
+                                        item.buyer ? item.buyer.nickname.substring(0, 1) + '***' : 'Anonymous'
+
+                                    }
+                                </h2>
+
+                              </div>
 
 
                             {/* share button */}
