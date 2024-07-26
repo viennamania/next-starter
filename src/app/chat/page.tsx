@@ -15,14 +15,34 @@ import {
 
 
 
+
+// parameters for dynamic import
+// userId parameter is required
+
+/*
 const DynamicAppWithNoSSR = dynamic(() => import("../../components/Chat"), {
   ssr: false,
   loading: () => <p>...</p>
 });
+*/
+
+/*
+const DynamicAppWithNoSSR = dynamic(() => import("../../components/Chat"), {
+
+  ssr: false,
+
+  loading: (
+
+  ) => <p>...</p>
+
+});
+*/
+
+import Chat from "../../components/Chat";
 
 
 
-export default function Chat() {
+export default function ChatPage() {
 
 
   // get the active wallet
@@ -66,8 +86,16 @@ export default function Chat() {
           </div>
 
 
+          {/*
+          <DynamicAppWithNoSSR
+          />
+          */}
 
-          <DynamicAppWithNoSSR />
+          {address && (
+            <Chat
+              userId={  address }
+            />
+          )}
 
 
 

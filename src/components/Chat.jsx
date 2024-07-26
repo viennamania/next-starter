@@ -2,7 +2,7 @@ import SendbirdApp from '@sendbird/uikit-react/App';
 
 import {router} from 'next/navigation';
 
-const APP_ID = "2D7B4CDB-932F-4082-9B09-A1153792DC8D";
+const APP_ID = "D2845744-81A3-4585-99FF-4DCABE2CA190";
 
 const USER_ID = "sendbirdian-200720";
 
@@ -13,13 +13,19 @@ const USER_ID = "sendbirdian-200720";
 
 // /chat?tradeId=101168
 
-const Chat = (
+export default function Chat(
+    {
 
-    // get params from url
+    //userId
 
- 
+    userId  
+} 
 
-) => (
+
+) {
+
+
+    ///const { tradeId } = router.query;
 
 
     ///const smartAccount = useActiveAccount();
@@ -29,13 +35,16 @@ const Chat = (
     // get params from url
 
    
+    console.log("userId", userId);
 
 
 
-    <div style={{ height: "100vh", width: "100vw" }}>
-        <SendbirdApp appId={APP_ID} userId={USER_ID} />
-    </div>
-    
-);
 
-export default Chat;
+
+    return (
+        <div style={{ height: "100vh", width: "100vw" }}>
+            <SendbirdApp appId={APP_ID} userId={userId} />
+        </div>
+    );
+
+};
