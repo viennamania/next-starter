@@ -527,6 +527,8 @@ const P2PTable = () => {
                                   width={32}
                                   height={32}
                                 />
+
+
                                 <p className="text-xl font-semibold text-green-500 ">
                                   TID: {item.tradeId}
                                 </p>
@@ -575,20 +577,23 @@ const P2PTable = () => {
 
                             
                             <p className="mt-2 mb-2 flex items-center gap-2">
-                              <div className="flex items-center space-x-2">Seller:</div>
+
                               <Image
                                   src={item.avatar || '/profile-default.png'}
                                   alt="Avatar"
-                                  width={20}
-                                  height={20}
+                                  width={32}
+                                  height={32}
                                   priority={true} // Added priority property
                                   className="rounded-full"
                                   style={{
                                       objectFit: 'cover',
-                                      width: '20px',
-                                      height: '20px',
+                                      width: '32px',
+                                      height: '32px',
                                   }}
                               />
+
+                              <div className="flex items-center space-x-2">Seller:</div>
+
                               <h2 className="text-lg font-semibold">
                                 {item.walletAddress === address ? 'Me' : item.nickname}
                                
@@ -604,7 +609,7 @@ const P2PTable = () => {
 
                               <Image
                                 src="/best-seller.png"
-                                alt="Verified"
+                                alt="Best Seller"
                                 width={20}
                                 height={20}
                                 className="rounded-lg"
@@ -616,13 +621,34 @@ const P2PTable = () => {
 
                             {(item.status === 'accepted' || item.status === 'paymentRequested') && (
                          
-                            
+                              <div className="mt-4 flex flex-row items-center gap-2">
+                                <Image
+                                  src={item.buyer.avatar || "/profile-default.png"}
+                                  alt="Profile Image"
+                                  width={32}
+                                  height={32}
+                                  priority={true} // Added priority property
+                                  className="rounded-full"
+                                  style={{
+                                      objectFit: 'cover',
+                                      width: '32px',
+                                      height: '32px',
+                                  }}
+                                />
                                 <p className="text-xl text-green-500 font-semibold">
                                   Buyer: {
                                     item.buyer.walletAddress === address ? 'Me' :
                                     item.buyer.nickname.substring(0, 1) + '***'
                                   }
                                 </p>
+                                <Image
+                                  src="/verified.png"
+                                  alt="Verified"
+                                  width={20}
+                                  height={20}
+                                  className="rounded-lg"
+                                />
+                              </div>
                             
                             )}
                            

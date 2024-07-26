@@ -61,6 +61,8 @@ interface SellOrder {
   _id: string;
   createdAt: string;
   nickname: string;
+  avatar: string;
+
   trades: number;
   price: number;
   available: number;
@@ -75,6 +77,7 @@ interface SellOrder {
 
   seller: any;
 
+
   status: string;
 
   acceptedAt: string;
@@ -86,6 +89,10 @@ interface SellOrder {
   buyer: any;
 
   privateSale: boolean;
+
+
+  escrowTransactionHash: string;
+  transactionHash: string;
 }
 
 
@@ -544,7 +551,7 @@ export default function SellUsdt({ params }: { params: { orderId: string } }) {
 
           <div className="flex flex-col xl:flex-row items-start justify-center space-y-4">
 
-              <div className="w-full flex flex-col items-start space-y-4">
+              <div className="w-96 flex flex-col items-start space-y-4">
               
                 <div className='flex flex-row items-center space-x-4'>
                   <Image
@@ -583,7 +590,7 @@ export default function SellUsdt({ params }: { params: { orderId: string } }) {
               </div>
 
 
-                <div className="w-full grid gap-4  justify-center">
+                <div className="w-full grid grid-cols-1 gap-4  justify-center">
 
                     {sellOrders.map((item, index) => (
 
@@ -595,12 +602,12 @@ export default function SellUsdt({ params }: { params: { orderId: string } }) {
 
                               ${item.status === 'paymentConfirmed' ? 'bg-gray-900 border-gray-900' : ''}
 
-                               w-96 xl:w-full`
+                               w-96 `
                             }
                         >
 
                             {item.status === 'ordered' && (
-                              <div className="flex flex-col items-start gap-1">
+                              <div className=" flex flex-col items-start justify-start gap-1">
 
 
                                 <div className="flex flex-row items-center gap-2">
@@ -641,7 +648,7 @@ export default function SellUsdt({ params }: { params: { orderId: string } }) {
                                 </div>
 
                                 <p className="mb-4 text-sm text-zinc-400">
-                                  Order opened at {
+                                  Opened at {
                                     new Date(item.createdAt).toLocaleDateString() + ' ' + new Date(item.createdAt).toLocaleTimeString()
                                   }
                                 </p>
@@ -671,6 +678,8 @@ export default function SellUsdt({ params }: { params: { orderId: string } }) {
                                 )}
 
 
+
+
                                 <p className=" text-xl font-semibold text-green-500 ">
                                   TID: {item.tradeId}
                                 </p>
@@ -681,10 +690,14 @@ export default function SellUsdt({ params }: { params: { orderId: string } }) {
                             {item.acceptedAt && (
 
                               <div className='flex flex-row items-center gap-2 mb-4'>
-                                {/* dot */}
-                                <div className="w-2 h-2 rounded-full bg-green-500 mr-2"></div>
+                                <Image
+                                  src="/icon-trade.png"
+                                  alt="Trade"
+                                  width={32}
+                                  height={32}
+                                />
                                 <p className="text-sm text-zinc-400">
-                                  Trade started at <br />{new Date(item.acceptedAt).toLocaleDateString() + ' ' + new Date(item.acceptedAt).toLocaleTimeString()}
+                                  {new Date(item.acceptedAt).toLocaleDateString() + ' ' + new Date(item.acceptedAt).toLocaleTimeString()}
                                 </p>
                               </div>
 
@@ -701,7 +714,7 @@ export default function SellUsdt({ params }: { params: { orderId: string } }) {
                                   <div className="w-2 h-2 rounded-full bg-green-500 mr-2"></div>
 
                                   <p className="text-sm text-zinc-400">
-                                    Trade ended at <br />{new Date(item.paymentConfirmedAt).toLocaleDateString() + ' ' + new Date(item.paymentConfirmedAt).toLocaleTimeString()}
+                                    Closed at {new Date(item.paymentConfirmedAt).toLocaleDateString() + ' ' + new Date(item.paymentConfirmedAt).toLocaleTimeString()}
                                   </p>
                                 </div>
 
@@ -753,31 +766,24 @@ export default function SellUsdt({ params }: { params: { orderId: string } }) {
                               }</p>
                             
 
-                            {/*
-                            <p className="mt-4 text-sm font-semibold text-zinc-400">
-                              Status: {item.status?.toUpperCase()}
-                            </p>
-                            */}
-
-
-
-
-
 
                             <div className='mt-4 flex flex-row items-center gap-2 mb-2'>
 
-                              <Image
-                                    src="/best-seller.png"
-                                    alt="Best Seller"
-                                    width={24}
-                                    height={24}
-                                />
+
+
                                 <Image
-                                    src="/verified.png"
-                                    alt="Verified"
-                                    width={24}
-                                    height={24}
-                                />
+                                    src={item.avatar || '/profile-default.png'}
+                                    alt="Avatar"
+                                    width={32}
+                                    height={32}
+                                    priority={true} // Added priority property
+                                    className="rounded-full"
+                                    style={{
+                                        objectFit: 'cover',
+                                        width: '32px',
+                                        height: '32px',
+                                    }}
+                                />      
 
 
                                 <h2 className="text-lg font-semibold">
@@ -790,24 +796,41 @@ export default function SellUsdt({ params }: { params: { orderId: string } }) {
                                     }
                                 </h2>
 
-                            </div>
-
-                            {/* buyer */}
-                            <div className='flex flex-row items-center gap-2 mb-2'>
-
-
-                                <Image
-                                    src="/icon-buyer.png"
-                                    alt="Best Buyer"
-                                    width={24}
-                                    height={24}
-                                />
-
                                 <Image
                                     src="/verified.png"
                                     alt="Verified"
                                     width={24}
                                     height={24}
+                                />
+
+                                <Image
+                                  src='/best-seller.png'
+                                  alt='Best Seller'
+                                  width={24}
+                                  height={24}
+                                />
+
+                            </div>
+
+                            {/* buyer */}
+                            {item.buyer && (
+
+                              <div className='flex flex-row items-center gap-2 mb-2'>
+
+
+
+                                <Image
+                                  src={item.buyer.avatar || "/profile-default.png"}
+                                  alt="Profile Image"
+                                  width={32}
+                                  height={32}
+                                  priority={true} // Added priority property
+                                  className="rounded-full"
+                                  style={{
+                                      objectFit: 'cover',
+                                      width: '32px',
+                                      height: '32px',
+                                  }}
                                 />
 
                                 <h2 className="text-lg font-semibold">
@@ -818,7 +841,18 @@ export default function SellUsdt({ params }: { params: { orderId: string } }) {
                                     }
                                 </h2>
 
+                                {item.buyer && (
+                                  <Image
+                                    src="/verified.png"
+                                    alt="Verified"
+                                    width={24}
+                                    height={24}
+                                  />
+                                )}
+
                               </div>
+
+                            )}
 
 
                             {/* share button */}
@@ -954,54 +988,119 @@ export default function SellUsdt({ params }: { params: { orderId: string } }) {
 
                               <div className="mt-4 flex flex-col items-start gap-2">
 
+                                {/* escrow infomation */}
+                                <div className='flex flex-row items-center gap-2'>
 
-                                <div className="text-lg font-semibold text-green-500">Bank Transfer Information</div>
+                                  <Image
+                                    src='/smart-contract.png'
+                                    alt='Escrow'
+                                    width={32}
+                                    height={32}
+                                  />
+
+                                  <div className="text-lg font-semibold text-green-500">
+                                    Escrow: {item.usdtAmount} USDT
+                                  </div>
+
+                                  {/* polygon icon to go to polygon scan */}
+                                  <button
+                                    className="text-sm bg-green-500 text-white px-2 py-1 rounded-md"
+                                    onClick={() => {
+                                      window.open(`https://polygonscan.com/tx/${item.escrowTransactionHash}`);
+                                    }}
+                                  >
+                                    <Image
+                                      src="/logo-polygon.png"
+                                      alt="Polygon"
+                                      width={24}
+                                      height={24}
+                                    />
+                                  </button>
+
+
+                                </div>
+
+
+                                <div className='flex flex-row items-center gap-2'>
+                                  <Image
+                                    src='/icon-bank.png'
+                                    alt='Bank'
+                                    width={32}
+                                    height={32}
+                                  />
+                                  <div className="text-lg font-semibold text-green-500">
+                                    Bank Transfer
+                                  </div>
+                                </div>
 
                                 {/* dot */}
                                 <div className='flex flex-row items-center gap-2'>
-                                  <div className="w-4 h-4 rounded-full bg-green-500"></div>
-                                  <div className="text-lg font-semibold">
+                                  <div className="w-2 h-2 rounded-full bg-green-500"></div>
+                                  <div className="text-lg">
                                     Bank Name: {item.seller.bankInfo.bankName}
                                   </div>
                                 </div>
 
                                 <div className='flex flex-row items-center gap-2'>
-                                  <div className="w-4 h-4 rounded-full bg-green-500"></div>
-                                  <div className="text-lg font-semibold">
+                                  <div className="w-2 h-2 rounded-full bg-green-500"></div>
+                                  <div className="text-lg ">
                                     Account Number: {item.seller.bankInfo.accountNumber}
                                   </div>
                                 </div>
 
                                 <div className='flex flex-row items-center gap-2'>
-                                  <div className="w-4 h-4 rounded-full bg-green-500"></div>
-                                  <div className="text-lg font-semibold">
+                                  <div className="w-2 h-2 rounded-full bg-green-500"></div>
+                                  <div className="text-lg">
                                     Account Holder: {item.seller.bankInfo.accountHolder}
                                   </div>
                                 </div>
 
                                 <div className='flex flex-row items-center gap-2'>
-                                  <div className="w-4 h-4 rounded-full bg-green-500"></div>
-                                  <div className="text-lg font-semibold">
+                                  <div className="w-2 h-2 rounded-full bg-green-500"></div>
+                                  <div className="text-lg">
                                     Deposit Name: {item.tradeId}
                                   </div>
                                 </div>
 
                                 <div className='flex flex-row items-center gap-2'>
-                                  <div className="w-4 h-4 rounded-full bg-green-500"></div>
-                                  <div className="text-lg font-semibold">
-                                    Deposit Amount: {item.usdtAmount} USDT
+                                  <div className="w-2 h-2 rounded-full bg-green-500"></div>
+                                  <div className="text-lg">
+                                    Deposit Amount: {
+                                      item.krwAmount.toLocaleString('en-US', {
+                                        style: 'currency',
+                                        currency: 'KRW'
+                                      })
+                                    }
                                   </div>
                                 </div>
 
                                 <div className='flex flex-row items-center gap-2'>
-                                  <div className="w-4 h-4 rounded-full bg-green-500"></div>
-                                  <div className="text-lg font-semibold">
+                                  <div className="w-2 h-2 rounded-full bg-green-500"></div>
+                                  <div className="text-lg">
                                     Deposit Deadline: {
                                      
                                       new Date(new Date(item.paymentRequestedAt).getTime() + 1000 * 60 * 60 * 1).toLocaleString()
                                     
                                     }
                                   </div>
+                                </div>
+
+
+                                {/* waiting for receive USDT */}
+                                <div className="mt-4 flex flex-row gap-2 items-center justify-start">
+
+                                  {/* rotate loading icon */}
+                                
+                                  <Image
+                                    src="/loading.png"
+                                    alt="Escrow"
+                                    width={32}
+                                    height={32}
+                                    className="animate-spin"
+                                  />
+
+                                  <div>Waiting for seller to confirm payment...</div>
+
                                 </div>
 
 
