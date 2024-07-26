@@ -304,12 +304,13 @@ const P2PTable = () => {
 
 
 
-            fetch('/api/order/getAllSellOrders', {
+            fetch('/api/order/getBuyTrades', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
+                  walletAddress: address,
                 }),
             })
             .then(response => response.json())
@@ -329,6 +330,33 @@ const P2PTable = () => {
 
         setAcceptingSellOrder(false);
     }
+
+
+    // reload button disabled when 10 seconds
+    // countdowm 10 seconds for each reload
+    const [reloadDisabled, setReloadDisabled] = useState(false);
+
+    const [countdown, setCountdown] = useState(10);
+
+    useEffect(() => {
+      const interval = setInterval(() => {
+        if (countdown === 0) {
+
+          setReloadDisabled(false);
+          setCountdown(10);
+
+          
+
+
+
+
+        } else {
+          setCountdown(countdown - 1);
+        }
+      } , 1000);
+
+      return () => clearInterval(interval);
+    } , [countdown]);
 
 
 
@@ -409,6 +437,69 @@ const P2PTable = () => {
 
 
 
+                <div className="flex flex-row items-center space-x-4">
+
+                  {/* trades is the status is accepted or paymentRequested */}
+
+                  <div className="flex flex-col xl:flex-row gap-2 xl:gap-5 items-start">
+                    <div className="text-sm">
+                      {/* dot */}
+                      <span className="inline-block w-2 h-2 rounded-full bg-green-500 mr-2"></span>
+                      Total Trades: {sellOrders.length} EA ({sellOrders.reduce((acc, item) => acc + item.usdtAmount, 0)} USDT)</div>
+                    <div className="text-sm">
+                      {/* dot */}
+                      <span className="inline-block w-2 h-2 rounded-full bg-green-500 mr-2"></span>
+                      Accepted Trades: {sellOrders.filter(item => item.status === 'accepted' || item.status === 'paymentRequested').length} EA ({sellOrders.filter(item => item.status === 'accepted' || item.status === 'paymentRequested').reduce((acc, item) => acc + item.usdtAmount, 0)} USDT)</div>
+
+                    <div className="text-sm">
+                      {/* dot */}
+                      <span className="inline-block w-2 h-2 rounded-full bg-green-500 mr-2"></span>
+                      Completed Trades: {sellOrders.filter(item => item.status === 'paymentConfirmed').length} EA ({sellOrders.filter(item => item.status === 'paymentConfirmed').reduce((acc, item) => acc + item.usdtAmount, 0)} USDT)</div>
+
+                  </div>
+
+
+                  {/* reload button */}
+                  <button
+
+                      disabled={reloadDisabled}
+
+
+                      className={`text-sm bg-green-500 text-white px-4 py-2 rounded-lg ${reloadDisabled ? 'bg-gray-200 text-gray-700' : ''}`}
+
+                      onClick={() => {
+
+                          setReloadDisabled(true);
+
+                          setCountdown(10);
+
+                          fetch('/api/order/getBuyTrades', {
+                              method: 'POST',
+                              headers: {
+                                  'Content-Type': 'application/json',
+                              },
+                              body: JSON.stringify({
+
+                                walletAddress: address,
+
+                              }),
+                          })
+                          .then(response => response.json())
+                          .then(data => {
+                              ///console.log('data', data);
+                              setSellOrders(data.result.orders);
+                          })
+
+                      }}
+                  >
+                      Reload {  countdown > 0 ? `${countdown} sec` : '' }
+                  </button>
+
+                </div>
+
+
+
+
                 <div className="w-full grid gap-4 lg:grid-cols-3 justify-center">
 
                     {sellOrders.map((item, index) => (
@@ -478,6 +569,26 @@ const P2PTable = () => {
                               </button>
 
                             </p>
+
+                            {/* waiting for escrow */}
+                            {item.status === 'accepted' && (
+                                <div className="mt-4 flex flex-row gap-2 items-center justify-start">
+
+                                  {/* rotate loading icon */}
+                                
+                                  <Image
+                                    src="/loading.png"
+                                    alt="Escrow"
+                                    width={32}
+                                    height={32}
+                                    className="animate-spin"
+                                  />
+
+                                  <div>Waiting for seller to deposit {item.usdtAmount} USDT to escrow...</div>
+
+                                </div>
+                            )}
+
 
 
 

@@ -512,14 +512,14 @@ const P2PTable = () => {
 
 
                             { (item.status === 'accepted' || item.status === 'paymentRequested') && (
-                              <div className="mb-4 flex flex-row items-center space-x-2">
+                              <div className="mb-4 flex flex-row items-center bg-white px-2 py-1 rounded-md">
                                 <Image
                                   src="/icon-trade.png"
                                   alt="Trade"
                                   width={32}
                                   height={32}
                                 />
-                                <p className="text-xl font-semibold text-green-500 bg-white px-2 py-1 rounded-md">
+                                <p className="text-xl font-semibold text-green-500 ">
                                   TID: {item.tradeId}
                                 </p>
                               </div>

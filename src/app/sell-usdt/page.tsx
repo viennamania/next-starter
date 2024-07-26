@@ -50,6 +50,7 @@ import { balanceOf, transfer } from "thirdweb/extensions/erc20";
 import Modal from '../../components/modal';
 
 import { useRouter }from "next//navigation";
+import { it } from "node:test";
 
 
 
@@ -806,6 +807,9 @@ const P2PTable = () => {
 
                               <div className="flex flex-row items-center gap-2  bg-white px-2 py-1 rounded-md mb-4  ">
 
+
+
+
                                 {item.privateSale ? (
                                     <Image
                                       src="/icon-private-sale.png"
@@ -821,6 +825,16 @@ const P2PTable = () => {
                                       height={32}
                                     />
                                 )}
+
+                                { (item.status === 'accepted' || item.status === 'paymentRequested') && (
+                                  <Image
+                                    src="/icon-trade.png"
+                                    alt="Trade"
+                                    width={32}
+                                    height={32}
+                                  />
+                                )}
+
 
                                 <p className="text-xl font-semibold text-green-500 ">
                                   TID: {item.tradeId}

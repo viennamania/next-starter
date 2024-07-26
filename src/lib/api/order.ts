@@ -542,7 +542,7 @@ export async function getTradesByWalletAddress(
 
     { 'buyer.walletAddress': walletAddress, tradeId: { $ne: null } },
 
-  ).sort({ createdAt: -1 }).limit(limit).skip((page - 1) * limit).toArray();
+  ).sort({ acceptedAt: -1 }).limit(limit).skip((page - 1) * limit).toArray();
 
 
   return {
