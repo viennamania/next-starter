@@ -75,6 +75,8 @@ interface SellOrder {
 
   acceptedAt: string;
 
+  paymentConfirmedAt: string;
+
   tradeId: string;
 
   buyer: any;
@@ -723,11 +725,17 @@ const P2PTable = () => {
 
                         <article
                             key={index}
-                            className={`bg-black p-4 rounded-md border
+                            className={`
+                              w-96 xl:w-full
+
+                              bg-black p-4 rounded-md border
                               
                                ${item.walletAddress === address ? 'border-green-500' : 'border-gray-200'}
-                               w-96 xl:w-full`
-                            }
+                               
+
+                               ${item.status === 'paymentConfirmed' ? 'bg-gray-900 border-gray-900' : ''}
+
+                            `}
                         >
 
                             {item.status === 'ordered' && (
@@ -792,7 +800,7 @@ const P2PTable = () => {
 
                             { (item.status === 'accepted' || item.status === 'paymentRequested') && (
 
-                              <div className="flex flex-row items-center gap-2 mb-4">
+                              <div className="flex flex-row items-center gap-2  bg-white px-2 py-1 rounded-md mb-4  ">
 
                                 {item.privateSale ? (
                                     <Image
@@ -810,19 +818,50 @@ const P2PTable = () => {
                                     />
                                 )}
 
-                                <p className="text-xl font-semibold text-green-500 bg-white px-2 py-1 rounded-md">
+                                <p className="text-xl font-semibold text-green-500 ">
                                   TID: {item.tradeId}
                                 </p>
+
                               </div>
 
                             )}
 
+
+                            { (item.status === 'paymentConfirmed') && (
+
+                            <div className="flex flex-row items-center gap-2  bg-white px-2 py-1 rounded-md mb-4">
+
+                              <Image
+                                src="/confirmed.png"
+                                alt="Payment Confirmed"
+                                width={50}
+                                height={50}
+                              />
+
+                              <p className="text-xl font-semibold text-green-500 ">
+                                TID: {item.tradeId}
+                              </p>
+                            </div>
+
+                            )}
+
+
+
+
+
                             {item.acceptedAt && (
-                              <p className="mb-4 text-sm text-zinc-400">
+                              <p className="mb-2 text-sm text-zinc-400">
                                 Trade started at {new Date(item.acceptedAt).toLocaleDateString() + ' ' + new Date(item.acceptedAt).toLocaleTimeString()}
                               </p>
                             )}
 
+                            {item.paymentConfirmedAt && (
+                              <p className="mb-2 text-sm text-zinc-400">
+                                
+                                Trade ended at {new Date(item.paymentConfirmedAt).toLocaleDateString() + ' ' + new Date(item.paymentConfirmedAt).toLocaleTimeString()}
+                            
+                              </p>
+                            )}
 
                             <p className=" text-2xl font-bold text-white">{item.usdtAmount} USDT</p>
 
@@ -855,54 +894,6 @@ const P2PTable = () => {
 
 
 
-                            {item.status === 'accepted' && (
-                                <div className="w-full mt-2 mb-2 flex flex-col items-start ">
-
-                                  <p className="text-xl text-green-500 font-semibold">
-                                    Buyer: {
-                                      item.buyer.walletAddress === address ? item.nickname + ' :Me' :
-                                    
-                                      item.buyer.nickname.substring(0, 1) + '****'
-                                    }
-                                  </p>
-
-                                  {/*
-                                  <button
-                                      className="w-full text-lg bg-blue-500 text-white px-4 py-2 rounded-md mt-4"
-                                      onClick={() => {
-                                          console.log('request Payment');
-                                          
-                                          ///router.push(`/chat?tradeId=12345`);
-
-                                      }}
-                                  >
-                                    <div className="flex flex-col gap-2">
-                                      <div className="flex flex-row items-center gap-2">
-                                        <GearSetupIcon />
-                                        <div className="text-lg font-semibold">
-                                        Request Payment
-                                        </div>
-                                      </div>
-                                      <div className="flex flex-col gap-2 text-sm text-left font-semibold text-white">
-                                        
-                                        <ul>
-                                          <li>Bank Name : {item.seller.bankInfo.bankName}</li>
-                                          <li>Account Number : {item.seller.bankInfo.accountNumber}</li>
-                                          <li>Account Holder : {item.seller.bankInfo.accountHolder}</li>
-                                          <li>Amount : {item.krwAmount} KRW</li>
-                                          
-                                          <li>Deposit Name : {item.tradeId}</li>
-                                        </ul>
-
-
-
-                                      </div>
-                                    </div>
-                                  </button>
-                                  */}
-
-                                </div>
-                            )}
 
 
                             
@@ -915,6 +906,24 @@ const P2PTable = () => {
 
                               }
                             </h2>
+
+
+                            {(item.status === 'accepted' || item.status === 'paymentRequested' || item.status === 'paymentConfirmed')
+                              && (
+                                <div className="w-full mt-2 mb-2 flex flex-col items-start ">
+
+                                  <p className="text-xl text-green-500 font-semibold">
+                                    Buyer: {
+                                      item.buyer.walletAddress === address ? item.buyer.nickname + ' :Me' :
+                                    
+                                      item.buyer.nickname.substring(0, 1) + '****'
+                                    }
+                                  </p>
+
+                                </div>
+                            )}
+
+
 
                             {/* share button */}
                             {item.walletAddress === address && item.privateSale && (

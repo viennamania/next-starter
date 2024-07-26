@@ -479,6 +479,15 @@ const P2PTable = () => {
 
 
                               <div className="flex flex-row items-center space-x-2">
+
+                                <Image
+                                  src="/icon-public-sale.png"
+                                  alt="Public Sale"
+                                  width={28}
+                                  height={28}
+                                />
+
+
                                 {/* if createdAt is recent 1 hours, show new badge */}
                                 {new Date().getTime() - new Date(item.createdAt).getTime() < 1000 * 60 * 60 && (
                                   <Image
@@ -507,8 +516,8 @@ const P2PTable = () => {
                                 <Image
                                   src="/icon-trade.png"
                                   alt="Trade"
-                                  width={28}
-                                  height={28}
+                                  width={32}
+                                  height={32}
                                 />
                                 <p className="text-xl font-semibold text-green-500 bg-white px-2 py-1 rounded-md">
                                   TID: {item.tradeId}

@@ -186,7 +186,7 @@ export async function getSellOrders(
     {
       //status: 'ordered',
 
-      status: { $ne: 'paymentConfirmed' },
+      //status: { $ne: 'paymentConfirmed' },
 
       // exclude private sale
       //privateSale: { $ne: true },
