@@ -77,6 +77,7 @@ interface SellOrder {
   acceptedAt: string;
 
   paymentConfirmedAt: string;
+  escrowTransactionHash: string;
 
   tradeId: string;
 

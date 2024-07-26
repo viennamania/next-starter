@@ -99,6 +99,13 @@
   dependencies:
     regenerator-runtime "^0.14.0"
 
+"@babel/runtime@^7.21.0":
+  version "7.24.8"
+  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.24.8.tgz#5d958c3827b13cc6d05e038c07fb2e5e3420d82e"
+  integrity sha512-5F7SDGs1T72ZczbRwbGO9lQi0NLjQxzl6i4lJxLxfW9U5UluCSyEJeniWvnhl3/euNiqQVbo8zruhsDfid0esA==
+  dependencies:
+    regenerator-runtime "^0.14.0"
+
 "@babel/template@^7.24.7":
   version "7.24.7"
   resolved "https://registry.yarnpkg.com/@babel/template/-/template-7.24.7.tgz#02efcee317d0609d2c07117cb70ef8fb17ab7315"
@@ -893,6 +900,40 @@
   dependencies:
     "@noble/hashes" "~1.4.0"
     "@scure/base" "~1.1.6"
+
+"@sendbird/chat@^4.13.0":
+  version "4.13.1"
+  resolved "https://registry.yarnpkg.com/@sendbird/chat/-/chat-4.13.1.tgz#309411ccba35a34f8941df5df38aeb7c9e265f06"
+  integrity sha512-fIwZQue6NU7FYjIpG/N7oPWolOAQtirAZc+ETjZLrLpt4ypn2Ur6QwcRi4IeyHTd5NcuucN1etOmgssVxhI91w==
+
+"@sendbird/react-uikit-message-template-view@0.0.1-alpha.76":
+  version "0.0.1-alpha.76"
+  resolved "https://registry.yarnpkg.com/@sendbird/react-uikit-message-template-view/-/react-uikit-message-template-view-0.0.1-alpha.76.tgz#4338b5a3f08e227db20ef1e8ceb3512b10cc14b3"
+  integrity sha512-mZKPAXY1ktABzzwPHnZTHBJRAKMEHvvQQON5rxekmfjoaHvHdywLyShgcrtcWHRHOXRhG+gejAhr7scMktZ7Lw==
+  dependencies:
+    "@sendbird/uikit-message-template" "^0.0.1-alpha.76"
+
+"@sendbird/uikit-message-template@^0.0.1-alpha.76":
+  version "0.0.1-alpha.78"
+  resolved "https://registry.yarnpkg.com/@sendbird/uikit-message-template/-/uikit-message-template-0.0.1-alpha.78.tgz#55ba9a805e9db9f1a0320d96313e70788bbe42b5"
+  integrity sha512-nnmvsIyaajsiXtlL4IKKJIcf7Qg3P0/bNkItaELwA61yEF0iX41zcsHwpvLdqcYxsAAAsPD4IsVWD+EIwJjdPw==
+
+"@sendbird/uikit-react@^3.14.13":
+  version "3.14.13"
+  resolved "https://registry.yarnpkg.com/@sendbird/uikit-react/-/uikit-react-3.14.13.tgz#e485caa63e8dd1c6166e03d158625d5ad4a8d10f"
+  integrity sha512-tTEOn47OJQANNMHYp5y9KFt8llyqaukg4YnH+mUQ65C0VRjur4vC5WgQrvXjNGw7zl8XP4SdIOBbguamzCVFVg==
+  dependencies:
+    "@sendbird/chat" "^4.13.0"
+    "@sendbird/react-uikit-message-template-view" "0.0.1-alpha.76"
+    "@sendbird/uikit-tools" "0.0.1-alpha.76"
+    css-vars-ponyfill "^2.3.2"
+    date-fns "^2.16.1"
+    dompurify "^3.0.1"
+
+"@sendbird/uikit-tools@0.0.1-alpha.76":
+  version "0.0.1-alpha.76"
+  resolved "https://registry.yarnpkg.com/@sendbird/uikit-tools/-/uikit-tools-0.0.1-alpha.76.tgz#7f293aaa61089b644a9f4ca5f7929ce4f0d8885f"
+  integrity sha512-YbKsbpacI1OIvTGviUwuAAu7HPb/BeCxlo2AW6kyvRbNglocVxxcqvHW8Oe31r2oq98spEt7TPLMDuNyNNM5AA==
 
 "@stablelib/aead@^1.0.1":
   version "1.0.1"
@@ -1817,7 +1858,7 @@ babel-plugin-macros@^3.1.0:
     cosmiconfig "^7.0.0"
     resolve "^1.19.0"
 
-balanced-match@^1.0.0:
+balanced-match@^1.0.0, balanced-match@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/balanced-match/-/balanced-match-1.0.2.tgz#e83e3a7e3f300b34cb9d87f615fa0cbf357690ee"
   integrity sha512-3oSeUO0TMV67hN1AmbXsK4yaqU7tjiHlbxRDZOpH0KW9+CeX4bRAaX0Anxt0tx2MrpRpWwQaPwIlISEJhYU5Pw==
@@ -2252,6 +2293,14 @@ crypto-browserify@^3.11.0:
     randombytes "^2.0.0"
     randomfill "^1.0.3"
 
+css-vars-ponyfill@^2.3.2:
+  version "2.4.9"
+  resolved "https://registry.yarnpkg.com/css-vars-ponyfill/-/css-vars-ponyfill-2.4.9.tgz#ad04f0ee5937f816616b7fae3cfa945a33e7bfd1"
+  integrity sha512-aZyLue5bdiGVNCiCclNjo123D8I7kyoYNUaAvz+H1JalX1ye4Ilz7jNRRH5YbM+dYD6ucejiydGwk7lol/GCXQ==
+  dependencies:
+    balanced-match "^1.0.2"
+    get-css-data "^2.0.2"
+
 cssesc@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/cssesc/-/cssesc-3.0.0.tgz#37741919903b868565e1c09ea747445cd18983ee"
@@ -2293,6 +2342,13 @@ data-view-byte-offset@^1.0.0:
     call-bind "^1.0.6"
     es-errors "^1.3.0"
     is-data-view "^1.0.1"
+
+date-fns@^2.16.1:
+  version "2.30.0"
+  resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-2.30.0.tgz#f367e644839ff57894ec6ac480de40cae4b0f4d0"
+  integrity sha512-fnULvOpxnC5/Vg3NCiWelDsLiUc9bRwAPs/+LfTLNvetFCtCTN+yQz15C/fs4AwX1R9K5GLtLfn8QW+dWisaAw==
+  dependencies:
+    "@babel/runtime" "^7.21.0"
 
 dayjs@^1.11.9:
   version "1.11.12"
@@ -2457,6 +2513,11 @@ domain-browser@^1.1.1:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/domain-browser/-/domain-browser-1.2.0.tgz#3d31f50191a6749dd1375a7f522e823d42e54eda"
   integrity sha512-jnjyiM6eRyZl2H+W8Q/zLMA481hzi0eszAaBUzIVnmYVDBbnLxVNnfu1HgEBvCbL+71FrxMl3E6lpKH7Ge3OXA==
+
+dompurify@^3.0.1:
+  version "3.1.6"
+  resolved "https://registry.yarnpkg.com/dompurify/-/dompurify-3.1.6.tgz#43c714a94c6a7b8801850f82e756685300a027e2"
+  integrity sha512-cTOAhc36AalkjtBpfG6O8JimdTMWNXjiePT2xQH/ppBGi/4uIpmj8eKyIkMJErXWARyINV/sB38yf8JCLF5pbQ==
 
 duplexify@^4.1.2:
   version "4.1.3"
@@ -3092,6 +3153,11 @@ get-caller-file@^2.0.1:
   version "2.0.5"
   resolved "https://registry.yarnpkg.com/get-caller-file/-/get-caller-file-2.0.5.tgz#4f94412a82db32f36e3b0b9741f8a97feb031f7e"
   integrity sha512-DyFP3BM/3YHTQOCUL/w0OZHR0lpKeGrxotcHWcqNEdnltqFwXVfhEBQ94eIo34AfQpo0rGki4cyIiftY06h2Fg==
+
+get-css-data@^2.0.2:
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/get-css-data/-/get-css-data-2.1.1.tgz#be1ef413f5a0854b75967f3b694a6ce164557070"
+  integrity sha512-JpMa/f5P4mDXKg6l5/2cHL5xNY77Jap7tHyduMa6BF0E2a7bQ6Tvaz2BIMjeVYZYLcmOZ5w2Ro0yVJEI41tMbw==
 
 get-intrinsic@^1.1.3, get-intrinsic@^1.2.1, get-intrinsic@^1.2.2, get-intrinsic@^1.2.3, get-intrinsic@^1.2.4:
   version "1.2.4"
