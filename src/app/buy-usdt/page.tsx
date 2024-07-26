@@ -654,7 +654,7 @@ const P2PTable = () => {
                                     />
                                     <div>Escrow: {item.usdtAmount} USDT</div>
                                     <button
-                                      className="text-lg bg-green-500 text-white px-4 py-2 rounded-md"
+                                      className="bg-white text-black px-2 py-2 rounded-md"
                                       onClick={() => {
                                           // new window for smart contract
                                           window.open(`https://polygonscan.com/tx/${item.escrowTransactionHash}`);
