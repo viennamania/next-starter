@@ -79,6 +79,7 @@ interface SellOrder {
 
   acceptedAt: string;
   paymentRequestedAt: string;
+  paymentConfirmedAt: string;
 
   tradeId: string;
 
@@ -261,6 +262,11 @@ export default function SellUsdt({ params }: { params: { orderId: string } }) {
 
         // fetch sell orders every 10 seconds
         const interval = setInterval(() => {
+
+          if (sellOrders[0]?.status === 'paymentConfirmed') {
+            clearInterval(interval);
+          }
+
           fetchSellOrders();
         }, 10000);
   
@@ -484,9 +490,11 @@ export default function SellUsdt({ params }: { params: { orderId: string } }) {
     
     return (
 
-      <main className="p-4 pb-10 min-h-[100vh] flex items-start justify-center container max-w-screen-lg mx-auto">
+      <main className="p-4 pb-10 min-h-[100vh] flex items-start justify-center container
+        max-w-screen-lg
+        mx-auto">
 
-        <div className="py-20 w-full">
+        <div className="py-20  ">
   
           {/* goto home button using go back icon
           history back
@@ -496,30 +504,10 @@ export default function SellUsdt({ params }: { params: { orderId: string } }) {
               <button onClick={() => router.push('/')} className="text-zinc-100 font-semibold underline">Go Home</button>
           </div>
 
-
-          <div className="flex flex-col items-start justify-center space-y-4">
-
-              <div className='flex flex-row items-center space-x-4'>
-                  <Image
-                    src="/logo-tether.png"
-                    alt="USDT"
-                    width={35}
-                    height={35}
-                    className="rounded-lg"
-                  />
-                  <Image
-                    src="/logo-polygon.png"
-                    alt="Polygon"
-                    width={32}
-                    height={32}
-                    className="rounded-lg"
-                  />
-                  <div className="text-2xl font-semibold">Buy USDT</div>
-
-
-
-                    {!address && (
+          {!address && (
+            <div className="flex flex-col items-center space-y-4 mb-4">
                         <ConnectButton
+                            
 
                             client={client}
 
@@ -552,12 +540,40 @@ export default function SellUsdt({ params }: { params: { orderId: string } }) {
                             }
 
                         />
+            </div>
 
-                    )}
+          )}
 
 
 
-              </div>
+          <div className="flex flex-col xl:flex-row items-start justify-center space-y-4">
+
+              <div className="w-full flex flex-col items-start space-y-4">
+              
+                <div className='flex flex-row items-center space-x-4'>
+                  <Image
+                    src="/logo-tether.png"
+                    alt="USDT"
+                    width={35}
+                    height={35}
+                    className="rounded-lg"
+                  />
+                  <Image
+                    src="/logo-polygon.png"
+                    alt="Polygon"
+                    width={32}
+                    height={32}
+                    className="rounded-lg"
+                  />
+                  <div className="text-2xl font-semibold">Buy USDT</div>
+
+
+
+
+
+
+
+                </div>
 
 
                 {/* my usdt balance */}
@@ -568,8 +584,10 @@ export default function SellUsdt({ params }: { params: { orderId: string } }) {
                   </div>
                 </div>
 
+              </div>
 
-                <div className="w-full grid gap-4 lg:grid-cols-3 justify-center">
+
+                <div className="w-full grid gap-4  justify-center">
 
                     {sellOrders.map((item, index) => (
 
@@ -578,6 +596,9 @@ export default function SellUsdt({ params }: { params: { orderId: string } }) {
                             className={`bg-black p-4 rounded-md border
                               
                                ${item.walletAddress === address ? 'border-green-500' : 'border-gray-200'}
+
+                              ${item.status === 'paymentConfirmed' ? 'bg-gray-900 border-gray-900' : ''}
+
                                w-96 xl:w-full`
                             }
                         >
@@ -623,7 +644,7 @@ export default function SellUsdt({ params }: { params: { orderId: string } }) {
 
                                 </div>
 
-                                <p className=" text-sm text-zinc-400">
+                                <p className="mb-4 text-sm text-zinc-400">
                                   Order opened at {
                                     new Date(item.createdAt).toLocaleDateString() + ' ' + new Date(item.createdAt).toLocaleTimeString()
                                   }
@@ -633,9 +654,9 @@ export default function SellUsdt({ params }: { params: { orderId: string } }) {
                             )}
 
 
-                            { (item.status === 'accepted' || item.status === 'paymentRequested') && (
+                            { (item.status === 'accepted' || item.status === 'paymentRequested' || item.status === 'paymentConfirmed') && (
 
-                              <div className='flex flex-row items-center gap-2 mb-4'>
+                              <div className='flex flex-row items-center gap-2 bg-white px-2 py-1 rounded-md mb-4'>
 
                                 {item.privateSale ? (
                                     <Image
@@ -654,7 +675,7 @@ export default function SellUsdt({ params }: { params: { orderId: string } }) {
                                 )}
 
 
-                                <p className=" text-xl font-semibold text-green-500 bg-white px-2 py-1 rounded-md">
+                                <p className=" text-xl font-semibold text-green-500 ">
                                   TID: {item.tradeId}
                                 </p>
                               </div>
@@ -662,13 +683,58 @@ export default function SellUsdt({ params }: { params: { orderId: string } }) {
                             )}
 
                             {item.acceptedAt && (
-                              <p className="mb-4 text-sm text-zinc-400">
-                                Trade started at {new Date(item.acceptedAt).toLocaleDateString() + ' ' + new Date(item.acceptedAt).toLocaleTimeString()}
-                              </p>
+
+                              <div className='flex flex-row items-center gap-2 mb-4'>
+                                {/* dot */}
+                                <div className="w-2 h-2 rounded-full bg-green-500 mr-2"></div>
+                                <p className="text-sm text-zinc-400">
+                                  Trade started at <br />{new Date(item.acceptedAt).toLocaleDateString() + ' ' + new Date(item.acceptedAt).toLocaleTimeString()}
+                                </p>
+                              </div>
+
+
+                            )}
+
+                            {item.status === 'paymentConfirmed' && (
+
+
+                              <>
+
+                                <div className='flex flex-row items-center gap-2 mb-4'>
+                                  {/* dot */}
+                                  <div className="w-2 h-2 rounded-full bg-green-500 mr-2"></div>
+
+                                  <p className="text-sm text-zinc-400">
+                                    Trade ended at <br />{new Date(item.paymentConfirmedAt).toLocaleDateString() + ' ' + new Date(item.paymentConfirmedAt).toLocaleTimeString()}
+                                  </p>
+                                </div>
+
+                                <div className="flex flex-row items-center gap-2">
+
+                                  <Image
+                                    src='/timer.png'
+                                    alt='timer'
+                                    width={38}
+                                    height={38}
+                                  />
+
+                                  <div className="text-sm text-green-500">
+                                    Trading time is {
+
+                                  ( (new Date(item.paymentConfirmedAt).getTime() - new Date(item.acceptedAt).getTime()) / 1000 / 60 ).toFixed(0) 
+
+                                    } minutes
+                                  </div>
+
+                                </div>
+
+
+                              </>
+
                             )}
 
 
-                            <p className=" text-2xl font-bold text-white">{item.usdtAmount} USDT</p>
+                            <p className="mt-4 text-2xl font-bold text-white">{item.usdtAmount} USDT</p>
 
                             <p className="text-xl text-zinc-400"> Price: {
                               Number(item.krwAmount).toLocaleString('en-US', {
@@ -914,6 +980,22 @@ export default function SellUsdt({ params }: { params: { orderId: string } }) {
                               </div>
                             )}
                               
+
+                            {item.status === 'paymentConfirmed' && (
+
+                              <div className="w-full mt-2 mb-2 flex flex-col items-center ">
+                                <Image
+                                  src='/confirmed.png'
+                                  alt='confirmed'
+                                  width={200}
+                                  height={200}
+                                />
+
+
+
+                              </div>
+
+                            )}
 
 
 
