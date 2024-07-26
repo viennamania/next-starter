@@ -724,7 +724,7 @@ export default function SendUsdt() {
                     disabled={sending}
                     type="text"
                     placeholder="Enter wallet address"
-                    className="w-full p-2 border border-gray-300 rounded text-black text-sm xl:text-2xl font-semibold"
+                    className="w-full p-2 border border-gray-300 rounded text-white bg-black text-sm xl:text-2xl font-semibold"
                     value={recipient.walletAddress}
                     onChange={(e) => setRecipient({
                       ...recipient,
@@ -761,9 +761,16 @@ export default function SendUsdt() {
                     <>
 
                     {recipient?.walletAddress && (
-                    <div className="text-red-500">
-                      Warnning: This address is not white listed
-                    </div>
+                      <div className='flex flex-row gap-2 items-center justify-center'>
+                        {/* dot icon */}
+                        <div className="w-4 h-4 bg-green-500 rounded-full mr-2"></div>
+
+                        <div className="text-red-500">
+                          This address is not white listed. <br />
+                          If you are sure, please click the send button.
+                        </div>
+                      </div>
+
                     )}
 
                     </>

@@ -484,7 +484,7 @@ const P2PTable = () => {
                         }</p>
                         
                         <div className="mt-4 flex flex-row items-center gap-2">
-                          <p className="text-lg text-blue-500 font-bold">
+                          <p className="text-xl text-blue-500 font-bold ">
                             <input 
                               type="number"
                               className=" w-28 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 "
@@ -516,10 +516,11 @@ const P2PTable = () => {
                               } }
 
 
-                            /> USDT
+                            />
+                            <span className="ml-1 text-sm">USDT</span>
                           </p>
 
-                          <p className=" text-lg text-black font-bold">
+                          <p className=" text-xl text-zinc-400 font-bold">
                             = {
                             Number(defaultKrWAmount).toLocaleString('en-US', {
                               style: 'currency',
@@ -584,26 +585,29 @@ const P2PTable = () => {
                           </div>
 
                           <div className="flex flex-col gap-2">
-                            <input 
-                              disabled
-                              type="number"
-                              className=" w-36  px-3 py-2 text-white text-xl font-bold border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 "
-                              value={krwAmount}
-                              onChange={(e) => {
-                                // check number
-                                e.target.value = e.target.value.replace(/[^0-9.]/g, '');
+                            <div className="flex flex-row items-center gap-2"> 
+  
+                              <input 
+                                disabled
+                                type="number"
+                                className=" w-36  px-3 py-2 text-black bg-white text-xl font-bold border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 "
+                                value={krwAmount}
+                                onChange={(e) => {
+                                  // check number
+                                  e.target.value = e.target.value.replace(/[^0-9.]/g, '');
 
-                                if (e.target.value === '') {
-                                  setKrwAmount(0);
-                                  return;
-                                }
+                                  if (e.target.value === '') {
+                                    setKrwAmount(0);
+                                    return;
+                                  }
 
-                                parseFloat(e.target.value) < 0 ? setKrwAmount(0) : setKrwAmount(parseFloat(e.target.value));
+                                  parseFloat(e.target.value) < 0 ? setKrwAmount(0) : setKrwAmount(parseFloat(e.target.value));
 
-                                parseFloat(e.target.value) > 1000 ? setKrwAmount(1000) : setKrwAmount(parseFloat(e.target.value));
+                                  parseFloat(e.target.value) > 1000 ? setKrwAmount(1000) : setKrwAmount(parseFloat(e.target.value));
 
-                              } }
-                            />
+                                } }
+                              />
+                            </div>
 
                             {krwAmount > 0 && (
                               <div className="text-xl text-zinc-400">
