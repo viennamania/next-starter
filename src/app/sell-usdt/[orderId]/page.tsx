@@ -266,7 +266,7 @@ export default function SellUsdt({ params }: { params: { orderId: string } }) {
           fetchSellOrders();
         }, 10000);
   
-    }, [orderId]
+    }, [orderId] );
 
 
 

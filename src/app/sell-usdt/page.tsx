@@ -519,7 +519,7 @@ const P2PTable = () => {
                             /> USDT
                           </p>
 
-                          <p className=" text-sm text-zinc-400">
+                          <p className=" text-lg text-black font-bold">
                             = {
                             Number(defaultKrWAmount).toLocaleString('en-US', {
                               style: 'currency',
