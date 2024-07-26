@@ -89,32 +89,9 @@ export default function SendUsdt() {
 
 
   const smartAccount = useActiveAccount();
-
-
-
-  console.log("smartAccount", smartAccount);
-
-  
-
-
-
-  // get the active wallet
-  //const activeWallet = useActiveWallet();
-
-
-  //console.log("activeWallet", activeWallet);
-
-  //console.log("activeWallet", activeWallet);
-
-
-  // get wallet address
-
-  //const address = activeWallet?.getAccount()?.address || "";
   
   const address = smartAccount?.address || "";
 
-
-  console.log('address', address);
 
 
 

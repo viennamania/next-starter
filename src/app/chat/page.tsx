@@ -3,12 +3,22 @@
 import { Session, Chatbox } from "@talkjs/react";
 
 
+import dynamic from "next/dynamic";
+
+import '@sendbird/uikit-react/dist/index.css';
+
 import {
 
   useActiveWallet,
   
 } from "thirdweb/react";
 
+
+
+const DynamicAppWithNoSSR = dynamic(() => import("../../components/Chat"), {
+  ssr: false,
+  loading: () => <p>...</p>
+});
 
 
 
@@ -41,7 +51,7 @@ export default function Chat() {
 
   return (
 
-    <main className="p-4 pb-10 min-h-[100vh] flex items-center justify-center container max-w-screen-lg mx-auto">
+    <main className="p-4 pb-10 min-h-[100vh] flex items-center justify-center mx-auto">
 
 
 
@@ -57,7 +67,13 @@ export default function Chat() {
 
 
 
-            {true && (
+          <DynamicAppWithNoSSR />
+
+
+
+
+
+            {/*true && (
 
 
                 <Session
@@ -76,7 +92,7 @@ export default function Chat() {
 
 
 
-            )}
+            )*/}
 
         </div>
 
