@@ -222,6 +222,18 @@ const P2PTable = () => {
 
 
     
+
+
+    /* agreement for trade */
+    const [agreementForTrade, setAgreementForTrade] = useState([] as boolean[]);
+    useEffect(() => {
+        setAgreementForTrade (
+            sellOrders.map((item, idx) => {
+                return false;
+            })
+        );
+    } , [sellOrders]);
+    
     
     //const [acceptingSellOrder, setAcceptingSellOrder] = useState(false);
 
@@ -309,15 +321,17 @@ const P2PTable = () => {
     }
 
 
-    /* agreement for trade */
-    const [agreementForTrade, setAgreementForTrade] = useState([] as boolean[]);
-    useEffect(() => {
-        setAgreementForTrade (
-            sellOrders.map((item, idx) => {
-                return false;
-            })
-        );
-    } , [sellOrders]);
+
+  // agreement for cancel trade
+  const [agreementForCancelTrade, setAgreementForCancelTrade] = useState([] as boolean[]);
+  useEffect(() => {
+    setAgreementForCancelTrade(
+      sellOrders.map(() => false)
+    );
+  } , [sellOrders]);
+
+
+
 
 
     // cancel sell order state
@@ -330,9 +344,13 @@ const P2PTable = () => {
 
     const cancelTrade = async (orderId: string, index: number) => {
 
+
+
       if (cancellings[index]) {
         return;
       }
+
+
 
       setCancellings(cancellings.map((item, i) => i === index ? true : item));
 
@@ -830,50 +848,72 @@ const P2PTable = () => {
 
                                   {item.buyer.walletAddress === address && (
 
-                                    <div className="flex flex-row items-center gap-2">
+                                    <div className="flex flex-col items-center justify-center gap-2">
 
 
+                                      <div className="flex flex-row items-center gap-2">
+                                        <input
+                                          type="checkbox"
+                                          checked={agreementForCancelTrade[index]}
+                                          onChange={(e) => {
+                                            setAgreementForCancelTrade(
+                                              sellOrders.map((item, idx) => {
+                                                if (idx === index) {
+                                                  return e.target.checked;
+                                                } else {
+                                                  return false;
+                                                }
+                                              })
+                                            );
+                                          }}
+                                        />
+                                        <label className="text-sm text-zinc-400">I agree to cancel the trade</label>
+                                      </div>
 
 
-                                      <button
-                                        disabled={cancellings[index]}
-                                        className={`text-sm bg-red-500 text-white px-2 py-1 rounded-md ${cancellings[index] ? 'bg-gray-500' : ''}`}
-                                        onClick={() => {
-                                          // api call
-                                          // cancelSellOrder
+                                      <div className="flex flex-row items-center gap-2">
 
-                                          cancelTrade(item._id, index);
+                                        <button
+                                          disabled={cancellings[index] || !agreementForCancelTrade[index]}
+                                          className={`text-sm bg-red-500 text-white px-2 py-1 rounded-md ${cancellings[index] || !agreementForCancelTrade[index] ? 'opacity-50 cursor-not-allowed' : 'hover:bg-red-600'}`}
+                                          onClick={() => {
+                                            // api call
+                                            // cancelSellOrder
 
-                                        }}
-                                      >
+                                            cancelTrade(item._id, index);
 
-                                        <div className="flex flex-row items-center gap-2">
-                                          {cancellings[index] ? (
-                                            <div className="
-                                              w-4 h-4
-                                              border-2 border-zinc-800
-                                              rounded-full
-                                              animate-spin
-                                            ">
-                                              <Image
-                                                src="/loading.png"
-                                                alt="loading"
-                                                width={16}
-                                                height={16}
-                                              />
-                                            </div>
-                                          ) : (
-                                            <div className="w-4 h-4 bg-white text-black rounded-full flex items-center justify-center
-                                            ">X</div>
-                                          )}
-                                          Cancel Trade (TID: {item.tradeId})
-                                        </div>
-                                          
-                                      
-                                      </button>
+                                          }}
+                                        >
+
+                                          <div className="flex flex-row items-center gap-2">
+                                            {cancellings[index] ? (
+                                              <div className="
+                                                w-4 h-4
+                                                border-2 border-zinc-800
+                                                rounded-full
+                                                animate-spin
+                                              ">
+                                                <Image
+                                                  src="/loading.png"
+                                                  alt="loading"
+                                                  width={16}
+                                                  height={16}
+                                                />
+                                              </div>
+                                            ) : (
+                                              <div className="w-4 h-4 bg-white text-black rounded-full flex items-center justify-center
+                                              ">X</div>
+                                            )}
+                                            Cancel Trade
+                                          </div>
+                                            
+                                        
+                                        </button>
+                                      </div>
+
                                     </div>
 
-                                    )}
+                                  )}
 
 
                                 </div>
