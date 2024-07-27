@@ -308,6 +308,76 @@ const P2PTable = () => {
     }
 
 
+    /* agreement for trade */
+    const [agreementForTrade, setAgreementForTrade] = useState([] as boolean[]);
+    useEffect(() => {
+        setAgreementForTrade (
+            sellOrders.map((item, idx) => {
+                return false;
+            })
+        );
+    } , [sellOrders]);
+
+
+    // cancel sell order state
+    const [cancellings, setCancellings] = useState([] as boolean[]);
+    useEffect(() => {
+      setCancellings(sellOrders.map(() => false));
+    }, [sellOrders]);
+
+
+
+    const cancelTrade = async (orderId: string, index: number) => {
+
+      if (cancellings[index]) {
+        return;
+      }
+
+      setCancellings(cancellings.map((item, i) => i === index ? true : item));
+
+      const response = await fetch('/api/order/cancelTradeByBuyer', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          orderId: orderId,
+          walletAddress: address
+        })
+      });
+
+      const data = await response.json();
+
+      ///console.log('data', data);
+
+      if (data.result) {
+        toast.success('Order has been cancelled');
+
+        await fetch('/api/order/getAllSellOrdersForBuyer', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+          })
+        }).then(async (response) => {
+          const data = await response.json();
+          //console.log('data', data);
+          if (data.result) {
+            setSellOrders(data.result.orders);
+          }
+        });
+
+      } else {
+        toast.error('Order has been failed');
+      }
+
+      setCancellings(cancellings.map((item, i) => i === index ? false : item));
+
+    }
+
+
+
 
     return (
 
@@ -445,7 +515,7 @@ const P2PTable = () => {
 
                         <article
                             //key={index}
-                            className={` w-96 xl:w-full h-full
+                            className={` w-96 xl:w-full h-full relative mb-10
                               ${item.walletAddress === address ? 'border-green-500' : 'border-gray-200'}
 
                               ${item.status === 'accepted' || item.status === 'paymentRequested' ? 'border-red-600' : 'border-gray-200'}
@@ -671,19 +741,77 @@ const P2PTable = () => {
 
                             {/* waiting for escrow */}
                             {item.status === 'accepted' && (
-                                <div className="mt-4 flex flex-row gap-2 items-center justify-start">
 
+
+
+                                <div className="mt-4 flex flex-col gap-2 items-center justify-start">
+
+
+                                  <div className="flex flex-row items-center gap-2">
                                   {/* rotate loading icon */}
-                                
-                                  <Image
-                                    src="/loading.png"
-                                    alt="Escrow"
-                                    width={32}
-                                    height={32}
-                                    className="animate-spin"
-                                  />
+                                  
+                                    <Image
+                                      src="/loading.png"
+                                      alt="Escrow"
+                                      width={32}
+                                      height={32}
+                                      className="animate-spin"
+                                    />
 
-                                  <div>Waiting for seller to deposit {item.usdtAmount} USDT to escrow...</div>
+                                    <div>Waiting for seller to deposit {item.usdtAmount} USDT to escrow...</div>
+                                  </div>
+
+
+
+
+
+                                  {item.buyer.walletAddress === address && (
+
+                                    <div className="flex flex-row items-center gap-2">
+
+
+
+
+                                      <button
+                                        disabled={cancellings[index]}
+                                        className={`text-sm bg-red-500 text-white px-2 py-1 rounded-md ${cancellings[index] ? 'bg-gray-500' : ''}`}
+                                        onClick={() => {
+                                          // api call
+                                          // cancelSellOrder
+
+                                          cancelTrade(item._id, index);
+
+                                        }}
+                                      >
+
+                                        <div className="flex flex-row items-center gap-2">
+                                          {cancellings[index] ? (
+                                            <div className="
+                                              w-4 h-4
+                                              border-2 border-zinc-800
+                                              rounded-full
+                                              animate-spin
+                                            ">
+                                              <Image
+                                                src="/loading.png"
+                                                alt="loading"
+                                                width={16}
+                                                height={16}
+                                              />
+                                            </div>
+                                          ) : (
+                                            <div className="w-4 h-4 bg-white text-black rounded-full flex items-center justify-center
+                                            ">X</div>
+                                          )}
+                                          Cancel Trade (TID: {item.tradeId})
+                                        </div>
+                                          
+                                      
+                                      </button>
+                                    </div>
+
+                                    )}
+
 
                                 </div>
                             )}
@@ -734,8 +862,13 @@ const P2PTable = () => {
 
                                   </div>
 
+
                                 </div>
                             )}
+
+
+
+                           
 
 
 
@@ -788,29 +921,52 @@ const P2PTable = () => {
                                        </>
                                       ) : (
 
+                                        <div className="flex flex-col items-center justify-center">
 
-                                        
-                                        <button
-                                          disabled={!user}
-                                          className="text-lg bg-green-500 text-white px-4 py-2 rounded-md mt-4"
-                                          onClick={() => {
-                                              console.log('Buy USDT');
+                                          {/* agreement for trade */}
+                                          <div className="flex flex-row items-center space-x-2">
+                                            <input
+                                              type="checkbox"
+                                              checked={agreementForTrade[index]}
+                                              onChange={(e) => {
+                                                  setAgreementForTrade(
+                                                      sellOrders.map((item, idx) => {
+                                                          if (idx === index) {
+                                                              return e.target.checked;
+                                                          } else {
+                                                              return false;
+                                                          }
+                                                      })
+                                                  );
+                                              }}
+                                            />
+                                            <label className="text-sm text-zinc-400">I agree to the terms of trade</label>
+                                          </div>
 
-                                              // open trade detail
-                                              // open modal of trade detail
+                                          <button
+                                            disabled={!user || !agreementForTrade[index]}
+                                            className={`text-lg bg-green-500 text-white px-4 py-2 rounded-md mt-4
+                                              ${!user || !agreementForTrade[index] ? 'opacity-50 cursor-not-allowed' : 'hover:bg-green-600'}
+                                              `}
+                                            onClick={() => {
+                                                console.log('Buy USDT');
+
+                                                // open trade detail
+                                                // open modal of trade detail
 
 
 
-                                              //openModal();
+                                                //openModal();
 
 
-                                              acceoptSellOrder(index, item._id);
-                                        
+                                                acceoptSellOrder(index, item._id);
+                                          
 
-                                          }}
-                                        >
-                                          Buy USDT
-                                        </button>
+                                            }}
+                                          >
+                                            Buy {item.usdtAmount} USDT
+                                          </button>
+                                        </div>
 
                                       )}
 
@@ -829,7 +985,27 @@ const P2PTable = () => {
                             )}
 
 
+
                         </article>
+
+
+
+
+                        {/* status */}
+
+                        <div className="absolute bottom-4 right-4 flex flex-row items-start justify-start">
+                          <div className="text-xs text-zinc-400">
+                            {item.status === 'ordered' ? 'Order opened'
+                            : item.status === 'accepted' ? 'Trade started'
+                            : item.status === 'paymentRequested' ? 'Payment requested'
+                            : item.status === 'cancelled' ? 'Trade cancelled'
+                            : item.status === 'completed' ? 'Trade completed'
+                            : 'Unknown'}
+                          </div>
+                        </div>
+
+
+
 
 
 

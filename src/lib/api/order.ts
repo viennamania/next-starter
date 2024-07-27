@@ -315,6 +315,58 @@ export async function deleteSellOrder(
 }
 
 
+// cancel sell order by orderId from buyer
+export async function cancelTradeByBuyer(
+
+  {
+    orderId,
+    walletAddress,
+  }: {
+    orderId: string;
+    walletAddress: string;
+  
+  }
+
+) {
+
+  const client = await clientPromise;
+  const collection = client.db('vienna').collection('orders');
+
+  // check orderId is valid ObjectId
+  if (!ObjectId.isValid(orderId)) {
+    return false;
+  }
+
+  // check walletAddress is valid
+
+  if (!walletAddress) {
+    return false;
+  }
+
+  // check status is 'accepted'
+
+  // update status to 'cancelled'
+
+  const result = await collection.updateOne(
+    { _id: new ObjectId(orderId), 'buyer.walletAddress': walletAddress, status: 'accepted' },
+    { $set: { status: 'cancelled' } }
+  );
+
+  const updated = await collection.findOne<UserProps>(
+    { _id: new ObjectId(orderId) }
+  );
+
+  if (result) {
+    return {
+      updated,
+    }
+  } else {
+    return null;
+  }
+
+
+}
+
 
 
 

@@ -15,7 +15,8 @@ export async function POST(request: NextRequest) {
 
   const { orderId, walletAddress: walletAddress } = body;
 
-  console.log("orderId", orderId);
+  //console.log("orderId", orderId);
+  //console.log("walletAddress", walletAddress);
   
 
   const result = await deleteSellOrder({

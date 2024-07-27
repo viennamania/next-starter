@@ -369,7 +369,6 @@ const P2PTable = () => {
             'Content-Type': 'application/json'
           },
           body: JSON.stringify({
-            walletAddress: address
           })
         }).then(async (response) => {
           const data = await response.json();
@@ -425,7 +424,7 @@ const P2PTable = () => {
       ///console.log('data', data);
 
       if (data.result) {
-        toast.success('Order has been canceled');
+        toast.success('Order has been cancelled');
 
         await fetch('/api/order/getAllSellOrders', {
           method: 'POST',
@@ -433,7 +432,6 @@ const P2PTable = () => {
             'Content-Type': 'application/json'
           },
           body: JSON.stringify({
-            walletAddress: address
           })
         }).then(async (response) => {
           const data = await response.json();
@@ -905,7 +903,7 @@ const P2PTable = () => {
                             After the buyer accepts the order, you must deposit the USDT to escrow within 1 hour.
                             If you do not deposit the USDT to escrow within 1 hour, the order will be expired.
                             If you want to cancel the order, you must contact the buyer and request to cancel the order.
-                            If the buyer agrees to cancel the order, the order will be canceled.
+                            If the buyer agrees to cancel the order, the order will be cancelled.
                           "
                         ></textarea>
                         */}
@@ -936,7 +934,7 @@ const P2PTable = () => {
 
                           <div className="h-2 w-2 bg-zinc-400 rounded-full inline-block mr-2"></div>
                           <span>If you want to cancel the order, you must contact the buyer and request to cancel the order.
-                            If the buyer agrees to cancel the order, the order will be canceled.
+                            If the buyer agrees to cancel the order, the order will be cancelled.
                           </span>
                         </div>
                         */}
