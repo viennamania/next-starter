@@ -350,7 +350,7 @@ export default function SettingsPage() {
 
                                 <div className='flex flex-col items-start gap-2'>
                                     <div className='text-sm text-red-500'>
-                                        This wallet address is a Polygon Matic address.
+                                        The address of this wallet is USDT Tether compatible on Polygon blockchain only.
                                         You should never deposit any other tokens (e.g. Ethereum) to this address.
                                     </div>
                                 </div>

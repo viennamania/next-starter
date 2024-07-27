@@ -565,7 +565,7 @@ export default function SettingsPage() {
                         )}
 
 
-
+                        {/*
                         {userCode && (
 
                             <div className='flex flex-row gap-2 items-center justify-between border border-gray-300 p-4 rounded-lg'>
@@ -602,6 +602,7 @@ export default function SettingsPage() {
                             </div>
 
                         )}
+                        */}
 
 
 
