@@ -921,13 +921,39 @@ const P2PTable = () => {
                     </article>
 
 
+
+
+
                     {sellOrders.map((item, index) => (
+
+
+                      <div
+                        key={index}
+                        className="relative flex flex-col items-center justify-center"
+                      >
+
+
+                        {item.status === 'ordered' && (new Date().getTime() - new Date(item.createdAt).getTime() > 1000 * 60 * 60 * 24) && (
+                          <div className="absolute inset-0 flex justify-center items-center z-10
+                            bg-black bg-opacity-50
+                          ">
+                            <Image
+                              src="/icon-expired.png"
+                              alt="Expired"
+                              width={100}
+                              height={100}
+                              className="opacity-50"
+                            />
+                          </div>
+                        )}
+
+
 
                         <article
                             key={index}
                             className={`
 
-                              w-96 xl:w-full
+                              w-96 xl:w-full h-full
 
                               bg-black p-4 rounded-md border
                               
@@ -946,21 +972,14 @@ const P2PTable = () => {
                                 <div className="flex flex-row items-center gap-2">
                                   {/* new order icon */}
                                   {
-                                    (new Date().getTime() - new Date(item.createdAt).getTime()) / 1000 / 60 / 60 < 24 ? (
+                                    (new Date().getTime() - new Date(item.createdAt).getTime()) / 1000 / 60 / 60 < 24 && (
                                       <Image
                                         src="/icon-new.png"
                                         alt="New Order"
                                         width={32}
                                         height={32}
                                       />
-                                    ) : (
-                                      <Image
-                                        src="/icon-expired.png"
-                                        alt="Expired Order"
-                                        width={52}
-                                        height={52}
-                                      />
-                                    )
+                                    ) 
                                   } 
 
 
@@ -980,20 +999,49 @@ const P2PTable = () => {
                                         height={32}
                                       />
                                   )}
-                                  {/* Expired in 24 hours */}
-                                  { (new Date().getTime() - new Date(item.createdAt).getTime()) / 1000 / 60 / 60 < 24 && (
-                                    <p className=" text-sm text-zinc-400">
-                                      Expired in {24 - Math.floor((new Date().getTime() - new Date(item.createdAt).getTime()) / 1000 / 60 / 60)} hours
-                                    </p>
-                                  )}
+
+                                  <p className="text-sm text-zinc-400">
+                                    Opened {new Date().getTime() - new Date(item.createdAt).getTime() < 1000 * 60 * 60 ? (
+                                      ' ' + Math.floor((new Date().getTime() - new Date(item.createdAt).getTime()) / 1000 / 60) + ' minutes ago'
+                                    ) : (
+                                      ' ' + Math.floor((new Date().getTime() - new Date(item.createdAt).getTime()) / 1000 / 60 / 60) + ' hours ago'
+                                    )}
+                                  </p>
 
                                 </div>
 
-                                <p className=" text-sm text-zinc-400">
-                                  Order opened at {
-                                    new Date(item.createdAt).toLocaleDateString() + ' ' + new Date(item.createdAt).toLocaleTimeString()
-                                  }
-                                </p>
+                                {24 - Math.floor((new Date().getTime() - new Date(item.createdAt).getTime()) / 1000 / 60 / 60) > 0 ? (
+
+                                  <div className="mt-2 flex flex-row items-center space-x-2">
+                                    <Image
+                                      src="/icon-timer.webp"
+                                      alt="Timer"
+                                      width={28}
+                                      height={28}
+                                    />
+                                    <p className="text-sm text-zinc-400">Expires in {
+
+                                      24 - Math.floor((new Date().getTime() - new Date(item.createdAt).getTime()) / 1000 / 60 / 60)
+
+                                    } hours {
+                                      60 - Math.floor((new Date().getTime() - new Date(item.createdAt).getTime()) / 1000 / 60) % 60
+                                    } minutes
+
+                                    
+                                    </p>
+                                  </div>
+
+                                  ) : (
+                                  <div className="mt-2 flex flex-row items-center space-x-2">
+                                    <Image
+                                      src="/icon-timer.webp"
+                                      alt="Expired"
+                                      width={28}
+                                      height={28}
+                                    />
+                                    <p className="text-sm text-zinc-400">Expired</p>
+                                  </div>
+                                )}
 
                               </div>
                             )}
@@ -1006,21 +1054,14 @@ const P2PTable = () => {
 
 
 
-                                {item.privateSale ? (
+                                {item.privateSale && (
                                     <Image
                                       src="/icon-private-sale.png"
                                       alt="Private Sale"
                                       width={32}
                                       height={32}
                                     />
-                                ) : (
-                                    <Image
-                                      src="/icon-public-sale.png"
-                                      alt="Public Sale"
-                                      width={32}
-                                      height={32}
-                                    />
-                                )}
+                                ) }
 
                                 { (item.status === 'accepted' || item.status === 'paymentRequested') && (
                                   <Image
@@ -1077,35 +1118,33 @@ const P2PTable = () => {
                               </p>
                             )}
 
-                            <p className="mt-4 text-2xl font-bold text-white">{item.usdtAmount} USDT</p>
+                            <div className="mt-4 flex flex-row items-between space-x-2">
 
-                            <p className="text-xl text-zinc-400"> Price: {
-                              Number(item.krwAmount).toLocaleString('en-US', {
-                                style: 'currency',
-                                currency: 'KRW'
-                              })
-                            }</p>
+                              <div className="flex flex-col items-start">
+                                <p className="text-2xl font-semibold text-white">{item.usdtAmount} USDT</p>
 
-                            
-                            <p className="text-sm text-zinc-400">Rate: 1 USDT = {
+                                <p className="text-lg text-zinc-400">
+                                  Price: {
+                                    // currency
+                                  
+                                    Number(item.krwAmount).toLocaleString('ko-KR', {
+                                      style: 'currency',
+                                      currency: 'KRW',
+                                    })
 
-                                // currency format
-                                Number((item.krwAmount / item.usdtAmount).toFixed(2)).toLocaleString('en-US', {
-                                  style: 'currency',
-                                  currency: 'KRW'
-                                })
+                                  }
+                                </p>
+                              </div>
 
+                              <div className="flex flex-col items-start">
+                                <p className="text-lg font-semibold text-white">Rate: {
 
+                                  Number(item.krwAmount / item.usdtAmount).toFixed(2)
 
-                              }</p>
-                            
+                                }</p>
+                              </div>
 
-                            {/*
-                            <p className="mt-4 text-sm font-semibold text-zinc-400">
-                              Status: {item.status?.toUpperCase()}
-                            </p>
-                            */}
-
+                            </div>
 
 
 
@@ -1240,14 +1279,10 @@ const P2PTable = () => {
 
                                 </div>
                             )}
-
-
-
-
-
-
-
                         </article>
+
+
+                      </div>
 
                     ))}
 

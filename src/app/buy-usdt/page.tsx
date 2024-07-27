@@ -448,8 +448,6 @@ const P2PTable = () => {
 
                               ${item.status === 'accepted' || item.status === 'paymentRequested' ? 'border-red-600' : 'border-gray-200'}
 
-                         
-                           
                               p-4 rounded-md border bg-black bg-opacity-50
                           `}
                         >
@@ -484,13 +482,11 @@ const P2PTable = () => {
 
 
                                 <p className="text-sm text-zinc-400">
-
                                   Opened {new Date().getTime() - new Date(item.createdAt).getTime() < 1000 * 60 * 60 ? (
                                     ' ' + Math.floor((new Date().getTime() - new Date(item.createdAt).getTime()) / 1000 / 60) + ' minutes ago'
                                   ) : (
                                     ' ' + Math.floor((new Date().getTime() - new Date(item.createdAt).getTime()) / 1000 / 60 / 60) + ' hours ago'
                                   )}
-
                                 </p>
 
                               </div>
