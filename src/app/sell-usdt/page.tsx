@@ -1209,17 +1209,11 @@ const P2PTable = () => {
 
 
                             {item.status === 'cancelled' && (
-                              <div className="flex flex-row items-center space-x-2">
-                                <Image
-                                  src="/icon-cancelled.png"
-                                  alt="Cancelled"
-                                  width={32}
-                                  height={32}
-                                />
-                                <p className="text-xl text-red-500 font-semibold">
+
+                                <p className="text-sm text-zinc-400"> 
                                   Cancelled at {new Date(item?.cancelledAt).toLocaleString()}
                                 </p>
-                              </div>
+                    
                             )}
 
 
@@ -1372,9 +1366,6 @@ const P2PTable = () => {
                             {/* waiting for escrow */}
                             {item.status === 'accepted' && (
                                 <div className="mt-4 flex flex-row gap-2 items-center justify-start">
-
-                                  {/* rotate loading icon */}
-                                
                                   <Image
                                     src="/loading.png"
                                     alt="Escrow"
@@ -1383,10 +1374,24 @@ const P2PTable = () => {
                                     className="animate-spin"
                                   />
 
-                                  <div>Waiting for seller to deposit {item.usdtAmount} USDT to escrow...</div>
+                                  <div className="flex flex-col gap-2 items-start">
+                                    <span>Waiting for seller to deposit {item.usdtAmount} USDT to escrow...</span>
 
+                                    <span className="text-sm text-zinc-400">
+                                      Trade will be cancelled in {
+
+                                        (1 - Math.floor((new Date().getTime() - new Date(item.acceptedAt).getTime()) / 1000 / 60 / 60) - 1) > 0
+                                        ? (1 - Math.floor((new Date().getTime() - new Date(item.acceptedAt).getTime()) / 1000 / 60 / 60) - 1) + ' hours'
+                                        : (60 - Math.floor((new Date().getTime() - new Date(item.acceptedAt).getTime()) / 1000 / 60) % 60) + ' minutes'
+
+                                      } If the seller does not deposit the USDT to escrow.
+
+                                    </span>
+                                  </div>
                                 </div>
                             )}
+
+
 
                             {/* waiting for payment */}
                             {item.status === 'paymentRequested' && (

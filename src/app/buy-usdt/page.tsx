@@ -659,68 +659,21 @@ const P2PTable = () => {
 
 
 
-
-
                             {item.acceptedAt && (
-                              <div className="flex flex-col items-start">
-                                <p className="mb-4 text-sm text-zinc-400">
-                                  Trade started at {new Date(item.acceptedAt).toLocaleDateString() + ' ' + new Date(item.acceptedAt).toLocaleTimeString()}
-                                </p>
-                                
-                                
-                                {1 - Math.floor((new Date().getTime() - new Date(item.acceptedAt).getTime()) / 1000 / 60 / 60) > 0 ? (
-
-                                  <div className="mt-2 flex flex-row items-center space-x-2">
-                                    <Image
-                                      src="/icon-timer.webp"
-                                      alt="Timer"
-                                      width={28}
-                                      height={28}
-                                    />
-                                    <p className="text-sm text-zinc-400">Cancelled in {
-                                      
-                                      (1 - Math.floor((new Date().getTime() - new Date(item.acceptedAt).getTime()) / 1000 / 60 / 60) - 1) > 0 &&
-                                      (1 - Math.floor((new Date().getTime() - new Date(item.acceptedAt).getTime()) / 1000 / 60 / 60) - 1) + ' hours '
-
-                                    }{
-                                      60 - Math.floor((new Date().getTime() - new Date(item.acceptedAt).getTime()) / 1000 / 60) % 60
-                                    } minutes
-
-                                    
-                                    </p>
-                                  </div>
-
-                                  ) : (
-                                    
-                                  <div className="mt-2 flex flex-row items-center space-x-2">
-                                    {/*
-                                    <Image
-                                      src="/icon-timer.webp"
-                                      alt="Expired"
-                                      width={28}
-                                      height={28}
-                                    />
-                                    
-                                    <p className="text-sm text-zinc-400">Cancelled</p>
-                                    */}
-                                  </div>
-                                )}
-
-                              </div>
+                              <p className="mb-2 text-sm text-zinc-400">
+                                Trade started at {new Date(item.acceptedAt).toLocaleDateString() + ' ' + new Date(item.acceptedAt).toLocaleTimeString()}
+                              </p>
                             )}
 
+
+
+
                             {item.status === 'cancelled' && (
-                              <div className="flex flex-row items-center space-x-2">
-                                <Image
-                                  src="/icon-cancelled.png"
-                                  alt="Cancelled"
-                                  width={32}
-                                  height={32}
-                                />
-                                <p className="text-xl text-red-500 font-semibold">
+
+                                <p className="text-sm text-zinc-400">
                                   Cancelled at {new Date(item?.cancelledAt).toLocaleString()}
                                 </p>
-                              </div>
+
                             )}
 
 
@@ -873,98 +826,111 @@ const P2PTable = () => {
 
 
 
-                                <div className="mt-4 flex flex-col gap-2 items-center justify-start">
+                              <div className="mt-4 flex flex-col gap-2 items-center justify-start">
 
 
-                                  <div className="flex flex-row items-center gap-2">
-                                  {/* rotate loading icon */}
                                   
-                                    <Image
-                                      src="/loading.png"
-                                      alt="Escrow"
-                                      width={32}
-                                      height={32}
-                                      className="animate-spin"
-                                    />
+                                  
+                                <div className="mt-4 flex flex-row gap-2 items-center justify-start">
+                                  <Image
+                                    src="/loading.png"
+                                    alt="Escrow"
+                                    width={32}
+                                    height={32}
+                                    className="animate-spin"
+                                  />
 
-                                    <div>Waiting for seller to deposit {item.usdtAmount} USDT to escrow...</div>
+                                  <div className="flex flex-col gap-2 items-start">
+                                    <span>Waiting for seller to deposit {item.usdtAmount} USDT to escrow...</span>
+
+                                    <span className="text-sm text-zinc-400">
+                                      Trade will be cancelled in {
+
+                                        (1 - Math.floor((new Date().getTime() - new Date(item.acceptedAt).getTime()) / 1000 / 60 / 60) - 1) > 0
+                                        ? (1 - Math.floor((new Date().getTime() - new Date(item.acceptedAt).getTime()) / 1000 / 60 / 60) - 1) + ' hours'
+                                        : (60 - Math.floor((new Date().getTime() - new Date(item.acceptedAt).getTime()) / 1000 / 60) % 60) + ' minutes'
+
+                                      } If the seller does not deposit the USDT to escrow.
+
+                                    </span>
                                   </div>
+                                </div>
 
 
 
 
 
-                                  {item.buyer.walletAddress === address && (
+                                {item.buyer.walletAddress === address && (
 
-                                    <div className="flex flex-col items-center justify-center gap-2">
-
-
-                                      <div className="flex flex-row items-center gap-2">
-                                        <input
-                                          type="checkbox"
-                                          checked={agreementForCancelTrade[index]}
-                                          onChange={(e) => {
-                                            setAgreementForCancelTrade(
-                                              sellOrders.map((item, idx) => {
-                                                if (idx === index) {
-                                                  return e.target.checked;
-                                                } else {
-                                                  return false;
-                                                }
-                                              })
-                                            );
-                                          }}
-                                        />
-                                        <label className="text-sm text-zinc-400">I agree to cancel the trade</label>
-                                      </div>
+                                  <div className="flex flex-col items-center justify-center gap-2">
 
 
-                                      <div className="flex flex-row items-center gap-2">
-
-                                        <button
-                                          disabled={cancellings[index] || !agreementForCancelTrade[index]}
-                                          className={`text-sm bg-red-500 text-white px-2 py-1 rounded-md ${cancellings[index] || !agreementForCancelTrade[index] ? 'opacity-50 cursor-not-allowed' : 'hover:bg-red-600'}`}
-                                          onClick={() => {
-                                            // api call
-                                            // cancelSellOrder
-
-                                            cancelTrade(item._id, index);
-
-                                          }}
-                                        >
-
-                                          <div className="flex flex-row items-center gap-2">
-                                            {cancellings[index] ? (
-                                              <div className="
-                                                w-4 h-4
-                                                border-2 border-zinc-800
-                                                rounded-full
-                                                animate-spin
-                                              ">
-                                                <Image
-                                                  src="/loading.png"
-                                                  alt="loading"
-                                                  width={16}
-                                                  height={16}
-                                                />
-                                              </div>
-                                            ) : (
-                                              <div className="w-4 h-4 bg-white text-black rounded-full flex items-center justify-center
-                                              ">X</div>
-                                            )}
-                                            Cancel Trade
-                                          </div>
-                                            
-                                        
-                                        </button>
-                                      </div>
-
+                                    <div className="flex flex-row items-center gap-2">
+                                      <input
+                                        type="checkbox"
+                                        checked={agreementForCancelTrade[index]}
+                                        onChange={(e) => {
+                                          setAgreementForCancelTrade(
+                                            sellOrders.map((item, idx) => {
+                                              if (idx === index) {
+                                                return e.target.checked;
+                                              } else {
+                                                return false;
+                                              }
+                                            })
+                                          );
+                                        }}
+                                      />
+                                      <label className="text-sm text-zinc-400">I agree to cancel the trade</label>
                                     </div>
 
-                                  )}
+
+                                    <div className="flex flex-row items-center gap-2">
+
+                                      <button
+                                        disabled={cancellings[index] || !agreementForCancelTrade[index]}
+                                        className={`text-sm bg-red-500 text-white px-2 py-1 rounded-md ${cancellings[index] || !agreementForCancelTrade[index] ? 'opacity-50 cursor-not-allowed' : 'hover:bg-red-600'}`}
+                                        onClick={() => {
+                                          // api call
+                                          // cancelSellOrder
+
+                                          cancelTrade(item._id, index);
+
+                                        }}
+                                      >
+
+                                        <div className="flex flex-row items-center gap-2">
+                                          {cancellings[index] ? (
+                                            <div className="
+                                              w-4 h-4
+                                              border-2 border-zinc-800
+                                              rounded-full
+                                              animate-spin
+                                            ">
+                                              <Image
+                                                src="/loading.png"
+                                                alt="loading"
+                                                width={16}
+                                                height={16}
+                                              />
+                                            </div>
+                                          ) : (
+                                            <div className="w-4 h-4 bg-white text-black rounded-full flex items-center justify-center
+                                            ">X</div>
+                                          )}
+                                          Cancel Trade
+                                        </div>
+                                          
+                                      
+                                      </button>
+                                    </div>
+
+                                  </div>
+
+                                )}
 
 
-                                </div>
+                              </div>
                             )}
 
                             {/* waiting for payment */}
