@@ -518,16 +518,14 @@ export default function Home() {
                             />
                         </button>
                     ) : (
-                      <>
-                      {/* loading rotating icon */}
-                        <Image
-                          src="/loading.png"
-                          alt="loading"
-                          width={20}
-                          height={20}
-                          className="animate-spin"
-                        />
-                      </>
+                      <Image
+                        src="/logo-polygon.png"
+                        alt="Polygon"
+                        width={20}
+                        height={20}
+                        className='animate-spin'
+                      />
+                  
                     )}
                       
                   </div>

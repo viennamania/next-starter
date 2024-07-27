@@ -310,11 +310,11 @@ export default function SettingsPage() {
                                     My Wallet
                                 </div>
                                 {/* button for polygon explorer */}
-                                {address && (
+                                {address ? (
                                     <button
                                         onClick={() => {
                                             window.open(`
-                                                https://polygonscan.com/token/0xc2132d05d31c914a87c6611c10748aeb04b58e8f?a=${address}
+                                                https://polygonscan.com/address/${address}
                                                 `, "_blank");
                                         }}
                                         className="p-2 bg-zinc-200 text-zinc-800 rounded"
@@ -326,6 +326,15 @@ export default function SettingsPage() {
                                             height={20}
                                         />
                                     </button>
+                                ) : (
+                                    <Image
+                                        src="/logo-polygon.png"
+                                        alt="Polygon"
+                                        width={20}
+                                        height={20}
+                                        className='animate-spin'
+                                    />
+
                                 )}
 
                             </div>
