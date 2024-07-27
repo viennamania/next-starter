@@ -18,7 +18,7 @@ export async function POST(request: NextRequest) {
 
 
   const result = await getAllUsers({
-    limit: 10,
+    limit: 100,
     page: 1,
   });
 

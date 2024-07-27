@@ -831,15 +831,34 @@ const P2PTable = () => {
 
 
                           
-                            <p className="mt-4 text-2xl font-bold text-white">{item.usdtAmount} USDT</p>
 
-                            {/*
-                            <p className="text-xl font-bold text-zinc-400">Rate: 1 USDT = {item.rate} KRW</p>
-                            */}
+                            <div className="mt-4 flex flex-row items-between space-x-2">
 
-                            <p className="mb-4 text-xl text-zinc-400"> Price: {
-                              item.krwAmount.toLocaleString('us-US', { style: 'currency', currency: 'KRW' } )
-                            }</p>
+                              <div className="flex flex-col items-start">
+                                <p className="text-2xl font-semibold text-white">{item.usdtAmount} USDT</p>
+
+                                <p className="text-lg text-zinc-400">
+                                  Price: {
+                                    // currency
+                                  
+                                    Number(item.krwAmount).toLocaleString('ko-KR', {
+                                      style: 'currency',
+                                      currency: 'KRW',
+                                    })
+
+                                  }
+                                </p>
+                              </div>
+
+                              <div className="flex flex-col items-start">
+                                <p className="text-lg font-semibold text-white">Rate: {
+
+                                  Number(item.krwAmount / item.usdtAmount).toFixed(2)
+
+                                }</p>
+                              </div>
+
+                            </div>
                           
      
 
