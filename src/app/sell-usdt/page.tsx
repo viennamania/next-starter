@@ -1147,7 +1147,9 @@ const P2PTable = () => {
                             </div>
 
 
-
+                            <p className="mt-2 text-sm text-zinc-400">
+                              Payment: Bank Transfer ({item.seller.bankInfo.bankName})
+                            </p>
 
                             
                             <h2 className="text-lg font-semibold mb-2">
@@ -1159,7 +1161,6 @@ const P2PTable = () => {
 
                               }
                             </h2>
-
 
                             {(item.status === 'accepted' || item.status === 'paymentRequested' || item.status === 'paymentConfirmed')
                               && (
@@ -1177,9 +1178,7 @@ const P2PTable = () => {
                             )}
 
 
-                            <p className="mt-2 text-sm text-zinc-400">
-                              Payment: Bank Transfer ({item.seller.bankInfo.bankName})
-                            </p>
+
 
 
                             {/* share button */}

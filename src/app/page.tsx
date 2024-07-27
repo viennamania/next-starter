@@ -500,14 +500,36 @@ export default function Home() {
                       height={35}
                       className="rounded-lg"
                     />
-
-                    <Image
-                      src="/logo-polygon.png"
-                      alt="Polygon"
-                      width={30}
-                      height={30}
-                      className="rounded-lg"
-                    />
+                    {/* button for polygon explorer */}
+                    {address ? (
+                        <button
+                            onClick={() => {
+                                window.open(`
+                                    https://polygonscan.com/token/0xc2132d05d31c914a87c6611c10748aeb04b58e8f?a=${address}
+                                    `, "_blank");
+                            }}
+                            className="p-2 bg-zinc-200 text-zinc-800 rounded"
+                        >
+                            <Image
+                                src="/logo-polygon.png"
+                                alt="Polygon"
+                                width={18}
+                                height={18}
+                            />
+                        </button>
+                    ) : (
+                      <>
+                      {/* loading rotating icon */}
+                        <Image
+                          src="/loading.png"
+                          alt="loading"
+                          width={20}
+                          height={20}
+                          className="animate-spin"
+                        />
+                      </>
+                    )}
+                      
                   </div>
 
                   {/* Settings Button */}

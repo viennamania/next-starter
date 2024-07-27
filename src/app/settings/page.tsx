@@ -304,12 +304,33 @@ export default function SettingsPage() {
 
                         {/* My Wallet */}
                         <div className='flex flex-col xl:flex-row gap-2 items-center justify-between border border-gray-300 p-4 rounded-lg'>
-                                
-                            <div className="bg-red-800 text-sm text-zinc-100 p-2 rounded">
-                                My Wallet
+
+                            <div className='flex flex-row items-center gap-2'>    
+                                <div className="bg-green-500 text-sm text-zinc-100 p-2 rounded">
+                                    My Wallet
+                                </div>
+                                {/* button for polygon explorer */}
+                                {address && (
+                                    <button
+                                        onClick={() => {
+                                            window.open(`
+                                                https://polygonscan.com/token/0xc2132d05d31c914a87c6611c10748aeb04b58e8f?a=${address}
+                                                `, "_blank");
+                                        }}
+                                        className="p-2 bg-zinc-200 text-zinc-800 rounded"
+                                    >
+                                        <Image
+                                            src="/logo-polygon.png"
+                                            alt="Polygon"
+                                            width={20}
+                                            height={20}
+                                        />
+                                    </button>
+                                )}
+
                             </div>
 
-                            <div className="p-2 bg-zinc-800 rounded text-zinc-100 text-xs font-semibold">
+                            <div className="p-2 bg-zinc-800 rounded text-zinc-100 text-xs xl:text-xl font-semibold">
                                 {address}
                             </div>
 
@@ -329,7 +350,7 @@ export default function SettingsPage() {
                         {/* My Phone Number */}
                         <div className='flex flex-col xl:flex-row gap-2 items-center justify-between border border-gray-300 p-4 rounded-lg'>
                                 
-                            <div className="bg-red-800 text-sm text-zinc-100 p-2 rounded">
+                            <div className="bg-green-500 text-sm text-zinc-100 p-2 rounded">
                                 My Phone Number
                             </div>
 
