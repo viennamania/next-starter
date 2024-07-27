@@ -234,6 +234,8 @@ export default function SettingsPage() {
     console.log("userCode", userCode);
 
 
+    const [agreementCopy, setAgreementCopy] = useState(false);
+
 
     return (
 
@@ -305,54 +307,92 @@ export default function SettingsPage() {
                         {/* My Wallet */}
                         <div className='flex flex-col xl:flex-row gap-2 items-center justify-between border border-gray-300 p-4 rounded-lg'>
 
-                            <div className='flex flex-row items-center gap-2'>    
-                                <div className="bg-green-500 text-sm text-zinc-100 p-2 rounded">
-                                    My Wallet
-                                </div>
-                                {/* button for polygon explorer */}
-                                {address ? (
-                                    <button
-                                        onClick={() => {
-                                            window.open(`
-                                                https://polygonscan.com/address/${address}
-                                                `, "_blank");
-                                        }}
-                                        className="p-2 bg-zinc-200 text-zinc-800 rounded"
-                                    >
+                            <div className='flex flex-col items-start gap-2'>
+
+                                <div className='flex flex-row items-center gap-2'>    
+                                    <div className="bg-green-500 text-sm text-zinc-100 p-2 rounded">
+                                        My Wallet Address
+                                    </div>
+                                    {/* button for polygon explorer */}
+                                    {address ? (
+                                        <button
+                                            onClick={() => {
+                                                window.open(`
+                                                    https://polygonscan.com/address/${address}
+                                                    `, "_blank");
+                                            }}
+                                            className="p-2 bg-zinc-200 text-zinc-800 rounded"
+                                        >
+                                            <Image
+                                                src="/logo-polygon.png"
+                                                alt="Polygon"
+                                                width={20}
+                                                height={20}
+                                            />
+                                        </button>
+                                    ) : (
                                         <Image
                                             src="/logo-polygon.png"
                                             alt="Polygon"
                                             width={20}
                                             height={20}
+                                            className='animate-spin'
                                         />
-                                    </button>
-                                ) : (
-                                    <Image
-                                        src="/logo-polygon.png"
-                                        alt="Polygon"
-                                        width={20}
-                                        height={20}
-                                        className='animate-spin'
+
+                                    )}
+
+                                </div>
+
+                                <div className="p-2 bg-zinc-800 rounded text-zinc-100 text-xs xl:text-xl font-semibold">
+                                    {address}
+                                </div>
+
+
+                                <div className='flex flex-col items-start gap-2'>
+                                    <div className='text-sm text-red-500'>
+                                        This wallet address is a Polygon Matic address.
+                                        You should never deposit any other tokens (e.g. Ethereum) to this address.
+                                    </div>
+                                </div>
+
+
+                                {/* agreement checkbox */}
+                                <div className='flex flex-row items-center gap-2'>
+                                    <input
+                                        type="checkbox"
+                                        checked={agreementCopy}
+                                        onChange={() => setAgreementCopy(!agreementCopy)}
+                                        className='w-6 h-6'
                                     />
+                                    <div className='text-lg text-zinc-100 font-semibold'>
+                                        I understand that I should never deposit any other tokens (e.g. Ethereum) to this address.
+                                    </div>
+                                </div>
 
-                                )}
+
+
+
+                                <button
+                                    disabled={!address || !agreementCopy}
+                                    onClick={() => {
+                                    navigator.clipboard.writeText(address);
+                                    toast.success('Address copied to clipboard');
+                                    }}
+                                    className={`
+                                        p-2 text-zinc-100 rounded
+                                        ${!address || !agreementCopy ? 'bg-gray-300 text-gray-500' : 'bg-blue-500'}
+                                    `}
+                                    >
+                                    Copy
+                                </button>
 
                             </div>
 
-                            <div className="p-2 bg-zinc-800 rounded text-zinc-100 text-xs xl:text-xl font-semibold">
-                                {address}
-                            </div>
+                            
 
-                            <button
-                                disabled={!address}
-                                onClick={() => {
-                                navigator.clipboard.writeText(address);
-                                toast.success('Address copied to clipboard');
-                                }}
-                                className="p-2 bg-blue-500 text-zinc-100 rounded"
-                                >
-                                Copy
-                            </button>
+
+
+
 
                         </div>
 
