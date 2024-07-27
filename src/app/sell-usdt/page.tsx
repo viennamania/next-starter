@@ -303,6 +303,9 @@ const P2PTable = () => {
 
     const [sellOrdering, setSellOrdering] = useState(false);
 
+    const [agreementPlaceOrder, setAgreementPlaceOrder] = useState(false);
+
+
     const sellOrder = async () => {
       // api call
       // set sell order
@@ -310,6 +313,13 @@ const P2PTable = () => {
       if (sellOrdering) {
         return;
       }
+
+
+      if (agreementPlaceOrder === false) {
+        toast.error('You must agree to the terms and conditions');
+        return;
+      }
+
 
       setSellOrdering(true);
 
@@ -334,10 +344,12 @@ const P2PTable = () => {
       //console.log('data', data);
 
       if (data.result) {
-        toast.success('Sell order has been created');
+        toast.success('Order has been placed');
 
         setUsdtAmount(0);
         setprivateSale(false);
+
+        setAgreementPlaceOrder(false);
      
 
 
@@ -361,7 +373,7 @@ const P2PTable = () => {
 
 
       } else {
-        toast.error('Sell order has been failed');
+        toast.error('Order has been failed');
       }
 
       setSellOrdering(false);
@@ -516,11 +528,6 @@ const P2PTable = () => {
                     <article
                       className="w-96 xl:w-full bg-black p-4 rounded-md border-2 border-green-500"
                     >
-
-
-            
-       
-
                         <div className=" flex flex-row items-center justify-between gap-4">
                 
                           {/* sell icon */}
@@ -528,43 +535,67 @@ const P2PTable = () => {
                             <Image
                               src="/trade-sell.png"
                               alt="Sell"
-                              width={28}
-                              height={28}
+                              width={40}
+                              height={40}
                             />
-                            <h2 className="text-lg font-semibold text-white">Place Order</h2>
+                            <h2 className="text-lg font-semibold text-white">Order</h2>
                           </div>
 
                           {/* check box for private sale */}
                           <div className="flex flex-row items-center gap-2">
+
+                            <Image
+                              src="/icon-private-sale.png"
+                              alt="Private Sale"
+                              width={32}
+                              height={32}
+                            />
+
+                            <div className="text-sm text-zinc-400">Private Sale</div>
                             <input
                               className="w-6 h-6"
                               type="checkbox"
                               checked={privateSale}
                               onChange={(e) => setprivateSale(e.target.checked)}
                             />
-                            <div className="text-sm text-zinc-400">Private Sale</div>
                           </div>
 
                         </div>
 
 
                       {/* my seller info */}
+
+                      {address && seller && (
                       <div className="mt-4 flex flex-row items-center gap-2">
                         <Image
                           src={avatar}
                           alt="Profile"
-                          width={32}
-                          height={32}
+                          width={24}
+                          height={24}
                           className="rounded-full"
                           style={{
                             objectFit: 'cover',
-                            width: '38px',
-                            height: '38px',
+                            width: '24px',
+                            height: '24px'
                           }}
 
                         />
                         <div className="text-lg font-semibold text-white">{nickname}</div>
+
+                        <Image
+                          src="/verified.png"
+                          alt="Verified"
+                          width={24}
+                          height={24}
+                        />
+                        <Image
+                          src="/best-seller.png"
+                          alt="Identity"
+                          width={24}
+                          height={24}
+                        />
                       </div>
+                      )}
 
 
 
@@ -765,13 +796,81 @@ const P2PTable = () => {
 
 
 
-                        <p className="mt-4 text-sm text-zinc-400">
-                            Sell order is expired in 24 hours
-                        </p>
+
                         
+                        {seller && (
                         <p className="mt-4 text-sm text-zinc-400">
-                          Payment method: Bank Transfer
+                          Payment: Bank Transfer ({seller?.bankInfo.bankName})
                         </p>
+                        )}
+
+
+                        {/* aggremment */}
+                        {/* After you place order and the buyer accepts the order, you can not cancel the order. */}
+
+
+                        <div className="mt-4 flex flex-row items-center gap-2">
+                          <input
+                            type="checkbox"
+                            checked={agreementPlaceOrder}
+                            onChange={(e) => setAgreementPlaceOrder(e.target.checked)}
+                          />
+                          <p className="text-sm text-zinc-400">
+                            I agree to the terms and conditions
+                          </p>
+                        </div>
+
+
+                        {/* terms and conditions */}
+                        {/* text area */}
+                        {/*
+                        <textarea
+                          className="w-full h-32 p-2 border border-gray-300 rounded-md text-sm text-black"
+                          placeholder="
+                            After you place order, the buyer has 24 hours to accept the order.
+                            If the buyer does not accept the order within 24 hours, the order will be expired.
+                            After the buyer accepts the order, you can not cancel the order.
+                            After the buyer accepts the order, you must deposit the USDT to escrow within 1 hour.
+                            If you do not deposit the USDT to escrow within 1 hour, the order will be expired.
+                            If you want to cancel the order, you must contact the buyer and request to cancel the order.
+                            If the buyer agrees to cancel the order, the order will be canceled.
+                          "
+                        ></textarea>
+                        */}
+
+
+
+                        {/*
+                        <div className="mt-4 text-sm text-zinc-400">
+
+                          <div className="h-2 w-2 bg-zinc-400 rounded-full inline-block mr-2"></div>
+                          <span>After you place order, the buyer has 24 hours to accept the order.
+                            If the buyer does not accept the order within 24 hours, the order will be expired.
+                          </span>
+                        </div>
+                        <div className="mt-4 text-sm text-zinc-400">
+
+                          <div className="h-2 w-2 bg-zinc-400 rounded-full inline-block mr-2"></div>
+                          <span>After the buyer accepts the order, you can not cancel the order.</span>
+                        </div>
+                        <div className="mt-4 text-sm text-zinc-400">
+
+                          <div className="h-2 w-2 bg-zinc-400 rounded-full inline-block mr-2"></div>
+                          <span>After the buyer accepts the order, you must deposit the USDT to escrow within 1 hour.
+                            If you do not deposit the USDT to escrow within 1 hour, the order will be expired.
+                          </span>
+                        </div>
+                        <div className="mt-4 text-sm text-zinc-400">
+
+                          <div className="h-2 w-2 bg-zinc-400 rounded-full inline-block mr-2"></div>
+                          <span>If you want to cancel the order, you must contact the buyer and request to cancel the order.
+                            If the buyer agrees to cancel the order, the order will be canceled.
+                          </span>
+                        </div>
+                        */}
+
+
+
 
 
                         <div className="mt-4 flex flex-col gap-2">
@@ -801,8 +900,8 @@ const P2PTable = () => {
 
                           ) : (
                               <button
-                                  disabled={usdtAmount === 0}
-                                  className="text-lg bg-green-500 text-white px-4 py-2 rounded-md "
+                                  disabled={usdtAmount === 0 || agreementPlaceOrder === false}
+                                  className={`text-lg text-white px-4 py-2 rounded-md ${usdtAmount === 0 || agreementPlaceOrder === false ? 'bg-gray-500' : 'bg-green-500'}`}
                                   onClick={() => {
                                       console.log('Sell USDT');
                                       // open trade detail
@@ -812,7 +911,7 @@ const P2PTable = () => {
                                       sellOrder();
                                   }}
                               >
-                                  Order Sell USDT
+                                Place order {usdtAmount} USDT
                               </button>
                           )}
 
@@ -1039,7 +1138,9 @@ const P2PTable = () => {
                             )}
 
 
-                            <p className="mt-2 text-sm text-zinc-400">Payment method: Bank Transfer</p>
+                            <p className="mt-2 text-sm text-zinc-400">
+                              Payment: Bank Transfer ({item.seller.bankInfo.bankName})
+                            </p>
 
 
                             {/* share button */}
