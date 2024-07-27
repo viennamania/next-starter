@@ -549,7 +549,7 @@ export default function SellUsdt({ params }: { params: { orderId: string } }) {
 
 
 
-          <div className="flex flex-col xl:flex-row items-start justify-center space-y-4">
+          <div className=" flex flex-col xl:flex-row items-start justify-center space-y-4">
 
               <div className="w-96 flex flex-col items-start space-y-4">
               
@@ -570,12 +570,6 @@ export default function SellUsdt({ params }: { params: { orderId: string } }) {
                   />
                   <div className="text-2xl font-semibold">Buy USDT</div>
 
-
-
-
-
-
-
                 </div>
 
 
@@ -588,6 +582,7 @@ export default function SellUsdt({ params }: { params: { orderId: string } }) {
                 </div>
 
               </div>
+
 
 
                 <div className="w-full grid grid-cols-1 gap-4  justify-center">
@@ -661,24 +656,12 @@ export default function SellUsdt({ params }: { params: { orderId: string } }) {
 
                               <div className='flex flex-row items-center gap-2 bg-white px-2 py-1 rounded-md mb-4'>
 
-                                {item.privateSale ? (
-                                    <Image
-                                      src="/icon-private-sale.png"
-                                      alt="Private Sale"
-                                      width={32}
-                                      height={32}
-                                    />
-                                ) : (
-                                    <Image
-                                      src="/icon-public-sale.png"
-                                      alt="Public Sale"
-                                      width={32}
-                                      height={32}
-                                    />
-                                )}
-
-
-
+                                <Image
+                                  src='/icon-trade.png'
+                                  alt='Transaction'
+                                  width={32}
+                                  height={32}
+                                />
 
                                 <p className=" text-xl font-semibold text-green-500 ">
                                   TID: {item.tradeId}
@@ -689,15 +672,45 @@ export default function SellUsdt({ params }: { params: { orderId: string } }) {
 
                             {item.acceptedAt && (
 
-                              <div className='flex flex-row items-center gap-2 mb-4'>
+                              <div className='flex flex-col items-start gap-2 mb-4'>
+
+
+
+                                  <div className='flex flex-row items-center gap-2'>
                                 
-                                <div className="w-2 h-2 rounded-full bg-green-500 mr-2"></div>
+                                    {item.privateSale ? (
+                                      <Image
+                                        src='/icon-private-sale.png'
+                                        alt='Private Sale'
+                                        width={32}
+                                        height={32}
+                                      />
+                                    ) : (
+                                      <Image
+                                        src='/icon-public-sale.png'
+                                        alt='Public Sale'
+                                        width={32}
+                                        height={32}
+                                      /> 
+                                    )}
+                                    <p className="text-sm text-zinc-400">
+                                      Opened at {new Date(item.createdAt).toLocaleString()}
+                                    </p>
+                                  </div>
+                              
 
-                                <p className="text-sm text-zinc-400">
-                                  Trade started at {new Date(item.acceptedAt).toLocaleDateString() + ' ' + new Date(item.acceptedAt).toLocaleTimeString()}
-                                </p>
+
+                                <div className='flex flex-row items-center gap-2'>
+
+                                  
+                                  <div className="w-2 h-2 rounded-full bg-green-500 mr-2"></div>
+
+                                  <p className="text-sm text-zinc-400">
+                                    Trade started at {new Date(item.acceptedAt).toLocaleDateString() + ' ' + new Date(item.acceptedAt).toLocaleTimeString()}
+                                  </p>
+                                </div>
+
                               </div>
-
 
                             )}
 

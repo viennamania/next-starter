@@ -228,6 +228,19 @@ export async function getOneSellOrder(
 
   // status is not 'paymentConfirmed'
 
+  // check orderId is valid ObjectId
+
+
+  if (!ObjectId.isValid(orderId)) {
+    return {
+      result: null,
+      totalCount: 0,
+      orders: [],
+    };
+  }
+
+
+
 
   const results = await collection.find<UserProps>(
     {
@@ -245,6 +258,8 @@ export async function getOneSellOrder(
     //{ projection: { _id: 0, emailVerified: 0 } }
 
   ).sort({ createdAt: -1 }).limit(limit).skip((page - 1) * limit).toArray();
+
+
 
   return {
     totalCount: results.length,
