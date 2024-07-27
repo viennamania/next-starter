@@ -530,7 +530,7 @@ const P2PTable = () => {
                             }</p>
 
                             {item.status === 'paymentRequested' && (
-                              <p className="mt-4 text-sm text-zinc-400">Trade ended at {
+                              <p className="mt-4 text-sm text-zinc-400">Completed at {
                                 item.paymentConfirmedAt && new Date(item.paymentConfirmedAt).toLocaleString()
                               }</p>
                             )}

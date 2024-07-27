@@ -724,7 +724,7 @@ export default function SellUsdt({ params }: { params: { orderId: string } }) {
                                   <div className="w-2 h-2 rounded-full bg-green-500 mr-2"></div>
 
                                   <p className="text-sm text-zinc-400">
-                                    Trade ended at {new Date(item.paymentConfirmedAt).toLocaleDateString() + ' ' + new Date(item.paymentConfirmedAt).toLocaleTimeString()}
+                                    Completed at {new Date(item.paymentConfirmedAt).toLocaleDateString() + ' ' + new Date(item.paymentConfirmedAt).toLocaleTimeString()}
                                   </p>
                                 </div>
 

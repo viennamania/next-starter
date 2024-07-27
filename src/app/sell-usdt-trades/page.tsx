@@ -792,6 +792,44 @@ const P2PTable = () => {
                                 new Date(item.acceptedAt).toLocaleDateString() + ' ' + new Date(item.acceptedAt).toLocaleTimeString()
                               }
                             </p>
+
+                            <div className="block h-14">
+                            {item.paymentConfirmedAt && (
+                              <>                          
+                                <p className="text-sm text-zinc-400">
+                                  Completed at {
+                                    new Date(item.paymentConfirmedAt).toLocaleDateString() + ' ' + new Date(item.paymentConfirmedAt).toLocaleTimeString()
+                                  }
+                                </p>
+
+                                <p className="flex flex-row items-center gap-2">
+
+                                  <Image
+                                    src='/timer.png'
+                                    alt='timer'
+                                    width={28}
+                                    height={28}
+                                  />
+
+                                  <div className="text-sm text-green-500">
+                                    Total trading time is {
+
+                                  ( (new Date(item.paymentConfirmedAt).getTime() - new Date(item.acceptedAt).getTime()) / 1000 / 60 ).toFixed(0) 
+
+                                    } minutes
+                                  </div>
+
+                                </p>
+
+
+                              </>
+
+
+
+                            )}   
+                            </div>   
+
+
                           
                             <p className="mt-4 text-2xl font-bold text-white">{item.usdtAmount} USDT</p>
 
@@ -799,31 +837,10 @@ const P2PTable = () => {
                             <p className="text-xl font-bold text-zinc-400">Rate: 1 USDT = {item.rate} KRW</p>
                             */}
 
-                            <p className="mb-4 text-xl font-bold text-zinc-400"> Price: {item.krwAmount} KRW</p>
-                            
-
-                            {/*
-                            <p className="text-xl font-semibold text-white">
-                              Status: {item.status?.toUpperCase()}
-                            </p>
-                            */}
-
-                            {item.status === 'paymentConfirmed' && (
-                              <div className="w-full flex flex-col items-start gap-2">
-                                <div className="flex flex-row items-center gap-2">
-                                  <div className="text-lg font-semibold text-red-500">
-                                    - {item.usdtAmount} USDT
-                                  </div>
-                                  <div className="text-lg font-semibold text-white">
-                                    /
-                                  </div>
-                                  <div className="text-lg font-semibold text-green-500">
-                                    + {item.krwAmount} KRW
-                                  </div>
-                                </div>
-
-                              </div>
-                            )}
+                            <p className="mb-4 text-xl text-zinc-400"> Price: {
+                              item.krwAmount.toLocaleString('us-US', { style: 'currency', currency: 'KRW' } )
+                            }</p>
+                          
      
 
 
@@ -832,11 +849,7 @@ const P2PTable = () => {
 
                               <div className="w-full flex flex-col items-start gap-2">
 
-                                {item.paymentConfirmedAt && (
-                                  <p className="text-sm font-semibold text-green-500">
-                                    Completed at {new Date(item.paymentConfirmedAt).toLocaleDateString() + ' ' + new Date(item.paymentConfirmedAt).toLocaleTimeString()}
-                                  </p> 
-                                )}                               
+                         
 
                                 <p className="text-sm  text-gray-400">
                                   Payment requested at<br />{new Date(item.paymentRequestedAt).toLocaleDateString() + ' ' + new Date(item.paymentRequestedAt).toLocaleTimeString()}
@@ -1288,47 +1301,31 @@ const P2PTable = () => {
                             {item.status === 'paymentConfirmed' && (
 
                               <div className="w-full mt-2 mb-2 flex flex-col items-center ">
+
+
+                              <div className="w-full flex flex-col items-start gap-2">
+                                <div className="flex flex-row items-center gap-2">
+                                  <div className="text-lg font-semibold text-red-500">
+                                    - {item.usdtAmount} USDT
+                                  </div>
+                                  <div className="text-lg font-semibold text-white">
+                                    /
+                                  </div>
+                                  <div className="text-lg font-semibold text-green-500">
+                                    + {item.krwAmount} KRW
+                                  </div>
+                                </div>
+
+                              </div>
+              
+
+
                                 <Image
                                   src='/confirmed.png'
                                   alt='confirmed'
                                   width={200}
                                   height={200}
                                 />
-
-                                {/* total trading time is paymentCompletedAt - aceeptedAt */}
-
-                              
-
-                                <div className="flex flex-row items-center gap-2">
-
-                                  <Image
-                                    src='/timer.png'
-                                    alt='timer'
-                                    width={38}
-                                    height={38}
-                                  />
-
-                                  <div className="text-sm text-green-500">
-                                    Total trading time is {
-
-                                  ( (new Date(item.paymentConfirmedAt).getTime() - new Date(item.acceptedAt).getTime()) / 1000 / 60 ).toFixed(0) 
-
-                                    } minutes
-                                  </div>
-                                </div>
-
-
-
-                              {/*
-                                <div className="text-sm text-green-500">
-                                  Total trading time is {
-
-                                 ( (new Date(item.paymentConfirmedAt).getTime() - new Date(item.acceptedAt).getTime()) / 1000 / 60 ).toFixed(0) 
-
-                                  } minutes
-                                </div>
-                              */}
-
 
                               </div>
                             )}
