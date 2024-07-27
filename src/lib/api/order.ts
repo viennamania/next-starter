@@ -233,7 +233,6 @@ export async function getOneSellOrder(
 
   if (!ObjectId.isValid(orderId)) {
     return {
-      result: null,
       totalCount: 0,
       orders: [],
     };
