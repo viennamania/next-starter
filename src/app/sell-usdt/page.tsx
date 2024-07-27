@@ -76,6 +76,10 @@ interface SellOrder {
 
   acceptedAt: string;
 
+  paymentRequestedAt: string;
+
+  cancelledAt: string;
+
   paymentConfirmedAt: string;
   escrowTransactionHash: string;
 
@@ -1012,10 +1016,27 @@ const P2PTable = () => {
                               alt="Expired"
                               width={100}
                               height={100}
-                              className="opacity-50"
+                              className="opacity-20"
                             />
                           </div>
                         )}
+
+
+
+                        {item.status === 'cancelled' && (
+                          <div className="absolute inset-0 flex justify-center items-center z-10
+                            bg-black bg-opacity-50
+                          ">
+                            <Image
+                              src="/icon-cancelled.png"
+                              alt="Cancelled"
+                              width={100}
+                              height={100}
+                              className="opacity-20"
+                            />
+                          </div>
+                        )}
+
 
 
 
@@ -1121,7 +1142,11 @@ const P2PTable = () => {
                             )}
 
 
-                            { (item.status === 'accepted' || item.status === 'paymentRequested') && (
+
+
+
+
+                            { (item.status === 'accepted' || item.status === 'paymentRequested' || item.status === 'cancelled') && (
 
                               <div className="flex flex-row items-center gap-2  bg-white px-2 py-1 rounded-md mb-4  ">
 
@@ -1172,10 +1197,7 @@ const P2PTable = () => {
                                 </p>
                               </div>
 
-                              )}
-
-
-
+                            )}
 
 
                             {item.acceptedAt && (
@@ -1183,6 +1205,24 @@ const P2PTable = () => {
                                 Trade started at {new Date(item.acceptedAt).toLocaleDateString() + ' ' + new Date(item.acceptedAt).toLocaleTimeString()}
                               </p>
                             )}
+
+
+
+                            {item.status === 'cancelled' && (
+                              <div className="flex flex-row items-center space-x-2">
+                                <Image
+                                  src="/icon-cancelled.png"
+                                  alt="Cancelled"
+                                  width={32}
+                                  height={32}
+                                />
+                                <p className="text-xl text-red-500 font-semibold">
+                                  Cancelled at {new Date(item?.cancelledAt).toLocaleString()}
+                                </p>
+                              </div>
+                            )}
+
+
 
                             {item.paymentConfirmedAt && (
                               <p className="mb-2 text-sm text-zinc-400">

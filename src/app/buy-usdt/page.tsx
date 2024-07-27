@@ -526,7 +526,7 @@ const P2PTable = () => {
                               alt="Expired"
                               width={100}
                               height={100}
-                              className="opacity-50"
+                              className="opacity-20"
                             />
                           </div>
                         )}
@@ -540,7 +540,7 @@ const P2PTable = () => {
                               alt="Cancelled"
                               width={100}
                               height={100}
-                              className="opacity-50"
+                              className="opacity-20"
                             />
                           </div>
                         )}
@@ -706,11 +706,6 @@ const P2PTable = () => {
                                   </div>
                                 )}
 
-
-
-
-
-
                               </div>
                             )}
 
@@ -723,7 +718,7 @@ const P2PTable = () => {
                                   height={32}
                                 />
                                 <p className="text-xl text-red-500 font-semibold">
-                                  Cancelled at {new Date(item.cancelledAt).toLocaleDateString() + ' ' + new Date(item.cancelledAt).toLocaleTimeString()}
+                                  Cancelled at {new Date(item?.cancelledAt).toLocaleString()}
                                 </p>
                               </div>
                             )}
