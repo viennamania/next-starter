@@ -75,6 +75,8 @@ interface SellOrder {
   acceptedAt: string;
   paymentRequestedAt: string;
   paymentConfirmedAt: string;
+  cancelledAt: string;
+
 
   tradeId: string;
 
@@ -781,21 +783,39 @@ const P2PTable = () => {
                             `}
                         >
 
-                            { (item.status === 'accepted' || item.status === 'paymentRequested' || item.status === 'paymentConfirmed') && (
+                            { (item.status === 'accepted' || item.status === 'paymentRequested' || item.status === 'paymentConfirmed' || item.status === 'cancelled') && (
                               <p className="text-lg text-green-500">
                                 TID: {item.tradeId}
                               </p>
                             )}
 
-                            <p className="mt-4 text-sm text-zinc-400">
-                              Trade started at {
-                                new Date(item.acceptedAt).toLocaleDateString() + ' ' + new Date(item.acceptedAt).toLocaleTimeString()
-                              }
-                            </p>
+                            {item.status === 'accepted' && (
+                              <p className="mt-4 text-sm text-zinc-400">
+                                Trade started at {
+                                  new Date(item.acceptedAt).toLocaleDateString() + ' ' + new Date(item.acceptedAt).toLocaleTimeString()
+                                }
+                              </p>
+                            )}
 
-                            <div className="block h-14">
+                            {item.status === 'paymentRequested' && (
+                              <p className="mt-4 text-sm text-zinc-400">
+                                Requested at {
+                                  new Date(item.paymentRequestedAt).toLocaleDateString() + ' ' + new Date(item.paymentRequestedAt).toLocaleTimeString()
+                                }
+                              </p>
+                            )}
+
+                            {item.status === 'cancelled' && (
+                              <p className="mt-4 text-sm text-red-500">
+                                Cancelled at {
+                                  new Date(item.cancelledAt).toLocaleDateString() + ' ' + new Date(item.cancelledAt).toLocaleTimeString()
+                                }
+                              </p>
+                            )}
+
+                            
                             {item.paymentConfirmedAt && (
-                              <>                          
+                              <div className="mt-4 block h-14">                      
                                 <p className="text-sm text-zinc-400">
                                   Completed at {
                                     new Date(item.paymentConfirmedAt).toLocaleDateString() + ' ' + new Date(item.paymentConfirmedAt).toLocaleTimeString()
@@ -822,12 +842,12 @@ const P2PTable = () => {
                                 </p>
 
 
-                              </>
+                                </div> 
 
 
 
                             )}   
-                            </div>   
+                             
 
 
                           
@@ -1346,8 +1366,28 @@ const P2PTable = () => {
                                   height={200}
                                 />
 
+
+
+
+
+
+
                               </div>
                             )}
+
+
+                            {/* status */}
+
+                            <div className="mt-10 flex flex-row items-start justify-start">
+                              <div className="text-xs text-zinc-400">
+                                {item.status === 'ordered' ? 'Order opened at ' + new Date(item.createdAt).toLocaleString()
+                                : item.status === 'accepted' ? 'Trade started at ' + new Date(item.acceptedAt).toLocaleString()
+                                : item.status === 'paymentRequested' ? 'Payment requested at ' + new Date(item.paymentRequestedAt).toLocaleString()
+                                : item.status === 'cancelled' ? 'Trade cancelled at ' + new Date(item.cancelledAt).toLocaleString()
+                                : item.status === 'paymentConfirmed' ? 'Trade completed at ' + new Date(item.paymentConfirmedAt).toLocaleString()
+                                : 'Unknown'}
+                              </div>
+                            </div>
 
 
 

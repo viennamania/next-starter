@@ -73,7 +73,9 @@ interface SellOrder {
   status: string;
   acceptedAt: string;
   paymentRequestedAt: string;
+  paymentConfirmedAt: string;
   cancelledAt: string;
+
 
   buyer: any;
 
@@ -1116,7 +1118,7 @@ const P2PTable = () => {
                             : item.status === 'accepted' ? 'Trade started at ' + new Date(item.acceptedAt).toLocaleString()
                             : item.status === 'paymentRequested' ? 'Payment requested at ' + new Date(item.paymentRequestedAt).toLocaleString()
                             : item.status === 'cancelled' ? 'Trade cancelled at ' + new Date(item.cancelledAt).toLocaleString()
-                            : item.status === 'completed' ? 'Trade completed at ' + new Date(item.acceptedAt).toLocaleString()
+                            : item.status === 'paymentConfirmed' ? 'Trade completed at ' + new Date(item.paymentConfirmedAt).toLocaleString()
                             : 'Unknown'}
                           </div>
                         </div>
