@@ -73,6 +73,7 @@ interface SellOrder {
   status: string;
   acceptedAt: string;
   paymentRequestedAt: string;
+  cancelledAt: string;
 
   buyer: any;
 
@@ -512,6 +513,20 @@ const P2PTable = () => {
                           </div>
                         )}
 
+                        {item.status === 'cancelled' && (
+                          <div className="absolute inset-0 flex justify-center items-center z-10
+                            bg-black bg-opacity-50
+                          ">
+                            <Image
+                              src="/icon-cancelled.png"
+                              alt="Cancelled"
+                              width={100}
+                              height={100}
+                              className="opacity-50"
+                            />
+                          </div>
+                        )}
+
 
                         <article
                             //key={index}
@@ -605,7 +620,8 @@ const P2PTable = () => {
                           )}
 
 
-                            { (item.status === 'accepted' || item.status === 'paymentRequested') && (
+
+                            { (item.status === 'accepted' || item.status === 'paymentRequested' || item.status === 'cancelled') && (
                               <div className="mb-4 flex flex-row items-center bg-white px-2 py-1 rounded-md">
                                 <Image
                                   src="/icon-trade.png"
@@ -626,6 +642,23 @@ const P2PTable = () => {
                                 Trade started at {new Date(item.acceptedAt).toLocaleDateString() + ' ' + new Date(item.acceptedAt).toLocaleTimeString()}
                               </p>
                             )}
+
+                            {item.status === 'cancelled' && (
+                              <div className="flex flex-row items-center space-x-2">
+                                <Image
+                                  src="/icon-cancelled.png"
+                                  alt="Cancelled"
+                                  width={32}
+                                  height={32}
+                                />
+                                <p className="text-xl text-red-500 font-semibold">
+                                  Cancelled at {new Date(item.cancelledAt).toLocaleDateString() + ' ' + new Date(item.cancelledAt).toLocaleTimeString()}
+                                </p>
+                              </div>
+                            )}
+
+
+
 
                             <div className="mt-4 flex flex-row items-between space-x-2">
 
@@ -655,7 +688,7 @@ const P2PTable = () => {
 
                             </div>
 
-                            <div className="mb-4 flex flex-col items-start">
+                            <div className="mb-4 flex flex-col items-start text-sm ">
                               Payment: Bank Transfer ({item.seller.bankInfo.bankName})
                             </div>
 
@@ -702,6 +735,36 @@ const P2PTable = () => {
                               />
 
                             </p>
+
+                            {/* buyer cancelled the trade */}
+                            {item.status === 'cancelled' && (
+                              <div className="mt-4 flex flex-col gap-2 items-start justify-center">
+                                <div className="flex flex-row items-center gap-2">
+                                  <Image
+                                    src={item.buyer.avatar || "/profile-default.png"}
+                                    alt="Profile Image"
+                                    width={32}
+                                    height={32}
+                                    priority={true} // Added priority property
+                                    className="rounded-full"
+                                    style={{
+                                        objectFit: 'cover',
+                                        width: '32px',
+                                        height: '32px',
+                                    }}
+                                  />
+                                  <p className="text-xl text-red-500 font-semibold">
+                                    Buyer: {
+                                      item.buyer.walletAddress === address ? 'Me' :
+                                      item.buyer.nickname.substring(0, 1) + '***'
+                                    }
+                                  </p>
+ 
+                                </div>
+
+
+                              </div>
+                            )}
 
 
 

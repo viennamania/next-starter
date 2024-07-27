@@ -50,6 +50,8 @@ export interface UserProps {
   
   acceptedAt: string,
   paymentRequestedAt: string,
+  paymentConfirmedAt: string,
+  cancelledAt: string,
 
   buyer: any,
 
@@ -349,7 +351,10 @@ export async function cancelTradeByBuyer(
 
   const result = await collection.updateOne(
     { _id: new ObjectId(orderId), 'buyer.walletAddress': walletAddress, status: 'accepted' },
-    { $set: { status: 'cancelled' } }
+    { $set: {
+      status: 'cancelled',
+      cancelledAt: new Date().toISOString(),
+    } }
   );
 
   const updated = await collection.findOne<UserProps>(
