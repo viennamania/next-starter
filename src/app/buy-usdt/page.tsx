@@ -203,6 +203,8 @@ const P2PTable = () => {
     const [sellOrders, setSellOrders] = useState<SellOrder[]>([]);
 
     useEffect(() => {
+
+        /*
         fetch('/api/order/getAllSellOrdersForBuyer', {
             method: 'POST',
             headers: {
@@ -220,6 +222,33 @@ const P2PTable = () => {
         .catch((error) => {
             console.error('Error:', error);
         });
+        */
+
+        const fetchSellOrders = async () => {
+            const response = await fetch('/api/order/getAllSellOrdersForBuyer', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                }),
+            });
+
+            const data = await response.json();
+            setSellOrders(data.result.orders);
+        }
+
+        fetchSellOrders();
+
+        const interval = setInterval(() => {
+            fetchSellOrders();
+        }, 1000 * 60 * 5);
+
+
+        return () => clearInterval(interval);
+
+
+
     } , []);
 
 
@@ -585,7 +614,6 @@ const P2PTable = () => {
                                
                                 <p className="text-sm text-zinc-400">
                                   Opened {
-
                                     new Date().getTime() - new Date(item.createdAt).getTime() < 1000 * 60 ? (
                                       ' ' + Math.floor((new Date().getTime() - new Date(item.createdAt).getTime()) / 1000) + ' seconds ago'
                                     ) :
@@ -594,7 +622,6 @@ const P2PTable = () => {
                                     ) : (
                                       ' ' + Math.floor((new Date().getTime() - new Date(item.createdAt).getTime()) / 1000 / 60 / 60) + ' hours ago'
                                     )}
-
                                 </p>
 
                               </div>
@@ -613,11 +640,10 @@ const P2PTable = () => {
   
                                     24 - Math.floor((new Date().getTime() - new Date(item.createdAt).getTime()) / 1000 / 60 / 60)
 
-                                  } hours {
-                                    60 - Math.floor((new Date().getTime() - new Date(item.createdAt).getTime()) / 1000 / 60) % 60
-                                  } minutes
+                                    } hours {
+                                      60 - Math.floor((new Date().getTime() - new Date(item.createdAt).getTime()) / 1000 / 60) % 60
+                                    } minutes
 
-                                  
                                   </p>
                                 </div>
 
@@ -634,9 +660,7 @@ const P2PTable = () => {
                                   */}
                                 </div>
                               )}
-
-
-                                 
+  
                             
                             </div>
                           )}
@@ -644,7 +668,7 @@ const P2PTable = () => {
 
 
                             { (item.status === 'accepted' || item.status === 'paymentRequested' || item.status === 'cancelled') && (
-                              <div className="mb-4 flex flex-row items-center bg-white px-2 py-1 rounded-md">
+                              <div className="mb-4 flex flex-row items-center bg-zinc-800 px-2 py-1 rounded-md">
                                 <Image
                                   src="/icon-trade.png"
                                   alt="Trade"
@@ -653,9 +677,23 @@ const P2PTable = () => {
                                 />
 
 
-                                <p className="text-xl font-semibold text-green-500 ">
-                                  TID: {item.tradeId}
+                                <p className="text-sm font-semibold text-green-500 ">
+                                  {item.tradeId}
                                 </p>
+
+
+                                <p className="ml-2 text-sm text-zinc-400">
+                                  Started {
+                                    new Date().getTime() - new Date(item.acceptedAt).getTime() < 1000 * 60 ? (
+                                      ' ' + Math.floor((new Date().getTime() - new Date(item.acceptedAt).getTime()) / 1000) + ' seconds ago'
+                                    ) :
+                                    new Date().getTime() - new Date(item.acceptedAt).getTime() < 1000 * 60 * 60 ? (
+                                    ' ' + Math.floor((new Date().getTime() - new Date(item.acceptedAt).getTime()) / 1000 / 60) + ' minutes ago'
+                                    ) : (
+                                      ' ' + Math.floor((new Date().getTime() - new Date(item.acceptedAt).getTime()) / 1000 / 60 / 60) + ' hours ago'
+                                    )}
+                                </p>
+
                               </div>
                             )}
 
