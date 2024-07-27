@@ -690,14 +690,11 @@ export default function SellUsdt({ params }: { params: { orderId: string } }) {
                             {item.acceptedAt && (
 
                               <div className='flex flex-row items-center gap-2 mb-4'>
-                                <Image
-                                  src="/icon-trade.png"
-                                  alt="Trade"
-                                  width={32}
-                                  height={32}
-                                />
+                                
+                                <div className="w-2 h-2 rounded-full bg-green-500 mr-2"></div>
+
                                 <p className="text-sm text-zinc-400">
-                                  {new Date(item.acceptedAt).toLocaleDateString() + ' ' + new Date(item.acceptedAt).toLocaleTimeString()}
+                                  Trade started at {new Date(item.acceptedAt).toLocaleDateString() + ' ' + new Date(item.acceptedAt).toLocaleTimeString()}
                                 </p>
                               </div>
 
@@ -714,7 +711,7 @@ export default function SellUsdt({ params }: { params: { orderId: string } }) {
                                   <div className="w-2 h-2 rounded-full bg-green-500 mr-2"></div>
 
                                   <p className="text-sm text-zinc-400">
-                                    Closed at {new Date(item.paymentConfirmedAt).toLocaleDateString() + ' ' + new Date(item.paymentConfirmedAt).toLocaleTimeString()}
+                                    Trade ended at {new Date(item.paymentConfirmedAt).toLocaleDateString() + ' ' + new Date(item.paymentConfirmedAt).toLocaleTimeString()}
                                   </p>
                                 </div>
 
@@ -723,8 +720,8 @@ export default function SellUsdt({ params }: { params: { orderId: string } }) {
                                   <Image
                                     src='/timer.png'
                                     alt='timer'
-                                    width={38}
-                                    height={38}
+                                    width={32}
+                                    height={32}
                                   />
 
                                   <div className="text-sm text-green-500">
