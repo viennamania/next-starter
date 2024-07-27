@@ -194,6 +194,8 @@ export default function SellUsdt({ params }: { params: { orderId: string } }) {
       const interval = setInterval(() => {
         if (address) getBalance();
       } , 1000);
+
+      return () => clearInterval(interval);
   
     } , [address]);
 

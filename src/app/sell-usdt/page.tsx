@@ -162,6 +162,8 @@ const P2PTable = () => {
       const interval = setInterval(() => {
         if (address) getBalance();
       } , 1000);
+
+      return () => clearInterval(interval);
   
     } , [address]);
 
@@ -247,6 +249,14 @@ const P2PTable = () => {
         };
   
         fetchSellOrders();
+
+        // fetch sell orders every 10 seconds
+
+        const interval = setInterval(() => {
+          fetchSellOrders();
+        }, 10000);
+
+        return () => clearInterval(interval);
   
     }, [address]);
 
@@ -381,6 +391,68 @@ const P2PTable = () => {
       
 
     };
+
+
+    // cancel sell order state
+    const [cancellings, setCancellings] = useState([] as boolean[]);
+    useEffect(() => {
+      setCancellings(sellOrders.map(() => false));
+    }, [sellOrders]);
+
+
+
+    const cancelSellOrder = async (orderId: string, index: number) => {
+
+      if (cancellings[index]) {
+        return;
+      }
+
+      setCancellings(cancellings.map((item, i) => i === index ? true : item));
+
+      const response = await fetch('/api/order/cancelSellOrder', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          orderId: orderId,
+          walletAddress: address
+        })
+      });
+
+      const data = await response.json();
+
+      ///console.log('data', data);
+
+      if (data.result) {
+        toast.success('Order has been canceled');
+
+        await fetch('/api/order/getAllSellOrders', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            walletAddress: address
+          })
+        }).then(async (response) => {
+          const data = await response.json();
+          //console.log('data', data);
+          if (data.result) {
+            setSellOrders(data.result.orders);
+          }
+        });
+
+      } else {
+        toast.error('Order has been failed');
+      }
+
+      setCancellings(cancellings.map((item, i) => i === index ? false : item));
+
+    }
+
+
+
 
 
     
@@ -1025,7 +1097,7 @@ const P2PTable = () => {
                                     />
                                     <p className="text-sm text-zinc-400">Expires in {
 
-                                      24 - Math.floor((new Date().getTime() - new Date(item.createdAt).getTime()) / 1000 / 60 / 60)
+                                      24 - Math.floor((new Date().getTime() - new Date(item.createdAt).getTime()) / 1000 / 60 / 60) - 1
 
                                     } hours {
                                       60 - Math.floor((new Date().getTime() - new Date(item.createdAt).getTime()) / 1000 / 60) % 60
@@ -1165,6 +1237,50 @@ const P2PTable = () => {
 
                               }
                             </h2>
+
+                            {/* cancel order button for seller */}
+                            {item.walletAddress === address && item.status === 'ordered' && (
+                              <button
+                                  disabled={cancellings[index]}
+                                  className={`text-sm bg-red-500 text-white px-2 py-1 rounded-md ${cancellings[index] ? 'bg-gray-500' : ''}`}
+                                  onClick={() => {
+                                    // api call
+                                    // cancelSellOrder
+
+                                    cancelSellOrder(item._id, index);
+
+                                  }}
+                              >
+
+                                <div className="flex flex-row items-center gap-2">
+                                  {cancellings[index] ? (
+                                    <div className="
+                                      w-4 h-4
+                                      border-2 border-zinc-800
+                                      rounded-full
+                                      animate-spin
+                                    ">
+                                      <Image
+                                        src="/loading.png"
+                                        alt="loading"
+                                        width={16}
+                                        height={16}
+                                      />
+                                    </div>
+                                  ) : (
+                                    <div className="w-4 h-4 bg-white text-black rounded-full flex items-center justify-center
+                                    ">X</div>
+                                  )}
+                                  Cancel Order
+                                </div>
+                                  
+                               
+                              </button>
+                            )}
+
+
+
+                            {/* accept order button for seller */}
 
                             {(item.status === 'accepted' || item.status === 'paymentRequested' || item.status === 'paymentConfirmed')
                               && (

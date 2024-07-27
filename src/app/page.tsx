@@ -189,6 +189,7 @@ export default function Home() {
     }, 1000);
 
 
+    return () => clearInterval(interval);
 
   } , [address]);
 

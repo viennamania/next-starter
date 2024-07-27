@@ -269,6 +269,54 @@ export async function getOneSellOrder(
 
 
 
+// deleete sell order by orderId
+export async function deleteSellOrder(
+
+  {
+    orderId,
+    walletAddress,
+  }: {
+    orderId: string;
+    walletAddress: string;
+  
+  }
+
+
+): Promise<boolean> {
+
+  const client = await clientPromise;
+  const collection = client.db('vienna').collection('orders');
+
+  // check orderId is valid ObjectId
+  if (!ObjectId.isValid(orderId)) {
+    return false;
+  }
+
+  // check walletAddress is valid
+
+  if (!walletAddress) {
+    return false;
+  }
+
+  // status is 'ordered'
+  const result = await collection.deleteOne(
+    { _id: new ObjectId(orderId), walletAddress: walletAddress, status: 'ordered' }
+  );
+
+
+
+  if (result.deletedCount === 1) {
+    return true;
+  } else {
+    return false;
+  }
+
+
+}
+
+
+
+
 
 
 
