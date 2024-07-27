@@ -318,7 +318,7 @@ export default function SettingsPage() {
                                         <button
                                             onClick={() => {
                                                 window.open(`
-                                                    https://polygonscan.com/address/${address}
+                                                    https://polygonscan.com/address/${address}#tokentxns
                                                     `, "_blank");
                                             }}
                                             className="p-2 bg-zinc-200 text-zinc-800 rounded"
