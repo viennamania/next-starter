@@ -621,6 +621,7 @@ const P2PTable = () => {
 
                               ) : (
                                 <div className="mt-2 flex flex-row items-center space-x-2">
+                                  {/*
                                   <Image
                                     src="/icon-timer.webp"
                                     alt="Expired"
@@ -628,6 +629,7 @@ const P2PTable = () => {
                                     height={28}
                                   />
                                   <p className="text-sm text-zinc-400">Expired</p>
+                                  */}
                                 </div>
                               )}
 
@@ -655,10 +657,62 @@ const P2PTable = () => {
                               </div>
                             )}
 
+
+
+
+
                             {item.acceptedAt && (
-                              <p className="mb-4 text-sm text-zinc-400">
-                                Trade started at {new Date(item.acceptedAt).toLocaleDateString() + ' ' + new Date(item.acceptedAt).toLocaleTimeString()}
-                              </p>
+                              <div className="flex flex-col items-start">
+                                <p className="mb-4 text-sm text-zinc-400">
+                                  Trade started at {new Date(item.acceptedAt).toLocaleDateString() + ' ' + new Date(item.acceptedAt).toLocaleTimeString()}
+                                </p>
+                                
+                                
+                                {1 - Math.floor((new Date().getTime() - new Date(item.acceptedAt).getTime()) / 1000 / 60 / 60) > 0 ? (
+
+                                  <div className="mt-2 flex flex-row items-center space-x-2">
+                                    <Image
+                                      src="/icon-timer.webp"
+                                      alt="Timer"
+                                      width={28}
+                                      height={28}
+                                    />
+                                    <p className="text-sm text-zinc-400">Cancelled in {
+                                      
+
+                                      (1 - Math.floor((new Date().getTime() - new Date(item.acceptedAt).getTime()) / 1000 / 60 / 60) - 1) > 0 &&
+                                      (1 - Math.floor((new Date().getTime() - new Date(item.acceptedAt).getTime()) / 1000 / 60 / 60) - 1) + ' hours '
+
+                                      
+
+
+
+                                    } hours {
+                                      60 - Math.floor((new Date().getTime() - new Date(item.acceptedAt).getTime()) / 1000 / 60) % 60
+                                    } minutes
+
+                                    
+                                    </p>
+                                  </div>
+
+                                  ) : (
+                                  <div className="mt-2 flex flex-row items-center space-x-2">
+                                    <Image
+                                      src="/icon-timer.webp"
+                                      alt="Expired"
+                                      width={28}
+                                      height={28}
+                                    />
+                                    <p className="text-sm text-zinc-400">Cancelled</p>
+                                  </div>
+                                )}
+
+
+
+
+
+
+                              </div>
                             )}
 
                             {item.status === 'cancelled' && (
