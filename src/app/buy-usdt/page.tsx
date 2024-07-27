@@ -570,7 +570,7 @@ const P2PTable = () => {
                             </div>
 
                             <div className="mb-4 flex flex-col items-start">
-                              Payment: Bank Transfer
+                              Payment: Bank Transfer ({item.seller.bankInfo.bankName})
                             </div>
 
 

@@ -773,8 +773,9 @@ export default function SellUsdt({ params }: { params: { orderId: string } }) {
 
 
 
-                              }</p>
-                            
+                            }</p>
+
+                            <p className="text-sm text-zinc-400">Payment: Bank Transfer ({item.seller.bankInfo.bankName})</p>                         
 
 
                             <div className='mt-4 flex flex-row items-center gap-2 mb-2'>

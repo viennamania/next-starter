@@ -769,14 +769,16 @@ const P2PTable = () => {
                             Sell order is expired in 24 hours
                         </p>
                         
-                        <p className="mt-4 text-sm text-zinc-400">Payment method: Bank Transfer</p>
+                        <p className="mt-4 text-sm text-zinc-400">
+                          Payment method: Bank Transfer
+                        </p>
 
 
                         <div className="mt-4 flex flex-col gap-2">
                   
                           {sellOrdering ? (
 
-                            <div className="flex flex-col items-center gap-2">
+                            <div className="flex flex-row items-center gap-2">
                                 <div className="
                                   w-6 h-6
                                   border-2 border-zinc-800
