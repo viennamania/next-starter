@@ -193,6 +193,29 @@ export default function Home() {
   } , [address]);
 
 
+  const [loadingAnimation, setLoadingAnimation] = useState(false);
+  // loadingAnimation duration is 2 seconds
+  // and then 10 seconds later it will be toggled again
+
+  useEffect(() => {
+
+    if (loadingAnimation) {
+      setTimeout(() => {
+        setLoadingAnimation(false);
+      }, 2000);
+    } else {
+      setTimeout(() => {
+        setLoadingAnimation(true);
+      }, 10000);
+    }
+
+
+    
+
+
+  } , [loadingAnimation]);
+
+
   /*
   const { data: balanceData } = useReadContract({
     contract, 
@@ -501,7 +524,8 @@ export default function Home() {
                       className="rounded-lg"
                     />
                     {/* button for polygon explorer */}
-                    {address ? (
+                    {address && !loadingAnimation
+                      ? (
                         <button
                             onClick={() => {
                                 window.open(`
@@ -515,6 +539,7 @@ export default function Home() {
                                 alt="Polygon"
                                 width={18}
                                 height={18}
+                                
                             />
                         </button>
                     ) : (
@@ -523,7 +548,7 @@ export default function Home() {
                         alt="Polygon"
                         width={20}
                         height={20}
-                        className='animate-spin'
+                        className='ml-2 animate-spin'
                       />
                   
                     )}
@@ -691,8 +716,8 @@ export default function Home() {
                   )}
                   {seller && (
                     <Image
-                      src="/icon-seller.png"
-                      alt="Seller"
+                      src="/best-seller.png"
+                      alt="Best Seller"
                       width={20}
                       height={20}
                       className="rounded-lg"
