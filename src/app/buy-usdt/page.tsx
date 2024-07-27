@@ -492,18 +492,18 @@ const P2PTable = () => {
                   <div className="text-sm">
                     {/* dot */}
                     <span className="inline-block w-2 h-2 rounded-full bg-green-500 mr-2"></span>
-                    Total: {sellOrders.length} EA ({sellOrders.reduce((acc, item) => acc + item.usdtAmount, 0)} USDT)</div>
+                    Total: {sellOrders.length} EA ({Number(sellOrders.reduce((acc, item) => acc + item.usdtAmount, 0)).toFixed(2)} USDT)</div>
                   {/* open orders */}
 
                   <div className="text-sm">
                     {/* dot */}
                     <span className="inline-block w-2 h-2 rounded-full bg-green-500 mr-2"></span>
-                    Open Orders: {sellOrders.filter(item => item.status === 'ordered').length} EA ({sellOrders.filter(item => item.status === 'ordered').reduce((acc, item) => acc + item.usdtAmount, 0)} USDT)</div>
+                    Open Orders: {sellOrders.filter(item => item.status === 'ordered').length} EA ({Number(sellOrders.filter(item => item.status === 'ordered').reduce((acc, item) => acc + item.usdtAmount, 0)).toFixed(2)} USDT)</div>
 
                   <div className="text-sm">
                     {/* dot */}
                     <span className="inline-block w-2 h-2 rounded-full bg-green-500 mr-2"></span>
-                    Trades: {sellOrders.filter(item => item.status === 'accepted' || item.status === 'paymentRequested').length} EA ({sellOrders.filter(item => item.status === 'accepted' || item.status === 'paymentRequested').reduce((acc, item) => acc + item.usdtAmount, 0)} USDT)</div>
+                    Trades: {sellOrders.filter(item => item.status === 'accepted' || item.status === 'paymentRequested').length} EA ({Number(sellOrders.filter(item => item.status === 'accepted' || item.status === 'paymentRequested').reduce((acc, item) => acc + item.usdtAmount, 0)).toFixed(2)} USDT)</div>
                   
                 </div>
 
@@ -679,15 +679,10 @@ const P2PTable = () => {
                                     />
                                     <p className="text-sm text-zinc-400">Cancelled in {
                                       
-
                                       (1 - Math.floor((new Date().getTime() - new Date(item.acceptedAt).getTime()) / 1000 / 60 / 60) - 1) > 0 &&
                                       (1 - Math.floor((new Date().getTime() - new Date(item.acceptedAt).getTime()) / 1000 / 60 / 60) - 1) + ' hours '
 
-                                      
-
-
-
-                                    } hours {
+                                    }{
                                       60 - Math.floor((new Date().getTime() - new Date(item.acceptedAt).getTime()) / 1000 / 60) % 60
                                     } minutes
 
@@ -696,14 +691,18 @@ const P2PTable = () => {
                                   </div>
 
                                   ) : (
+                                    
                                   <div className="mt-2 flex flex-row items-center space-x-2">
+                                    {/*
                                     <Image
                                       src="/icon-timer.webp"
                                       alt="Expired"
                                       width={28}
                                       height={28}
                                     />
+                                    
                                     <p className="text-sm text-zinc-400">Cancelled</p>
+                                    */}
                                   </div>
                                 )}
 
@@ -1152,11 +1151,11 @@ const P2PTable = () => {
 
                         <div className="absolute bottom-4 right-4 flex flex-row items-start justify-start">
                           <div className="text-xs text-zinc-400">
-                            {item.status === 'ordered' ? 'Order opened'
-                            : item.status === 'accepted' ? 'Trade started'
-                            : item.status === 'paymentRequested' ? 'Payment requested'
-                            : item.status === 'cancelled' ? 'Trade cancelled'
-                            : item.status === 'completed' ? 'Trade completed'
+                            {item.status === 'ordered' ? 'Order opened at ' + new Date(item.createdAt).toLocaleString()
+                            : item.status === 'accepted' ? 'Trade started at ' + new Date(item.acceptedAt).toLocaleString()
+                            : item.status === 'paymentRequested' ? 'Payment requested at ' + new Date(item.paymentRequestedAt).toLocaleString()
+                            : item.status === 'cancelled' ? 'Trade cancelled at ' + new Date(item.cancelledAt).toLocaleString()
+                            : item.status === 'completed' ? 'Trade completed at ' + new Date(item.acceptedAt).toLocaleString()
                             : 'Unknown'}
                           </div>
                         </div>
