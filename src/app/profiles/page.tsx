@@ -203,7 +203,7 @@ export default function SettingsPage() {
 
             const data = await response.json();
 
-            console.log("updateUser data", data);
+            ///console.log("updateUser data", data);
 
             if (data.result) {
 
@@ -216,7 +216,8 @@ export default function SettingsPage() {
                 toast.success('Nickname saved');
 
             } else {
-                toast.error('Error saving nickname');
+
+                toast.error('You must enter different nickname');
             }
 
 
@@ -447,9 +448,9 @@ export default function SettingsPage() {
                         
 
                         {userCode && (
-                            <div className='flex flex-col xl:flex-row gap-2 items-center justify-between border border-gray-300 p-4 rounded-lg'>
+                            <div className='flex flex-row xl:flex-row gap-2 items-center justify-between border border-gray-300 p-4 rounded-lg'>
 
-                                <div className="bg-red-800 text-sm text-zinc-100 p-2 rounded">
+                                <div className="bg-green-500 text-sm text-zinc-100 p-2 rounded">
                                     My Profile Picture
                                 </div>
 
@@ -468,7 +469,7 @@ export default function SettingsPage() {
                         {userCode && (
                             <div className='flex flex-row gap-2 items-center justify-between border border-gray-300 p-4 rounded-lg'>
 
-                                <div className="bg-red-800 text-sm text-zinc-100 p-2 rounded">
+                                <div className="bg-green-500 text-sm text-zinc-100 p-2 rounded">
                                    My Nickname
                                 </div>
 
@@ -510,7 +511,7 @@ export default function SettingsPage() {
                             <div className=' flex flex-col xl:flex-row gap-2 items-center justify-between border border-gray-300 p-4 rounded-lg'>
 
                                 <div
-                                    className="bg-red-800 text-sm text-zinc-100 p-2 rounded"
+                                    className="bg-green-500 text-sm text-zinc-100 p-2 rounded"
                                 >
                                     Nickname
                                 </div>
@@ -609,7 +610,7 @@ export default function SettingsPage() {
                         {userCode && seller && (
                             <div className='flex flex-row gap-2 items-center justify-between border border-gray-300 p-4 rounded-lg'>
 
-                                <div className="bg-red-800 text-sm text-zinc-100 p-2 rounded">
+                                <div className="bg-green-500 text-sm text-zinc-100 p-2 rounded">
                                     Seller
                                 </div>
 

@@ -115,15 +115,36 @@ export async function insertOne(data: any) {
 
 
 export async function updateOne(data: any) {
+
+
+
+
+
+  if (!data.walletAddress || !data.nickname) {
+    return null;
+  }
+
+
   const client = await clientPromise;
   const collection = client.db('vienna').collection('users');
 
 
   // update and return updated user
 
-  if (!data.walletAddress || !data.nickname) {
+  const checkUser = await collection.findOne<UserProps>(
+    
+    { nickname: data.nickname }
+    
+  )
+      
+
+
+  if (checkUser) {
     return null;
   }
+
+
+
 
 
   const result = await collection.updateOne(
@@ -134,7 +155,6 @@ export async function updateOne(data: any) {
   if (result) {
     const updated = await collection.findOne<UserProps>(
       { walletAddress: data.walletAddress },
-      { projection: { _id: 0, emailVerified: 0 } }
     );
 
     return updated;
@@ -585,6 +605,13 @@ export async function getUserCount(): Promise<number> {
 export async function updateUser(username: string, bio: string) {
   const client = await clientPromise;
   const collection = client.db('lefimall').collection('users');
+
+
+  // check dupplicated nickname
+
+
+
+
   return await collection.updateOne({ username }, { $set: { bio } });
 }
 

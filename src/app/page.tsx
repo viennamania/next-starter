@@ -285,8 +285,17 @@ export default function Home() {
   const [seller, setSeller] = useState(null) as any;
 
 
+  const [loadingUser, setLoadingUser] = useState(true);
+
   useEffect(() => {
+
+      if (!address) {
+          return;
+      }
+
+      
       const fetchData = async () => {
+
           const response = await fetch("/api/user/getUser", {
               method: "POST",
               headers: {
@@ -309,6 +318,8 @@ export default function Home() {
               setSeller(data.result.seller);
 
           }
+
+          setLoadingUser(false);
       };
 
       fetchData();
@@ -679,6 +690,9 @@ export default function Home() {
               </div>
 
               {/* My Nickname */}
+
+
+
               <div className="bg-zinc-800 p-5 rounded-lg text-center">
 
                 <div className="flex flex-row justify-between items-start">
@@ -721,6 +735,21 @@ export default function Home() {
 
                 </div>
 
+                
+                {loadingUser ? (
+
+                  <div className="flex flex-row justify-center items-center">
+                    <Image
+                      src="/loading.png"
+                      alt="Loading"
+                      width={40}
+                      height={40}
+                      className="animate-spin"
+                    />
+                  </div>
+
+                ) : (
+
                 <div className=" flex flex-row gap-2 justify-center items-center">
                   <h2 className="text-3xl font-semibold text-zinc-100">
                     {nickname}
@@ -744,6 +773,8 @@ export default function Home() {
                     />
                   )}
                 </div>
+
+                )}
 
 
                 <p className="text-zinc-300">My Nickname</p>
@@ -793,7 +824,6 @@ export default function Home() {
 
 
               </div>
-
 
 
               {/* My Buy Trades */}
