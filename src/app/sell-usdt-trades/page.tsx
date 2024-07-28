@@ -246,12 +246,14 @@ const P2PTable = () => {
         fetchSellOrders();
 
         // fetch sell orders every 10 seconds
-
+        // 여기서 버그발생 리스레수하면 코인전송후 처리가 안된다.
+        /*
         const interval = setInterval(() => {
           fetchSellOrders();
         } , 10000);
 
         return () => clearInterval(interval);
+        */
   
     }, [address]);
 

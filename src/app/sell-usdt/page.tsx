@@ -635,7 +635,7 @@ const P2PTable = () => {
 
 
 
-                <div className="w-full grid gap-4 lg:grid-cols-3 justify-center">
+                <div className=" w-full grid gap-4 lg:grid-cols-3 justify-center">
 
 
                     {/* sell order is different border color
@@ -1034,6 +1034,14 @@ const P2PTable = () => {
 
 
                     </article>
+
+                    <article
+                      className="hidden xl:block"
+                    ></article>
+
+                    <article
+                      className="hidden xl:block"
+                    ></article>
 
 
 
