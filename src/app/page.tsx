@@ -622,7 +622,12 @@ export default function Home() {
                     disabled={!address}
                     onClick={() => {
                       // send USDT
-                      console.log("send USDT");
+                      //console.log("send USDT");
+
+                      if (!address) {
+                        toast.error('Please connect your wallet first');
+                        return;
+                      }
 
                       // redirect to send USDT page
                       router.push("/send-usdt-favorite");
@@ -637,7 +642,13 @@ export default function Home() {
                     disabled={!address}
                     onClick={() => {
                       // pay USDT
-                      console.log("pay USDT");
+                      //console.log("pay USDT");
+
+                      if (!address) {
+                        toast.error('Please connect your wallet first');
+                        return;
+                      }
+
 
                       // redirect to send USDT page
                       //router.push("/send-usdt-favorite");
@@ -736,7 +747,11 @@ export default function Home() {
                     disabled={!address}
                     onClick={() => {
                       // my buy trades
-                      console.log("my buy trades");
+                      //console.log("my buy trades");
+                      if (!address) {
+                        toast.error('Please connect your wallet first');
+                        return;
+                      }
 
                       // redirect to buy trades page
                       router.push("/buy-usdt-trades");
@@ -751,7 +766,11 @@ export default function Home() {
                     disabled={!address}
                     onClick={() => {
                       // my sell trades
-                      console.log("my sell trades");
+                      //console.log("my sell trades");
+                      if (!address) {
+                        toast.error('Please connect your wallet first');
+                        return;
+                      }
 
                       // redirect to sell trades page
                       router.push("/sell-usdt-trades");
@@ -1017,7 +1036,7 @@ export default function Home() {
             description="Buy USDT with your favorite real-world currency"
           />
 
-          {seller && (
+          
             
               <ArticleCard
                 title="Sell USDT"
@@ -1025,7 +1044,7 @@ export default function Home() {
                 description="Sell USDT for your favorite real-world currency"
               />
             
-            )}
+          
 
           {/*
           <ArticleCard
