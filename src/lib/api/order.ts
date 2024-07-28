@@ -411,14 +411,16 @@ export async function cancelTradeByAdmin() {
 export async function getSellOrdersForBuyer(
 
   {
-
     limit,
     page,
+    walletAddress,
+    searchMyTrades,
   }: {
 
     limit: number;
     page: number;
-  
+    walletAddress: string;
+    searchMyTrades: boolean;
   }
 
 ): Promise<ResultProps> {
@@ -430,24 +432,50 @@ export async function getSellOrdersForBuyer(
   // status is not 'paymentConfirmed'
 
 
-  const results = await collection.find<UserProps>(
-    {
-      //status: 'ordered',
 
-      status: { $ne: 'paymentConfirmed' },
+  // if searchMyTrades is true, get orders by buyer wallet address is walletAddress
+  // else get all orders except paymentConfirmed
 
-      // exclude private sale
-      privateSale: { $ne: true },
-    },
-    
-    //{ projection: { _id: 0, emailVerified: 0 } }
+  if (searchMyTrades) {
 
-  ).sort({ createdAt: -1 }).limit(limit).skip((page - 1) * limit).toArray();
+    const results = await collection.find<UserProps>(
+      {
+        'buyer.walletAddress': walletAddress,
+        status: { $ne: 'paymentConfirmed' },
+      },
+      
+      //{ projection: { _id: 0, emailVerified: 0 } }
 
-  return {
-    totalCount: results.length,
-    orders: results,
-  };
+    ).sort({ createdAt: -1 }).limit(limit).skip((page - 1) * limit).toArray();
+
+    return {
+      totalCount: results.length,
+      orders: results,
+    };
+
+  } else {
+
+    const results = await collection.find<UserProps>(
+      {
+        //status: 'ordered',
+  
+        status: { $ne: 'paymentConfirmed' },
+  
+        // exclude private sale
+        privateSale: { $ne: true },
+      },
+      
+      //{ projection: { _id: 0, emailVerified: 0 } }
+  
+    ).sort({ createdAt: -1 }).limit(limit).skip((page - 1) * limit).toArray();
+  
+    return {
+      totalCount: results.length,
+      orders: results,
+    };
+
+  }
+
 
 }
 

@@ -175,13 +175,16 @@ const P2PTable = () => {
     })
     .then(response => response.json())
     .then(data => {
-        //console.log('data', data);
+        console.log('data', data);
         setUser(data.result);
     })
     .catch((error) => {
         console.error('Error:', error);
     });
   } , [address]);
+
+
+
 
 
 
@@ -200,6 +203,10 @@ const P2PTable = () => {
     }
 
     
+
+
+    const [searchMyTrades, setSearchMyTrades] = useState(false);
+
 
     
     const [sellOrders, setSellOrders] = useState<SellOrder[]>([]);
@@ -227,14 +234,25 @@ const P2PTable = () => {
         */
 
         const fetchSellOrders = async () => {
+
+
             const response = await fetch('/api/order/getAllSellOrdersForBuyer', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({
-                }),
+                body: JSON.stringify(
+
+                  {
+                    walletAddress: address,
+                    searchMyTrades: searchMyTrades,
+                  }
+
+              ),
             });
+
+
+
 
             const data = await response.json();
             setSellOrders(data.result.orders);
@@ -251,7 +269,7 @@ const P2PTable = () => {
 
 
 
-    } , []);
+    } , [address, searchMyTrades]);
 
 
     
@@ -510,12 +528,43 @@ const P2PTable = () => {
               </div>
 
 
-                {/* my usdt balance */}
-                <div className="flex flex-col gap-2 items-start">
-                  <div className="text-sm">My Balance</div>
-                  <div className="text-5xl font-semibold text-white">
-                    {Number(balance).toFixed(2)} <span className="text-lg">USDT</span>
+                <div className="w-full flex flex-row items-start justify-between gap-2">
+                  {/* my usdt balance */}
+                  <div className="flex flex-col gap-2 items-start">
+                    <div className="text-5xl font-semibold text-white">
+                      {Number(balance).toFixed(2)} <span className="text-lg">USDT</span>
+                    </div>
                   </div>
+
+                  <div className="flex flex-col gap-2 items-start justify-end">
+                    <div className="flex flex-row items-center gap-2">
+                      <Image
+                        src={user?.avatar || "/profile-default.png"}
+                        alt="Avatar"
+                        width={20}
+                        height={20}
+                        priority={true} // Added priority property
+                        className="rounded-full"
+                        style={{
+                            objectFit: 'cover',
+                            width: '20px',
+                            height: '20px',
+                        }}
+                      />
+                      <div className="text-lg font-semibold text-white ">{user?.nickname}</div>
+                    </div>
+                    {/* checkbox for search my trades */}
+                    <div className="flex flex-row items-center gap-2">
+                      <input
+                        type="checkbox"
+                        checked={searchMyTrades}
+                        onChange={(e) => setSearchMyTrades(e.target.checked)}
+                        className="w-5 h-5"
+                      />
+                      <label className="text-sm text-zinc-400">Search my trades</label>
+                    </div>
+                  </div>
+
                 </div>
 
                 {/* Sell Orders: 2 EA (132 USDT), Trades: 10 EA (43 USDT) */}
