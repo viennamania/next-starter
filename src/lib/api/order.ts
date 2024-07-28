@@ -213,7 +213,7 @@ export async function getSellOrders(
         status: { $ne: 'paymentConfirmed' },
   
         // exclude private sale
-        privateSale: { $ne: true },
+        //privateSale: { $ne: true },
       },
       
       //{ projection: { _id: 0, emailVerified: 0 } }
