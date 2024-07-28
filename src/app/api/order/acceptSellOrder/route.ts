@@ -52,7 +52,8 @@ export async function POST(request: NextRequest) {
     let message = null;
 
 
-    const msgBody = `[UNOVE] TID[${tradeId}] Your sell order has been accepted by ${buyer?.nickname}!`;
+    const msgBody = `[UNOVE] TID[${tradeId}] Your sell order has been accepted by ${buyer?.nickname}! You must escrow USDT to proceed with the trade in 10 minutes!
+    `;
 
     message = await client.messages.create({
       ///body: "This is the ship that made the Kessel Run in fourteen parsecs?",

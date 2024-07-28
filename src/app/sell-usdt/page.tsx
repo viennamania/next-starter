@@ -1303,7 +1303,7 @@ const P2PTable = () => {
                                     <div className="w-4 h-4 bg-white text-black rounded-full flex items-center justify-center
                                     ">X</div>
                                   )}
-                                  Cancel Order
+                                  Cancel My Order
                                 </div>
                                   
                                
@@ -1378,13 +1378,13 @@ const P2PTable = () => {
                                     <span>Waiting for seller to deposit {item.usdtAmount} USDT to escrow...</span>
 
                                     <span className="text-sm text-zinc-400">
-                                      Trade will be cancelled in {
+                                      This trade will be cancelled in {
 
                                         (1 - Math.floor((new Date().getTime() - new Date(item.acceptedAt).getTime()) / 1000 / 60 / 60) - 1) > 0
                                         ? (1 - Math.floor((new Date().getTime() - new Date(item.acceptedAt).getTime()) / 1000 / 60 / 60) - 1) + ' hours'
                                         : (60 - Math.floor((new Date().getTime() - new Date(item.acceptedAt).getTime()) / 1000 / 60) % 60) + ' minutes'
 
-                                      } If the seller does not deposit the USDT to escrow.
+                                      } if the seller does not deposit the USDT to escrow.
 
                                     </span>
                                   </div>

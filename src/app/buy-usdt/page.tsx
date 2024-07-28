@@ -79,6 +79,8 @@ interface SellOrder {
 
   buyer: any;
 
+  canceller: string;
+
   escrowTransactionHash: string;
   transactionHash: string;
 }
@@ -242,7 +244,7 @@ const P2PTable = () => {
 
         const interval = setInterval(() => {
             fetchSellOrders();
-        }, 1000 * 60 * 5);
+        }, 10000);
 
 
         return () => clearInterval(interval);
@@ -638,7 +640,7 @@ const P2PTable = () => {
                                   />
                                   <p className="text-sm text-zinc-400">Expires in {
   
-                                    24 - Math.floor((new Date().getTime() - new Date(item.createdAt).getTime()) / 1000 / 60 / 60)
+                                    24 - Math.floor((new Date().getTime() - new Date(item.createdAt).getTime()) / 1000 / 60 / 60) - 1
 
                                     } hours {
                                       60 - Math.floor((new Date().getTime() - new Date(item.createdAt).getTime()) / 1000 / 60) % 60
@@ -668,7 +670,10 @@ const P2PTable = () => {
 
 
                             { (item.status === 'accepted' || item.status === 'paymentRequested' || item.status === 'cancelled') && (
-                              <div className="mb-4 flex flex-row items-center bg-zinc-800 px-2 py-1 rounded-md">
+                              <div className={`
+                              ${item.status !== 'cancelled' && 'h-16'}
+
+                              mb-4 flex flex-row items-center bg-zinc-800 px-2 py-1 rounded-md`}>
                                 <Image
                                   src="/icon-trade.png"
                                   alt="Trade"
@@ -681,29 +686,36 @@ const P2PTable = () => {
                                   {item.tradeId}
                                 </p>
 
-
-                                <p className="ml-2 text-sm text-zinc-400">
-                                  Started {
-                                    new Date().getTime() - new Date(item.acceptedAt).getTime() < 1000 * 60 ? (
-                                      ' ' + Math.floor((new Date().getTime() - new Date(item.acceptedAt).getTime()) / 1000) + ' seconds ago'
-                                    ) :
-                                    new Date().getTime() - new Date(item.acceptedAt).getTime() < 1000 * 60 * 60 ? (
-                                    ' ' + Math.floor((new Date().getTime() - new Date(item.acceptedAt).getTime()) / 1000 / 60) + ' minutes ago'
-                                    ) : (
-                                      ' ' + Math.floor((new Date().getTime() - new Date(item.acceptedAt).getTime()) / 1000 / 60 / 60) + ' hours ago'
-                                    )}
-                                </p>
+                                {item.status === 'cancelled' ? (
+                                  <p className="ml-2 text-sm text-zinc-400">
+                                    {new Date(item.acceptedAt).toLocaleString()}
+                                  </p>
+                                ) : (
+                                  <p className="ml-2 text-sm text-zinc-400">
+                                    Started {
+                                      new Date().getTime() - new Date(item.acceptedAt).getTime() < 1000 * 60 ? (
+                                        ' ' + Math.floor((new Date().getTime() - new Date(item.acceptedAt).getTime()) / 1000) + ' seconds ago'
+                                      ) :
+                                      new Date().getTime() - new Date(item.acceptedAt).getTime() < 1000 * 60 * 60 ? (
+                                      ' ' + Math.floor((new Date().getTime() - new Date(item.acceptedAt).getTime()) / 1000 / 60) + ' minutes ago'
+                                      ) : (
+                                        ' ' + Math.floor((new Date().getTime() - new Date(item.acceptedAt).getTime()) / 1000 / 60 / 60) + ' hours ago'
+                                      )}
+                                  </p>
+                                )}
 
                               </div>
                             )}
 
 
-
+                            {/*
+                            
                             {item.acceptedAt && (
                               <p className="mb-2 text-sm text-zinc-400">
                                 Trade started at {new Date(item.acceptedAt).toLocaleDateString() + ' ' + new Date(item.acceptedAt).toLocaleTimeString()}
                               </p>
                             )}
+                            */}
 
 
 
@@ -884,13 +896,13 @@ const P2PTable = () => {
                                     <span>Waiting for seller to deposit {item.usdtAmount} USDT to escrow...</span>
 
                                     <span className="text-sm text-zinc-400">
-                                      Trade will be cancelled in {
+                                      This trade will be cancelled in {
 
                                         (1 - Math.floor((new Date().getTime() - new Date(item.acceptedAt).getTime()) / 1000 / 60 / 60) - 1) > 0
                                         ? (1 - Math.floor((new Date().getTime() - new Date(item.acceptedAt).getTime()) / 1000 / 60 / 60) - 1) + ' hours'
                                         : (60 - Math.floor((new Date().getTime() - new Date(item.acceptedAt).getTime()) / 1000 / 60) % 60) + ' minutes'
 
-                                      } If the seller does not deposit the USDT to escrow.
+                                      } if the seller does not deposit the USDT to escrow.
 
                                     </span>
                                   </div>

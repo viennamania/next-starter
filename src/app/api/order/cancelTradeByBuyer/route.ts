@@ -28,20 +28,37 @@ export async function POST(request: NextRequest) {
 
 
   if (result) {
-    /*
-    const client = twilio(
-      process.env.TWILIO_ACCOUNT_SID,
-      process.env.TWILIO_AUTH_TOKEN
-    );
-  
-    const message = await client.messages.create({
-      body: `Your trade has been cancelled. Order Id: ${orderId}`,
-      from: process.env.TWILIO_PHONE_NUMBER,
-      to: process.env.TWILIO_DESTINATION_PHONE_NUMBER,
+
+
+    const tradeId = result.updated?.tradeId;
+    const to = result.updated?.mobile || "";
+    const buyer = result.updated?.buyer;
+
+
+
+
+    const accountSid = process.env.TWILIO_ACCOUNT_SID;
+    const authToken = process.env.TWILIO_AUTH_TOKEN;
+    const client = twilio(accountSid, authToken);
+
+
+
+    let message = null;
+
+
+    const msgBody = `[UNOVE] TID[${tradeId}] Your sell order has been cancelled by ${buyer?.nickname}!`;
+
+    message = await client.messages.create({
+      ///body: "This is the ship that made the Kessel Run in fourteen parsecs?",
+      body: msgBody,
+      from: "+17622254217",
+      to: to,
     });
-  
-    //console.log(message.sid);
-    */
+
+    console.log(message.sid);
+
+
+
 
     return NextResponse.json({
 
