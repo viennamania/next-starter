@@ -963,7 +963,7 @@ const P2PTable = () => {
                                       sellOrder();
                                   }}
                               >
-                                Place order {usdtAmount} USDT
+                                Place order
                               </button>
                           )}
 
