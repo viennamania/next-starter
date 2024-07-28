@@ -402,7 +402,7 @@ const P2PTable = () => {
 
 
 
-    
+
     const requstPayment = async (
       index: number,
       orderId: string,
@@ -796,71 +796,66 @@ const P2PTable = () => {
                             `}
                         >
 
-                            { (item.status === 'accepted' || item.status === 'paymentRequested' || item.status === 'paymentConfirmed' || item.status === 'cancelled') && (
+                            <div className="flex flex-row items-center justify-between gap-2">
                               <p className="text-lg text-green-500">
                                 TID: {item.tradeId}
                               </p>
+                              {item.status === 'paymentConfirmed' && (
+                                <p className="text-sm text-zinc-400">
+                                  {new Date(item.acceptedAt).toLocaleString()}
+                                </p>
+                              )}
+                            </div>
+
+                            {item.status !== 'paymentConfirmed' && (
+                              <p className="mt-4 text-sm text-zinc-400">Trade started at {
+                                item.acceptedAt && new Date(item.acceptedAt).toLocaleString()
+                              }</p>
                             )}
 
-                            {item.status === 'accepted' && (
-                              <p className="mt-4 text-sm text-zinc-400">
-                                Trade started at {
-                                  new Date(item.acceptedAt).toLocaleDateString() + ' ' + new Date(item.acceptedAt).toLocaleTimeString()
-                                }
-                              </p>
-                            )}
-
-                            {item.status === 'paymentRequested' && (
-                              <p className="mt-4 text-sm text-zinc-400">
-                                Requested at {
-                                  new Date(item.paymentRequestedAt).toLocaleDateString() + ' ' + new Date(item.paymentRequestedAt).toLocaleTimeString()
-                                }
-                              </p>
+                            {item.status === 'paymentConfirmed' && (
+                              <p className="mt-4 text-sm text-zinc-400">Completed at {
+                                item.paymentConfirmedAt && new Date(item.paymentConfirmedAt).toLocaleString()
+                              }</p>
                             )}
 
                             {item.status === 'cancelled' && (
-                              <p className="mt-4 text-sm text-red-500">
-                                Cancelled at {
-                                  new Date(item.cancelledAt).toLocaleDateString() + ' ' + new Date(item.cancelledAt).toLocaleTimeString()
-                                }
-                              </p>
+                              <div className="mt-4 flex flex-row items-center gap-2">
+                                <Image
+                                  src='/icon-cancelled.webp'
+                                  alt='cancel'
+                                  width={20}
+                                  height={20}
+                                />
+                                <p className="text-sm text-red-500">
+                                  Cancelled at {
+                                    new Date(item.cancelledAt).toLocaleDateString() + ' ' + new Date(item.cancelledAt).toLocaleTimeString()
+                                  }
+                                </p>
+                              </div>
                             )}
 
                             
-                            {item.paymentConfirmedAt && (
-                              <div className="mt-4 block h-14">                      
-                                <p className="text-sm text-zinc-400">
-                                  Completed at {
-                                    new Date(item.paymentConfirmedAt).toLocaleDateString() + ' ' + new Date(item.paymentConfirmedAt).toLocaleTimeString()
-                                  }
-                                </p>
+                            {item.status === 'paymentConfirmed' && (
+                              <div className="mt-4 flex flex-row items-center gap-2">
 
-                                <p className="flex flex-row items-center gap-2">
+                                <Image
+                                  src='/timer.png'
+                                  alt='timer'
+                                  width={28}
+                                  height={28}
+                                />
 
-                                  <Image
-                                    src='/timer.png'
-                                    alt='timer'
-                                    width={28}
-                                    height={28}
-                                  />
+                                <div className="text-sm text-green-500">
+                                  Total trading time is {
 
-                                  <div className="text-sm text-green-500">
-                                    Total trading time is {
+                                ( (new Date(item.paymentConfirmedAt).getTime() - new Date(item.acceptedAt).getTime()) / 1000 / 60 ).toFixed(0) 
 
-                                  ( (new Date(item.paymentConfirmedAt).getTime() - new Date(item.acceptedAt).getTime()) / 1000 / 60 ).toFixed(0) 
-
-                                    } minutes
-                                  </div>
-
-                                </p>
-
-
-                                </div> 
-
-
-
-                            )}   
-                             
+                                  } minutes
+                                </div>
+                                
+                              </div>
+                            )}
 
 
                           
@@ -1365,29 +1360,26 @@ const P2PTable = () => {
 
                               <div className="w-full mt-2 mb-2 flex flex-col items-center ">
 
+                                <div className="w-full flex flex-col items-start gap-2">
+                                  <div className="flex flex-row items-center gap-2">
+                                    <div className="text-lg font-semibold text-red-500">
+                                      - {item.usdtAmount} USDT
+                                    </div>
+                                    <div className="text-lg font-semibold text-white">
+                                      /
+                                    </div>
+                                    <div className="text-lg font-semibold text-green-500">
+                                      + {
+                                      item.krwAmount.toLocaleString('ko-KR', {
+                                        style: 'currency',
+                                        currency: 'KRW',
+                                      })
+                                      
+                                    }
+                                    </div>
+                                  </div>
 
-                              <div className="w-full flex flex-col items-start gap-2">
-                                <div className="flex flex-row items-center gap-2">
-                                  <div className="text-lg font-semibold text-red-500">
-                                    - {item.usdtAmount} USDT
-                                  </div>
-                                  <div className="text-lg font-semibold text-white">
-                                    /
-                                  </div>
-                                  <div className="text-lg font-semibold text-green-500">
-                                    + {
-                                    item.krwAmount.toLocaleString('ko-KR', {
-                                      style: 'currency',
-                                      currency: 'KRW',
-                                    })
-                                    
-                                  }
-                                  </div>
                                 </div>
-
-                              </div>
-              
-
 
                                 <Image
                                   src='/confirmed.png'
@@ -1395,12 +1387,6 @@ const P2PTable = () => {
                                   width={200}
                                   height={200}
                                 />
-
-
-
-
-
-
 
                               </div>
                             )}

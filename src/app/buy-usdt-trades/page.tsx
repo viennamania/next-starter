@@ -521,20 +521,22 @@ const P2PTable = () => {
                             
                           >
 
-                            <p className="text-xl text-green-500">
-                              TID: {item.tradeId}
-                            </p>
+                            <div className="flex flex-row items-center justify-between gap-2">
+                              <p className="text-lg text-green-500">
+                                TID: {item.tradeId}
+                              </p>
+                              {item.status === 'paymentConfirmed' && (
+                                <p className="text-sm text-zinc-400">
+                                  {new Date(item.acceptedAt).toLocaleString()}
+                                </p>
+                              )}
+                            </div>
 
-                            {/*
-                            <p className="mt-5 text-sm text-zinc-400">Ordered at {
-                                item.createdAt && new Date(item.createdAt).toLocaleString()
-                            }</p>
-                            */}
-
-                            
-                            <p className="mt-4 text-sm text-zinc-400">Trade started at {
-                              item.acceptedAt && new Date(item.acceptedAt).toLocaleString()
-                            }</p>
+                            {item.status !== 'paymentConfirmed' && (
+                              <p className="mt-4 text-sm text-zinc-400">Trade started at {
+                                item.acceptedAt && new Date(item.acceptedAt).toLocaleString()
+                              }</p>
+                            )}
 
                             {item.status === 'paymentConfirmed' && (
                               <p className="mt-4 text-sm text-zinc-400">Completed at {
@@ -543,15 +545,22 @@ const P2PTable = () => {
                             )}
 
                             {item.status === 'cancelled' && (
-                              <p className="mt-4 text-sm text-red-500">
-                                Cancelled at {
-                                  new Date(item.cancelledAt).toLocaleDateString() + ' ' + new Date(item.cancelledAt).toLocaleTimeString()
-                                }
-                              </p>
+                              <div className="mt-4 flex flex-row items-center gap-2">
+                                <Image
+                                  src='/icon-cancelled.webp'
+                                  alt='cancel'
+                                  width={20}
+                                  height={20}
+                                />
+                                <p className="text-sm text-red-500">
+                                  Cancelled at {
+                                    new Date(item.cancelledAt).toLocaleDateString() + ' ' + new Date(item.cancelledAt).toLocaleTimeString()
+                                  }
+                                </p>
+                              </div>
                             )}
 
-                            {/* total trading time is paymentCompletedAt - aceeptedAt */}
-
+              
                             {item.status === 'paymentConfirmed' && (
                               <div className="mt-4 flex flex-row items-center gap-2">
 
@@ -816,7 +825,7 @@ const P2PTable = () => {
 
                         {/* status */}
 
-                        <div className="mt-10 flex flex-row items-start justify-start">
+                        <div className="mt-10 flex flex-row items-start justify-end">
                           <div className="text-xs text-zinc-400">
                             {item.status === 'ordered' ? 'Order opened at ' + new Date(item.createdAt).toLocaleString()
                             : item.status === 'accepted' ? 'Trade started at ' + new Date(item.acceptedAt).toLocaleString()

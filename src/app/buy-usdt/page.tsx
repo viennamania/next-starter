@@ -774,12 +774,20 @@ const P2PTable = () => {
 
 
 
-                            {item.status === 'cancelled' && (
-
-                                <p className="text-sm text-zinc-400">
-                                  Cancelled at {new Date(item?.cancelledAt).toLocaleString()}
+                          {item.status === 'cancelled' && (
+                              <div className="mt-4 flex flex-row items-center gap-2">
+                                <Image
+                                  src='/icon-cancelled.webp'
+                                  alt='cancel'
+                                  width={20}
+                                  height={20}
+                                />
+                                <p className="text-sm text-red-500">
+                                  Cancelled at {
+                                    new Date(item.cancelledAt).toLocaleDateString() + ' ' + new Date(item.cancelledAt).toLocaleTimeString()
+                                  }
                                 </p>
-
+                              </div>
                             )}
 
 
