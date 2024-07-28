@@ -41,6 +41,10 @@ const DynamicAppWithNoSSR = dynamic(() => import("../../components/Chat"), {
 import Chat from "../../components/Chat";
 
 
+import React, { useEffect, useState } from 'react';
+
+
+
 
 export default function ChatPage() {
 
@@ -63,6 +67,48 @@ export default function ChatPage() {
   console.log('address', address);
       
 
+  const [nickname, setNickname] = useState("");
+  const [avatar, setAvatar] = useState("/profile-default.png");
+  const [userCode, setUserCode] = useState("");
+
+
+  const [user, setUser] = useState<any>(null);
+
+
+  const [seller, setSeller] = useState(null) as any;
+
+
+  useEffect(() => {
+      const fetchData = async () => {
+          const response = await fetch("/api/user/getUser", {
+              method: "POST",
+              headers: {
+                  "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                  walletAddress: address,
+              }),
+          });
+
+          const data = await response.json();
+
+          //console.log("data", data);
+
+          if (data.result) {
+              setNickname(data.result.nickname);
+              data.result.avatar && setAvatar(data.result.avatar);
+              setUserCode(data.result.id);
+
+              setUser(data.result);
+
+              setSeller(data.result.seller);
+
+          }
+      };
+
+      fetchData();
+
+  }, [address]);
 
 
 
@@ -75,7 +121,7 @@ export default function ChatPage() {
 
 
 
-        <div className="py-20 w-full">
+        <div className="py-20 w-full h-full">
   
           {/* goto home button using go back icon
           history back
@@ -91,9 +137,11 @@ export default function ChatPage() {
           />
           */}
 
-          {address && (
+          {address && nickname && (
             <Chat
-              userId={  address }
+              userId={ nickname }
+
+              nickname={  nickname }
             />
           )}
 
