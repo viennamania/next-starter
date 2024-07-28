@@ -37,7 +37,6 @@ import { balanceOf } from "thirdweb/extensions/erc20";
  
 
 
-
 import { sendAndConfirmTransaction } from "thirdweb";
 
 import {

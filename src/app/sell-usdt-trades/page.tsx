@@ -266,6 +266,8 @@ const P2PTable = () => {
     const closeModal = () => setModalOpen(false);
     const openModal = () => setModalOpen(true);
 
+
+
     const goChat = (
       tradeId: string
     ) => {
@@ -273,6 +275,8 @@ const P2PTable = () => {
         router.push(`/chat?tradeId=${tradeId}`);
     }
 
+
+    
 
     const [usdtAmount, setUsdtAmount] = useState(0);
     const [krwAmount, setKrwAmount] = useState(0);

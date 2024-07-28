@@ -1283,6 +1283,8 @@ const P2PTable = () => {
                               </p>
                             )}
 
+
+
                             <div className="mt-4 flex flex-row items-between space-x-2">
 
                               <div className="flex flex-col items-start">

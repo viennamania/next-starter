@@ -1051,27 +1051,30 @@ export default function SellUsdt({ params }: { params: { orderId: string } }) {
                                 </p>
 
                                 {/* reload button */}
-                                <button
-                                  className="text-sm bg-green-500 text-white px-2 py-1 rounded-md"
-                                  onClick={() => {
-                                    fetch('/api/order/getOneSellOrder', {
-                                      method: 'POST',
-                                      headers: {
-                                        'Content-Type': 'application/json'
-                                      },
-                                      body: JSON.stringify({
-                                        orderId: item._id,
+                                {item.status !== 'paymentConfirmed' && ( 
+                                  <button
+                                    className="text-sm bg-green-500 text-white px-2 py-1 rounded-md"
+                                    onClick={() => {
+                                      fetch('/api/order/getOneSellOrder', {
+                                        method: 'POST',
+                                        headers: {
+                                          'Content-Type': 'application/json'
+                                        },
+                                        body: JSON.stringify({
+                                          orderId: item._id,
+                                        })
                                       })
-                                    })
-                                    .then(response => response.json())
-                                    .then(data => {
-                                      //console.log('data', data);
-                                      setSellOrders(data.result.orders);
-                                    });
-                                  }}
-                                >
-                                  Reload
-                                </button>
+                                      .then(response => response.json())
+                                      .then(data => {
+                                        //console.log('data', data);
+                                        setSellOrders(data.result.orders);
+                                      });
+                                    }}
+                                  >
+                                    Reload
+                                  </button>
+                                )}
+                                
                               </div>
 
                             )}
@@ -1082,34 +1085,38 @@ export default function SellUsdt({ params }: { params: { orderId: string } }) {
 
 
 
-                                  <div className='flex flex-row items-center gap-2'>
-                                
-                                    {item.privateSale ? (
-                                      <Image
-                                        src='/icon-private-sale.png'
-                                        alt='Private Sale'
-                                        width={32}
-                                        height={32}
-                                      />
-                                    ) : (
-                                      <Image
-                                        src='/icon-public-sale.png'
-                                        alt='Public Sale'
-                                        width={32}
-                                        height={32}
-                                      /> 
-                                    )}
-                                    <p className="text-sm text-zinc-400">
-                                      Opened at {new Date(item.createdAt).toLocaleString()}
-                                    </p>
-                                  </div>
+                                <div className='flex flex-row items-center gap-2'>
+                              
+                                  {item.privateSale ? (
+                                    <Image
+                                      src='/icon-private-sale.png'
+                                      alt='Private Sale'
+                                      width={32}
+                                      height={32}
+                                    />
+                                  ) : (
+                                    <Image
+                                      src='/icon-public-sale.png'
+                                      alt='Public Sale'
+                                      width={32}
+                                      height={32}
+                                    /> 
+                                  )}
+                                  <p className="text-sm text-zinc-400">
+                                    Order opened at {new Date(item.createdAt).toLocaleString()}
+                                  </p>
+                                </div>
                               
 
 
                                 <div className='flex flex-row items-center gap-2'>
 
-                                  
-                                  <div className="w-2 h-2 rounded-full bg-green-500 mr-2"></div>
+                                  <Image
+                                    src='/icon-trade.png'
+                                    alt='Trade'
+                                    width={32}
+                                    height={32}
+                                  />
 
                                   <p className="text-sm text-zinc-400">
                                     Trade started at {new Date(item.acceptedAt).toLocaleDateString() + ' ' + new Date(item.acceptedAt).toLocaleTimeString()}
@@ -1126,9 +1133,13 @@ export default function SellUsdt({ params }: { params: { orderId: string } }) {
                               <>
 
                                 <div className='flex flex-row items-center gap-2 mb-4'>
-                                  {/* dot */}
-                                  <div className="w-2 h-2 rounded-full bg-green-500 mr-2"></div>
-
+                                  
+                                  <Image
+                                    src='/icon-completed.png'
+                                    alt='Completed'
+                                    width={32}
+                                    height={32}
+                                  />
                                   <p className="text-sm text-zinc-400">
                                     Completed at {new Date(item.paymentConfirmedAt).toLocaleDateString() + ' ' + new Date(item.paymentConfirmedAt).toLocaleTimeString()}
                                   </p>
@@ -1159,27 +1170,34 @@ export default function SellUsdt({ params }: { params: { orderId: string } }) {
                             )}
 
 
-                            <p className="mt-4 text-2xl font-bold text-white">{item.usdtAmount} USDT</p>
+                            <div className="mt-4 flex flex-row items-between space-x-2">
 
-                            <p className="text-xl text-zinc-400"> Price: {
-                              Number(item.krwAmount).toLocaleString('ko-KR', {
-                                style: 'currency',
-                                currency: 'KRW'
-                              })
-                            }</p>
+                              <div className="flex flex-col items-start">
+                                <p className="text-2xl font-semibold text-white">{item.usdtAmount} USDT</p>
 
-                            
-                            <p className="text-sm text-zinc-400">Rate: 1 USDT = {
+                                <p className="text-lg text-zinc-400">
+                                  Price: {
+                                    // currency
+                                  
+                                    Number(item.krwAmount).toLocaleString('ko-KR', {
+                                      style: 'currency',
+                                      currency: 'KRW',
+                                    })
 
-                                // currency format
-                                Number((item.krwAmount / item.usdtAmount).toFixed(2)).toLocaleString('ko-KR', {
-                                  style: 'currency',
-                                  currency: 'KRW'
-                                })
+                                  }
+                                </p>
+                              </div>
 
+                              <div className="flex flex-col items-start">
+                                <p className="text-lg font-semibold text-white">Rate: {
 
+                                  Number(item.krwAmount / item.usdtAmount).toFixed(2)
 
-                            }</p>
+                                }</p>
+                              </div>
+
+                            </div>
+
 
                             <p className="text-sm text-zinc-400">Payment: Bank Transfer ({item.seller?.bankInfo.bankName})</p>                         
 
