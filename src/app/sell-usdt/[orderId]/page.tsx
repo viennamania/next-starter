@@ -758,7 +758,7 @@ export default function SellUsdt({ params }: { params: { orderId: string } }) {
                             <p className="mt-4 text-2xl font-bold text-white">{item.usdtAmount} USDT</p>
 
                             <p className="text-xl text-zinc-400"> Price: {
-                              Number(item.krwAmount).toLocaleString('en-US', {
+                              Number(item.krwAmount).toLocaleString('ko-KR', {
                                 style: 'currency',
                                 currency: 'KRW'
                               })
@@ -768,7 +768,7 @@ export default function SellUsdt({ params }: { params: { orderId: string } }) {
                             <p className="text-sm text-zinc-400">Rate: 1 USDT = {
 
                                 // currency format
-                                Number((item.krwAmount / item.usdtAmount).toFixed(2)).toLocaleString('en-US', {
+                                Number((item.krwAmount / item.usdtAmount).toFixed(2)).toLocaleString('ko-KR', {
                                   style: 'currency',
                                   currency: 'KRW'
                                 })
@@ -1079,7 +1079,7 @@ export default function SellUsdt({ params }: { params: { orderId: string } }) {
                                   <div className="w-2 h-2 rounded-full bg-green-500"></div>
                                   <div className="text-lg">
                                     Deposit Amount: {
-                                      item.krwAmount.toLocaleString('en-US', {
+                                      item.krwAmount.toLocaleString('ko-KR', {
                                         style: 'currency',
                                         currency: 'KRW'
                                       })

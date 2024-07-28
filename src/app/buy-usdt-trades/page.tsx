@@ -575,7 +575,7 @@ const P2PTable = () => {
                             </p>
 
                             <p className="mb-4 text-xl text-zinc-400">
-                              Price: { item.krwAmount.toLocaleString('en-US', {
+                              Price: { item.krwAmount.toLocaleString('ko-KR', {
                                 style: 'currency',
                                 currency: 'KRW',
                               }) }

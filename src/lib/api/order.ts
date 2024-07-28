@@ -160,6 +160,24 @@ export async function getOrderById(orderId: string): Promise<UserProps | null> {
 
 
 
+// get count of open orders not expired 24 hours after created
+export async function getOpenOrdersCount(): Promise<number> {
+
+  const client = await clientPromise;
+  const collection = client.db('vienna').collection('orders');
+
+  const result = await collection.countDocuments(
+    { status: 'ordered', createdAt: { $gt: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString() } }
+  );
+
+  return result;
+
+}
+
+
+
+
+
 
 // get sell orders order by createdAt desc
 export async function getSellOrders(

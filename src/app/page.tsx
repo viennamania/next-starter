@@ -275,29 +275,7 @@ export default function Home() {
 
 
 
-  /*
-  useEffect(() => {
-
-    if (address) {
-
-      try {
-        getOwnedNFTs({
-          contract: contractEditorDrop,
-          owner: address,
-        }).then((ownedNFTs) => {
-
-          console.log("ownedNFTs=", ownedNFTs);
-
-        });
-      } catch (error) {
-        console.error(error);
-      }
-
-    }
-
-  } , [address]);
-  */
-  
+ 
 
   const [nickname, setNickname] = useState("");
   const [avatar, setAvatar] = useState("/profile-default.png");
@@ -336,6 +314,36 @@ export default function Home() {
       fetchData();
 
   }, [address]);
+
+
+
+  const [countOfOpenOrders, setCountOfOpenOrders] = useState(0);
+  useEffect(() => {
+    const fetchData = async () => {
+        const response = await fetch("/api/order/getCountOfOpenOrders", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+            }),
+        });
+
+        const data = await response.json();
+
+        console.log("data", data);
+
+        if (data.result) {
+
+            setCountOfOpenOrders(data.result);
+        }
+    };
+
+    fetchData();
+
+  } , []);
+
+
 
 
   const [bestSellers, setBestSellers] = useState([]);
@@ -1031,18 +1039,18 @@ export default function Home() {
         <div className="grid gap-4 lg:grid-cols-3 justify-center">
 
           <ArticleCard
-            title="Buy USDT"
+            title={`Buy USDT - Open Orders (${countOfOpenOrders}) EA`}
             href="/buy-usdt"
             description="Buy USDT with your favorite real-world currency"
           />
 
           
             
-              <ArticleCard
-                title="Sell USDT"
-                href="/sell-usdt"
-                description="Sell USDT for your favorite real-world currency"
-              />
+          <ArticleCard
+            title="Sell USDT"
+            href="/sell-usdt"
+            description="Sell USDT for your favorite real-world currency"
+          />
             
           
 

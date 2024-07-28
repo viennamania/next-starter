@@ -235,9 +235,11 @@ const P2PTable = () => {
 
     useEffect(() => {
 
+        /*
         if (!address) {
           return;
         }
+          */
         
         const fetchSellOrders = async () => {
           // api call
@@ -254,7 +256,10 @@ const P2PTable = () => {
   
           const data = await response.json();
   
-          console.log('data', data);
+          
+          //console.log('data', data);
+
+
   
           if (data.result) {
             setSellOrders(data.result.orders);
@@ -546,7 +551,7 @@ const P2PTable = () => {
               </div>
 
 
-                <div className="w-full flex flex-row items-start justify-between gap-2">
+                <div className="flex flex-row items-start justify-between gap-2">
                   {/* my usdt balance */}
                   <div className="flex flex-col gap-2 items-start">
                     <div className="text-5xl font-semibold text-white">
@@ -574,6 +579,7 @@ const P2PTable = () => {
                     {/* checkbox for search my trades */}
                     <div className="flex flex-row items-center gap-2">
                       <input
+                        disabled={!address}
                         type="checkbox"
                         checked={searchMyOrders}
                         onChange={(e) => setSearchMyOrders(e.target.checked)}
@@ -587,55 +593,14 @@ const P2PTable = () => {
 
 
 
-                {/* total sell orders */}
-                <div className="flex flex-row items-start justify-between gap-4">
-
-                  <div className="flex flex-col gap-2 items-center">
-                    <div className="text-sm">Total Sales</div>
-                    <div className="text-xl font-semibold text-white">
-                      {sellOrders.length}
-                    </div>
-                  </div>
-
-                  <div className="flex flex-col gap-2 items-center">
-                    <div className="text-sm">Opened Orders</div>
-                    <div className="text-xl font-semibold text-white">
-                      {sellOrders.filter((item) => item.status === 'ordered').length}
-                    </div>
-                  </div>
-
-                  <div className="flex flex-col gap-2 items-center">
-                    <div className="text-sm">Accepted Trades</div>
-                    <div className="text-xl font-semibold text-white">
-
-                      {
-                        //sellOrders.filter((item) => item.status === 'accepted').length
-                        sellOrders.filter((item) => item.status === 'accepted' || item.status === 'paymentRequested').length
-
-                      }
-
-                    </div>
-                  </div>
-
-                  {/* completed trades */}
-                  <div className="flex flex-col gap-2 items-center">
-                    <div className="text-sm">Completed Trades</div>
-                    <div className="text-xl font-semibold text-white">
-                      {sellOrders.filter((item) => item.status === 'paymentConfirmed').length}
-                    </div>
-                  </div>
-
-
-
-
-                </div>
 
 
 
 
 
 
-                <div className=" w-full grid gap-4 lg:grid-cols-3 justify-center">
+
+                  <div className=" w-full grid gap-4 lg:grid-cols-3 justify-center">
 
 
                     {/* sell order is different border color
@@ -718,7 +683,7 @@ const P2PTable = () => {
 
                         <p className="mt-4 text-xl font-bold text-zinc-400">1 USDT = {
                           // currency format
-                          Number(rate).toLocaleString('en-US', {
+                          Number(rate).toLocaleString('ko-KR', {
                             style: 'currency',
                             currency: 'KRW'
                           })
@@ -763,7 +728,7 @@ const P2PTable = () => {
 
                           <p className=" text-xl text-zinc-400 font-bold">
                             = {
-                            Number(defaultKrWAmount).toLocaleString('en-US', {
+                            Number(defaultKrWAmount).toLocaleString('ko-KR', {
                               style: 'currency',
                               currency: 'KRW'
                             })
@@ -855,7 +820,7 @@ const P2PTable = () => {
                                 Rate: {
 
                                   // currency format
-                                  Number((krwAmount / usdtAmount).toFixed(2)).toLocaleString('en-US', {
+                                  Number((krwAmount / usdtAmount).toFixed(2)).toLocaleString('ko-KR', {
                                     style: 'currency',
                                     currency: 'KRW'
                                   })
@@ -1043,6 +1008,54 @@ const P2PTable = () => {
                       className="hidden xl:block"
                     ></article>
 
+
+                  </div>
+
+         
+
+                  {/* total sell orders */}
+                  <div className="p-2 xl:p-0  flex flex-row items-center justify-between gap-4">
+
+                    <div className="flex flex-col gap-2 items-center">
+                      <div className="text-sm">Total Sales</div>
+                      <div className="text-xl font-semibold text-white">
+                        {sellOrders.length}
+                      </div>
+                    </div>
+
+                    <div className="flex flex-col gap-2 items-center">
+                      <div className="text-sm">Opened Orders</div>
+                      <div className="text-xl font-semibold text-white">
+                        {sellOrders.filter((item) => item.status === 'ordered').length}
+                      </div>
+                    </div>
+
+                    <div className="flex flex-col gap-2 items-center">
+                      <div className="text-sm">Accepted Trades</div>
+                      <div className="text-xl font-semibold text-white">
+
+                        {
+                          //sellOrders.filter((item) => item.status === 'accepted').length
+                          sellOrders.filter((item) => item.status === 'accepted' || item.status === 'paymentRequested').length
+
+                        }
+
+                      </div>
+                    </div>
+
+                    {/* completed trades */}
+                    <div className="flex flex-col gap-2 items-center">
+                      <div className="text-sm">Completed Trades</div>
+                      <div className="text-xl font-semibold text-white">
+                        {sellOrders.filter((item) => item.status === 'paymentConfirmed').length}
+                      </div>
+                    </div>
+
+
+                  </div>
+
+
+                  <div className=" w-full grid gap-4 lg:grid-cols-3 justify-center">
 
 
 

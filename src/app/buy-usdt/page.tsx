@@ -42,6 +42,7 @@ import { getUserPhoneNumber } from "thirdweb/wallets/in-app";
 
 
 import { balanceOf, transfer } from "thirdweb/extensions/erc20";
+import { add } from "thirdweb/extensions/farcaster/keyGateway";
  
 
 
@@ -556,6 +557,7 @@ const P2PTable = () => {
                     {/* checkbox for search my trades */}
                     <div className="flex flex-row items-center gap-2">
                       <input
+                        disabled={!address}
                         type="checkbox"
                         checked={searchMyTrades}
                         onChange={(e) => setSearchMyTrades(e.target.checked)}
@@ -801,7 +803,7 @@ const P2PTable = () => {
                                 </p>
                               </div>
 
-                              <div className="flex flex-col items-start">
+                              <div className="flex flex-row items-start gap-2">
                                 <p className="text-lg font-semibold text-white">Rate: {
 
                                   Number(item.krwAmount / item.usdtAmount).toFixed(2)
@@ -1079,7 +1081,12 @@ const P2PTable = () => {
                                       className="animate-spin"
                                     />
 
-                                    <div>Waiting for buyer to send {item.krwAmount} KRW to seller...</div>
+                                    <div>Waiting for buyer to send {
+                                    item.krwAmount.toLocaleString('ko-KR', {
+                                      style: 'currency',
+                                      currency: 'KRW',
+                                    })} to seller...</div>
+                                  
 
                                   </div>
 
@@ -1104,8 +1111,8 @@ const P2PTable = () => {
                                   <Image
                                     src='/loading.png'
                                     alt='loading'
-                                    width={38}
-                                    height={38}
+                                    width={35}
+                                    height={35}
                                     className="animate-spin"
                                   />
                                   <div>Accepting...</div>
@@ -1147,6 +1154,7 @@ const P2PTable = () => {
                                           {/* agreement for trade */}
                                           <div className="flex flex-row items-center space-x-2">
                                             <input
+                                              disabled={!address}
                                               type="checkbox"
                                               checked={agreementForTrade[index]}
                                               onChange={(e) => {
