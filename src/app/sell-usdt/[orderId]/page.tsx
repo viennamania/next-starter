@@ -888,40 +888,87 @@ export default function SellUsdt({ params }: { params: { orderId: string } }) {
 
           <div className=" flex flex-col xl:flex-row items-start justify-center space-y-4">
 
-                <div className="w-full flex flex-col items-start justify-between gap-2">
-                  {/* my usdt balance */}
-                  <div className="flex flex-col gap-2 items-start">
-                    <div className="text-5xl font-semibold text-white">
-                      {Number(balance).toFixed(2)} <span className="text-lg">USDT</span>
+                {address && (
+                  <div className="w-full flex flex-col items-start justify-between gap-2">
+                    {/* my usdt balance */}
+                    <div className="flex flex-col gap-2 items-start">
+                      <div className="text-5xl font-semibold text-white">
+                        {Number(balance).toFixed(2)} <span className="text-lg">USDT</span>
+                      </div>
                     </div>
-                  </div>
 
-                  <div className="flex flex-col gap-2 items-start justify-end">
-                    <div className="flex flex-row items-center gap-2">
-                      <Image
-                        src={user?.avatar || "/profile-default.png"}
-                        alt="Avatar"
-                        width={20}
-                        height={20}
-                        priority={true} // Added priority property
-                        className="rounded-full"
-                        style={{
-                            objectFit: 'cover',
-                            width: '20px',
-                            height: '20px',
-                        }}
-                      />
-                      <div className="text-lg font-semibold text-white ">{user?.nickname}</div>
+                    <div className="flex flex-col gap-2 items-start justify-end">
+                      <div className="flex flex-row items-center gap-2">
+                        <Image
+                          src={user?.avatar || "/profile-default.png"}
+                          alt="Avatar"
+                          width={20}
+                          height={20}
+                          priority={true} // Added priority property
+                          className="rounded-full"
+                          style={{
+                              objectFit: 'cover',
+                              width: '20px',
+                              height: '20px',
+                          }}
+                        />
+                        <div className="text-lg font-semibold text-white ">{user?.nickname}</div>
+                      </div>
                     </div>
-                  </div>
 
-                </div>
+                  </div>
+                )}
 
 
 
                 <div className="w-full grid grid-cols-1 gap-4  justify-center">
 
                     {sellOrders.map((item, index) => (
+
+
+
+
+                      <div
+                        key={index}
+                        className="relative flex flex-col items-center justify-center"
+                      >
+
+
+                        {item.status === 'ordered' && (new Date().getTime() - new Date(item.createdAt).getTime() > 1000 * 60 * 60 * 24) && (
+                          <div className="absolute inset-0 flex justify-center items-center z-10
+                            bg-black bg-opacity-50
+                          ">
+                            <Image
+                              src="/icon-expired.png"
+                              alt="Expired"
+                              width={100}
+                              height={100}
+                              className="opacity-20"
+                            />
+                          </div>
+                        )}
+
+
+
+                        {item.status === 'cancelled' && (
+                          <div className="absolute inset-0 flex justify-center items-center z-10
+                            bg-black bg-opacity-50
+                          ">
+                            <Image
+                              src="/icon-cancelled.png"
+                              alt="Cancelled"
+                              width={100}
+                              height={100}
+                              className="opacity-20"
+                            />
+                          </div>
+                        )}
+
+
+
+
+
+
 
                         <article
                             key={index}
@@ -969,6 +1016,8 @@ export default function SellUsdt({ params }: { params: { orderId: string } }) {
                                         height={32}
                                       />
                                   )}
+
+                                  
                                   {/* Expired in 24 hours */}
                                   <p className=" text-sm text-zinc-400">
                                     Expired in {24 - Math.floor((new Date().getTime() - new Date(item.createdAt).getTime()) / 1000 / 60 / 60)} hours
@@ -1893,6 +1942,10 @@ export default function SellUsdt({ params }: { params: { orderId: string } }) {
 
 
                         </article>
+
+
+                      </div>
+
 
                     ))}
 

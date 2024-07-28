@@ -1054,11 +1054,7 @@ const P2PTable = () => {
 
                   <div className=" w-full grid gap-4 lg:grid-cols-3 justify-center">
 
-
-
-
                     {sellOrders.map((item, index) => (
-
 
                       <div
                         key={index}
