@@ -34,7 +34,7 @@ import {
  } from "thirdweb/wallets";
 
 
- import {
+import {
   mintTo,
   totalSupply,
   transfer,
@@ -47,11 +47,28 @@ import {
 
 
 
+// nextjs-app
+export const maxDuration = 60; // This function can run for a maximum of 5 seconds
+
+//nextjs /pages/api
+/*
+export const config = {
+	//runtime: 'edge',
+	maxDuration: 120, // This function can run for a maximum of 60 seconds
+};
+*/
+
+
+
+
+
 const chain = polygon;
 
 
 // USDT Token (USDT)
 const tokenContractAddressUSDT = '0xc2132D05D31c914a87C6611C10748AEb04B58e8F';
+
+
 
 
 
