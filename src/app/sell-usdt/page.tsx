@@ -559,35 +559,7 @@ const P2PTable = () => {
                     </div>
                   </div>
 
-                  <div className="flex flex-col gap-2 items-start justify-end">
-                    <div className="flex flex-row items-center gap-2">
-                      <Image
-                        src={user?.avatar || "/profile-default.png"}
-                        alt="Avatar"
-                        width={20}
-                        height={20}
-                        priority={true} // Added priority property
-                        className="rounded-full"
-                        style={{
-                            objectFit: 'cover',
-                            width: '20px',
-                            height: '20px',
-                        }}
-                      />
-                      <div className="text-lg font-semibold text-white ">{user?.nickname}</div>
-                    </div>
-                    {/* checkbox for search my trades */}
-                    <div className="flex flex-row items-center gap-2">
-                      <input
-                        disabled={!address}
-                        type="checkbox"
-                        checked={searchMyOrders}
-                        onChange={(e) => setSearchMyOrders(e.target.checked)}
-                        className="w-5 h-5"
-                      />
-                      <label className="text-sm text-zinc-400">Search my orders</label>
-                    </div>
-                  </div>
+
 
                 </div>
 
@@ -1017,21 +989,21 @@ const P2PTable = () => {
                   <div className="p-2 xl:p-0  flex flex-row items-center justify-between gap-4">
 
                     <div className="flex flex-col gap-2 items-center">
-                      <div className="text-sm">Total Sales</div>
+                      <div className="text-sm">Total</div>
                       <div className="text-xl font-semibold text-white">
                         {sellOrders.length}
                       </div>
                     </div>
 
                     <div className="flex flex-col gap-2 items-center">
-                      <div className="text-sm">Opened Orders</div>
+                      <div className="text-sm">Orders</div>
                       <div className="text-xl font-semibold text-white">
                         {sellOrders.filter((item) => item.status === 'ordered').length}
                       </div>
                     </div>
 
                     <div className="flex flex-col gap-2 items-center">
-                      <div className="text-sm">Accepted Trades</div>
+                      <div className="text-sm">Trades</div>
                       <div className="text-xl font-semibold text-white">
 
                         {
@@ -1043,13 +1015,38 @@ const P2PTable = () => {
                       </div>
                     </div>
 
-                    {/* completed trades */}
-                    <div className="flex flex-col gap-2 items-center">
-                      <div className="text-sm">Completed Trades</div>
-                      <div className="text-xl font-semibold text-white">
-                        {sellOrders.filter((item) => item.status === 'paymentConfirmed').length}
+
+
+                    <div className="flex flex-col gap-2 items-start justify-end">
+                      <div className="flex flex-row items-center gap-2">
+                        <Image
+                          src={user?.avatar || "/profile-default.png"}
+                          alt="Avatar"
+                          width={20}
+                          height={20}
+                          priority={true} // Added priority property
+                          className="rounded-full"
+                          style={{
+                              objectFit: 'cover',
+                              width: '20px',
+                              height: '20px',
+                          }}
+                        />
+                        <div className="text-lg font-semibold text-white ">{user?.nickname}</div>
+                      </div>
+                      {/* checkbox for search my trades */}
+                      <div className="flex flex-row items-center gap-2">
+                        <input
+                          disabled={!address}
+                          type="checkbox"
+                          checked={searchMyOrders}
+                          onChange={(e) => setSearchMyOrders(e.target.checked)}
+                          className="w-5 h-5"
+                        />
+                        <label className="text-sm text-zinc-400">Search my orders</label>
                       </div>
                     </div>
+
 
 
                   </div>
@@ -1123,9 +1120,11 @@ const P2PTable = () => {
 
 
                                 <div className="flex flex-row items-center gap-2">
-                                  {/* new order icon */}
+                                  {/* new order icon 1 hour after created */}
+
+            
                                   {
-                                    (new Date().getTime() - new Date(item.createdAt).getTime()) / 1000 / 60 / 60 < 24 && (
+                                    (new Date().getTime() - new Date(item.createdAt).getTime()) / 1000 / 60 / 60 < 1 && (
                                       <Image
                                         src="/icon-new.png"
                                         alt="New Order"
