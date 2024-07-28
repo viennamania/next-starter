@@ -180,6 +180,9 @@ const P2PTable = () => {
     const [userCode, setUserCode] = useState("");
   
   
+    const [user, setUser] = useState<any>(null);
+
+
     const [seller, setSeller] = useState(null) as any;
   
   
@@ -203,6 +206,8 @@ const P2PTable = () => {
                 setNickname(data.result.nickname);
                 data.result.avatar && setAvatar(data.result.avatar);
                 setUserCode(data.result.id);
+
+                setUser(data.result);
   
                 setSeller(data.result.seller);
   
@@ -221,8 +226,11 @@ const P2PTable = () => {
 
 
 
+
     
     const [sellOrders, setSellOrders] = useState<SellOrder[]>([]);
+
+    const [searchMyOrders, setSearchMyOrders] = useState(false);
 
 
     useEffect(() => {
@@ -239,6 +247,8 @@ const P2PTable = () => {
               'Content-Type': 'application/json'
             },
             body: JSON.stringify({
+              walletAddress: address,
+              searchMyOrders: searchMyOrders
             })
           });
   
@@ -262,7 +272,7 @@ const P2PTable = () => {
 
         return () => clearInterval(interval);
   
-    }, [address]);
+    }, [address, searchMyOrders]);
 
 
 
@@ -536,12 +546,43 @@ const P2PTable = () => {
               </div>
 
 
-                {/* my usdt balance */}
-                <div className="flex flex-col gap-2 items-start">
-                  <div className="text-sm">My Balance</div>
-                  <div className="text-5xl font-semibold text-white">
-                    {Number(balance).toFixed(2)} <span className="text-lg">USDT</span>
+                <div className="w-full flex flex-row items-start justify-between gap-2">
+                  {/* my usdt balance */}
+                  <div className="flex flex-col gap-2 items-start">
+                    <div className="text-5xl font-semibold text-white">
+                      {Number(balance).toFixed(2)} <span className="text-lg">USDT</span>
+                    </div>
                   </div>
+
+                  <div className="flex flex-col gap-2 items-start justify-end">
+                    <div className="flex flex-row items-center gap-2">
+                      <Image
+                        src={user?.avatar || "/profile-default.png"}
+                        alt="Avatar"
+                        width={20}
+                        height={20}
+                        priority={true} // Added priority property
+                        className="rounded-full"
+                        style={{
+                            objectFit: 'cover',
+                            width: '20px',
+                            height: '20px',
+                        }}
+                      />
+                      <div className="text-lg font-semibold text-white ">{user?.nickname}</div>
+                    </div>
+                    {/* checkbox for search my trades */}
+                    <div className="flex flex-row items-center gap-2">
+                      <input
+                        type="checkbox"
+                        checked={searchMyOrders}
+                        onChange={(e) => setSearchMyOrders(e.target.checked)}
+                        className="w-5 h-5"
+                      />
+                      <label className="text-sm text-zinc-400">Search my orders</label>
+                    </div>
+                  </div>
+
                 </div>
 
 

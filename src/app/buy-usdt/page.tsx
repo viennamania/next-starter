@@ -567,6 +567,9 @@ const P2PTable = () => {
 
                 </div>
 
+
+                
+
                 {/* Sell Orders: 2 EA (132 USDT), Trades: 10 EA (43 USDT) */}
                 {/* trades is the status is accepted or paymentRequested */}
 

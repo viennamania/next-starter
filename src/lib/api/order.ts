@@ -168,10 +168,14 @@ export async function getSellOrders(
 
     limit,
     page,
+    walletAddress,
+    searchMyOrders,
   }: {
 
     limit: number;
     page: number;
+    walletAddress: string;
+    searchMyOrders: boolean;
   
   }
 
@@ -183,25 +187,46 @@ export async function getSellOrders(
 
   // status is not 'paymentConfirmed'
 
+  // if searchMyOrders is true, get orders by wallet address is walletAddress
+  // else get all orders except paymentConfirmed
 
-  const results = await collection.find<UserProps>(
-    {
-      //status: 'ordered',
+  if (searchMyOrders) {
 
-      //status: { $ne: 'paymentConfirmed' },
+    const results = await collection.find<UserProps>(
+      { walletAddress: walletAddress, status: { $ne: 'paymentConfirmed' } },
+      
+      //{ projection: { _id: 0, emailVerified: 0 } }
 
-      // exclude private sale
-      //privateSale: { $ne: true },
-    },
-    
-    //{ projection: { _id: 0, emailVerified: 0 } }
+    ).sort({ createdAt: -1 }).limit(limit).skip((page - 1) * limit).toArray();
 
-  ).sort({ createdAt: -1 }).limit(limit).skip((page - 1) * limit).toArray();
+    return {
+      totalCount: results.length,
+      orders: results,
+    };
 
-  return {
-    totalCount: results.length,
-    orders: results,
-  };
+  } else {
+
+    const results = await collection.find<UserProps>(
+      {
+        //status: 'ordered',
+  
+        status: { $ne: 'paymentConfirmed' },
+  
+        // exclude private sale
+        privateSale: { $ne: true },
+      },
+      
+      //{ projection: { _id: 0, emailVerified: 0 } }
+  
+    ).sort({ createdAt: -1 }).limit(limit).skip((page - 1) * limit).toArray();
+  
+    return {
+      totalCount: results.length,
+      orders: results,
+    };
+
+  }
+
 
 }
 
