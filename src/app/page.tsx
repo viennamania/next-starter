@@ -59,6 +59,10 @@ import { getOwnedNFTs } from "thirdweb/extensions/erc721";
 
 import GearSetupIcon from "@/components/gearSetupIcon";
 
+
+
+
+
 /*
 const client = createThirdwebClient({
   clientId: process.env.NEXT_PUBLIC_TEMPLATE_CLIENT_ID || "",
@@ -120,7 +124,6 @@ const editionDropAddress = "0x41FBA0bd9f4DC9a968a10aEBb792af6A09969F60";
 
 console.log("contractEditorDrop", contractEditorDrop);
 */
-
 
 
 
@@ -473,6 +476,13 @@ export default function Home() {
 
     <main className="p-4 pb-10 min-h-[100vh] flex items-start justify-center container max-w-screen-lg mx-auto">
 
+
+      <div
+        id="google_translate_element"
+        style={{ position: 'fixed', right: 0, top: 50, zIndex: 1000, backgroundColor:'rgba(255, 255, 255, 0.7)', borderRadius:'10px', padding:'5px' }}></div>
+
+
+
       <div className="py-20">
         
         {/*
@@ -480,9 +490,15 @@ export default function Home() {
         */}
 
 
+      
+   
 
 
         <div className="flex flex-col justify-center gap-5 mb-10">
+
+
+
+
           {/*
           <ConnectButton
             client={client}
