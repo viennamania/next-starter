@@ -777,7 +777,7 @@ export default function SellUsdt({ params }: { params: { orderId: string } }) {
 
                             }</p>
 
-                            <p className="text-sm text-zinc-400">Payment: Bank Transfer ({item.seller.bankInfo.bankName})</p>                         
+                            <p className="text-sm text-zinc-400">Payment: Bank Transfer ({item.seller?.bankInfo.bankName})</p>                         
 
 
                             <div className='mt-4 flex flex-row items-center gap-2 mb-2'>
@@ -1050,21 +1050,21 @@ export default function SellUsdt({ params }: { params: { orderId: string } }) {
                                 <div className='flex flex-row items-center gap-2'>
                                   <div className="w-2 h-2 rounded-full bg-green-500"></div>
                                   <div className="text-lg">
-                                    Bank Name: {item.seller.bankInfo.bankName}
+                                    Bank Name: {item.seller?.bankInfo.bankName}
                                   </div>
                                 </div>
 
                                 <div className='flex flex-row items-center gap-2'>
                                   <div className="w-2 h-2 rounded-full bg-green-500"></div>
                                   <div className="text-lg ">
-                                    Account Number: {item.seller.bankInfo.accountNumber}
+                                    Account Number: {item.seller?.bankInfo.accountNumber}
                                   </div>
                                 </div>
 
                                 <div className='flex flex-row items-center gap-2'>
                                   <div className="w-2 h-2 rounded-full bg-green-500"></div>
                                   <div className="text-lg">
-                                    Account Holder: {item.seller.bankInfo.accountHolder}
+                                    Account Holder: {item.seller?.bankInfo.accountHolder}
                                   </div>
                                 </div>
 

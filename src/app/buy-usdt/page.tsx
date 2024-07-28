@@ -568,7 +568,7 @@ const P2PTable = () => {
                 </div>
 
 
-                
+
 
                 {/* Sell Orders: 2 EA (132 USDT), Trades: 10 EA (43 USDT) */}
                 {/* trades is the status is accepted or paymentRequested */}
@@ -812,7 +812,7 @@ const P2PTable = () => {
                             </div>
 
                             <div className="mb-4 flex flex-col items-start text-sm ">
-                              Payment: Bank Transfer ({item.seller.bankInfo.bankName})
+                              Payment: Bank Transfer ({item.seller?.bankInfo.bankName})
                             </div>
 
 

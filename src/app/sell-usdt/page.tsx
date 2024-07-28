@@ -1297,7 +1297,7 @@ const P2PTable = () => {
 
 
                             <p className="mt-2 text-sm text-zinc-400">
-                              Payment: Bank Transfer ({item.seller.bankInfo.bankName})
+                              Payment: Bank Transfer ({item.seller?.bankInfo.bankName})
                             </p>
 
                             

@@ -679,7 +679,7 @@ const P2PTable = () => {
                               
                                 <ul>
 
-                                  <li className="text-lg" >{item.seller.bankInfo.bankName} {item.seller.bankInfo.accountNumber} {item.seller.bankInfo.accountHolder}</li>
+                                  <li className="text-lg" >{item.seller?.bankInfo.bankName} {item.seller?.bankInfo.accountNumber} {item.seller?.bankInfo.accountHolder}</li>
                                   <li className="text-lg">Amount : {item.krwAmount} KRW</li>
                                   
                                   <li className="mt-2">You must deposit to the above account using deposit name<br /><br />

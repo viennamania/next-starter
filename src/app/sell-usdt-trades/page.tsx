@@ -910,7 +910,7 @@ const P2PTable = () => {
                                             
                                   <ul>
                                     <li>
-                                      {item.seller.bankInfo.bankName} {item.seller.bankInfo.accountNumber} {item.seller.bankInfo.accountHolder}
+                                      {item.seller?.bankInfo.bankName} {item.seller?.bankInfo.accountNumber} {item.seller?.bankInfo.accountHolder}
                                     </li>
                                     <li>Amount : {item.krwAmount} KRW</li>
                                     {/* 입금자명 표시 */}
@@ -1155,7 +1155,7 @@ const P2PTable = () => {
                                             <div className="flex flex-col gap-2 text-sm text-left text-white">
                                               <ul>
                                                 <li>
-                                                  {item.seller.bankInfo.bankName} {item.seller.bankInfo.accountNumber} {item.seller.bankInfo.accountHolder}
+                                                  {item.seller?.bankInfo.bankName} {item.seller?.bankInfo.accountNumber} {item.seller?.bankInfo.accountHolder}
                                                 </li>
                                                 <li>Amount : {item.krwAmount} KRW</li>
                                                 <li>Deposit Name : {item.tradeId}</li>
