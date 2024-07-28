@@ -762,16 +762,16 @@ const P2PTable = () => {
                   <div className="text-sm">
                     {/* dot */}
                     <span className="inline-block w-2 h-2 rounded-full bg-green-500 mr-2"></span>
-                    Total Trades: {sellOrders.length} EA ({sellOrders.reduce((acc, item) => acc + item.usdtAmount, 0)} USDT)</div>
+                    Total: {sellOrders.length} EA ({sellOrders.reduce((acc, item) => acc + item.usdtAmount, 0)} USDT)</div>
                   <div className="text-sm">
                     {/* dot */}
                     <span className="inline-block w-2 h-2 rounded-full bg-green-500 mr-2"></span>
-                    Accepted Trades: {sellOrders.filter(item => item.status === 'accepted' || item.status === 'paymentRequested').length} EA ({sellOrders.filter(item => item.status === 'accepted' || item.status === 'paymentRequested').reduce((acc, item) => acc + item.usdtAmount, 0)} USDT)</div>
+                    Trades: {sellOrders.filter(item => item.status === 'accepted' || item.status === 'paymentRequested').length} EA ({sellOrders.filter(item => item.status === 'accepted' || item.status === 'paymentRequested').reduce((acc, item) => acc + item.usdtAmount, 0)} USDT)</div>
 
                   <div className="text-sm">
                     {/* dot */}
                     <span className="inline-block w-2 h-2 rounded-full bg-green-500 mr-2"></span>
-                    Completed Trades: {sellOrders.filter(item => item.status === 'paymentConfirmed').length} EA ({sellOrders.filter(item => item.status === 'paymentConfirmed').reduce((acc, item) => acc + item.usdtAmount, 0)} USDT)</div>
+                    Completed: {sellOrders.filter(item => item.status === 'paymentConfirmed').length} EA ({sellOrders.filter(item => item.status === 'paymentConfirmed').reduce((acc, item) => acc + item.usdtAmount, 0)} USDT)</div>
 
                 </div>
 
@@ -1043,10 +1043,14 @@ const P2PTable = () => {
                                       )}
 
 
+                                      <div className="mt-5 flex flex-row items-center gap-2">
+                                        {/* dot */}
+                                        <div  className="w-2 h-2 rounded-full bg-green-500"></div>
 
-                                      <span className="text-sm text-white">
-                                        If you request payment, the {item.usdtAmount} USDT will be escrowed to the smart contract and then the buyer ( {item.buyer.nickname} ) will be requested to pay.
-                                      </span>
+                                        <div className="text-sm text-zinc-400">
+                                          If you request payment, the {item.usdtAmount} USDT will be escrowed to the smart contract and then the buyer ( {item.buyer.nickname} ) will be requested to pay.
+                                        </div>
+                                      </div>
 
                                       <div className="mt-5 flex flex-row items-center gap-2">
                                           
@@ -1067,12 +1071,12 @@ const P2PTable = () => {
                                                 className=" w-6 h-6 rounded-md border border-gray-200"
                                             />
                                           </div>
-                                          <span className="text-xl text-white font-semibold">
+                                          <div className="text-sm text-zinc-400">
 
                                             I agree to escrow {item.usdtAmount} USDT to the smart contract and request payment to the buyer ( {item.buyer.nickname} )
 
 
-                                          </span>
+                                          </div>
                                       </div>
 
                                       <button
@@ -1196,11 +1200,11 @@ const P2PTable = () => {
                                     <Image
                                       src='/smart-contract.png'
                                       alt='smart-contract'
-                                      width={50}
-                                      height={50}
+                                      width={32}
+                                      height={32}
                                     />
 
-                                    <span className="text-lg font-semibold text-white">
+                                    <span className="textlg text-white">
                                       Escrow: {item.usdtAmount} USDT
                                     </span>
 
@@ -1234,14 +1238,14 @@ const P2PTable = () => {
                                     && confirmingPayment[index] === false
                                     && (
 
-                                    <div className="p-2 flex flex-col gap-2">
+                                    <div className="flex flex-col gap-2">
                                       
                                       <div className="flex flex-row items-center gap-2">
                                         <Image
                                             src='/loading.png'
                                             alt='loading'
-                                            width={50}
-                                            height={50}
+                                            width={32}
+                                            height={32}
                                             className="animate-spin"
                                         />
                                         <div className="text-lg font-semibold text-white">
@@ -1258,11 +1262,14 @@ const P2PTable = () => {
 
 
 
+                                  <div className="mt-5 flex flex-row items-center gap-2">
+                                    {/* dot */}
+                                    <div  className="flex w-2 h-2 rounded-full bg-green-500"></div>
 
-
-                                  <span className="mt-5 text-sm text-white">
-                                    If you confirm the payment, the escrowed {item.usdtAmount} USDT will be transferred to the buyer ( {item.buyer.nickname} ) wallet address.
-                                  </span>
+                                    <div className="text-sm text-zinc-400">
+                                      If you confirm the payment, the escrowed {item.usdtAmount} USDT will be transferred to the buyer ( {item.buyer.nickname} ) wallet address.
+                                    </div>
+                                  </div>
 
                                   {/* check box for confirming payment */}
 
@@ -1285,9 +1292,13 @@ const P2PTable = () => {
                                           className=" w-6 h-6 rounded-md border border-gray-200"
                                       />
                                     </div>
-                                    <span className="text-xl text-white font-semibold">
+                                    <span className="text-sm text-zinc-400">
 
-                                      I agree to check the bank transfer of {item.krwAmount} KRW from buyer ( {item.buyer.nickname} ) and transfer {item.usdtAmount} USDT to the buyer wallet address.
+                                      I agree to check the bank transfer of {
+                                      item.krwAmount.toLocaleString('ko-KR', {
+                                        style: 'currency',
+                                        currency: 'KRW',
+                                      })} from buyer ( {item.buyer.nickname} ) and transfer {item.usdtAmount} USDT to the buyer wallet address.
 
                                     </span>
                                   </div>
@@ -1306,8 +1317,8 @@ const P2PTable = () => {
                                     <Image
                                         src='/loading.png'
                                         alt='loading'
-                                        width={50}
-                                        height={50}
+                                        width={32}
+                                        height={32}
                                         className="animate-spin"
                                     />
                                     <div className="text-lg font-semibold text-white">
@@ -1361,7 +1372,13 @@ const P2PTable = () => {
                                     /
                                   </div>
                                   <div className="text-lg font-semibold text-green-500">
-                                    + {item.krwAmount} KRW
+                                    + {
+                                    item.krwAmount.toLocaleString('ko-KR', {
+                                      style: 'currency',
+                                      currency: 'KRW',
+                                    })
+                                    
+                                  }
                                   </div>
                                 </div>
 
