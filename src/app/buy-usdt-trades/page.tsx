@@ -446,16 +446,22 @@ const P2PTable = () => {
                     <div className="text-sm">
                       {/* dot */}
                       <span className="inline-block w-2 h-2 rounded-full bg-green-500 mr-2"></span>
-                      Total Trades: {sellOrders.length} EA ({sellOrders.reduce((acc, item) => acc + item.usdtAmount, 0)} USDT)</div>
+                      Total: {sellOrders.length} EA ({
+                      Number(sellOrders.reduce((acc, item) => acc + item.usdtAmount, 0)).toFixed(2)
+                      } USDT)</div>
                     <div className="text-sm">
                       {/* dot */}
                       <span className="inline-block w-2 h-2 rounded-full bg-green-500 mr-2"></span>
-                      Accepted Trades: {sellOrders.filter(item => item.status === 'accepted' || item.status === 'paymentRequested').length} EA ({sellOrders.filter(item => item.status === 'accepted' || item.status === 'paymentRequested').reduce((acc, item) => acc + item.usdtAmount, 0)} USDT)</div>
+                      Trades: {sellOrders.filter(item => item.status === 'accepted' || item.status === 'paymentRequested').length} EA ({
+                      sellOrders.filter(item => item.status === 'accepted' || item.status === 'paymentRequested').reduce((acc, item) => acc + item.usdtAmount, 0).toFixed(2)
+                      } USDT)</div>
 
                     <div className="text-sm">
                       {/* dot */}
                       <span className="inline-block w-2 h-2 rounded-full bg-green-500 mr-2"></span>
-                      Completed Trades: {sellOrders.filter(item => item.status === 'paymentConfirmed').length} EA ({sellOrders.filter(item => item.status === 'paymentConfirmed').reduce((acc, item) => acc + item.usdtAmount, 0)} USDT)</div>
+                      Completed: {sellOrders.filter(item => item.status === 'paymentConfirmed').length} EA ({
+                      Number(sellOrders.filter(item => item.status === 'paymentConfirmed').reduce((acc, item) => acc + item.usdtAmount, 0)).toFixed(2)
+                      } USDT)</div>
 
                   </div>
 
@@ -570,16 +576,33 @@ const P2PTable = () => {
 
 
 
-                            <p className="mt-4 text-2xl font-semibold text-white">
-                              {item.usdtAmount} USDT
-                            </p>
+                          <div className="mt-4 flex flex-row items-between space-x-2">
 
-                            <p className="mb-4 text-xl text-zinc-400">
-                              Price: { item.krwAmount.toLocaleString('ko-KR', {
-                                style: 'currency',
-                                currency: 'KRW',
-                              }) }
-                            </p>
+                            <div className="flex flex-col items-start">
+                              <p className="text-2xl font-semibold text-white">{item.usdtAmount} USDT</p>
+
+                              <p className="text-lg text-zinc-400">
+                                Price: {
+                                  // currency
+                                
+                                  Number(item.krwAmount).toLocaleString('ko-KR', {
+                                    style: 'currency',
+                                    currency: 'KRW',
+                                  })
+
+                                }
+                              </p>
+                            </div>
+
+                            <div className="flex flex-col items-start">
+                              <p className="text-lg font-semibold text-white">Rate: {
+
+                                Number(item.krwAmount / item.usdtAmount).toFixed(2)
+
+                              }</p>
+                            </div>
+
+                          </div>
                         
 
 
@@ -671,7 +694,7 @@ const P2PTable = () => {
                             )*/}
 
                             {item.status === 'paymentRequested' && (
-                              <div className="mt-2 mb-2 flex flex-col gap-2 text-sm text-left bg-gray-800 p-4 rounded-md">
+                              <div className="mt-4 mb-2 flex flex-col gap-2 text-sm text-left bg-gray-800 p-4 rounded-md">
                                 <p className="text-xl text-white font-semibold">
                                   Payment Infomation
                                 </p>
