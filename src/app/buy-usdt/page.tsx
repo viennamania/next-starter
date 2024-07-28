@@ -537,7 +537,44 @@ const P2PTable = () => {
                     </div>
                   </div>
 
-                  <div className="flex flex-col gap-2 items-start justify-end">
+                </div>
+
+
+
+
+
+                <div className="p-2 xl:p-0  flex flex-row items-center justify-between gap-2">
+
+                  <div className="flex flex-col gap-2 items-center">
+                    <div className="text-sm">Total</div>
+                    <div className="text-xl font-semibold text-white">
+                      {sellOrders.length}
+                    </div>
+                  </div>
+
+                  <div className="flex flex-col gap-2 items-center">
+                    <div className="text-sm">Orders</div>
+                    <div className="text-xl font-semibold text-white">
+                      {sellOrders.filter((item) => item.status === 'ordered').length}
+                    </div>
+                  </div>
+
+                  <div className="flex flex-col gap-2 items-center">
+                    <div className="text-sm">Trades</div>
+                    <div className="text-xl font-semibold text-white">
+
+                      {
+                        //sellOrders.filter((item) => item.status === 'accepted').length
+                        sellOrders.filter((item) => item.status === 'accepted' || item.status === 'paymentRequested').length
+
+                      }
+
+                    </div>
+                  </div>
+
+
+
+                  <div className="ml-5 flex flex-col gap-2 items-start justify-end">
                     <div className="flex flex-row items-center gap-2">
                       <Image
                         src={user?.avatar || "/profile-default.png"}
@@ -567,32 +604,14 @@ const P2PTable = () => {
                     </div>
                   </div>
 
-                </div>
+
+
+                  </div>
 
 
 
 
-                {/* Sell Orders: 2 EA (132 USDT), Trades: 10 EA (43 USDT) */}
-                {/* trades is the status is accepted or paymentRequested */}
 
-                <div className="flex flex-col xl:flex-row gap-2 xl:gap-5 items-start">
-                  <div className="text-sm">
-                    {/* dot */}
-                    <span className="inline-block w-2 h-2 rounded-full bg-green-500 mr-2"></span>
-                    Total: {sellOrders.length} EA ({Number(sellOrders.reduce((acc, item) => acc + item.usdtAmount, 0)).toFixed(2)} USDT)</div>
-                  {/* open orders */}
-
-                  <div className="text-sm">
-                    {/* dot */}
-                    <span className="inline-block w-2 h-2 rounded-full bg-green-500 mr-2"></span>
-                    Open Orders: {sellOrders.filter(item => item.status === 'ordered').length} EA ({Number(sellOrders.filter(item => item.status === 'ordered').reduce((acc, item) => acc + item.usdtAmount, 0)).toFixed(2)} USDT)</div>
-
-                  <div className="text-sm">
-                    {/* dot */}
-                    <span className="inline-block w-2 h-2 rounded-full bg-green-500 mr-2"></span>
-                    Trades: {sellOrders.filter(item => item.status === 'accepted' || item.status === 'paymentRequested').length} EA ({Number(sellOrders.filter(item => item.status === 'accepted' || item.status === 'paymentRequested').reduce((acc, item) => acc + item.usdtAmount, 0)).toFixed(2)} USDT)</div>
-                  
-                </div>
 
                 <div className="w-full grid gap-4 lg:grid-cols-2 xl:grid-cols-3 justify-center ">
 
