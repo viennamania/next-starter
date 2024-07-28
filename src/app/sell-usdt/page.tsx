@@ -986,7 +986,7 @@ const P2PTable = () => {
          
 
                   {/* total sell orders */}
-                  <div className="p-2 xl:p-0  flex flex-row items-center justify-between gap-4">
+                  <div className="p-2 xl:p-0  flex flex-row items-center justify-between gap-2">
 
                     <div className="flex flex-col gap-2 items-center">
                       <div className="text-sm">Total</div>
@@ -1017,7 +1017,7 @@ const P2PTable = () => {
 
 
 
-                    <div className="flex flex-col gap-2 items-start justify-end">
+                    <div className="ml-5 flex flex-col gap-2 items-start justify-end">
                       <div className="flex flex-row items-center gap-2">
                         <Image
                           src={user?.avatar || "/profile-default.png"}
@@ -1333,6 +1333,7 @@ const P2PTable = () => {
 
                             {/* cancel order button for seller */}
                             {item.walletAddress === address && item.status === 'ordered' && (
+                            <div className="w-full mt-5 mb-2 flex flex-col items-center ">
                               <button
                                   disabled={cancellings[index]}
                                   className={`text-sm bg-red-500 text-white px-2 py-1 rounded-md ${cancellings[index] ? 'bg-gray-500' : ''}`}
@@ -1369,6 +1370,7 @@ const P2PTable = () => {
                                   
                                
                               </button>
+                            </div>
                             )}
 
 
