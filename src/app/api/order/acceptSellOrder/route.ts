@@ -7,6 +7,7 @@ import {
 
 // Download the helper library from https://www.twilio.com/docs/node/install
 import twilio from "twilio";
+import { idCounter } from "thirdweb/extensions/farcaster/idRegistry";
 
 
 export async function POST(request: NextRequest) {
@@ -53,7 +54,7 @@ export async function POST(request: NextRequest) {
 
 
     const msgBody = `[UNOVE] TID[${tradeId}] Your sell order has been accepted by ${buyer?.nickname}! You must escrow USDT to proceed with the trade in 10 minutes!
-    `;
+    https://next.unove.space/sell-usdt/${orderId}`;
 
     message = await client.messages.create({
       ///body: "This is the ship that made the Kessel Run in fourteen parsecs?",

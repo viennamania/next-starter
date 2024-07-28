@@ -235,6 +235,11 @@ export default function SellUsdt({ params }: { params: { orderId: string } }) {
 
 
 
+
+
+
+    
+
     
     const [sellOrders, setSellOrders] = useState<SellOrder[]>([]);
 
@@ -270,12 +275,55 @@ export default function SellUsdt({ params }: { params: { orderId: string } }) {
         fetchSellOrders();
 
         // fetch sell orders every 10 seconds
+        /*
         const interval = setInterval(() => {
 
           fetchSellOrders();
         }, 10000);
+        */
   
     }, [orderId] );
+
+
+
+
+
+    // array of escrowing
+    const [escrowing, setEscrowing] = useState([] as boolean[]);
+
+    useEffect(() => {
+        
+        setEscrowing(
+          new Array(sellOrders.length).fill(false)
+        );
+  
+    } , [sellOrders]);
+
+
+
+
+
+    // array of requestingPayment
+    const [requestingPayment, setRequestingPayment] = useState([] as boolean[]);
+
+    useEffect(() => {
+
+      setRequestingPayment(
+        
+        sellOrders.map((item) => {
+          
+          if (item.status === 'paymentRequested') {
+            return true;
+          }
+          return false;
+        } )
+
+      );
+
+    } , [sellOrders]);
+
+
+
 
 
 
@@ -337,6 +385,18 @@ export default function SellUsdt({ params }: { params: { orderId: string } }) {
             })
         );
     } , [sellOrders]);
+
+
+    // request payment check box
+    const [requestPaymentCheck, setRequestPaymentCheck] = useState([] as boolean[]);
+    useEffect(() => {
+        
+        setRequestPaymentCheck(
+          new Array(sellOrders.length).fill(false)
+        );
+  
+    } , [sellOrders]);
+
 
 
 
@@ -417,6 +477,172 @@ export default function SellUsdt({ params }: { params: { orderId: string } }) {
 
 
 
+    const requstPayment = async (
+      index: number,
+      orderId: string,
+      tradeId: string,
+      amount: number,
+    ) => {
+      // check balance
+      // send payment request
+
+      if (balance < amount) {
+        toast.error('Insufficient balance');
+        return;
+      }
+
+      if (escrowing[index]) {
+        return;
+      }
+
+
+      if (requestingPayment[index]) {
+        return;
+      }
+
+
+
+      setEscrowing(
+        escrowing.map((item, idx) => {
+          if (idx === index) {
+            return true;
+          }
+          return item;
+        })
+      );
+
+   
+
+      const recipientWalletAddress = "0x7B773C495b91EEC3c549C7f811d5c53241CeF41f";
+
+      // send USDT
+      // Call the extension function to prepare the transaction
+      const transaction = transfer({
+        contract,
+        to: recipientWalletAddress,
+        amount: amount,
+      });
+      
+
+      const transactionResult = await sendAndConfirmTransaction({
+          transaction: transaction,
+          
+          account: smartAccount as any,
+      });
+
+      console.log(transactionResult);
+
+
+      setEscrowing(
+        escrowing.map((item, idx) => {
+          if (idx === index) {
+            return false;
+          }
+          return item;
+        })
+      );
+
+
+
+      // send payment request
+
+      if (transactionResult) {
+
+        /*
+        setRequestingPayment(
+          requestingPayment.map((item, idx) => {
+            if (idx === index) {
+              return true;
+            }
+            return item;
+          })
+        );
+        */
+        
+        
+
+
+      
+        const response = await fetch('/api/order/requestPayment', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            orderId: orderId,
+            transactionHash: transactionResult.transactionHash,
+          })
+        });
+
+        const data = await response.json();
+
+        //console.log('data', data);
+
+
+        /*
+        setRequestingPayment(
+          requestingPayment.map((item, idx) => {
+            if (idx === index) {
+              return false;
+            }
+            return item;
+          })
+        );
+        */
+        
+
+
+        if (data.result) {
+
+          const response = await fetch('/api/order/getOneSellOrder', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              orderId: orderId,
+            })
+          });
+  
+          const data = await response.json();
+  
+          ///console.log('data', data);
+  
+          if (data.result) {
+            setSellOrders(data.result.orders);
+          }
+          
+
+
+          // refresh balance
+
+          const result = await balanceOf({
+            contract,
+            address: address,
+          });
+
+          //console.log(result);
+
+          setBalance( Number(result) / 10 ** 6 );
+
+
+          toast.success('Payment request has been sent');
+        } else {
+          toast.error('Payment request has been failed');
+        }
+
+      }
+      
+
+    }
+
+
+
+
+
+
+
+
 
 
     const [privateSale, setprivateSale] = useState(false);
@@ -492,6 +718,115 @@ export default function SellUsdt({ params }: { params: { orderId: string } }) {
 
 
 
+
+
+
+  // array of confirmingPayment
+
+  const [confirmingPayment, setConfirmingPayment] = useState([] as boolean[]);
+
+  useEffect(() => {
+      
+      setConfirmingPayment(
+        new Array(sellOrders.length).fill(false)
+      );
+
+  } , [sellOrders]);
+
+
+
+  // confirm payment check box
+  const [confirmPaymentCheck, setConfirmPaymentCheck] = useState([] as boolean[]);
+  useEffect(() => {
+      
+      setConfirmPaymentCheck(
+        new Array(sellOrders.length).fill(false)
+      );
+
+  } , [sellOrders]);
+
+
+
+  const confirmPayment = async (
+
+    index: number,
+    orderId: string,
+
+  ) => {
+    // confirm payment
+    // send usdt to buyer wallet address
+
+    if (confirmingPayment[index]) {
+      return;
+    }
+
+    setConfirmingPayment(
+      confirmingPayment.map((item, idx) => {
+        if (idx === index) {
+          return true;
+        }
+        return item;
+      })
+    );
+
+
+
+    const response = await fetch('/api/order/confirmPayment', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        orderId: orderId,
+      })
+    });
+
+    const data = await response.json();
+
+    //console.log('data', data);
+
+    if (data.result) {
+
+      const response = await fetch('/api/order/getOneSellOrder', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          orderId: orderId,
+        })
+      });
+
+      const data = await response.json();
+
+      ///console.log('data', data);
+
+      if (data.result) {
+        setSellOrders(data.result.orders);
+      }
+
+      toast.success('Payment has been confirmed');
+    } else {
+      toast.error('Payment has been failed');
+    }
+
+    setConfirmingPayment(
+      confirmingPayment.map((item, idx) => {
+        if (idx === index) {
+          return false;
+        }
+        return item;
+      })
+    );
+
+
+
+  }
+
+
+
+
+
     
     return (
 
@@ -553,37 +888,34 @@ export default function SellUsdt({ params }: { params: { orderId: string } }) {
 
           <div className=" flex flex-col xl:flex-row items-start justify-center space-y-4">
 
-              <div className="w-96 flex flex-col items-start space-y-4">
-              
-                <div className='flex flex-row items-center space-x-4'>
-                  <Image
-                    src="/logo-tether.png"
-                    alt="USDT"
-                    width={35}
-                    height={35}
-                    className="rounded-lg"
-                  />
-                  <Image
-                    src="/logo-polygon.png"
-                    alt="Polygon"
-                    width={32}
-                    height={32}
-                    className="rounded-lg"
-                  />
-                  <div className="text-2xl font-semibold">Buy USDT</div>
-
-                </div>
-
-
-                {/* my usdt balance */}
-                <div className="flex flex-col gap-2 items-start">
-                  <div className="text-sm">My Balance</div>
-                  <div className="text-5xl font-semibold text-white">
-                    {Number(balance).toFixed(2)} <span className="text-lg">USDT</span>
+                <div className="w-full flex flex-col items-start justify-between gap-2">
+                  {/* my usdt balance */}
+                  <div className="flex flex-col gap-2 items-start">
+                    <div className="text-5xl font-semibold text-white">
+                      {Number(balance).toFixed(2)} <span className="text-lg">USDT</span>
+                    </div>
                   </div>
-                </div>
 
-              </div>
+                  <div className="flex flex-col gap-2 items-start justify-end">
+                    <div className="flex flex-row items-center gap-2">
+                      <Image
+                        src={user?.avatar || "/profile-default.png"}
+                        alt="Avatar"
+                        width={20}
+                        height={20}
+                        priority={true} // Added priority property
+                        className="rounded-full"
+                        style={{
+                            objectFit: 'cover',
+                            width: '20px',
+                            height: '20px',
+                        }}
+                      />
+                      <div className="text-lg font-semibold text-white ">{user?.nickname}</div>
+                    </div>
+                  </div>
+
+                </div>
 
 
 
@@ -668,6 +1000,29 @@ export default function SellUsdt({ params }: { params: { orderId: string } }) {
                                 <p className=" text-xl font-semibold text-green-500 ">
                                   TID: {item.tradeId}
                                 </p>
+
+                                {/* reload button */}
+                                <button
+                                  className="text-sm bg-green-500 text-white px-2 py-1 rounded-md"
+                                  onClick={() => {
+                                    fetch('/api/order/getOneSellOrder', {
+                                      method: 'POST',
+                                      headers: {
+                                        'Content-Type': 'application/json'
+                                      },
+                                      body: JSON.stringify({
+                                        orderId: item._id,
+                                      })
+                                    })
+                                    .then(response => response.json())
+                                    .then(data => {
+                                      //console.log('data', data);
+                                      setSellOrders(data.result.orders);
+                                    });
+                                  }}
+                                >
+                                  Reload
+                                </button>
                               </div>
 
                             )}
@@ -907,7 +1262,214 @@ export default function SellUsdt({ params }: { params: { orderId: string } }) {
                                   <div>Waiting for seller to deposit {item.usdtAmount} USDT to escrow...</div>
 
                                 </div>
+
                             )}
+
+
+
+
+                            {
+                              address && item.walletAddress === address &&  item.status === 'accepted' && (
+
+                              <div className="w-full mt-2 mb-2 flex flex-col items-start ">
+
+
+                              {escrowing[index] && (
+
+                              <div className="p-2 flex flex-col gap-2">
+                                
+                                <div className="flex flex-row items-center gap-2">
+                                  <Image
+                                      src='/loading.png'
+                                      alt='loading'
+                                      width={50}
+                                      height={50}
+                                      className="animate-spin"
+                                  />
+                                  <div className="text-lg font-semibold text-white">
+                                    Escrowing {item.usdtAmount} USDT...
+                                  </div>
+                                </div>
+
+                                {/* 1 escrow USDT */}
+                                {/* 2 request payment to buyer */}
+                                
+
+                                </div>
+
+                              )}
+
+
+                              {escrowing[index] === false && requestingPayment[index] === true && (
+                                <div className="flex flex-col gpa-2">
+                                  Escrow {item.usdtAmount} USDT to the smart contract has been completed.
+                                </div>
+                              )}
+
+
+                              {requestingPayment[index] && (
+
+                                <div className="p-2 flex flex-col gap-2">
+                                  
+                                  <div className="flex flex-row items-center gap-2">
+                                    <Image
+                                        src='/loading.png'
+                                        alt='loading'
+                                        width={50}
+                                        height={50}
+                                        className="animate-spin"
+                                    />
+                                    <div className="text-lg font-semibold text-white">
+                                      Requesting payment...
+                                    </div>
+                                  </div>
+
+                                  {/* 1 escrow USDT */}
+                                  {/* 2 request payment to buyer */}
+                                  
+
+                                </div>
+
+                              )}
+
+
+                              <div className="mt-5 flex flex-row items-center gap-2">
+                                {/* dot */}
+                                <div  className="w-2 h-2 rounded-full bg-green-500"></div>
+
+                                <div className="text-sm text-zinc-400">
+                                  If you request payment, the {item.usdtAmount} USDT will be escrowed to the smart contract and then the buyer ( {item.buyer.nickname} ) will be requested to pay.
+                                </div>
+                              </div>
+
+                              <div className="mt-5 flex flex-row items-center gap-2">
+                                  
+                                  <div className="flex flex-row items-center gap-2">
+                                    <input
+                                        type="checkbox"
+                                        checked={requestPaymentCheck[index]}
+                                        onChange={(e) => {
+                                          setRequestPaymentCheck(
+                                            requestPaymentCheck.map((item, idx) => {
+                                              if (idx === index) {
+                                                return e.target.checked;
+                                              }
+                                              return item;
+                                            })
+                                          );
+                                        }}
+                                        className=" w-6 h-6 rounded-md border border-gray-200"
+                                    />
+                                  </div>
+                                  <div className="text-sm text-zinc-400">
+
+                                    I agree to escrow {item.usdtAmount} USDT to the smart contract and request payment to the buyer ( {item.buyer.nickname} )
+
+
+                                  </div>
+                              </div>
+
+                              <button
+                                  disabled={
+                                    balance < item.usdtAmount || requestingPayment[index] || escrowing[index]
+                                    || !requestPaymentCheck[index]
+                                  }
+                                  className={`w-full text-lg
+                                    ${balance < item.usdtAmount ? 'bg-red-500' : 'bg-blue-500'}
+
+                                    ${requestPaymentCheck[index] ? 'bg-green-500' : 'bg-gray-500'}
+                                    
+                                  text-white px-4 py-2 rounded-md mt-4`}
+
+                                  onClick={() => {
+                                      console.log('request Payment');
+                                      
+                                      ///router.push(`/chat?tradeId=12345`);
+
+                                      requstPayment(
+                                        index,
+                                        item._id,
+                                        item.tradeId,
+                                        item.usdtAmount,
+                                      );
+
+                                  }}
+                                >
+
+
+
+                                {balance < item.usdtAmount ? (
+
+                                  <div className="flex flex-col gap-2">
+                                    <div className="flex flex-row items-center gap-2">
+                                      <GearSetupIcon />
+                                      <div className="text-lg font-semibold">
+                                      Request Payment
+                                      </div>
+                                    </div>
+                                    <div className="text-lg text-white">
+                                      Insufficient Balance
+                                    </div>
+                                    <div className="text-lg text-white">
+                                      You need {item.usdtAmount} USDT
+                                    </div>
+                                    <div className="text-lg text-white">
+                                      You have {balance} USDT
+                                    </div>
+                                    <div className="text-lg text-white">
+                                      Please top up your balance by depositing {item.usdtAmount - balance} USDT
+                                    </div>
+                                    <div className="text-lg text-white">
+                                      Your wallet address is
+                                    </div>
+                                    <div className="text-xs text-white">
+                                      {address.substring(0, 10)}...{address.substring(address.length - 10, address.length)}
+                                      
+                                    </div>
+                                    <div className="text-xs text-white">
+                                    
+                                      <button
+                                          onClick={() => {
+                                              navigator.clipboard.writeText(address);
+                                              toast.success('Address has been copied');
+                                          }}
+                                      className="text-xs bg-green-500 text-white px-2 py-1 rounded-md">Copy</button>
+                                    </div>
+                                  </div>
+
+                                ) : (
+
+                                  <div className="flex flex-col gap-2">
+
+                                    <div className="flex flex-row items-center gap-2">
+                                      <GearSetupIcon />
+                                      <div className="text-lg font-semibold">
+                                      Request Payment
+                                      </div>
+                                    </div>
+
+                                    <div className="flex flex-col gap-2 text-sm text-left text-white">
+                                      <ul>
+                                        <li>
+                                          {item.seller?.bankInfo.bankName} {item.seller?.bankInfo.accountNumber} {item.seller?.bankInfo.accountHolder}
+                                        </li>
+                                        <li>Amount : {item.krwAmount} KRW</li>
+                                        <li>Deposit Name : {item.tradeId}</li>
+                                      </ul>
+                                    </div>
+
+                                  </div>
+                                )}
+
+
+                              </button>
+
+                              </div>
+
+
+                            )}
+
+
                             
 
 
@@ -1049,35 +1611,35 @@ export default function SellUsdt({ params }: { params: { orderId: string } }) {
                                 {/* dot */}
                                 <div className='flex flex-row items-center gap-2'>
                                   <div className="w-2 h-2 rounded-full bg-green-500"></div>
-                                  <div className="text-lg">
+                                  <div className="text-sm">
                                     Bank Name: {item.seller?.bankInfo.bankName}
                                   </div>
                                 </div>
 
                                 <div className='flex flex-row items-center gap-2'>
                                   <div className="w-2 h-2 rounded-full bg-green-500"></div>
-                                  <div className="text-lg ">
+                                  <div className="text-sm ">
                                     Account Number: {item.seller?.bankInfo.accountNumber}
                                   </div>
                                 </div>
 
                                 <div className='flex flex-row items-center gap-2'>
                                   <div className="w-2 h-2 rounded-full bg-green-500"></div>
-                                  <div className="text-lg">
+                                  <div className="text-sm">
                                     Account Holder: {item.seller?.bankInfo.accountHolder}
                                   </div>
                                 </div>
 
                                 <div className='flex flex-row items-center gap-2'>
                                   <div className="w-2 h-2 rounded-full bg-green-500"></div>
-                                  <div className="text-lg">
+                                  <div className="text-sm">
                                     Deposit Name: {item.tradeId}
                                   </div>
                                 </div>
 
                                 <div className='flex flex-row items-center gap-2'>
                                   <div className="w-2 h-2 rounded-full bg-green-500"></div>
-                                  <div className="text-lg">
+                                  <div className="text-sm">
                                     Deposit Amount: {
                                       item.krwAmount.toLocaleString('ko-KR', {
                                         style: 'currency',
@@ -1089,7 +1651,7 @@ export default function SellUsdt({ params }: { params: { orderId: string } }) {
 
                                 <div className='flex flex-row items-center gap-2'>
                                   <div className="w-2 h-2 rounded-full bg-green-500"></div>
-                                  <div className="text-lg">
+                                  <div className="text-sm">
                                     Deposit Deadline: {
                                      
                                       new Date(new Date(item.paymentRequestedAt).getTime() + 1000 * 60 * 60 * 1).toLocaleString()
@@ -1100,6 +1662,8 @@ export default function SellUsdt({ params }: { params: { orderId: string } }) {
 
 
                                 {/* waiting for receive USDT */}
+
+                               
                                 <div className="mt-4 flex flex-row gap-2 items-center justify-start">
 
                                   {/* rotate loading icon */}
@@ -1115,10 +1679,199 @@ export default function SellUsdt({ params }: { params: { orderId: string } }) {
                                   <div>Waiting for seller to confirm payment...</div>
 
                                 </div>
+                                  
+                                  
 
 
                               </div>
                             )}
+
+
+
+
+
+
+
+
+                            {address && item.walletAddress === address && item.status === 'paymentRequested' && (
+
+                            <div className="w-full mt-4 mb-2 flex flex-col items-start ">
+
+
+                              
+                              
+                              <div className="w-full flex flex-col items-start gap-2">
+
+                                <div className="flex flex-row items-center gap-2">
+
+                                  <Image
+                                    src='/smart-contract.png'
+                                    alt='smart-contract'
+                                    width={32}
+                                    height={32}
+                                  />
+
+                                  <span className="textlg text-white">
+                                    Escrow: {item.usdtAmount} USDT
+                                  </span>
+
+                                  <button
+                                      className="ml-5 text-sm bg-white text-white px-2 py-1 rounded-md"
+                                      onClick={() => {
+                                          //console.log('Cancel Payment Request');
+                                          // new window
+
+                                          window.open(`https://polygonscan.com/token/0xc2132d05d31c914a87c6611c10748aeb04b58e8f?a=0x7b773c495b91eec3c549c7f811d5c53241cef41f`, '_blank');
+                                      }}
+                                  >
+                                    <Image
+                                      src='/logo-polygon.png'
+                                      alt='cancel'
+                                      width={20}
+                                      height={20}
+                                    />
+                                  </button>
+
+
+                                </div>
+
+
+
+
+                              
+                                {
+                                  item.status === 'paymentRequested'
+                                  && requestingPayment[index]
+                                  && confirmingPayment[index] === false
+                                  && (
+
+                                  <div className="flex flex-col gap-2">
+                                    
+                                    <div className="flex flex-row items-center gap-2">
+                                      <Image
+                                          src='/loading.png'
+                                          alt='loading'
+                                          width={32}
+                                          height={32}
+                                          className="animate-spin"
+                                      />
+                                      <div className="text-lg font-semibold text-white">
+                                        
+                                        Checking the bank transfer from the buyer ( {item.buyer.nickname} )...
+
+
+                                      </div>
+                                    </div>
+
+                                  </div>
+
+                                )}
+
+
+
+                                <div className="mt-5 flex flex-row items-center gap-2">
+                                  {/* dot */}
+                                  <div  className="flex w-2 h-2 rounded-full bg-green-500"></div>
+
+                                  <div className="text-sm text-zinc-400">
+                                    If you confirm the payment, the escrowed {item.usdtAmount} USDT will be transferred to the buyer ( {item.buyer.nickname} ) wallet address.
+                                  </div>
+                                </div>
+
+                                {/* check box for confirming payment */}
+
+                                <div className="flex flex-row items-center gap-2">
+
+                                  <div className="flex flex-row items-center gap-2">
+                                    <input
+                                        type="checkbox"
+                                        checked={confirmPaymentCheck[index]}
+                                        onChange={(e) => {
+                                          setConfirmPaymentCheck(
+                                            confirmPaymentCheck.map((item, idx) => {
+                                              if (idx === index) {
+                                                return e.target.checked;
+                                              }
+                                              return item;
+                                            })
+                                          );
+                                        }}
+                                        className=" w-6 h-6 rounded-md border border-gray-200"
+                                    />
+                                  </div>
+                                  <span className="text-sm text-zinc-400">
+
+                                    I agree to check the bank transfer of {
+                                    item.krwAmount.toLocaleString('ko-KR', {
+                                      style: 'currency',
+                                      currency: 'KRW',
+                                    })} from buyer ( {item.buyer.nickname} ) and transfer {item.usdtAmount} USDT to the buyer wallet address.
+
+                                  </span>
+                                </div>
+
+
+
+
+                              </div>
+                                
+
+
+                              {confirmingPayment[index] ? (
+
+                                <div className="p-2 flex flex-row items-center gap-2">
+
+                                  <Image
+                                      src='/loading.png'
+                                      alt='loading'
+                                      width={32}
+                                      height={32}
+                                      className="animate-spin"
+                                  />
+                                  <div className="text-lg font-semibold text-white">
+                                    Transfering {item.usdtAmount} USDT to the buyer ( {item.buyer.nickname} ) wallet address...
+                                  </div>
+                                </div>
+
+                              ) : (
+
+                                  <button
+                                      disabled={
+                                        confirmingPayment[index]
+                                        || !confirmPaymentCheck[index]
+                                    }
+                                      className={`w-full text-lg
+                                        ${confirmPaymentCheck[index] ? 'bg-green-500' : 'bg-gray-500'}
+                                        text-white px-4 py-2 rounded-md mt-4`}
+                                      onClick={() => {
+                                          console.log('Canfirm Payment');
+
+                                          //toast.success('Payment has been confirmed');
+
+                                          confirmPayment(index, item._id);
+                                          
+                                      }}
+                                  >
+                                    Confirm Payment
+                                  </button>
+                                
+                                )}
+
+
+                            </div>
+
+
+                            )}
+
+
+
+
+
+
+
+
+
+
                               
 
                             {item.status === 'paymentConfirmed' && (

@@ -367,7 +367,7 @@ const P2PTable = () => {
           new Array(sellOrders.length).fill(false)
         );
   
-      } , [sellOrders]);
+    } , [sellOrders]);
 
 
     // array of requestingPayment
@@ -400,6 +400,9 @@ const P2PTable = () => {
     } , [sellOrders]);
 
 
+
+
+    
     const requstPayment = async (
       index: number,
       orderId: string,
