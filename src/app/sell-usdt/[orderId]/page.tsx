@@ -841,7 +841,12 @@ export default function SellUsdt({ params }: { params: { orderId: string } }) {
           */}
   
           <div className="flex justify-start space-x-4 mb-10">
-              <button onClick={() => router.push('/')} className="text-zinc-100 font-semibold underline">Go Home</button>
+              <button
+                onClick={() => router.push('/buy-usdt')}
+                className="text-zinc-100 font-semibold underline"
+              >
+                Go Buy USDT
+              </button>
           </div>
 
           {!address && (
@@ -1124,6 +1129,33 @@ export default function SellUsdt({ params }: { params: { orderId: string } }) {
                                     Order opened at {new Date(item.createdAt).toLocaleString()}
                                   </p>
                                 </div>
+
+
+                                <div className='flex flex-row items-center gap-2'>
+                                  <div className={
+                                    ` ml-4 mr-3 bg-green-500 w-1 h-[20px]
+                                     rounded-full`
+                                  }></div>
+
+                                  {/* difference minutes between payment confirmed and trade started */}
+                                  <div className='flex flex-row items-center gap-2'>
+
+                                    <Image
+                                      src='/timer.png'
+                                      alt='Timer'
+                                      width={32}
+                                      height={32}
+                                    />
+                                    <div className="text-sm text-green-500">
+                                      {
+                                        ( (new Date(item.acceptedAt).getTime() - new Date(item.createdAt).getTime()) / 1000 / 60 ).toFixed(0)
+                                      } minutes
+                                    </div>
+                                  </div>
+
+                                </div>
+
+
                               
 
 
@@ -1149,7 +1181,7 @@ export default function SellUsdt({ params }: { params: { orderId: string } }) {
 
                               <div className='flex flex-col items-start gap-2 mb-4'>
 
-                                {/* vercical line of height for time between trade started  and payment confirmed */}
+                                {/* vertical line of height for time between trade started  and payment confirmed */}
 
                                 <div className='flex flex-row items-center gap-2'>
                                   <div className={
@@ -1225,7 +1257,7 @@ export default function SellUsdt({ params }: { params: { orderId: string } }) {
                             <p className="text-sm text-zinc-400">Payment: Bank Transfer ({item.seller?.bankInfo.bankName})</p>                         
 
 
-                            <div className='mt-4 flex flex-row items-center gap-2 mb-2'>
+                            <div className=' mt-10 flex flex-row items-center gap-2 mb-2'>
 
 
 
