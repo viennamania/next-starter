@@ -864,6 +864,13 @@ export default function SellUsdt({ params }: { params: { orderId: string } }) {
               >
                 Go Buy USDT
               </button>
+              {/* Go to home */}
+              <button
+                  onClick={() => router.push('/')}
+                  className="text-zinc-100 font-semibold underline"
+              >
+                Go Home
+              </button>
           </div>
 
           {!address && (
