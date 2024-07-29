@@ -865,7 +865,12 @@ export default function SellUsdt({ params }: { params: { orderId: string } }) {
               {/* history back */}
               {/* if you want to go back to the previous page */}
 
-
+              <button
+                  onClick={() => router.back()}
+                  className="text-zinc-100 font-semibold underline"
+              >
+                Go Back
+              </button>
               <button
                 onClick={() => router.push('/buy-usdt')}
                 className="text-zinc-100 font-semibold underline"
