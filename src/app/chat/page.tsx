@@ -14,6 +14,7 @@ import {
 } from "thirdweb/react";
 
 
+import { useSearchParams } from 'next/navigation'
 
 
 // parameters for dynamic import
@@ -41,8 +42,8 @@ const DynamicAppWithNoSSR = dynamic(() => import("../../components/Chat"), {
 import Chat from "../../components/Chat";
 
 
-import React, { useEffect, useState } from 'react';
 
+import React, { useEffect, useState, Suspense } from 'react';
 
 // /chat?tradeId=
 // get parameter from url
@@ -53,11 +54,21 @@ export default function ChatPage(
 
 export default function ChatPage() {
 
-  // get parameter from url
 
-  const urlParams = new URLSearchParams(window.location.search);
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <ChatPageContent />
+    </Suspense>
+  );
+}
 
-  const tradeId = urlParams.get('tradeId');
+
+function ChatPageContent() {
+  
+  const searchParams = useSearchParams()
+ 
+  const tradeId = searchParams.get('tradeId')
+ 
 
   console.log("tradeId", tradeId);
 
