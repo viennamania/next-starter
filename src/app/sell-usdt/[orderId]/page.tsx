@@ -861,7 +861,7 @@ export default function SellUsdt({ params }: { params: { orderId: string } }) {
           history back
           */}
   
-          <div className="flex flex-row gap-2 justify-start space-x-4 mb-10">
+          <div className="flex flex-row gap-2 justify-center space-x-4 mb-10">
               {/* history back */}
               <button
                   onClick={() => router.back()}
