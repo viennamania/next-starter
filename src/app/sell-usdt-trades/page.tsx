@@ -268,12 +268,48 @@ const P2PTable = () => {
 
 
 
-    const goChat = (
+
+    const  goChat = async (
+
+
       tradeId: string
     ) => {
-        console.log('Go Chat');
-        router.push(`/chat?tradeId=${tradeId}`);
+
+
+      const url = 'https://api-D2845744-81A3-4585-99FF-4DCABE2CA190.sendbird.com/v3/open_channels';
+
+
+
+      const result = await fetch(url, {
+        method: 'POST',
+
+        headers: {
+          'Content-Type': 'application/json',
+          'Api-Token': 'd5e9911aa317c4ee9a3be4fce38b878941f11c68',
+        },
+
+        body: JSON.stringify({
+          name: tradeId,
+          channel_url: tradeId,
+          cover_url: 'https://next.unove.space/icon-trade.png',
+          custom_type: 'trade',
+
+        }),
+      });
+
+      const data = await result.json();
+
+      console.log('data', data);
+          
+
+      console.log('Go Chat');
+
+      router.push(`/chat?tradeId=${tradeId}`);
+
+
+
     }
+
 
 
     
