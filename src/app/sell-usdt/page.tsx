@@ -1322,9 +1322,32 @@ const P2PTable = () => {
                             <h2 className="mt-4 text-lg font-semibold mb-2">
                               Seller: {
 
-                                item.walletAddress === address ? item.nickname + ' :Me' :
+                                item.walletAddress === address ? (
+
+                                  <div className="flex flex-row items-center gap-2">
+                                    <span>{item.nickname}</span>
+                                    <span className="text-green-500">:Me</span>
+                                    
+                                    {/* goto /sell-usdt/:id */}
+
+                                    <div
+                                      className="text-sm
+                                        bg-blue-500 text-white px-3 py-2 rounded-md hover:bg-blue-600 cursor-pointer"
+
+                                      onClick={() => {
+                                        router.push(`/sell-usdt/${item._id}`);
+                                      }}
+                                    >
+                                      Go Trade
+                                    </div>
+                                
+                                  </div>
+
+                                ) : (
                                 
                                 item.nickname
+
+                                )
 
                               }
                             </h2>

@@ -1381,8 +1381,8 @@ export default function SellUsdt({ params }: { params: { orderId: string } }) {
 
 
                             {/* waiting for escrow */}
-                            {item.status === 'accepted' && (
-                                <div className="mt-10 flex flex-row gap-2 items-center justify-start">
+                            {!address && item.status === 'accepted' && (
+                                <div className="mt-10 mb-10 flex flex-row gap-2 items-center justify-start">
 
                                   {/* rotate loading icon */}
                                 
