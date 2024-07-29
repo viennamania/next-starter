@@ -654,7 +654,7 @@ const P2PTable = () => {
 
                         <article
                             //key={index}
-                            className={` w-96 xl:w-full h-full relative mb-10
+                            className={` w-96 xl:w-full h-full relative
                               ${item.walletAddress === address ? 'border-green-500' : 'border-gray-200'}
 
                               ${item.status === 'accepted' || item.status === 'paymentRequested' ? 'border-red-600' : 'border-gray-200'}
@@ -995,7 +995,7 @@ const P2PTable = () => {
 
                                 {item.buyer.walletAddress === address && (
 
-                                  <div className="flex flex-col items-center justify-center gap-2">
+                                  <div className="mt-4 flex flex-col items-center justify-center gap-2">
 
 
                                     <div className="flex flex-row items-center gap-2">
@@ -1032,7 +1032,7 @@ const P2PTable = () => {
                                         }}
                                       >
 
-                                        <div className="flex flex-row items-center gap-2">
+                                        <div className="flex flex-row items-center gap-2 px-2 py-1">
                                           {cancellings[index] ? (
                                             <div className="
                                               w-4 h-4
@@ -1048,10 +1048,14 @@ const P2PTable = () => {
                                               />
                                             </div>
                                           ) : (
-                                            <div className="w-4 h-4 bg-white text-black rounded-full flex items-center justify-center
-                                            ">X</div>
+                                            <Image
+                                              src="/icon-cancelled.png"
+                                              alt="Cancel"
+                                              width={16}
+                                              height={16}
+                                            />
                                           )}
-                                          Cancel Trade
+                                          Cancel My Trade
                                         </div>
                                           
                                       
@@ -1176,7 +1180,7 @@ const P2PTable = () => {
                                        </>
                                       ) : (
 
-                                        <div className="flex flex-col items-center justify-center">
+                                        <div className="mt-4 flex flex-col items-center justify-center">
 
                                           {/* agreement for trade */}
                                           <div className="flex flex-row items-center space-x-2">
@@ -1248,7 +1252,7 @@ const P2PTable = () => {
 
 
                         {/* status */}
-
+                        {/*
                         <div className="absolute bottom-4 right-4 flex flex-row items-start justify-start">
                           <div className="text-xs text-zinc-400">
                             {item.status === 'ordered' ? 'Order opened at ' + new Date(item.createdAt).toLocaleString()
@@ -1259,6 +1263,7 @@ const P2PTable = () => {
                             : 'Unknown'}
                           </div>
                         </div>
+                        */}
 
 
 

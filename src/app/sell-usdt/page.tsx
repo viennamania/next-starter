@@ -1319,7 +1319,7 @@ const P2PTable = () => {
                             </p>
 
                             
-                            <h2 className="text-lg font-semibold mb-2">
+                            <h2 className="mt-4 text-lg font-semibold mb-2">
                               Seller: {
 
                                 item.walletAddress === address ? item.nickname + ' :Me' :
@@ -1331,10 +1331,10 @@ const P2PTable = () => {
 
                             {/* cancel order button for seller */}
                             {item.walletAddress === address && item.status === 'ordered' && (
-                            <div className="w-full mt-5 mb-2 flex flex-col items-center ">
+                            <div className="w-full mt-2 mb-2 flex flex-col items-center ">
                               <button
                                   disabled={cancellings[index]}
-                                  className={`text-sm bg-red-500 text-white px-2 py-1 rounded-md ${cancellings[index] ? 'bg-gray-500' : ''}`}
+                                  className={`text-sm bg-red-500 text-white px-3 py-2 rounded-md ${cancellings[index] ? 'bg-gray-500' : ''}`}
                                   onClick={() => {
                                     // api call
                                     // cancelSellOrder
@@ -1360,14 +1360,18 @@ const P2PTable = () => {
                                       />
                                     </div>
                                   ) : (
-                                    <div className="w-4 h-4 bg-white text-black rounded-full flex items-center justify-center
-                                    ">X</div>
+                                    <Image
+                                      src="/icon-cancelled.png"
+                                      alt="Cancel"
+                                      width={16}
+                                      height={16}
+                                    />
                                   )}
                                   Cancel My Order
                                 </div>
-                                  
-                               
+                                
                               </button>
+
                             </div>
                             )}
 
@@ -1375,9 +1379,9 @@ const P2PTable = () => {
 
                             {/* accept order button for seller */}
 
-                            {(item.status === 'accepted' || item.status === 'paymentRequested' || item.status === 'paymentConfirmed')
+                            {(item.status === 'accepted' || item.status === 'paymentRequested' || item.status === 'paymentConfirmed' || item.status === 'cancelled') 
                               && (
-                                <div className="w-full mt-2 mb-2 flex flex-col items-start ">
+                                <div className="w-full mt-4 mb-2 flex flex-col items-start ">
 
                                   <p className="text-xl text-green-500 font-semibold">
                                     Buyer: {
@@ -1395,31 +1399,49 @@ const P2PTable = () => {
 
 
                             {/* share button */}
-                            {item.walletAddress === address && item.privateSale && (
-                              <button
-                                  className="mt-4 flex flex-row text-sm bg-blue-500 text-white px-2 py-1 rounded-md"
-                                  onClick={() => {
-                                    
-                                    ////router.push(`/sell-usdt/${item._id}`);
+                           
 
-                                    // copy to clipboard
-                                    navigator.clipboard.writeText(`https://next.unove.space/sell-usdt/${item._id}`);
-                                    toast.success('Link has been copied to clipboard');
 
-                                  }}
-                              >
+                            <div className=" mt-4 flex flex-row gap-2 items-center justify-center">
 
+                              {item.privateSale && (
                                 <Image
-                                  src="/icon-share.png"
-                                  alt="Share"
-                                  width={16}
-                                  height={16}
-                                  className="mr-2"
+                                  src="/icon-private-sale.png"
+                                  alt="Private Sale"
+                                  width={48}
+                                  height={48}
                                 />
-                                Share
-                              </button>
-                            )}
+                              )}
+   
 
+                              {item.walletAddress === address && item.privateSale && (
+                                <button
+                                    className=" flex flex-row text-sm bg-blue-500 text-white px-2 py-1 rounded-md"
+                                    onClick={() => {
+                                      
+                                      ////router.push(`/sell-usdt/${item._id}`);
+
+                                      // copy to clipboard
+                                      navigator.clipboard.writeText(`https://next.unove.space/sell-usdt/${item._id}`);
+                                      toast.success('Link has been copied to clipboard');
+
+                                    }}
+                                >
+
+                                  <Image
+                                    src="/icon-share.png"
+                                    alt="Share"
+                                    width={16}
+                                    height={16}
+                                    className="mr-2"
+                                  />
+                                  Share
+                                </button>
+                              )}
+
+
+                            </div>
+                          
 
 
 
