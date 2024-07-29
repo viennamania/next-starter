@@ -1367,7 +1367,7 @@ const P2PTable = () => {
                                         }}
                                     >
       
-                                      <div className="flex flex-row text-xs items-center gap-1 ">
+                                      <div className="flex flex-row text-xs items-center gap-2 ">
                                         {cancellings[index] ? (
                                           <div className="
                                             w-4 h-4
@@ -1390,7 +1390,10 @@ const P2PTable = () => {
                                             height={12}
                                           />
                                         )}
-                                        Cancel<br/>My Order
+                                        <div className="flex flex-row xl:flex-col items-center gap-1">
+                                          <span>Cancel</span>
+                                          <span>My Order</span>
+                                        </div>
                                       </div>
                                       
                                     </button>
