@@ -235,11 +235,123 @@ const P2PTable = () => {
     const closeModal = () => setModalOpen(false);
     const openModal = () => setModalOpen(true);
 
-    const goChat = (
+
+
+    const  goChat = async (
+
+
       tradeId: string
     ) => {
-        console.log('Go Chat');
-        router.push(`/chat?tradeId=${tradeId}`);
+
+
+
+      // POST https://api-{application_id}.sendbird.com/v3/open_channels
+      /*
+      Request body
+
+The following table lists the properties of an HTTP request that this action supports.
+
+Optional
+Property name
+Type
+Description
+name
+
+string
+
+Specifies the channel topic, or the name of the channel. The length is limited to 191 characters. (Default: open channel)
+
+channel_url
+
+string
+
+Specifies the URL of the channel. Only numbers, letters, underscores, and hyphens are allowed. The allowed length is 4 to 100 characters, inclusive. If not specified, a URL is automatically generated.
+
+cover_url
+
+string
+
+Specifies the URL of the channel's cover image. The length is limited to 2,048 characters.
+
+cover_file
+
+file
+
+Uploads a file for the channel's cover image.
+
+custom_type
+
+string
+
+Specifies the custom channel type which is used for channel grouping. The length is limited to 128 characters.
+
+* Custom types are also used within Sendbird's Advanced analytics to segment metrics as channel metrics can be grouped by channel custom type.
+
+data
+
+string
+
+Specifies additional channel information such as a long description of the channel or JSON formatted string.
+
+is_ephemeral
+
+boolean
+
+Determines whether to preserve messages in the channel to later retrieve the chat history. If set to true, messages in the channel aren't saved in the Sendbird database and chat history can't be retrieved. (Default: false)
+
+is_dynamic_partitioned
+
+boolean
+
+Determines whether the channel to be created is an open channel based on a dynamic partitioning structure. The value of true indicates that the open channel can create several subchannels in order to accommodate a massive number of users. This property is set to true by default for Sendbird applications created after December 15, 2020.
+
+operator_ids[]
+
+array of strings
+
+Specifies an array of user IDs to register as operators of the channel. The maximum number of operators allowed per channel is 100. Operators can delete any messages in the channel and receives all messages that have been throttled.
+
+* Operators can't view messages that have been moderated by the domain filter or profanity filter. Only the sender will be notified that the message has been blocked.
+
+operators[]
+
+array of strings
+
+(Deprecated) Specifies the string IDs of the users registered as channel operators. Operators can delete any messages in the channel and even receive all messages that have been throttled.
+*/
+
+      const url = 'https://api-D2845744-81A3-4585-99FF-4DCABE2CA190.sendbird.com/v3/open_channels';
+
+
+
+      const result = await fetch(url, {
+        method: 'POST',
+
+        headers: {
+          'Content-Type': 'application/json',
+          'Api-Token': 'd5e9911aa317c4ee9a3be4fce38b878941f11c68',
+        },
+
+        body: JSON.stringify({
+          name: tradeId,
+          channel_url: tradeId,
+          cover_url: 'https://next.unove.space/icon-trade.png',
+          custom_type: 'trade',
+
+        }),
+      });
+
+      const data = await result.json();
+
+      console.log('data', data);
+          
+
+      console.log('Go Chat');
+
+      router.push(`/chat?tradeId=${tradeId}`);
+
+
+
     }
 
     

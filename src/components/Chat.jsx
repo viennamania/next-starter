@@ -73,6 +73,8 @@ export default function Chat(
 
     //userId
 
+    tradeId,
+
     userId,
     nickname
 } 
@@ -143,7 +145,9 @@ export default function Chat(
             */}
 
             <OpenChannel
-                channelUrl={'sendbird_open_channel_18053_3b9b531f3d94bb5b03b72bb8b5684eb7586db969'}
+                //channelUrl={'sendbird_open_channel_18053_3b9b531f3d94bb5b03b72bb8b5684eb7586db969'}
+
+                channelUrl={tradeId}
             />
 
 

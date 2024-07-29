@@ -44,9 +44,25 @@ import Chat from "../../components/Chat";
 import React, { useEffect, useState } from 'react';
 
 
+// /chat?tradeId=
+// get parameter from url
 
+/*
+export default function ChatPage(
+*/
 
 export default function ChatPage() {
+
+  // get parameter from url
+
+  const urlParams = new URLSearchParams(window.location.search);
+
+  const tradeId = urlParams.get('tradeId');
+
+  console.log("tradeId", tradeId);
+
+
+
 
 
   // get the active wallet
@@ -137,8 +153,11 @@ export default function ChatPage() {
           />
           */}
 
-          {address && nickname && (
+          {tradeId && address && nickname && (
             <Chat
+
+              tradeId={tradeId}
+
               userId={ nickname }
 
               nickname={  nickname }

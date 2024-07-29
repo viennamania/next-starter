@@ -550,6 +550,7 @@ const P2PTable = () => {
                     <div className="text-xl font-semibold text-white">
                       {sellOrders.length}
                     </div>
+                    
                   </div>
 
                   <div className="flex flex-col gap-2 items-center">
