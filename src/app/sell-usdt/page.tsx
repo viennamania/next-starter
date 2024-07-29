@@ -564,148 +564,148 @@ const P2PTable = () => {
                 </div>
 
 
-
-
-
-
-
-
-
-
-                  <div className=" w-full grid gap-4 lg:grid-cols-3 justify-center">
+                  <div className=" w-full grid gap-4  justify-center">
 
 
                     {/* sell order is different border color
                     */}
                     <article
-                      className="w-96 xl:w-full bg-black p-4 rounded-md border-2 border-green-500"
+                      className=" bg-black p-4 rounded-md border-2 border-green-500"
                     >
-                        <div className=" flex flex-row items-center justify-between gap-4">
-                
-                          {/* sell icon */}
-                          <div className=" flex flex-row items-center gap-2">
-                            <Image
-                              src="/trade-sell.png"
-                              alt="Sell"
-                              width={40}
-                              height={40}
-                            />
-                            <h2 className="text-lg font-semibold text-white">Order</h2>
+
+                      <div className="flex flex-col xl:flex-row gap-5 xl:gap-10 items-center">
+
+
+                        <div className="flex flex-col gap-2 items-start">
+                          
+                          <div className=" flex flex-row items-center justify-between gap-4">
+                  
+                            {/* sell icon */}
+                            <div className=" flex flex-row items-center gap-2">
+                              <Image
+                                src="/trade-sell.png"
+                                alt="Sell"
+                                width={40}
+                                height={40}
+                              />
+                              <h2 className="text-lg font-semibold text-white">Order</h2>
+                            </div>
+
+                            {/* check box for private sale */}
+                            <div className="flex flex-row items-center gap-2">
+
+                              <Image
+                                src="/icon-private-sale.png"
+                                alt="Private Sale"
+                                width={32}
+                                height={32}
+                              />
+
+                              <div className="text-sm text-zinc-400">Private Sale</div>
+                              <input
+                                className="w-6 h-6"
+                                type="checkbox"
+                                checked={privateSale}
+                                onChange={(e) => setprivateSale(e.target.checked)}
+                              />
+                            </div>
+
                           </div>
 
-                          {/* check box for private sale */}
-                          <div className="flex flex-row items-center gap-2">
 
-                            <Image
-                              src="/icon-private-sale.png"
-                              alt="Private Sale"
-                              width={32}
-                              height={32}
-                            />
+                          {/* my seller info */}
 
-                            <div className="text-sm text-zinc-400">Private Sale</div>
-                            <input
-                              className="w-6 h-6"
-                              type="checkbox"
-                              checked={privateSale}
-                              onChange={(e) => setprivateSale(e.target.checked)}
-                            />
-                          </div>
-
-                        </div>
-
-
-                      {/* my seller info */}
-
-                      {address && seller && (
-                      <div className="mt-4 flex flex-row items-center gap-2">
-                        <Image
-                          src={avatar}
-                          alt="Profile"
-                          width={24}
-                          height={24}
-                          className="rounded-full"
-                          style={{
-                            objectFit: 'cover',
-                            width: '24px',
-                            height: '24px'
-                          }}
-
-                        />
-                        <div className="text-lg font-semibold text-white">{nickname}</div>
-
-                        <Image
-                          src="/verified.png"
-                          alt="Verified"
-                          width={24}
-                          height={24}
-                        />
-                        <Image
-                          src="/best-seller.png"
-                          alt="Identity"
-                          width={24}
-                          height={24}
-                        />
-                      </div>
-                      )}
+                          {address && seller && (
 
 
 
+                            <div className="mt-4 flex flex-row items-center gap-2">
+                              <Image
+                                src={avatar}
+                                alt="Profile"
+                                width={24}
+                                height={24}
+                                className="rounded-full"
+                                style={{
+                                  objectFit: 'cover',
+                                  width: '24px',
+                                  height: '24px'
+                                }}
+
+                              />
+                              <div className="text-lg font-semibold text-white">{nickname}</div>
+
+                              <Image
+                                src="/verified.png"
+                                alt="Verified"
+                                width={24}
+                                height={24}
+                              />
+                              <Image
+                                src="/best-seller.png"
+                                alt="Identity"
+                                width={24}
+                                height={24}
+                              />
+                            </div>
+                          )}
 
 
-                        <p className="mt-4 text-xl font-bold text-zinc-400">1 USDT = {
-                          // currency format
-                          Number(rate).toLocaleString('ko-KR', {
-                            style: 'currency',
-                            currency: 'KRW'
-                          })
-                        }</p>
-                        
-                        <div className="mt-4 flex flex-row items-center gap-2">
-                          <p className="text-xl text-blue-500 font-bold ">
-                            <input 
-                              type="number"
-                              className=" w-28 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 "
-                              placeholder="Amount"
-                              value={usdtAmount}
-                              onChange={(e) => {
-                                // check number
-                                e.target.value = e.target.value.replace(/[^0-9.]/g, '');
-
-                                // if the value is start with 0, then remove 0
-                                if (e.target.value.startsWith('0')) {
-                                  e.target.value = e.target.value.substring(1);
-                                }
-
-                                
-                                if (e.target.value === '') {
-                                  setUsdtAmount(0);
-                                  return;
-                                }
-
-                                
-                            
-
-
-                                parseFloat(e.target.value) < 0 ? setUsdtAmount(0) : setUsdtAmount(parseFloat(e.target.value));
-
-                                parseFloat(e.target.value) > 1000 ? setUsdtAmount(1000) : setUsdtAmount(parseFloat(e.target.value));
-
-                              } }
-
-
-                            />
-                            <span className="ml-1 text-sm">USDT</span>
-                          </p>
-
-                          <p className=" text-xl text-zinc-400 font-bold">
-                            = {
-                            Number(defaultKrWAmount).toLocaleString('ko-KR', {
+                          <p className="mt-4 text-xl font-bold text-zinc-400">1 USDT = {
+                            // currency format
+                            Number(rate).toLocaleString('ko-KR', {
                               style: 'currency',
                               currency: 'KRW'
                             })
-                            }
-                          </p>
+                          }</p>
+                          
+                          <div className="mt-4 flex flex-row items-center gap-2">
+                            <p className="text-xl text-blue-500 font-bold ">
+                              <input 
+                                type="number"
+                                className=" w-28 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 "
+                                placeholder="Amount"
+                                value={usdtAmount}
+                                onChange={(e) => {
+                                  // check number
+                                  e.target.value = e.target.value.replace(/[^0-9.]/g, '');
+
+                                  // if the value is start with 0, then remove 0
+                                  if (e.target.value.startsWith('0')) {
+                                    e.target.value = e.target.value.substring(1);
+                                  }
+
+                                  
+                                  if (e.target.value === '') {
+                                    setUsdtAmount(0);
+                                    return;
+                                  }
+
+                                  
+                              
+
+
+                                  parseFloat(e.target.value) < 0 ? setUsdtAmount(0) : setUsdtAmount(parseFloat(e.target.value));
+
+                                  parseFloat(e.target.value) > 1000 ? setUsdtAmount(1000) : setUsdtAmount(parseFloat(e.target.value));
+
+                                } }
+
+
+                              />
+                              <span className="ml-1 text-sm">USDT</span>
+                            </p>
+
+                            <p className=" text-xl text-zinc-400 font-bold">
+                              = {
+                              Number(defaultKrWAmount).toLocaleString('ko-KR', {
+                                style: 'currency',
+                                currency: 'KRW'
+                              })
+                              }
+                            </p>
+                          </div>
+
                         </div>
 
 
@@ -715,132 +715,135 @@ const P2PTable = () => {
                         {/* if - button change bg color red */}
                         {/* if + button change bg color */}
 
-                        <div className="mt-4 flex flex-row items-center justify-between gap-2">
+                          <div className="mt-4  flex flex-row items-center justify-between gap-2">
 
 
-                          <div className="flex flex-col gap-2">
+                            <div className="flex flex-col gap-2">
 
-                            <button
-                              disabled={usdtAmount === 0}
-                              className="bg-red-400 text-white px-2 py-2 rounded-md"
-                              onClick={() => {
-                                krwAmount > 0 && setKrwAmount(krwAmount - 1);
-                              }}
-                            >
-                              -1
-                            </button>
+                              <button
+                                disabled={usdtAmount === 0}
+                                className="bg-red-400 text-white px-2 py-2 rounded-md"
+                                onClick={() => {
+                                  krwAmount > 0 && setKrwAmount(krwAmount - 1);
+                                }}
+                              >
+                                -1
+                              </button>
 
-                            <button
-                              disabled={usdtAmount === 0}
-                              className="bg-red-600 text-white px-2 py-2 rounded-md"
-                              onClick={() => {
-                                krwAmount > 10 && setKrwAmount(krwAmount - 10);
-                              }}
-                            >
-                              -10
-                            </button>
+                              <button
+                                disabled={usdtAmount === 0}
+                                className="bg-red-600 text-white px-2 py-2 rounded-md"
+                                onClick={() => {
+                                  krwAmount > 10 && setKrwAmount(krwAmount - 10);
+                                }}
+                              >
+                                -10
+                              </button>
 
-                            <button
-                              disabled={usdtAmount === 0}
-                              className="bg-red-800 text-white px-2 py-2 rounded-md"
-                              onClick={() => {
-                                krwAmount > 100 && setKrwAmount(krwAmount - 100);
-                              }}
-                            >
-                              -100
-                            </button>
+                              <button
+                                disabled={usdtAmount === 0}
+                                className="bg-red-800 text-white px-2 py-2 rounded-md"
+                                onClick={() => {
+                                  krwAmount > 100 && setKrwAmount(krwAmount - 100);
+                                }}
+                              >
+                                -100
+                              </button>
 
-                            <button
-                              disabled={usdtAmount === 0}
-                              className="bg-red-900 text-white px-2 py-2 rounded-md"
-                              onClick={() => {
-                                krwAmount > 1000 && setKrwAmount(krwAmount - 1000);
-                              }}
-                            >
-                              -1000
-                            </button>
+                              <button
+                                disabled={usdtAmount === 0}
+                                className="bg-red-900 text-white px-2 py-2 rounded-md"
+                                onClick={() => {
+                                  krwAmount > 1000 && setKrwAmount(krwAmount - 1000);
+                                }}
+                              >
+                                -1000
+                              </button>
 
-                          </div>
-
-                          <div className="flex flex-col gap-2">
-                            <div className="flex flex-row items-center gap-2"> 
-  
-                              <input 
-                                disabled
-                                type="number"
-                                className=" w-36  px-3 py-2 text-black bg-white text-xl font-bold border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 "
-                                value={krwAmount}
-                                onChange={(e) => {
-                                  // check number
-                                  e.target.value = e.target.value.replace(/[^0-9.]/g, '');
-
-                                  if (e.target.value === '') {
-                                    setKrwAmount(0);
-                                    return;
-                                  }
-
-                                  parseFloat(e.target.value) < 0 ? setKrwAmount(0) : setKrwAmount(parseFloat(e.target.value));
-
-                                  parseFloat(e.target.value) > 1000 ? setKrwAmount(1000) : setKrwAmount(parseFloat(e.target.value));
-
-                                } }
-                              />
                             </div>
 
-                            {krwAmount > 0 && (
-                              <div className="text-xl text-zinc-400">
-                                Rate: {
+                            <div className="flex flex-col gap-2">
+                              <div className="flex flex-row items-center gap-2"> 
+    
+                                <input 
+                                  disabled
+                                  type="number"
+                                  className=" w-36  px-3 py-2 text-black bg-white text-xl font-bold border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 "
+                                  value={krwAmount}
+                                  onChange={(e) => {
+                                    // check number
+                                    e.target.value = e.target.value.replace(/[^0-9.]/g, '');
 
-                                  // currency format
-                                  Number((krwAmount / usdtAmount).toFixed(2)).toLocaleString('ko-KR', {
-                                    style: 'currency',
-                                    currency: 'KRW'
-                                  })
+                                    if (e.target.value === '') {
+                                      setKrwAmount(0);
+                                      return;
+                                    }
 
-                                } 
+                                    parseFloat(e.target.value) < 0 ? setKrwAmount(0) : setKrwAmount(parseFloat(e.target.value));
+
+                                    parseFloat(e.target.value) > 1000 ? setKrwAmount(1000) : setKrwAmount(parseFloat(e.target.value));
+
+                                  } }
+                                />
                               </div>
-                            )}
-                          </div>
 
-                          <div className="flex flex-col gap-2">
-                            <button
-                              disabled={usdtAmount === 0}
-                              className="bg-green-400 text-white px-2 py-2 rounded-md"
-                              onClick={() => {
-                                setKrwAmount(krwAmount + 1);
-                              }}
-                            >
-                              +1
-                            </button>
-                            <button
-                              disabled={usdtAmount === 0}
-                              className="bg-green-600 text-white px-2 py-2 rounded-md"
-                              onClick={() => {
-                                setKrwAmount(krwAmount + 10);
-                              }}
-                            >
-                              +10
-                            </button>
+                              {krwAmount > 0 && (
+                                <div className="text-xl text-zinc-400">
+                                  Rate: {
 
-                            <button
-                              disabled={usdtAmount === 0}
-                              className="bg-green-800 text-white px-2 py-2 rounded-md"
-                              onClick={() => {
-                                setKrwAmount(krwAmount + 100);
-                              }}
-                            >
-                              +100
-                            </button>
+                                    // currency format
+                                    Number((krwAmount / usdtAmount).toFixed(2)).toLocaleString('ko-KR', {
+                                      style: 'currency',
+                                      currency: 'KRW'
+                                    })
 
-                            <button
-                              disabled={usdtAmount === 0}
-                              className="bg-green-900 text-white px-2 py-2 rounded-md"
-                              onClick={() => {
-                                setKrwAmount(krwAmount + 1000);
-                              }}
-                            >
-                              +1000
-                            </button>
+                                  } 
+                                </div>
+                              )}
+                            </div>
+
+                            <div className="flex flex-col gap-2">
+                              <button
+                                disabled={usdtAmount === 0}
+                                className="bg-green-400 text-white px-2 py-2 rounded-md"
+                                onClick={() => {
+                                  setKrwAmount(krwAmount + 1);
+                                }}
+                              >
+                                +1
+                              </button>
+                              <button
+                                disabled={usdtAmount === 0}
+                                className="bg-green-600 text-white px-2 py-2 rounded-md"
+                                onClick={() => {
+                                  setKrwAmount(krwAmount + 10);
+                                }}
+                              >
+                                +10
+                              </button>
+
+                              <button
+                                disabled={usdtAmount === 0}
+                                className="bg-green-800 text-white px-2 py-2 rounded-md"
+                                onClick={() => {
+                                  setKrwAmount(krwAmount + 100);
+                                }}
+                              >
+                                +100
+                              </button>
+
+                              <button
+                                disabled={usdtAmount === 0}
+                                className="bg-green-900 text-white px-2 py-2 rounded-md"
+                                onClick={() => {
+                                  setKrwAmount(krwAmount + 1000);
+                                }}
+                              >
+                                +1000
+                              </button>
+
+                            </div>
+
 
                           </div>
 
@@ -863,6 +866,7 @@ const P2PTable = () => {
 
                         <div className="mt-4 flex flex-row items-center gap-2">
                           <input
+                            disabled={usdtAmount === 0 || sellOrdering}
                             type="checkbox"
                             checked={agreementPlaceOrder}
                             onChange={(e) => setAgreementPlaceOrder(e.target.checked)}
@@ -1052,7 +1056,7 @@ const P2PTable = () => {
                   </div>
 
 
-                  <div className=" w-full grid gap-4 lg:grid-cols-3 justify-center">
+                  <div className=" w-full grid gap-4 xl:grid-cols-3 justify-center">
 
                     {sellOrders.map((item, index) => (
 
