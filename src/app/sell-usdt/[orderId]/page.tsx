@@ -1039,12 +1039,14 @@ export default function SellUsdt({ params }: { params: { orderId: string } }) {
 
                               <div className='flex flex-row items-center gap-2 bg-white px-2 py-1 rounded-md mb-4'>
 
-                                <Image
-                                  src='/icon-trade.png'
-                                  alt='Transaction'
-                                  width={32}
-                                  height={32}
-                                />
+                                {item.status === 'accepted' || item.status === 'paymentRequested' && (
+                                  <Image
+                                    src='/icon-trade.png'
+                                    alt='Trade'
+                                    width={32}
+                                    height={32}
+                                  />
+                                )}
 
                                 <p className=" text-xl font-semibold text-green-500 ">
                                   TID: {item.tradeId}
