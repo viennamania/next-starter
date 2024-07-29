@@ -164,9 +164,20 @@ export default function SellUsdt({ params }: { params: { orderId: string } }) {
 
 
 
+
+    // get the active wallet
+    const activeWallet = useActiveWallet();
+
+
+
+
   const smartAccount = useActiveAccount();
 
   const address = smartAccount?.address || "";
+
+
+
+
 
 
 
@@ -873,7 +884,26 @@ export default function SellUsdt({ params }: { params: { orderId: string } }) {
               </button>
           </div>
 
-          {!address && (
+          {address ? (
+            <div className="flex flex-col items-center space-y-4 mb-4">
+              {/* disconnect button */}
+              <button
+                onClick={() => {
+
+                  activeWallet?.disconnect();
+
+                    
+                    
+                  window.location.reload();
+
+                }}
+                className="text-lg bg-red-500 text-white px-4 py-2 rounded-md"
+              >
+                Disconnect Wallet
+              </button>
+            </div>
+
+          ) : (
             <div className="flex flex-col items-center space-y-4 mb-4">
                         <ConnectButton
                             
