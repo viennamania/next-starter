@@ -274,7 +274,17 @@ export default function SellUsdt({ params }: { params: { orderId: string } }) {
   
         fetchSellOrders();
 
-        // fetch sell orders every 10 seconds
+        // if address is null 
+        //fetch sell orders every 10 seconds
+
+        if (!address) {
+          const interval = setInterval(() => {
+            fetchSellOrders();
+          }, 10000);
+          return () => clearInterval(interval);
+        }
+
+
         /*
         const interval = setInterval(() => {
 
@@ -282,7 +292,7 @@ export default function SellUsdt({ params }: { params: { orderId: string } }) {
         }, 10000);
         */
   
-    }, [orderId] );
+    }, [orderId, address]);
 
 
 
@@ -926,7 +936,7 @@ export default function SellUsdt({ params }: { params: { orderId: string } }) {
 
 
 
-                <div className="w-full grid grid-cols-1 gap-4  justify-center">
+                <div className="w-full mb-10 grid grid-cols-1 gap-4  justify-center">
 
                     {sellOrders.map((item, index) => (
 
@@ -1346,30 +1356,33 @@ export default function SellUsdt({ params }: { params: { orderId: string } }) {
 
 
                             {/* share button */}
-                            {item.walletAddress === address && item.privateSale && (
-                              <button
-                                  className="text-sm bg-blue-500 text-white px-2 py-1 rounded-md"
-                                  onClick={() => {
-                                    
-                                    router.push(`/sell-usdt/${item._id}`);
 
-                                  }}
-                              >
-                                <Image
-                                  src="/icon-share.png"
-                                  alt="Share"
-                                  width={16}
-                                  height={16}
-                                />
-                                Share
-                              </button>
-                            )}
+                              <div className='flex flex-row items-center justify-end gap-2'>
+                                <button
+                                    className="flex text-sm bg-blue-500 text-white px-2 py-1 rounded-md"
+                                    onClick={() => {
+                                      
+                                      router.push(`/sell-usdt/${item._id}`);
+
+                                    }}
+                                >
+                                  <Image
+                                    src="/icon-share.png"
+                                    alt="Share"
+                                    width={16}
+                                    height={16}
+                                    className='mr-2'
+                                  />
+                                  Share
+                                </button>
+                              </div>
+                            
 
 
 
                             {/* waiting for escrow */}
                             {item.status === 'accepted' && (
-                                <div className="mt-4 flex flex-row gap-2 items-center justify-start">
+                                <div className="mt-10 flex flex-row gap-2 items-center justify-start">
 
                                   {/* rotate loading icon */}
                                 
@@ -1404,8 +1417,8 @@ export default function SellUsdt({ params }: { params: { orderId: string } }) {
                                   <Image
                                       src='/loading.png'
                                       alt='loading'
-                                      width={50}
-                                      height={50}
+                                      width={32}
+                                      height={32}
                                       className="animate-spin"
                                   />
                                   <div className="text-lg font-semibold text-white">
@@ -1644,7 +1657,7 @@ export default function SellUsdt({ params }: { params: { orderId: string } }) {
                                           disabled={!user}
                                           className="text-lg bg-green-500 text-white px-4 py-2 rounded-md mt-4"
                                           onClick={() => {
-                                              console.log('Buy USDT');
+                                              ///console.log('Buy USDT');
 
                                               // open trade detail
                                               // open modal of trade detail
@@ -1659,7 +1672,7 @@ export default function SellUsdt({ params }: { params: { orderId: string } }) {
 
                                           }}
                                         >
-                                          Buy USDT
+                                          Buy {item.usdtAmount} USDT
                                         </button>
 
                                       )}
@@ -1683,7 +1696,7 @@ export default function SellUsdt({ params }: { params: { orderId: string } }) {
                             {/* bank transfer infomation */}
                             {item.status === 'paymentRequested' && (
 
-                              <div className="mt-4 flex flex-col items-start gap-2">
+                              <div className="mt-4 mb-10 flex flex-col items-start gap-2">
 
                                 {/* escrow infomation */}
                                 <div className='flex flex-row items-center gap-2'>
@@ -1738,38 +1751,49 @@ export default function SellUsdt({ params }: { params: { orderId: string } }) {
                                   </div>
                                 </div>
 
-                                <div className='flex flex-row items-center gap-2'>
-                                  <div className="w-2 h-2 rounded-full bg-green-500"></div>
-                                  <div className="text-sm ">
-                                    Account Number: {item.seller?.bankInfo.accountNumber}
-                                  </div>
-                                </div>
 
-                                <div className='flex flex-row items-center gap-2'>
-                                  <div className="w-2 h-2 rounded-full bg-green-500"></div>
-                                  <div className="text-sm">
-                                    Account Holder: {item.seller?.bankInfo.accountHolder}
-                                  </div>
-                                </div>
 
-                                <div className='flex flex-row items-center gap-2'>
-                                  <div className="w-2 h-2 rounded-full bg-green-500"></div>
-                                  <div className="text-sm">
-                                    Deposit Name: {item.tradeId}
-                                  </div>
-                                </div>
+                                {address && (item.walletAddress === address || item.buyer.walletAddress === address ) && (
+                                  <>
+                                    <div className='flex flex-row items-center gap-2'>
+                                      <div className="w-2 h-2 rounded-full bg-green-500"></div>
+                                      <div className="text-sm ">
+                                        Account Number: {item.seller?.bankInfo.accountNumber}
+                                      </div>
+                                    </div>
 
-                                <div className='flex flex-row items-center gap-2'>
-                                  <div className="w-2 h-2 rounded-full bg-green-500"></div>
-                                  <div className="text-sm">
-                                    Deposit Amount: {
-                                      item.krwAmount.toLocaleString('ko-KR', {
-                                        style: 'currency',
-                                        currency: 'KRW'
-                                      })
-                                    }
-                                  </div>
-                                </div>
+                                    <div className='flex flex-row items-center gap-2'>
+                                      <div className="w-2 h-2 rounded-full bg-green-500"></div>
+                                      <div className="text-sm">
+                                        Account Holder: {item.seller?.bankInfo.accountHolder}
+                                      </div>
+                                    </div>
+
+                                    <div className='flex flex-row items-center gap-2'>
+                                      <div className="w-2 h-2 rounded-full bg-green-500"></div>
+                                      <div className="text-sm">
+                                        Deposit Name: {item.tradeId}
+                                      </div>
+                                    </div>
+
+                                    <div className='flex flex-row items-center gap-2'>
+                                      <div className="w-2 h-2 rounded-full bg-green-500"></div>
+                                      <div className="text-sm">
+                                        Deposit Amount: {
+                                          item.krwAmount.toLocaleString('ko-KR', {
+                                            style: 'currency',
+                                            currency: 'KRW'
+                                          })
+                                        }
+                                      </div>
+                                    </div>
+
+                                  </>
+
+                                )}
+
+
+
 
                                 <div className='flex flex-row items-center gap-2'>
                                   <div className="w-2 h-2 rounded-full bg-green-500"></div>
@@ -1785,25 +1809,25 @@ export default function SellUsdt({ params }: { params: { orderId: string } }) {
 
                                 {/* waiting for receive USDT */}
 
+                                {!address && (
                                
-                                <div className="mt-4 flex flex-row gap-2 items-center justify-start">
+                                  <div className="mt-4 flex flex-row gap-2 items-center justify-start">
 
-                                  {/* rotate loading icon */}
-                                
-                                  <Image
-                                    src="/loading.png"
-                                    alt="Escrow"
-                                    width={32}
-                                    height={32}
-                                    className="animate-spin"
-                                  />
-
-                                  <div>Waiting for seller to confirm payment...</div>
-
-                                </div>
+                                    {/* rotate loading icon */}
                                   
-                                  
+                                    <Image
+                                      src="/loading.png"
+                                      alt="Escrow"
+                                      width={32}
+                                      height={32}
+                                      className="animate-spin"
+                                    />
 
+                                    <div>Waiting for seller to confirm payment...</div>
+
+                                  </div>
+                                  
+                                )}  
 
                               </div>
                             )}
