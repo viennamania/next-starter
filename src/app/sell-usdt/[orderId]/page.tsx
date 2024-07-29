@@ -1376,7 +1376,11 @@ export default function SellUsdt({ params }: { params: { orderId: string } }) {
                                     className="flex text-sm bg-blue-500 text-white px-2 py-1 rounded-md"
                                     onClick={() => {
                                       
-                                      router.push(`/sell-usdt/${item._id}`);
+                                      //router.push(`/sell-usdt/${item._id}`);
+
+                                      // copy link to clipboard
+                                      navigator.clipboard.writeText(`https://next.unove.space/sell-usdt/${item._id}`);
+                                      toast.success('Link has been copied');
 
                                     }}
                                 >
