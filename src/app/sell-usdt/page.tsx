@@ -1318,14 +1318,20 @@ const P2PTable = () => {
                               Payment: Bank Transfer ({item.seller?.bankInfo.bankName})
                             </p>
 
-                            
-                            <h2 className="mt-4 text-lg font-semibold mb-2">
-                              Seller: {
 
-                                item.walletAddress === address ? (
+
+                       
+
+                            
+                            <div className="mt-4 flex text-lg font-semibold mb-2">
+                              {
+   
+
+                                item.walletAddress === address &&
+                                (item.status === 'accepted' || item.status === 'paymentRequested') ? (
 
                                   <div className="flex flex-row items-center gap-2">
-                                    <span>{item.nickname}</span>
+                                    <span>Seller: {item.nickname}</span>
                                     <span className="text-green-500">:Me</span>
                                     
                                     {/* goto /sell-usdt/:id */}
@@ -1343,60 +1349,67 @@ const P2PTable = () => {
                                 
                                   </div>
 
+                                ) : (item.walletAddress === address && item.status === 'ordered') ? (
+
+                                  <div className="flex flex-row items-center gap-2">
+                                    <span>Seller: {item.nickname}</span>
+                                    <span className="text-green-500">:Me</span>
+                                           
+                                    <button
+                                        disabled={cancellings[index]}
+                                        className={`text-sm bg-red-500 text-white px-3 py-2 rounded-md ${cancellings[index] ? 'bg-gray-500' : ''}`}
+                                        onClick={() => {
+                                          // api call
+                                          // cancelSellOrder
+      
+                                          cancelSellOrder(item._id, index);
+      
+                                        }}
+                                    >
+      
+                                      <div className="flex flex-row text-xs items-center gap-1 ">
+                                        {cancellings[index] ? (
+                                          <div className="
+                                            w-4 h-4
+                                            border-2 border-zinc-800
+                                            rounded-full
+                                            animate-spin
+                                          ">
+                                            <Image
+                                              src="/loading.png"
+                                              alt="loading"
+                                              width={12}
+                                              height={12}
+                                            />
+                                          </div>
+                                        ) : (
+                                          <Image
+                                            src="/icon-cancelled.png"
+                                            alt="Cancel"
+                                            width={12}
+                                            height={12}
+                                          />
+                                        )}
+                                        Cancel Order
+                                      </div>
+                                      
+                                    </button>
+
+                                  </div>
+  
+
                                 ) : (
                                 
-                                item.nickname
+                                  <span>
+                                    Seller: {item.nickname}
+                                  </span>
 
                                 )
 
                               }
-                            </h2>
-
-                            {/* cancel order button for seller */}
-                            {item.walletAddress === address && item.status === 'ordered' && (
-                            <div className="w-full mt-2 mb-2 flex flex-col items-center ">
-                              <button
-                                  disabled={cancellings[index]}
-                                  className={`text-sm bg-red-500 text-white px-3 py-2 rounded-md ${cancellings[index] ? 'bg-gray-500' : ''}`}
-                                  onClick={() => {
-                                    // api call
-                                    // cancelSellOrder
-
-                                    cancelSellOrder(item._id, index);
-
-                                  }}
-                              >
-
-                                <div className="flex flex-row items-center gap-2">
-                                  {cancellings[index] ? (
-                                    <div className="
-                                      w-4 h-4
-                                      border-2 border-zinc-800
-                                      rounded-full
-                                      animate-spin
-                                    ">
-                                      <Image
-                                        src="/loading.png"
-                                        alt="loading"
-                                        width={16}
-                                        height={16}
-                                      />
-                                    </div>
-                                  ) : (
-                                    <Image
-                                      src="/icon-cancelled.png"
-                                      alt="Cancel"
-                                      width={16}
-                                      height={16}
-                                    />
-                                  )}
-                                  Cancel My Order
-                                </div>
-                                
-                              </button>
-
                             </div>
-                            )}
+
+   
 
 
 
