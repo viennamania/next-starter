@@ -1382,6 +1382,8 @@ export default function SellUsdt({ params }: { params: { orderId: string } }) {
                                 <h2 className="text-lg font-semibold">
                                     Buyer: {
 
+                                        item.buyer.walletAddress === address ? item.buyer.nickname + ' :Me' :
+
                                         item.buyer ? item.buyer.nickname.substring(0, 1) + '***' : 'Anonymous'
 
                                     }

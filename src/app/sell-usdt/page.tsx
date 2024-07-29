@@ -795,7 +795,7 @@ const P2PTable = () => {
                               </div>
 
                               {krwAmount > 0 && (
-                                <div className="text-xl text-zinc-400">
+                                <div className="text-lg font-semibold text-zinc-400">
                                   Rate: {
 
                                     // currency format
@@ -869,7 +869,7 @@ const P2PTable = () => {
 
                         <div className="mt-10 flex flex-row items-center gap-2">
                           <input
-                            disabled={usdtAmount === 0 || sellOrdering}
+                            disabled={!address || usdtAmount === 0 || sellOrdering}
                             type="checkbox"
                             checked={agreementPlaceOrder}
                             onChange={(e) => setAgreementPlaceOrder(e.target.checked)}
