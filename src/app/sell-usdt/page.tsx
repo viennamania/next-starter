@@ -1390,7 +1390,7 @@ const P2PTable = () => {
                                             height={12}
                                           />
                                         )}
-                                        Cancel Order
+                                        Cancel<br/>My Order
                                       </div>
                                       
                                     </button>
