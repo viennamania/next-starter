@@ -1862,6 +1862,7 @@ export default function SellUsdt({ params }: { params: { orderId: string } }) {
                               
                               <div className="w-full flex flex-col items-start gap-2">
 
+                                {/*
                                 <div className="flex flex-row items-center gap-2">
 
                                   <Image
@@ -1894,12 +1895,13 @@ export default function SellUsdt({ params }: { params: { orderId: string } }) {
 
 
                                 </div>
+                                */}
 
 
 
 
                               
-                                {
+                                { 
                                   item.status === 'paymentRequested'
                                   && requestingPayment[index]
                                   && confirmingPayment[index] === false
