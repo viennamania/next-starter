@@ -7,7 +7,7 @@ import Image from "next/image";
 import thirdwebIcon from "@public/thirdweb.svg";
 
 
-import { client } from "./client";
+import { client } from "../client";
 
 //import { createThirdwebClient } from "thirdweb";
 
@@ -130,7 +130,12 @@ console.log("contractEditorDrop", contractEditorDrop);
 
 
 
-export default function Home() {
+///export default function Home() {
+
+export default function Index({ params }: any) {
+
+
+  console.log("params", params);
 
 
 
@@ -479,21 +484,12 @@ export default function Home() {
     <main className="p-4 pb-10 min-h-[100vh] flex items-start justify-center container max-w-screen-lg mx-auto">
 
 
-      <div
-        id="google_translate_element"
-        style={{ position: 'fixed', right: 0, top: 50, zIndex: 1000, backgroundColor:'rgba(255, 255, 255, 0.7)', borderRadius:'10px', padding:'5px' }}></div>
-
-
-
       <div className="py-20">
         
         {/*
         <Header />
         */}
 
-
-      
-   
 
 
         <div className="flex flex-col justify-center gap-5 mb-10">
@@ -1088,7 +1084,9 @@ export default function Home() {
 
           <ArticleCard
             title={`Buy USDT - Open Orders (${countOfOpenOrders}) EA`}
-            href="/buy-usdt"
+            
+            href={`${params.lang}/buy-usdt`}
+
             description="Buy USDT with your favorite real-world currency"
           />
 
@@ -1139,11 +1137,6 @@ export default function Home() {
           </div>
         </div>
         */}
-
-          {/*
-        <LanguageSelector />
-        */}
-
 
       </div>
 
