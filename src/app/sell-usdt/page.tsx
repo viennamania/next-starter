@@ -659,7 +659,7 @@ const P2PTable = () => {
                             })
                           }</p>
                           
-                          <div className="mt-4 flex flex-row items-center gap-2">
+                          <div className=" flex flex-row items-center gap-2">
                             <p className="text-xl text-blue-500 font-bold ">
                               <input 
                                 type="number"
@@ -705,6 +705,13 @@ const P2PTable = () => {
                               }
                             </p>
                           </div>
+
+
+                          {seller && (
+                          <p className=" text-sm text-zinc-400">
+                            Payment: Bank Transfer ({seller?.bankInfo.bankName})
+                          </p>
+                        )}
 
                         </div>
 
@@ -853,18 +860,14 @@ const P2PTable = () => {
 
 
                         
-                        {seller && (
-                        <p className="mt-4 text-sm text-zinc-400">
-                          Payment: Bank Transfer ({seller?.bankInfo.bankName})
-                        </p>
-                        )}
+
 
 
                         {/* aggremment */}
                         {/* After you place order and the buyer accepts the order, you can not cancel the order. */}
 
 
-                        <div className="mt-4 flex flex-row items-center gap-2">
+                        <div className="mt-10 flex flex-row items-center gap-2">
                           <input
                             disabled={usdtAmount === 0 || sellOrdering}
                             type="checkbox"
