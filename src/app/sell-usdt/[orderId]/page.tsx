@@ -1037,7 +1037,7 @@ export default function SellUsdt({ params }: { params: { orderId: string } }) {
 
                             { (item.status === 'accepted' || item.status === 'paymentRequested' || item.status === 'paymentConfirmed') && (
 
-                              <div className='flex flex-row items-center gap-2 bg-white px-2 py-1 rounded-md mb-4'>
+                              <div className='flex flex-row items-center gap-2 bg-white px-2 py-3 rounded-md mb-4'>
 
                                 {item.status === 'accepted' || item.status === 'paymentRequested' && (
                                   <Image
@@ -1076,6 +1076,22 @@ export default function SellUsdt({ params }: { params: { orderId: string } }) {
                                     Reload
                                   </button>
                                 )}
+
+
+
+                                {item.status === 'paymentConfirmed' && (
+
+                                  <div className='flex flex-row items-end gap-2'>
+                                    <Image
+                                      src='/confirmed.png'
+                                      alt='Confirmed'
+                                      width={80}
+                                      height={12}
+                                    />
+                                  </div>
+
+                                )}
+
                                 
                               </div>
 
@@ -1083,7 +1099,7 @@ export default function SellUsdt({ params }: { params: { orderId: string } }) {
 
                             {item.acceptedAt && (
 
-                              <div className='flex flex-col items-start gap-2 mb-4'>
+                              <div className='flex flex-col items-start gap-2 mb-2'>
 
 
 
@@ -1131,8 +1147,31 @@ export default function SellUsdt({ params }: { params: { orderId: string } }) {
 
                             {item.status === 'paymentConfirmed' && (
 
+                              <div className='flex flex-col items-start gap-2 mb-4'>
 
-                              <>
+                                {/* vercical line of height for time between trade started  and payment confirmed */}
+
+                                <div className='flex flex-row items-center gap-2'>
+                                  <div className={
+                                    ` ml-4 mr-3 bg-green-500 w-1 h-[20px]
+                                     rounded-full`
+                                  }></div>
+
+                                  {/* difference minutes between payment confirmed and trade started */}
+                                  <div className='flex flex-row items-center gap-2'>
+
+                                    <Image
+                                      src='/timer.png'
+                                      alt='Timer'
+                                      width={32}
+                                      height={32}
+                                    />
+                                    <div className="text-sm text-green-500">
+                                      { ( (new Date(item.paymentConfirmedAt).getTime() - new Date(item.acceptedAt).getTime()) / 1000 / 60 ).toFixed(0) } minutes
+                                    </div>
+                                  </div>
+
+                                </div>
 
                                 <div className='flex flex-row items-center gap-2 mb-4'>
                                   
@@ -1147,27 +1186,9 @@ export default function SellUsdt({ params }: { params: { orderId: string } }) {
                                   </p>
                                 </div>
 
-                                <div className="flex flex-row items-center gap-2">
-
-                                  <Image
-                                    src='/timer.png'
-                                    alt='timer'
-                                    width={32}
-                                    height={32}
-                                  />
-
-                                  <div className="text-sm text-green-500">
-                                    Trading time is {
-
-                                  ( (new Date(item.paymentConfirmedAt).getTime() - new Date(item.acceptedAt).getTime()) / 1000 / 60 ).toFixed(0) 
-
-                                    } minutes
-                                  </div>
-
-                                </div>
+                              </div>
 
 
-                              </>
 
                             )}
 
@@ -1931,34 +1952,6 @@ export default function SellUsdt({ params }: { params: { orderId: string } }) {
 
 
                             )}
-
-
-
-
-
-
-
-
-
-
-                              
-
-                            {item.status === 'paymentConfirmed' && (
-
-                              <div className="w-full mt-2 mb-2 flex flex-col items-center ">
-                                <Image
-                                  src='/confirmed.png'
-                                  alt='confirmed'
-                                  width={200}
-                                  height={200}
-                                />
-
-
-
-                              </div>
-
-                            )}
-
 
 
                         </article>
