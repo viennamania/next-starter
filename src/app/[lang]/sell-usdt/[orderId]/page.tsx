@@ -1557,7 +1557,7 @@ export default function Index({ params }: any) {
                                       //router.push(`/sell-usdt/${item._id}`);
 
                                       // copy link to clipboard
-                                      navigator.clipboard.writeText(`https://next.unove.space/sell-usdt/${item._id}`);
+                                      navigator.clipboard.writeText(`https://next.unove.space/en/sell-usdt/${item._id}`);
                                       toast.success('Link has been copied');
 
                                     }}
