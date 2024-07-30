@@ -110,6 +110,14 @@
 
     "Search_my_orders": "내 주문 검색",
     
-    "Cancel_My_Order": "주문 취소하기"
+    "Cancel_My_Order": "주문 취소하기",
+
+    "hours": "시간",
+    "minutes": "분",
+    "seconds": "초",
+
+    "hours_ago": "시간 전",
+    "minutes_ago": "분 전",
+    "seconds_ago": "초 전"
 
 }

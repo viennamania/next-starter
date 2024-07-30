@@ -147,7 +147,15 @@
     "Search_my_orders": "Search my orders",
 
 
-    "Cancel_My_Order": "Cancel My Order"
+    "Cancel_My_Order": "Cancel My Order",
+
+    "hours": "hours",
+    "minutes": "minutes",
+    "seconds": "seconds",
+
+    "hours_ago": "hours ago",
+    "minutes_ago": "minutes ago",
+    "seconds_ago": "seconds ago"
 
 
 }

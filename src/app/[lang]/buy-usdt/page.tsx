@@ -172,6 +172,13 @@ export default function Index({ params }: any) {
     Order_has_been_cancelled: "",
     My_Order: "",
 
+    hours: "",
+    minutes: "",
+    seconds: "",
+
+    hours_ago: "",
+    minutes_ago: "",
+    seconds_ago: "",
 
   } );
 
@@ -223,6 +230,16 @@ export default function Index({ params }: any) {
     Order_accepted_successfully,
     Order_has_been_cancelled,
     My_Order,
+
+    hours,
+    minutes,
+    seconds,
+
+    hours_ago,
+    minutes_ago,
+    seconds_ago,
+
+
   } = data;
 
 
@@ -814,12 +831,12 @@ export default function Index({ params }: any) {
                                 <p className="text-sm text-zinc-400">
                                   Opened {
                                     new Date().getTime() - new Date(item.createdAt).getTime() < 1000 * 60 ? (
-                                      ' ' + Math.floor((new Date().getTime() - new Date(item.createdAt).getTime()) / 1000) + ' seconds ago'
+                                      ' ' + Math.floor((new Date().getTime() - new Date(item.createdAt).getTime()) / 1000) + ' ' + {seconds_ago}
                                     ) :
                                     new Date().getTime() - new Date(item.createdAt).getTime() < 1000 * 60 * 60 ? (
-                                    ' ' + Math.floor((new Date().getTime() - new Date(item.createdAt).getTime()) / 1000 / 60) + ' minutes ago'
+                                    ' ' + Math.floor((new Date().getTime() - new Date(item.createdAt).getTime()) / 1000 / 60) + ' ' + {minutes_ago}
                                     ) : (
-                                      ' ' + Math.floor((new Date().getTime() - new Date(item.createdAt).getTime()) / 1000 / 60 / 60) + ' hours ago'
+                                      ' ' + Math.floor((new Date().getTime() - new Date(item.createdAt).getTime()) / 1000 / 60 / 60) + ' ' + {hours_ago}
                                     )}
                                 </p>
 
@@ -839,9 +856,9 @@ export default function Index({ params }: any) {
   
                                     24 - Math.floor((new Date().getTime() - new Date(item.createdAt).getTime()) / 1000 / 60 / 60) - 1
 
-                                    } hours {
+                                    } {hours} {
                                       60 - Math.floor((new Date().getTime() - new Date(item.createdAt).getTime()) / 1000 / 60) % 60
-                                    } minutes
+                                    } {minutes}
 
                                   </p>
                                 </div>
@@ -891,12 +908,12 @@ export default function Index({ params }: any) {
                                   <p className="ml-2 text-sm text-zinc-400">
                                     Started {
                                       new Date().getTime() - new Date(item.acceptedAt).getTime() < 1000 * 60 ? (
-                                        ' ' + Math.floor((new Date().getTime() - new Date(item.acceptedAt).getTime()) / 1000) + ' seconds ago'
+                                        ' ' + Math.floor((new Date().getTime() - new Date(item.acceptedAt).getTime()) / 1000) + ' ' + {seconds_ago}
                                       ) :
                                       new Date().getTime() - new Date(item.acceptedAt).getTime() < 1000 * 60 * 60 ? (
-                                      ' ' + Math.floor((new Date().getTime() - new Date(item.acceptedAt).getTime()) / 1000 / 60) + ' minutes ago'
+                                      ' ' + Math.floor((new Date().getTime() - new Date(item.acceptedAt).getTime()) / 1000 / 60) + ' ' + {minutes_ago}
                                       ) : (
-                                        ' ' + Math.floor((new Date().getTime() - new Date(item.acceptedAt).getTime()) / 1000 / 60 / 60) + ' hours ago'
+                                        ' ' + Math.floor((new Date().getTime() - new Date(item.acceptedAt).getTime()) / 1000 / 60 / 60) + ' ' + {hours_ago}
                                       )}
                                   </p>
                                 )}
@@ -1109,8 +1126,8 @@ export default function Index({ params }: any) {
                                       {this_trade_will_be_cancelled_in} {
 
                                         (1 - Math.floor((new Date().getTime() - new Date(item.acceptedAt).getTime()) / 1000 / 60 / 60) - 1) > 0
-                                        ? (1 - Math.floor((new Date().getTime() - new Date(item.acceptedAt).getTime()) / 1000 / 60 / 60) - 1) + ' hours'
-                                        : (60 - Math.floor((new Date().getTime() - new Date(item.acceptedAt).getTime()) / 1000 / 60) % 60) + ' minutes'
+                                        ? (1 - Math.floor((new Date().getTime() - new Date(item.acceptedAt).getTime()) / 1000 / 60 / 60) - 1) + ' ' + {hours}
+                                        : (60 - Math.floor((new Date().getTime() - new Date(item.acceptedAt).getTime()) / 1000 / 60) % 60) + ' ' + {minutes}
 
                                       } 
 
