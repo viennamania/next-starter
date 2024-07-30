@@ -131,6 +131,9 @@
 
     "Disconnect_Wallet": "지갑 연결 해제",
 
-     "Order_has_been_placed": "주문이 완료되었습니다"
+     "Order_has_been_placed": "주문이 완료되었습니다",
+
+
+    "Placing_Order": "주문 중"
 
 }

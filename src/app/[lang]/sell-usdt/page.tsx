@@ -199,6 +199,9 @@ export default function Index({ params }: any) {
 
     Order_has_been_placed: "",
 
+
+    Placing_Order: "",
+
   } );
 
   useEffect(() => {
@@ -265,6 +268,8 @@ export default function Index({ params }: any) {
     Cancel_My_Order,
 
     Order_has_been_placed,
+
+    Placing_Order,
   } = data;
 
 
@@ -1107,7 +1112,7 @@ export default function Index({ params }: any) {
                                   />
                                 </div>
                                 <div className="text-white">
-                                  Placing order...
+                                  {Placing_Order}...
                                 </div>
                   
                             </div>
