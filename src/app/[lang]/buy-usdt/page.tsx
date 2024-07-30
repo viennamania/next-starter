@@ -133,7 +133,16 @@ export default function Index({ params }: any) {
       settings: "",
     },
 
-    goHome: "",
+    Go_Home: "",
+    Buy: "",
+    Total: "",
+    Orders: "",
+    Trades: "",
+    Search_my_trades: "",
+
+    Seller: "",
+    Buyer: "",
+    Me: "",
 
   } );
 
@@ -149,7 +158,15 @@ export default function Index({ params }: any) {
     title,
     description,
     menu,
-    goHome,
+    Go_Home,
+    Buy,
+    Total,
+    Orders,
+    Trades,
+    Search_my_trades,
+    Seller,
+    Buyer,
+    Me,
   } = data;
 
 
@@ -501,22 +518,21 @@ export default function Index({ params }: any) {
 
         <div className="py-20 w-full">
 
-          <AppBarComponent />
-
-  
+            <AppBarComponent />
 
 
   
-          <div className="flex justify-start space-x-4 mb-10">
+
+
+  
+          <div className="mt-4 flex justify-start space-x-4 mb-10">
               <button
                 onClick={() => router.push(
-                  
-                  "/" + params.lang
-
+                  '/' + params.lang
                 )}
                 className="text-zinc-100 font-semibold underline"
               >
-                {goHome || 'Go Home'}
+                {Go_Home}
               </button>
           </div>
 
@@ -540,7 +556,7 @@ export default function Index({ params }: any) {
                     className="rounded-lg"
                   />
 
-                  <div className="text-2xl font-semibold">Buy USDT</div>
+                  <div className="text-2xl font-semibold">{Buy} USDT</div>
 
 
 
@@ -602,7 +618,7 @@ export default function Index({ params }: any) {
                 <div className="p-2 xl:p-0  flex flex-row items-center justify-between gap-2">
 
                   <div className="flex flex-col gap-2 items-center">
-                    <div className="text-sm">Total</div>
+                    <div className="text-sm">{Total}</div>
                     <div className="text-xl font-semibold text-white">
                       {sellOrders.length}
                     </div>
@@ -610,14 +626,14 @@ export default function Index({ params }: any) {
                   </div>
 
                   <div className="flex flex-col gap-2 items-center">
-                    <div className="text-sm">Orders</div>
+                    <div className="text-sm">{Orders}</div>
                     <div className="text-xl font-semibold text-white">
                       {sellOrders.filter((item) => item.status === 'ordered').length}
                     </div>
                   </div>
 
                   <div className="flex flex-col gap-2 items-center">
-                    <div className="text-sm">Trades</div>
+                    <div className="text-sm">{Trades}</div>
                     <div className="text-xl font-semibold text-white">
 
                       {
@@ -657,7 +673,7 @@ export default function Index({ params }: any) {
                         onChange={(e) => setSearchMyTrades(e.target.checked)}
                         className="w-5 h-5"
                       />
-                      <label className="text-sm text-zinc-400">Search my trades</label>
+                      <label className="text-sm text-zinc-400">{Search_my_trades}</label>
                     </div>
                   </div>
 
@@ -920,7 +936,7 @@ export default function Index({ params }: any) {
                                   }}
                               />
 
-                              <div className="flex items-center space-x-2">Seller:</div>
+                              <div className="flex items-center space-x-2">{Seller}:</div>
 
                               <h2 className="text-lg font-semibold">
                                 {item.walletAddress === address ? 'Me' : item.nickname}
@@ -963,8 +979,8 @@ export default function Index({ params }: any) {
                                     }}
                                   />
                                   <p className="text-xl text-red-500 font-semibold">
-                                    Buyer: {
-                                      item.buyer.walletAddress === address ? 'Me' :
+                                    {Buyer}: {
+                                      item.buyer.walletAddress === address ? Me :
                                       item.buyer.nickname.substring(0, 1) + '***'
                                     }
                                   </p>
@@ -995,7 +1011,7 @@ export default function Index({ params }: any) {
                                 />
                                 <p className="text-xl text-green-500 font-semibold">
                                   Buyer: {
-                                    item.buyer.walletAddress === address ? 'Me' :
+                                    item.buyer.walletAddress === address ? Me :
                                     item.buyer.nickname.substring(0, 1) + '***'
                                   }
                                 </p>
@@ -1476,5 +1492,3 @@ const TradeDetail = (
 
 
 
-
-//export default P2PTable;

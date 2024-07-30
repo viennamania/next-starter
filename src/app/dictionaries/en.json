@@ -35,6 +35,43 @@
         "settings": "Settings"
     },
 
-    "goHome": "Go Home"
+    "Go_Home": "Go Home",
+
+    "My_Balance": "My Balance",
+    "My_Nickname": "My Nickname",
+
+    "My_Buy_Trades": "My Buy Trades",
+    "My_Sell_Trades": "My Sell Trades",
+
+    "Buy": "Buy",
+    "Sell": "Sell",
+
+    "Contact_Us": "Contact Us",
+
+    "Buy_Description": "Buy USDT with your favorite real-world currency.",
+
+    "Sell_Description": "Sell USDT and receive your favorite real-world currency.",
+
+    "Total": "Total",
+    "Orders": "Orders",
+    "Trades": "Trades",
+
+    "Search_my_trades": "Search my trades",
+
+    "Seller": "Seller",
+    "Buyer": "Buyer",
+    "Me": "Me",
+
+    "Buy_USDT": "Buy USDT",
+    "Sell_USDT": "Sell USDT",
+
+    "Send_USDT": "Send USDT",
+    "Pay_USDT": "Pay USDT",
+
+    "Coming_Soon": "Coming Soon",
+
+
+    "Please_connect_your_wallet_first": "Please connect your wallet first"
+
 
 }

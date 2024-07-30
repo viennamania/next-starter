@@ -13,7 +13,41 @@
         "settings": "설정"
     },
 
-    "goHome": "홈으로 가기"
+    "Go_Home": "홈으로 가기",
 
+    "My_Balance": "내 잔고",
+    "My_Nickname": "내 닉네임",
+
+    "My_Buy_Trades": "내 매수 거래",
+    "My_Sell_Trades": "내 매도 거래",
+
+    "Buy": "사다",
+    "Sell": "팔다",
+
+    "Contact_Us": "문의하기",
+
+    "Buy_Description": "좋아하는 실제 통화로 USDT를 구입하세요.",
+
+    "Sell_Description": "USDT를 판매하고 좋아하는 실제 통화를 받으세요.",
+
+    "Total": "합계",
+    "Orders": "주문",
+    "Trades": "거래",
+
+    "Search_my_trades": "내 거래 검색",
+
+    "Seller": "판매자",
+    "Buyer": "구매자",
+    "Me": "나",
+
+    "Buy_USDT": "USDT 구매하기",
+    "Sell_USDT": "USDT 판매하기",
+
+    "Send_USDT": "USDT 보내기",
+    "Pay_USDT": "USDT 지불하기",
+
+    "Coming_Soon": "곧 출시 예정",
+
+    "Please_connect_your_wallet_first": "먼저 지갑을 연결해주세요"
 
 }

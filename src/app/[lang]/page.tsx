@@ -63,6 +63,8 @@ import GearSetupIcon from "@/components/gearSetupIcon";
 //import LanguageSelector from "@/components/LanguageSelector";
 
 import AppBarComponent from "@/components/Appbar/AppBar";
+import { getDictionary } from "../dictionaries";
+
 
 
 /*
@@ -136,6 +138,78 @@ export default function Index({ params }: any) {
 
 
   console.log("params", params);
+
+
+
+
+  const [data, setData] = useState({
+    title: "",
+    description: "",
+
+    menu : {
+      buy: "",
+      sell: "",
+      trade: "",
+      chat: "",
+      history: "",
+      settings: "",
+    },
+
+    Go_Home: "",
+    My_Balance: "",
+    My_Nickname: "",
+    My_Buy_Trades: "",
+    My_Sell_Trades: "",
+    Buy: "",
+    Sell: "",
+    Buy_USDT: "",
+    Sell_USDT: "",
+    Contact_Us: "",
+    Buy_Description: "",
+    Sell_Description: "",
+    Send_USDT: "",
+    Pay_USDT: "",
+    Coming_Soon: "",
+    Please_connect_your_wallet_first: "",
+
+  } );
+
+  useEffect(() => {
+      async function fetchData() {
+          const dictionary = await getDictionary(params.lang);
+          setData(dictionary);
+      }
+      fetchData();
+  }, [params.lang]);
+
+  const {
+    title,
+    description,
+    menu,
+    Go_Home,
+    My_Balance,
+    My_Nickname,
+    My_Buy_Trades,
+    My_Sell_Trades,
+    Buy,
+    Sell,
+    Buy_USDT,
+    Sell_USDT,
+    Contact_Us,
+    Buy_Description,
+    Sell_Description,
+    Send_USDT,
+    Pay_USDT,
+    Coming_Soon,
+    Please_connect_your_wallet_first,
+  } = data;
+
+
+
+
+
+
+
 
 
 
@@ -490,9 +564,12 @@ export default function Index({ params }: any) {
         <Header />
         */}
 
+        <AppBarComponent />
 
 
-        <div className="flex flex-col justify-center gap-5 mb-10">
+  
+
+        <div className="mt-4 flex flex-col justify-center gap-5 mb-10">
 
 
 
@@ -602,7 +679,9 @@ export default function Index({ params }: any) {
                       console.log("settings");
 
                       // redirect to settings page
-                      router.push("/settings");
+                      router.push(
+                        params.lang + "/settings"
+                      );
 
                     }}
                     className="text-blue-500 hover:underline"
@@ -619,7 +698,9 @@ export default function Index({ params }: any) {
                   </div>
                   <p className="text-sm text-zinc-300">USDT</p>
                 </div>
-                <p className="text-sm text-zinc-300">My Balance</p>
+                <p className="text-sm text-zinc-300">
+                  {My_Balance}
+                </p>
 
 
                 {/* my address and copy button */}
@@ -663,12 +744,14 @@ export default function Index({ params }: any) {
                       }
 
                       // redirect to send USDT page
-                      router.push("/send-usdt-favorite");
+                      router.push(
+                        params.lang + "/send-usdt-favorite"
+                      );
 
                     }}
                     className="mt-4 w-40 bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
                   >
-                    Send USDT
+                    {Send_USDT}
                   </button>
 
                   <button
@@ -678,7 +761,7 @@ export default function Index({ params }: any) {
                       //console.log("pay USDT");
 
                       if (!address) {
-                        toast.error('Please connect your wallet first');
+                        toast.error(Please_connect_your_wallet_first);
                         return;
                       }
 
@@ -688,13 +771,13 @@ export default function Index({ params }: any) {
 
                       // comming soon
 
-                      toast.success('Coming soon');
+                      toast.success(Coming_Soon);
 
 
                     }}
                     className="mt-4 w-40 bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
                   >
-                    Pay USDT
+                    {Pay_USDT}
                   </button>
                 </div>
 
@@ -730,7 +813,7 @@ export default function Index({ params }: any) {
                     onClick={() => {
 
                       if (!address) {
-                        toast.error('Please connect your wallet first');
+                        toast.error(Please_connect_your_wallet_first);
                         return;
                       }
 
@@ -791,10 +874,11 @@ export default function Index({ params }: any) {
                 )}
 
 
-                <p className="text-zinc-300">My Nickname</p>
+                <p className="text-zinc-300">{My_Nickname}</p>
 
 
                 {/* my buy trades button and my sell trades button */}
+                
                 <div className="flex flex-row gap-2 justify-center items-center mt-10">
                   <button
                     disabled={!address}
@@ -802,17 +886,19 @@ export default function Index({ params }: any) {
                       // my buy trades
                       //console.log("my buy trades");
                       if (!address) {
-                        toast.error('Please connect your wallet first');
+                        toast.error(Please_connect_your_wallet_first);
                         return;
                       }
 
                       // redirect to buy trades page
-                      router.push("/buy-usdt-trades");
+                      router.push(
+                        params.lang + "/buy-usdt-trades"
+                      );
 
                     }}
                     className="w-40 bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
                   >
-                    My Buy Trades
+                    {My_Buy_Trades}
                   </button>
 
                   <button
@@ -826,12 +912,14 @@ export default function Index({ params }: any) {
                       }
 
                       // redirect to sell trades page
-                      router.push("/sell-usdt-trades");
+                      router.push(
+                        params.lang + "/sell-usdt-trades"
+                      );
 
                     }}
                     className="w-40 bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
                   >
-                    My Sell Trades
+                    {My_Sell_Trades}
                   </button>
 
                 </div>
@@ -1083,19 +1171,19 @@ export default function Index({ params }: any) {
         <div className="grid gap-4 lg:grid-cols-3 justify-center">
 
           <ArticleCard
-            title={`Buy USDT - Open Orders (${countOfOpenOrders}) EA`}
+            title={`${Buy_USDT} - Open Orders (${countOfOpenOrders}) EA`}
             
             href={`${params.lang}/buy-usdt`}
 
-            description="Buy USDT with your favorite real-world currency"
+            description={Buy_Description}
           />
 
           
             
           <ArticleCard
-            title="Sell USDT"
-            href="/sell-usdt"
-            description="Sell USDT for your favorite real-world currency"
+            title={`${Sell_USDT} - Open Orders (${countOfOpenOrders}) EA`}
+            href={`${params.lang}/sell-usdt`}
+            description={Sell_Description}
           />
             
           
