@@ -228,11 +228,6 @@ export default function Index({ params }: any) {
 
 
 
-
-
-//const P2PTable = () => {
-  
-
   const router = useRouter();
 
 

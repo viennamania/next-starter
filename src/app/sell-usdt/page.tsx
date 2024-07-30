@@ -303,7 +303,7 @@ const P2PTable = () => {
     console.log('usdtAmount', usdtAmount);
 
 
-    const [rate, setRate] = useState(1385.67);
+    const [rate, setRate] = useState(1403);
 
 
     useEffect(() => {

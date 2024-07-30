@@ -21,6 +21,7 @@
     "My_Buy_Trades": "내 매수 거래",
     "My_Sell_Trades": "내 매도 거래",
 
+    "Order": "주문",
     "Buy": "구매",
     "Sell": "판매",
     "Amount": "수량",
@@ -99,7 +100,15 @@
     "Profile_Settings": "프로필 설정",
 
     "My_Buy_USDT_Trades": "내 USDT 구매 거래",
-    "My_Sell_USDT_Trades": "내 USDT 판매 거래"
+    "My_Sell_USDT_Trades": "내 USDT 판매 거래",
+
+    "Sale": "판매",
+    "Private_Sale": "비공개 판매",
+    "Public_Sale": "공개 판매",
+
+    "Place_Order": "주문하기",
+
+    "Search_my_orders": "내 주문 검색"
     
 
 

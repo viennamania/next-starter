@@ -145,7 +145,12 @@ export default function Index({ params }: any) {
     },
 
     Go_Home: "",
+
+    Order: "",
     Buy: "",
+    Sell: "",
+    Amount: "",
+    Price: "",
     Total: "",
     Orders: "",
     Trades: "",
@@ -154,6 +159,39 @@ export default function Index({ params }: any) {
     Seller: "",
     Buyer: "",
     Me: "",
+
+    Buy_USDT: "",
+    Sell_USDT: "",  
+    Rate: "",
+    Payment: "",
+    Bank_Transfer: "",
+
+    I_agree_to_the_terms_of_trade: "",
+    I_agree_to_cancel_the_trade: "",
+
+    Opened_at: "",
+    Cancelled_at: "",
+    Completed_at: "",
+
+    Waiting_for_seller_to_deposit: "",
+
+    to_escrow: "",
+    If_the_seller_does_not_deposit_the_USDT_to_escrow: "",
+    this_trade_will_be_cancelled_in: "",
+
+    Cancel_My_Trade: "",
+
+
+    Order_accepted_successfully: "",
+    Order_has_been_cancelled: "",
+    My_Order: "",
+
+    Sale: "",
+    Private_Sale: "",
+
+    Place_Order: "",
+
+    Search_my_orders: "",
 
   } );
 
@@ -170,7 +208,12 @@ export default function Index({ params }: any) {
     description,
     menu,
     Go_Home,
+
+    Order,
     Buy,
+    Sell,
+    Amount,
+    Price,
     Total,
     Orders,
     Trades,
@@ -178,6 +221,38 @@ export default function Index({ params }: any) {
     Seller,
     Buyer,
     Me,
+
+    Buy_USDT,
+    Sell_USDT,
+    Rate,
+    Payment,
+    Bank_Transfer,
+    I_agree_to_the_terms_of_trade,
+    I_agree_to_cancel_the_trade,
+
+    Opened_at,
+    Cancelled_at,
+    Completed_at,
+
+    Waiting_for_seller_to_deposit,
+
+    to_escrow,
+
+    If_the_seller_does_not_deposit_the_USDT_to_escrow,
+    this_trade_will_be_cancelled_in,
+
+    Cancel_My_Trade,
+
+    Order_accepted_successfully,
+    Order_has_been_cancelled,
+    My_Order,
+
+    Sale,
+    Private_Sale,
+
+    Place_Order,
+
+    Search_my_orders,
   } = data;
 
 
@@ -358,7 +433,7 @@ export default function Index({ params }: any) {
     console.log('usdtAmount', usdtAmount);
 
 
-    const [rate, setRate] = useState(1385.67);
+    const [rate, setRate] = useState(1403);
 
 
     useEffect(() => {
@@ -566,7 +641,9 @@ export default function Index({ params }: any) {
                     height={32}
                     className="rounded-lg"
                   />
-                  <div className="text-2xl font-semibold">Sell USDT</div>
+                  <div className="text-2xl font-semibold">
+                    {Sell_USDT}
+                  </div>
 
 
 
@@ -649,7 +726,7 @@ export default function Index({ params }: any) {
                                 width={40}
                                 height={40}
                               />
-                              <h2 className="text-lg font-semibold text-white">Order</h2>
+                              <h2 className="text-lg font-semibold text-white">{Order}</h2>
                             </div>
 
                             {/* check box for private sale */}
@@ -662,7 +739,9 @@ export default function Index({ params }: any) {
                                 height={32}
                               />
 
-                              <div className="text-sm text-zinc-400">Private Sale</div>
+                              <div className="text-sm text-zinc-400">
+                                {Private_Sale}
+                              </div>
                               <input
                                 className="w-6 h-6"
                                 type="checkbox"
@@ -770,7 +849,7 @@ export default function Index({ params }: any) {
 
                           {seller && (
                           <p className=" text-sm text-zinc-400">
-                            Payment: Bank Transfer ({seller?.bankInfo.bankName})
+                            {Payment}: {Bank_Transfer} ({seller?.bankInfo.bankName})
                           </p>
                         )}
 
@@ -857,7 +936,7 @@ export default function Index({ params }: any) {
 
                               {krwAmount > 0 && (
                                 <div className="text-lg font-semibold text-zinc-400">
-                                  Rate: {
+                                  {Rate}: {
 
                                     // currency format
                                     Number((krwAmount / usdtAmount).toFixed(2)).toLocaleString('ko-KR', {
@@ -936,7 +1015,9 @@ export default function Index({ params }: any) {
                             onChange={(e) => setAgreementPlaceOrder(e.target.checked)}
                           />
                           <p className="text-sm text-zinc-400">
-                            I agree to the terms and conditions
+                            
+                            {I_agree_to_the_terms_of_trade}
+
                           </p>
                         </div>
 
@@ -1031,7 +1112,7 @@ export default function Index({ params }: any) {
                                       sellOrder();
                                   }}
                               >
-                                Place order
+                                {Place_Order}
                               </button>
                           )}
 
@@ -1111,7 +1192,9 @@ export default function Index({ params }: any) {
                           onChange={(e) => setSearchMyOrders(e.target.checked)}
                           className="w-5 h-5"
                         />
-                        <label className="text-sm text-zinc-400">Search my orders</label>
+                        <label className="text-sm text-zinc-400">
+                          {Search_my_trades}
+                        </label>
                       </div>
                     </div>
 

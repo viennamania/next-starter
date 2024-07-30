@@ -409,7 +409,7 @@ export default function SellUsdt({ params }: { params: { orderId: string } }) {
 
 
 
-    const [rate, setRate] = useState(1385.67);
+    const [rate, setRate] = useState(1403);
 
 
 
