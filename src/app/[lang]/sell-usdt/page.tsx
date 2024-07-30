@@ -1442,7 +1442,7 @@ export default function Index({ params }: any) {
                                 <p className="text-2xl font-semibold text-white">{item.usdtAmount} USDT</p>
 
                                 <p className="text-lg text-zinc-400">
-                                  Price: {
+                                  {Price}: {
                                     // currency
                                   
                                     Number(item.krwAmount).toLocaleString('ko-KR', {
@@ -1466,7 +1466,7 @@ export default function Index({ params }: any) {
 
 
                             <p className="mt-2 text-sm text-zinc-400">
-                              Payment: Bank Transfer ({item.seller?.bankInfo.bankName})
+                              {Payment}: {Bank_Transfer} ({item.seller?.bankInfo.bankName})
                             </p>
 
 
@@ -1648,16 +1648,23 @@ export default function Index({ params }: any) {
                                   />
 
                                   <div className="flex flex-col gap-2 items-start">
-                                    <span>Waiting for seller to deposit {item.usdtAmount} USDT to escrow...</span>
+                                    <span>
+                                      {Waiting_for_seller_to_deposit}
+                                      {item.usdtAmount} USDT
+                                      {to_escrow}....</span>
 
                                     <span className="text-sm text-zinc-400">
-                                      This trade will be cancelled in {
 
+                                      {If_the_seller_does_not_deposit_the_USDT_to_escrow}
+
+                                      {this_trade_will_be_cancelled_in}
+
+                                      {
                                         (1 - Math.floor((new Date().getTime() - new Date(item.acceptedAt).getTime()) / 1000 / 60 / 60) - 1) > 0
                                         ? (1 - Math.floor((new Date().getTime() - new Date(item.acceptedAt).getTime()) / 1000 / 60 / 60) - 1) + ' hours'
                                         : (60 - Math.floor((new Date().getTime() - new Date(item.acceptedAt).getTime()) / 1000 / 60) % 60) + ' minutes'
 
-                                      } if the seller does not deposit the USDT to escrow.
+                                      }
 
                                     </span>
                                   </div>
@@ -1708,7 +1715,9 @@ export default function Index({ params }: any) {
                                       className="animate-spin"
                                     />
 
-                                    <div>Waiting for buyer to send {item.krwAmount} KRW to seller...</div>
+                                    <div>
+                                      {Waiting_for_seller_to_deposit} {item.krwAmount} KRW to {Seller}...
+                                    </div>
 
                                   </div>
 
