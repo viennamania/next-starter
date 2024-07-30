@@ -21,8 +21,10 @@
     "My_Buy_Trades": "내 매수 거래",
     "My_Sell_Trades": "내 매도 거래",
 
-    "Buy": "사다",
-    "Sell": "팔다",
+    "Buy": "구매",
+    "Sell": "판매",
+    "Amount": "수량",
+    "Price": "가격",
 
     "Contact_Us": "문의하기",
 
@@ -47,7 +49,55 @@
     "Pay_USDT": "USDT 지불하기",
 
     "Coming_Soon": "곧 출시 예정",
+    "Open_Orders": "미체결 주문",
 
-    "Please_connect_your_wallet_first": "먼저 지갑을 연결해주세요"
+    "Please_connect_your_wallet_first": "먼저 지갑을 연결해주세요",
+
+    "Go_Buy_USDT": "USDT 구매하러 가기",
+    "Go_Sell_USDT": "USDT 판매하러 가기",
+
+
+    "Enter_Wallet_Address": "지갑 주소 입력",
+    "Enter_the_amount_and_recipient_address": "금액과 수취인 주소 입력",
+    "Select_a_user": "수취인 선택",
+    "User_wallet_address": "수취인 지갑 주소",
+
+    "This_address_is_not_white_listed": "이 주소는 화이트리스트에 없습니다.",
+
+    "If_you_are_sure_please_click_the_send_button": "확실하다면 전송 버튼을 클릭하세요.",
+
+    "Sending": "전송 중",
+
+    "Rate": "환율",
+
+    "Payment": "결제",
+    "Bank_Transfer": "은행 송금",
+
+    "I_agree_to_the_terms_of_trade": "거래 조건에 동의합니다",
+    "I_agree_to_cancel_the_trade": "거래 취소에 동의합니다",
+
+    "Opened_at": "시작 시간:",
+    "Cancelled_at": "취소 시간:",
+    "Completed_at": "완료 시간:",
+
+    "Waiting_for_seller_to_deposit": "판매자 입금 대기 중",
+
+    "to_escrow": "에스크로 보관소로",
+
+    "If_the_seller_does_not_deposit_the_USDT_to_escrow": "판매자가 USDT를 에스크로 보관소에 입금하지 않으면",
+    "this_trade_will_be_cancelled_in": "이 거래는 다음 시간에 취소됩니다:",
+
+    "Cancel_My_Trade": "거래 취소하기",
+
+    "Order_accepted_successfully": "주문이 성공적으로 수락되었습니다",
+    "Order_has_been_cancelled": "주문이 취소되었습니다",
+
+    "My Order": "내 주문",
+
+ 
+    "Wallet_Settings": "지갑 설정",
+    "Profile_Settings": "프로필 설정"
+    
+
 
 }

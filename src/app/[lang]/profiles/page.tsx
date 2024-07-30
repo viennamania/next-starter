@@ -40,6 +40,12 @@ import Uploader from '@/components/uploader';
 import { balanceOf, transfer } from "thirdweb/extensions/erc20";
  
 
+import AppBarComponent from "@/components/Appbar/AppBar";
+import { getDictionary } from "../../dictionaries";
+
+
+
+
 
 
 const wallets = [
@@ -71,7 +77,87 @@ import { useRouter }from "next//navigation";
 
 
 
-export default function SettingsPage() {
+export default function SettingsPage({ params }: any) {
+
+
+
+
+    console.log("params", params);
+    
+    
+    
+    
+    const [data, setData] = useState({
+        title: "",
+        description: "",
+    
+        menu : {
+        buy: "",
+        sell: "",
+        trade: "",
+        chat: "",
+        history: "",
+        settings: "",
+        },
+    
+        Go_Home: "",
+        My_Balance: "",
+        My_Nickname: "",
+        My_Buy_Trades: "",
+        My_Sell_Trades: "",
+        Buy: "",
+        Sell: "",
+        Buy_USDT: "",
+        Sell_USDT: "",
+        Contact_Us: "",
+        Buy_Description: "",
+        Sell_Description: "",
+        Send_USDT: "",
+        Pay_USDT: "",
+        Coming_Soon: "",
+        Please_connect_your_wallet_first: "",
+
+        Wallet_Settings: "",
+        Profile_Settings: "",
+    
+    } );
+    
+    useEffect(() => {
+        async function fetchData() {
+            const dictionary = await getDictionary(params.lang);
+            setData(dictionary);
+        }
+        fetchData();
+    }, [params.lang]);
+    
+    const {
+        title,
+        description,
+        menu,
+        Go_Home,
+        My_Balance,
+        My_Nickname,
+        My_Buy_Trades,
+        My_Sell_Trades,
+        Buy,
+        Sell,
+        Buy_USDT,
+        Sell_USDT,
+        Contact_Us,
+        Buy_Description,
+        Sell_Description,
+        Send_USDT,
+        Pay_USDT,
+        Coming_Soon,
+        Please_connect_your_wallet_first,
+
+        Wallet_Settings,
+        Profile_Settings,
+    } = data;
+    
+    
+
+
 
     const router = useRouter();
 
@@ -361,9 +447,18 @@ export default function SettingsPage() {
                 {/* goto home button using go back icon
                 history back
                 */}
+
+                <AppBarComponent />
         
-                <div className="flex justify-start space-x-4 mb-10">
-                    <button onClick={() => router.push('/')} className="text-zinc-100 font-semibold underline">Go Home</button>
+                <div className="mt-4 flex justify-start space-x-4 mb-10">
+                    <button
+                        onClick={() => router.push(
+                        '/' + params.lang
+                        )}
+                        className="text-zinc-100 font-semibold underline"
+                    >
+                        {Go_Home}
+                    </button>
                 </div>
 
 
@@ -371,7 +466,9 @@ export default function SettingsPage() {
 
                     <div className='flex flex-row items-center space-x-4'>
                         <GearSetupIcon />
-                        <div className="text-2xl font-semibold">Profile Settings</div>
+                        <div className="text-2xl font-semibold">
+                            {Profile_Settings}
+                        </div>
 
                         {!address && (
                             <ConnectButton

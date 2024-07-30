@@ -86,6 +86,8 @@ const smartAccount = await smartWallet.connect({
 */
 
 import { useRouter }from "next//navigation";
+import { Select } from '@mui/material';
+import { Sen } from 'next/font/google';
 
 
 
@@ -129,6 +131,19 @@ export default function SendUsdt({ params }: any) {
     Coming_Soon: "",
     Please_connect_your_wallet_first: "",
 
+    USDT_sent_successfully: "",
+    Failed_to_send_USDT: "",
+
+    Go_Buy_USDT: "",
+    Enter_Wallet_Address: "",
+    Enter_the_amount_and_recipient_address: "",
+    Select_a_user: "",
+    User_wallet_address: "",
+    This_address_is_not_white_listed: "",
+    If_you_are_sure_please_click_the_send_button: "",
+
+    Sending: "",
+
   } );
 
   useEffect(() => {
@@ -159,6 +174,19 @@ export default function SendUsdt({ params }: any) {
     Pay_USDT,
     Coming_Soon,
     Please_connect_your_wallet_first,
+
+    USDT_sent_successfully,
+    Failed_to_send_USDT,
+
+    Go_Buy_USDT,
+    Enter_Wallet_Address,
+    Enter_the_amount_and_recipient_address,
+    Select_a_user,
+    User_wallet_address,
+    This_address_is_not_white_listed,
+    If_you_are_sure_please_click_the_send_button,
+
+    Sending,
   } = data;
 
 
@@ -422,7 +450,7 @@ export default function SendUsdt({ params }: any) {
 
 
 
-        toast.success('USDT sent successfully');
+        toast.success(USDT_sent_successfully);
 
         setAmount(0); // reset amount
 
@@ -442,7 +470,7 @@ export default function SendUsdt({ params }: any) {
 
 
     } catch (error) {
-      toast.error('Failed to send USDT');
+      toast.error(Failed_to_send_USDT);
     }
 
     setSending(false);
@@ -569,7 +597,9 @@ export default function SendUsdt({ params }: any) {
                 />
               </div>
 
-              <div className="text-2xl font-semibold">Send USDT</div>
+              <div className="text-2xl font-semibold">
+                {Send_USDT}
+              </div>
 
 
 
@@ -620,17 +650,17 @@ export default function SendUsdt({ params }: any) {
               <div className="text-sm font-semibold text-zinc-100 mt-2 w-full text-right">
    
                 <a
-                  href="/buy-usdt"
+                  href={'/' + params.lang + '/buy-usdt'}
                   className="text-zinc-100 underline"
                 >
-                  Go Buy USDT
+                  {Go_Buy_USDT}
                 </a>
               </div>
 
 
             {/* my usdt balance */}
             <div className="w-full flex flex-col gap-2 items-start">
-              <div className="text-sm">My Balance</div>
+              <div className="text-sm">{My_Balance}</div>
               <div className='w-full flex flex-row items-center justify-between'>
                 <div className="text-5xl font-semibold text-white">
                   {Number(balance).toFixed(2)} <span className="text-lg">USDT</span>
@@ -650,7 +680,7 @@ export default function SendUsdt({ params }: any) {
                       })
                     )}
                   />
-                  <div className="text-xs">Enter wallet address</div>
+                  <div className="text-xs">{Enter_Wallet_Address}</div>
                 </div>
               </div>
             </div>
@@ -659,7 +689,7 @@ export default function SendUsdt({ params }: any) {
             <div className='w-full  flex flex-col gap-5 border border-gray-300 p-4 rounded-lg'>
 
 
-              <div className="text-lg">Enter the amount and recipient address</div>
+              <div className="text-lg">{Enter_the_amount_and_recipient_address}</div>
 
               <input
                 disabled={sending}
@@ -726,7 +756,7 @@ export default function SendUsdt({ params }: any) {
                     } } 
 
                   >
-                    <option value="">Select a user</option>
+                    <option value="">{Select_a_user}</option>
                     
 
                     {users.map((user) => (
@@ -770,7 +800,7 @@ export default function SendUsdt({ params }: any) {
                 <input
                   disabled={true}
                   type="text"
-                  placeholder="User wallet address"
+                  placeholder={User_wallet_address}
                   className="w-full p-2 border border-gray-300 rounded text-white text-sm xl:text-lg font-semibold"
                   value={recipient?.walletAddress}
                   onChange={(e) => {
@@ -781,7 +811,7 @@ export default function SendUsdt({ params }: any) {
 
                       .then((data) => {
 
-                        console.log("data", data);
+                        //console.log("data", data);
 
                         const checkUser = data;
 
@@ -852,8 +882,8 @@ export default function SendUsdt({ params }: any) {
                         <div className="w-4 h-4 bg-green-500 rounded-full mr-2"></div>
 
                         <div className="text-red-500">
-                          This address is not white listed. <br />
-                          If you are sure, please click the send button.
+                          {This_address_is_not_white_listed}<br />
+                          {If_you_are_sure_please_click_the_send_button}
                         </div>
                       </div>
 
@@ -884,7 +914,7 @@ export default function SendUsdt({ params }: any) {
                    
                    `}
               >
-                  Send
+                  {Send_USDT}
               </button>
 
               <div className="w-full flex flex-row gap-2 text-xl font-semibold">
@@ -906,7 +936,7 @@ export default function SendUsdt({ params }: any) {
                   </div>
                 )}
                 <div className="text-white">
-                  {sending ? 'Sending...' : ''}
+                  {sending ? Sending : ''}
                 </div>
 
               </div>

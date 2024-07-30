@@ -55,6 +55,11 @@ import Modal from '@/components/modal';
 
 import { useRouter }from "next//navigation";
 
+import AppBarComponent from "@/components/Appbar/AppBar";
+import { getDictionary } from "../../../dictionaries";
+
+
+
 
 
 interface SellOrder {
@@ -151,12 +156,78 @@ export default function SellUsdt({ orderId }: InferGetStaticPropsType<typeof get
 
 
 
-export default function SellUsdt({ params }: { params: { orderId: string } }) {
+//export default function SellUsdt({ params }: { params: { orderId: string } }) {
 
+ 
+ 
+ 
+
+
+export default function Index({ params }: any) {
+
+    //console.log('params', params);
+  
+    const [data, setData] = useState({
+      title: "",
+      description: "",
+  
+      menu : {
+        buy: "",
+        sell: "",
+        trade: "",
+        chat: "",
+        history: "",
+        settings: "",
+      },
+  
+      Go_Home: "",
+      Buy: "",
+      Total: "",
+      Orders: "",
+      Trades: "",
+      Search_my_trades: "",
+  
+      Seller: "",
+      Buyer: "",
+      Me: "",
+  
+      Go_Buy_USDT: "",
+      Go_Sell_USDT: "",
+    } );
+  
+    useEffect(() => {
+        async function fetchData() {
+            const dictionary = await getDictionary(params.lang);
+            setData(dictionary);
+        }
+        fetchData();
+    }, [params.lang]);
+  
+    const {
+      title,
+      description,
+      menu,
+      Go_Home,
+      Buy,
+      Total,
+      Orders,
+      Trades,
+      Search_my_trades,
+      Seller,
+      Buyer,
+      Me,
+      Go_Buy_USDT,
+      Go_Sell_USDT,
+    } = data;
+   
+ 
+ 
+ 
+ 
   const router = useRouter();
     
 
-  const orderId = params.orderId;
+  const orderId = params.orderId as string;
 
   
   console.log('orderId', orderId);
@@ -898,29 +969,34 @@ export default function SellUsdt({ params }: { params: { orderId: string } }) {
           {/* goto home button using go back icon
           history back
           */}
+
+          <AppBarComponent />
   
-          <div className="flex flex-row gap-2 justify-center space-x-4 mb-10">
+          <div className="mt-4 flex flex-row gap-2 justify-center space-x-4 mb-10">
               {/* history back */}
               {/* if you want to go back to the previous page */}
 
               <button
-                  onClick={() => router.back()}
+                  onClick={() =>
+                      router.push('/' + params.lang)
+                  }
                   className="text-zinc-100 font-semibold underline"
               >
-                Go Back
+                {Go_Home}
               </button>
               <button
-                onClick={() => router.push('/buy-usdt')}
+                onClick={() => router.push('/' + params.lang + '/buy-usdt')}
                 className="text-zinc-100 font-semibold underline"
               >
-                Go Buy USDT
+        
+                {Go_Buy_USDT}
               </button>
               {/* Go to Sell USDT */}
               <button
-                  onClick={() => router.push('/sell-usdt')}
+                  onClick={() => router.push('/' + params.lang + '/sell-usdt')}
                   className="text-zinc-100 font-semibold underline"
               >
-                Go Sell USDT
+                {Go_Sell_USDT}
               </button>
           </div>
 

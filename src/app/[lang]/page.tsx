@@ -170,6 +170,7 @@ export default function Index({ params }: any) {
     Send_USDT: "",
     Pay_USDT: "",
     Coming_Soon: "",
+    Open_Orders: "",
     Please_connect_your_wallet_first: "",
 
   } );
@@ -201,6 +202,7 @@ export default function Index({ params }: any) {
     Send_USDT,
     Pay_USDT,
     Coming_Soon,
+    Open_Orders,
     Please_connect_your_wallet_first,
   } = data;
 
@@ -676,11 +678,11 @@ export default function Index({ params }: any) {
                         return;
                       }
                       // setup USDT
-                      console.log("settings");
+                      //console.log("settings");
 
                       // redirect to settings page
                       router.push(
-                        params.lang + "/settings"
+                        "/" + params.lang + "/settings"
                       );
 
                     }}
@@ -745,7 +747,7 @@ export default function Index({ params }: any) {
 
                       // redirect to send USDT page
                       router.push(
-                        params.lang + "/send-usdt-favorite"
+                        "/" + params.lang + "/send-usdt-favorite"
                       );
 
                     }}
@@ -892,7 +894,7 @@ export default function Index({ params }: any) {
 
                       // redirect to buy trades page
                       router.push(
-                        params.lang + "/buy-usdt-trades"
+                        "/" + params.lang + "/buy-usdt-trades"
                       );
 
                     }}
@@ -913,7 +915,7 @@ export default function Index({ params }: any) {
 
                       // redirect to sell trades page
                       router.push(
-                        params.lang + "/sell-usdt-trades"
+                        "/" + params.lang + "/sell-usdt-trades"
                       );
 
                     }}
@@ -1171,7 +1173,7 @@ export default function Index({ params }: any) {
         <div className="grid gap-4 lg:grid-cols-3 justify-center">
 
           <ArticleCard
-            title={`${Buy_USDT} - Open Orders (${countOfOpenOrders}) EA`}
+            title={`${Buy_USDT} - ${Open_Orders} (${countOfOpenOrders}) EA`}
             
             href={`${params.lang}/buy-usdt`}
 
@@ -1181,7 +1183,7 @@ export default function Index({ params }: any) {
           
             
           <ArticleCard
-            title={`${Sell_USDT} - Open Orders (${countOfOpenOrders}) EA`}
+            title={`${Sell_USDT} - ${Open_Orders} (${countOfOpenOrders}) EA`}
             href={`${params.lang}/sell-usdt`}
             description={Sell_Description}
           />

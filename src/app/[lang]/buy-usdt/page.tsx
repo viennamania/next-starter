@@ -135,6 +135,9 @@ export default function Index({ params }: any) {
 
     Go_Home: "",
     Buy: "",
+    Sell: "",
+    Amount: "",
+    Price: "",
     Total: "",
     Orders: "",
     Trades: "",
@@ -143,6 +146,32 @@ export default function Index({ params }: any) {
     Seller: "",
     Buyer: "",
     Me: "",
+
+    Buy_USDT: "",
+    Rate: "",
+    Payment: "",
+    Bank_Transfer: "",
+
+    I_agree_to_the_terms_of_trade: "",
+    I_agree_to_cancel_the_trade: "",
+
+    Opened_at: "",
+    Cancelled_at: "",
+    Completed_at: "",
+
+    Waiting_for_seller_to_deposit: "",
+
+    to_escrow: "",
+    If_the_seller_does_not_deposit_the_USDT_to_escrow: "",
+    this_trade_will_be_cancelled_in: "",
+
+    Cancel_My_Trade: "",
+
+
+    Order_accepted_successfully: "",
+    Order_has_been_cancelled: "",
+    My_Order: "",
+
 
   } );
 
@@ -160,6 +189,9 @@ export default function Index({ params }: any) {
     menu,
     Go_Home,
     Buy,
+    Sell,
+    Amount,
+    Price,
     Total,
     Orders,
     Trades,
@@ -167,6 +199,30 @@ export default function Index({ params }: any) {
     Seller,
     Buyer,
     Me,
+
+    Buy_USDT,
+    Rate,
+    Payment,
+    Bank_Transfer,
+    I_agree_to_the_terms_of_trade,
+    I_agree_to_cancel_the_trade,
+
+    Opened_at,
+    Cancelled_at,
+    Completed_at,
+
+    Waiting_for_seller_to_deposit,
+
+    to_escrow,
+
+    If_the_seller_does_not_deposit_the_USDT_to_escrow,
+    this_trade_will_be_cancelled_in,
+
+    Cancel_My_Trade,
+
+    Order_accepted_successfully,
+    Order_has_been_cancelled,
+    My_Order,
   } = data;
 
 
@@ -399,7 +455,7 @@ export default function Index({ params }: any) {
             //setSellOrders(data.result.orders);
             //openModal();
 
-            toast.success('Order accepted successfully');
+            toast.success(Order_accepted_successfully);
 
 
 
@@ -482,7 +538,7 @@ export default function Index({ params }: any) {
       ///console.log('data', data);
 
       if (data.result) {
-        toast.success('Order has been cancelled');
+        toast.success(Order_has_been_cancelled);
 
         await fetch('/api/order/getAllSellOrdersForBuyer', {
           method: 'POST',
@@ -556,7 +612,7 @@ export default function Index({ params }: any) {
                     className="rounded-lg"
                   />
 
-                  <div className="text-2xl font-semibold">{Buy} USDT</div>
+                  <div className="text-2xl font-semibold">{Buy_USDT}</div>
 
 
 
@@ -875,7 +931,7 @@ export default function Index({ params }: any) {
                                   height={20}
                                 />
                                 <p className="text-sm text-red-500">
-                                  Cancelled at {
+                                  {Cancelled_at} {
                                     new Date(item.cancelledAt).toLocaleDateString() + ' ' + new Date(item.cancelledAt).toLocaleTimeString()
                                   }
                                 </p>
@@ -891,7 +947,7 @@ export default function Index({ params }: any) {
                                 <p className="text-2xl font-semibold text-white">{item.usdtAmount} USDT</p>
 
                                 <p className="text-lg text-zinc-400">
-                                  Price: {
+                                  {Price}: {
                                     // currency
                                   
                                     Number(item.krwAmount).toLocaleString('ko-KR', {
@@ -904,7 +960,7 @@ export default function Index({ params }: any) {
                               </div>
 
                               <div className="flex flex-row items-start gap-2">
-                                <p className="text-lg font-semibold text-white">Rate: {
+                                <p className="text-lg font-semibold text-white">{Rate}: {
 
                                   Number(item.krwAmount / item.usdtAmount).toFixed(2)
 
@@ -914,7 +970,7 @@ export default function Index({ params }: any) {
                             </div>
 
                             <div className="mb-4 flex flex-col items-start text-sm ">
-                              Payment: Bank Transfer ({item.seller?.bankInfo.bankName})
+                              {Payment}: {Bank_Transfer} ({item.seller?.bankInfo.bankName})
                             </div>
 
 
@@ -1047,16 +1103,21 @@ export default function Index({ params }: any) {
                                   />
 
                                   <div className="flex flex-col gap-2 items-start">
-                                    <span>Waiting for seller to deposit {item.usdtAmount} USDT to escrow...</span>
+                                    <span>
+                                      {Waiting_for_seller_to_deposit} {item.usdtAmount} USDT {to_escrow}...
+                                    </span>
 
                                     <span className="text-sm text-zinc-400">
-                                      This trade will be cancelled in {
+
+                                      {If_the_seller_does_not_deposit_the_USDT_to_escrow},
+
+                                      {this_trade_will_be_cancelled_in} {
 
                                         (1 - Math.floor((new Date().getTime() - new Date(item.acceptedAt).getTime()) / 1000 / 60 / 60) - 1) > 0
                                         ? (1 - Math.floor((new Date().getTime() - new Date(item.acceptedAt).getTime()) / 1000 / 60 / 60) - 1) + ' hours'
                                         : (60 - Math.floor((new Date().getTime() - new Date(item.acceptedAt).getTime()) / 1000 / 60) % 60) + ' minutes'
 
-                                      } if the seller does not deposit the USDT to escrow.
+                                      } 
 
                                     </span>
                                   </div>
@@ -1087,7 +1148,9 @@ export default function Index({ params }: any) {
                                           );
                                         }}
                                       />
-                                      <label className="text-sm text-zinc-400">I agree to cancel the trade</label>
+                                      <label className="text-sm text-zinc-400">
+                                        {I_agree_to_cancel_the_trade}
+                                      </label>
                                     </div>
 
 
@@ -1128,7 +1191,7 @@ export default function Index({ params }: any) {
                                               height={16}
                                             />
                                           )}
-                                          Cancel My Trade
+                                          {Cancel_My_Trade}
                                         </div>
                                           
                                       
@@ -1228,7 +1291,7 @@ export default function Index({ params }: any) {
                                   
                                   {item.walletAddress === address ? (
                                     <div className="flex flex-col space-y-4">
-                                      My Order
+                                      {My_Order}
                                     </div>
                                   ) : (
                                     <div className="w-full flex items-center justify-center">
@@ -1273,7 +1336,9 @@ export default function Index({ params }: any) {
                                                   );
                                               }}
                                             />
-                                            <label className="text-sm text-zinc-400">I agree to the terms of trade</label>
+                                            <label className="text-sm text-zinc-400">
+                                              {I_agree_to_the_terms_of_trade}
+                                            </label>
                                           </div>
 
                                           <button
@@ -1282,7 +1347,7 @@ export default function Index({ params }: any) {
                                               ${!user || !agreementForTrade[index] ? 'opacity-50 cursor-not-allowed' : 'hover:bg-green-600'}
                                               `}
                                             onClick={() => {
-                                                console.log('Buy USDT');
+                                                ///console.log('Buy USDT');
 
                                                 // open trade detail
                                                 // open modal of trade detail
@@ -1297,7 +1362,7 @@ export default function Index({ params }: any) {
 
                                             }}
                                           >
-                                            Buy {item.usdtAmount} USDT
+                                            {Buy} {item.usdtAmount} USDT
                                           </button>
                                         </div>
 

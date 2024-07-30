@@ -36,6 +36,7 @@ export default function RootLayout({
 }>) {
 
 
+  /*
   useEffect(() => {
   
     window.googleTranslateElementInit = () => {
@@ -43,6 +44,7 @@ export default function RootLayout({
     };
   
    }, []);
+   */
 
 
   return (
@@ -53,16 +55,22 @@ export default function RootLayout({
       <head>
         
         {/* Google Translate */}
+        {/*}
         <Script
         src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"
         ></Script>
+        */}
+
+   
 
         {/* Google Translate CSS */}
+        {/*
         <link
         rel="stylesheet"
         type="text/css"
         href="https://www.gstatic.com/_/translate_http/_/ss/k=translate_http.tr.26tY-h6gH9w.L.W.O/am=CAM/d=0/rs=AN8SPfpIXxhebB2A47D9J-MACsXmFF6Vew/m=el_main_css"
         />
+        */}
 
 
         <meta charSet="utf-8" />
@@ -70,6 +78,7 @@ export default function RootLayout({
         <title>WEB3 Starter</title>
         <meta name="description" content="Starter for  WEB3 Wallet." />
         <link rel="icon" href="/favicon.ico" />
+
 
 
 

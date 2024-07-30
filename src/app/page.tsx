@@ -478,11 +478,11 @@ export default function Home() {
 
     <main className="p-4 pb-10 min-h-[100vh] flex items-start justify-center container max-w-screen-lg mx-auto">
 
-
+      {/*
       <div
         id="google_translate_element"
         style={{ position: 'fixed', right: 0, top: 50, zIndex: 1000, backgroundColor:'rgba(255, 255, 255, 0.7)', borderRadius:'10px', padding:'5px' }}></div>
-
+      */}
 
 
       <div className="py-20">
@@ -492,11 +492,12 @@ export default function Home() {
         */}
 
 
+        <AppBarComponent />
       
    
 
 
-        <div className="flex flex-col justify-center gap-5 mb-10">
+        <div className="mt-4 flex flex-col justify-center gap-5 mb-10">
 
 
 

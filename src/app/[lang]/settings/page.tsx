@@ -93,6 +93,9 @@ export default function SettingsPage({ params }: any) {
         Pay_USDT: "",
         Coming_Soon: "",
         Please_connect_your_wallet_first: "",
+
+        Wallet_Settings: "",
+        Profile_Settings: "",
     
     } );
     
@@ -124,6 +127,9 @@ export default function SettingsPage({ params }: any) {
         Pay_USDT,
         Coming_Soon,
         Please_connect_your_wallet_first,
+
+        Wallet_Settings,
+        Profile_Settings,
     } = data;
     
     
@@ -350,7 +356,9 @@ export default function SettingsPage({ params }: any) {
 
                     <div className='flex flex-row items-center space-x-4'>
                         <GearSetupIcon />
-                        <div className="text-2xl font-semibold">Wallet Settings</div>
+                        <div className="text-2xl font-semibold">
+                            {Wallet_Settings}
+                        </div>
 
                         {!address && (
                             <ConnectButton

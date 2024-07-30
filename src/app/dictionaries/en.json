@@ -45,6 +45,8 @@
 
     "Buy": "Buy",
     "Sell": "Sell",
+    "Amount": "Amount",
+    "Price": "Price",
 
     "Contact_Us": "Contact Us",
 
@@ -70,8 +72,66 @@
 
     "Coming_Soon": "Coming Soon",
 
+    "Open_Orders": "Open Orders",
 
-    "Please_connect_your_wallet_first": "Please connect your wallet first"
+
+    "Please_connect_your_wallet_first": "Please connect your wallet first",
+
+
+    "USDT_sent_successfully": "USDT sent successfully",
+
+    "Failed_to_send_USDT": "Failed to send USDT",
+
+    "Go_Buy_USDT": "Go Buy USDT",
+    "Go_Sell_USDT": "Go Sell USDT",
+
+    "Enter_Wallet_Address": "Enter Wallet Address",
+
+    "Enter_the_amount_and_recipient_address": "Enter the amount and recipient address",
+    "Select_a_user": "Select a user",
+    "User_wallet_address": "User wallet address",
+
+    "This_address_is_not_white_listed": "This address is not white listed.",
+
+    "If_you_are_sure_please_click_the_send_button": "If you are sure, please click the send button.",
+
+    "Sending": "Sending",
+
+    "Rate": "Rate",
+
+    "Payment": "Payment",
+    "Bank_Transfer": "Bank Transfer",
+
+
+
+
+    "I_agree_to_the_terms_of_trade": "I agree to the terms of trade",
+    "I_agree_to_cancel_the_trade": "I agree to cancel the trade",
+
+    "Opened_at": "Opened at",
+    "Cancelled_at": "Cancelled at",
+    "Completed_at": "Completed at",
+
+
+    "Waiting_for_seller_to_deposit": "Waiting for seller to deposit",
+
+    "to_escrow": "to escrow",
+
+
+    "If_the_seller_does_not_deposit_the_USDT_to_escrow": "if the seller does not deposit the USDT to escrow.",
+    "this_trade_will_be_cancelled_in": "This trade will be cancelled in",
+
+    "Cancel_My_Trade": "Cancel My Trade",
+
+
+    "Order_accepted_successfully": "Order accepted successfully",
+    "Order_has_been_cancelled": "Order has been cancelled",
+
+    "My Order": "My Order",
+
+
+    "Wallet_Settings": "Wallet Settings",
+    "Profile_Settings": "Profile Settings"
 
 
 }
