@@ -166,7 +166,19 @@
 
     "Placing_Order": "Placing Order",
 
-    "My_Order": "My Order"
+    "My_Order": "My Order",
 
+
+    "If_you_request_payment": "If you request payment, the USDT will be escrowed to the smart contract and then the buyer will be requested to pay.",
+
+
+    "I_agree_to_escrow_USDT": "I agree to escrow USDT to the smart contract and request payment to the buyer.",
+
+
+    "Order_Opened": "Opened",
+
+    "Trade_Started": "Started",
+
+    "Expires_in": "Expires in"
 
 }

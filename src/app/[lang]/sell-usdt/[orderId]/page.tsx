@@ -206,9 +206,20 @@ export default function Index({ params }: any) {
       Payment: "",
       Bank_Transfer: "",
 
+
+      hours: "",
+      minutes: "",
+      seconds: "",
+
       hours_ago: "",
       minutes_ago: "",
       seconds_ago: "",
+
+      Waiting_for_seller_to_deposit: "",
+      to_escrow: "",
+
+      If_you_request_payment: "",
+      I_agree_to_escrow_USDT: "",
 
 
     } );
@@ -248,9 +259,21 @@ export default function Index({ params }: any) {
       Payment,
       Bank_Transfer,
 
+      hours,
+      minutes,
+      seconds,
+
       hours_ago,
       minutes_ago,
       seconds_ago,
+
+      Waiting_for_seller_to_deposit,
+      to_escrow,
+
+      If_you_request_payment,
+      I_agree_to_escrow_USDT,
+
+
     } = data;
    
  
@@ -1228,7 +1251,7 @@ export default function Index({ params }: any) {
                                   
                                   {/* Expired in 24 hours */}
                                   <p className=" text-sm text-zinc-400">
-                                    Expired in {24 - Math.floor((new Date().getTime() - new Date(item.createdAt).getTime()) / 1000 / 60 / 60)} hours
+                                    Expired in {24 - Math.floor((new Date().getTime() - new Date(item.createdAt).getTime()) / 1000 / 60 / 60)} {hours}
                                   </p>
 
                                 </div>
@@ -1352,7 +1375,7 @@ export default function Index({ params }: any) {
                                     <div className="text-sm text-green-500">
                                       {
                                         ( (new Date(item.acceptedAt).getTime() - new Date(item.createdAt).getTime()) / 1000 / 60 ).toFixed(0)
-                                      } minutes
+                                      } {minutes}
                                     </div>
                                   </div>
 
@@ -1402,7 +1425,7 @@ export default function Index({ params }: any) {
                                       height={32}
                                     />
                                     <div className="text-sm text-green-500">
-                                      { ( (new Date(item.paymentConfirmedAt).getTime() - new Date(item.acceptedAt).getTime()) / 1000 / 60 ).toFixed(0) } minutes
+                                      { ( (new Date(item.paymentConfirmedAt).getTime() - new Date(item.acceptedAt).getTime()) / 1000 / 60 ).toFixed(0) } {minutes}
                                     </div>
                                   </div>
 
@@ -1623,7 +1646,14 @@ export default function Index({ params }: any) {
                                     className="animate-spin"
                                   />
 
-                                  <div>Waiting for seller to deposit {item.usdtAmount} USDT to escrow...</div>
+                                  <span>
+                                    {Waiting_for_seller_to_deposit}
+                                    {' '}{item.usdtAmount} USDT
+                                    {' '}{to_escrow}....
+                                  </span>
+
+
+
 
                                 </div>
 
@@ -1699,7 +1729,11 @@ export default function Index({ params }: any) {
                                 <div  className="w-2 h-2 rounded-full bg-green-500"></div>
 
                                 <div className="text-sm text-zinc-400">
+                                  {/*
                                   If you request payment, the {item.usdtAmount} USDT will be escrowed to the smart contract and then the buyer ( {item.buyer.nickname} ) will be requested to pay.
+                                  */}
+
+                                  {If_you_request_payment}
                                 </div>
                               </div>
 
@@ -1723,9 +1757,11 @@ export default function Index({ params }: any) {
                                     />
                                   </div>
                                   <div className="text-sm text-zinc-400">
-
+                                    {/*
                                     I agree to escrow {item.usdtAmount} USDT to the smart contract and request payment to the buyer ( {item.buyer.nickname} )
+                                    */}
 
+                                      {I_agree_to_escrow_USDT}
 
                                   </div>
                               </div>
@@ -1743,7 +1779,7 @@ export default function Index({ params }: any) {
                                   text-white px-4 py-2 rounded-md mt-4`}
 
                                   onClick={() => {
-                                      console.log('request Payment');
+                                      //console.log('request Payment');
                                       
                                       ///router.push(`/chat?tradeId=12345`);
 

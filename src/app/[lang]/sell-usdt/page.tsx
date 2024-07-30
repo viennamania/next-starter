@@ -1680,7 +1680,8 @@ export default function Index({ params }: any) {
                                     <span>
                                       {Waiting_for_seller_to_deposit}
                                       {item.usdtAmount} USDT
-                                      {to_escrow}....</span>
+                                      {to_escrow}....
+                                    </span>
 
                                     <span className="text-sm text-zinc-400">
 

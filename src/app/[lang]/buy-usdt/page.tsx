@@ -180,6 +180,10 @@ export default function Index({ params }: any) {
     minutes_ago: "",
     seconds_ago: "",
 
+    Order_Opened: "",
+    Trade_Started: "",
+    Expires_in: "",
+
   } );
 
   useEffect(() => {
@@ -238,6 +242,10 @@ export default function Index({ params }: any) {
     hours_ago,
     minutes_ago,
     seconds_ago,
+
+    Order_Opened,
+    Trade_Started,
+    Expires_in,
 
 
   } = data;
@@ -829,7 +837,7 @@ export default function Index({ params }: any) {
 
                                
                                 <p className="text-sm text-zinc-400">
-                                  Opened {
+                                  {Order_Opened} {
                                     new Date().getTime() - new Date(item.createdAt).getTime() < 1000 * 60 ? (
                                       ' ' + Math.floor((new Date().getTime() - new Date(item.createdAt).getTime()) / 1000) + ' ' + seconds_ago
                                     ) :
@@ -852,7 +860,7 @@ export default function Index({ params }: any) {
                                     width={28}
                                     height={28}
                                   />
-                                  <p className="text-sm text-zinc-400">Expires in {
+                                  <p className="text-sm text-zinc-400">{Expires_in} {
   
                                     24 - Math.floor((new Date().getTime() - new Date(item.createdAt).getTime()) / 1000 / 60 / 60) - 1
 
@@ -906,14 +914,14 @@ export default function Index({ params }: any) {
                                   </p>
                                 ) : (
                                   <p className="ml-2 text-sm text-zinc-400">
-                                    Started {
+                                    {Trade_Started} {
                                       new Date().getTime() - new Date(item.acceptedAt).getTime() < 1000 * 60 ? (
-                                        ' ' + Math.floor((new Date().getTime() - new Date(item.acceptedAt).getTime()) / 1000) + ' ' + {seconds_ago}
+                                        ' ' + Math.floor((new Date().getTime() - new Date(item.acceptedAt).getTime()) / 1000) + ' ' + seconds_ago
                                       ) :
                                       new Date().getTime() - new Date(item.acceptedAt).getTime() < 1000 * 60 * 60 ? (
-                                      ' ' + Math.floor((new Date().getTime() - new Date(item.acceptedAt).getTime()) / 1000 / 60) + ' ' + {minutes_ago}
+                                      ' ' + Math.floor((new Date().getTime() - new Date(item.acceptedAt).getTime()) / 1000 / 60) + ' ' + minutes_ago
                                       ) : (
-                                        ' ' + Math.floor((new Date().getTime() - new Date(item.acceptedAt).getTime()) / 1000 / 60 / 60) + ' ' + {hours_ago}
+                                        ' ' + Math.floor((new Date().getTime() - new Date(item.acceptedAt).getTime()) / 1000 / 60 / 60) + ' ' + hours_ago
                                       )}
                                   </p>
                                 )}

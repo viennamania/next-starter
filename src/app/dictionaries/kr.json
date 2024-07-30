@@ -94,7 +94,7 @@
 
     "to_escrow": "에스크로 보관소로",
 
-    "If_the_seller_does_not_deposit_the_USDT_to_escrow": "판매자가 USDT를 에스크로 보관소에 입금하지 않으면",
+    "If_the_seller_does_not_deposit_the_USDT_to_escrow": "판매자가 USDT를 에스크로 보관소에 보내지 않으면",
     "this_trade_will_be_cancelled_in": "이 거래는 다음 시간이 지나면 취소됩니다:",
 
     "Cancel_My_Trade": "거래 취소하기",
@@ -136,6 +136,17 @@
 
     "Placing_Order": "주문 중",
 
-    "My_Order": "내 주문"
+    "My_Order": "내 주문",
+
+
+    "If_you_request_payment": "결제를 요청하기 위해서는 판매자가 USDT를 에스크로 보관소에 보내야 합니다. 판매자가 1시간내로 USDT를 에스크로 보관소로 보내지 않으면 거래가 취소됩니다.",
+
+    "I_agree_to_escrow_USDT": "USDT를 에스크로 보관소에 보내는 것에 동의합니다.",
+
+    "Order_Opened": "주문 시작",
+
+    "Trade_Started": "거래 시작",
+
+    "Expires_in": "만료까지 남은 시간"
 
 }
