@@ -18,8 +18,8 @@
     "My_Balance": "내 잔고",
     "My_Nickname": "내 닉네임",
 
-    "My_Buy_Trades": "내 구매 거래",
-    "My_Sell_Trades": "내 판매 거래",
+    "My_Buy_Trades": "내 구매 거래내역",
+    "My_Sell_Trades": "내 판매 거래내역",
 
     "Order": "주문",
     "Buy": "구매",
