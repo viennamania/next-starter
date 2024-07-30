@@ -206,6 +206,10 @@ export default function Index({ params }: any) {
       Payment: "",
       Bank_Transfer: "",
 
+      hours_ago: "",
+      minutes_ago: "",
+      seconds_ago: "",
+
 
     } );
   
@@ -243,6 +247,10 @@ export default function Index({ params }: any) {
 
       Payment,
       Bank_Transfer,
+
+      hours_ago,
+      minutes_ago,
+      seconds_ago,
     } = data;
    
  

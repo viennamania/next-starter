@@ -202,6 +202,10 @@ export default function Index({ params }: any) {
 
     Placing_Order: "",
 
+    hours_ago: "",
+    minutes_ago: "",
+    seconds_ago: "",
+
   } );
 
   useEffect(() => {
@@ -270,6 +274,12 @@ export default function Index({ params }: any) {
     Order_has_been_placed,
 
     Placing_Order,
+
+    hours_ago,
+    minutes_ago,
+    seconds_ago,
+
+
   } = data;
 
 
@@ -1321,12 +1331,12 @@ export default function Index({ params }: any) {
                                   <p className="text-sm text-zinc-400">
                                     Opened {
                                     new Date().getTime() - new Date(item.createdAt).getTime() < 1000 * 60 ? (
-                                      ' ' + Math.floor((new Date().getTime() - new Date(item.createdAt).getTime()) / 1000) + ' seconds ago'
+                                      ' ' + Math.floor((new Date().getTime() - new Date(item.createdAt).getTime()) / 1000) + ' ' + seconds_ago
                                     ) :
                                     new Date().getTime() - new Date(item.createdAt).getTime() < 1000 * 60 * 60 ? (
-                                      ' ' + Math.floor((new Date().getTime() - new Date(item.createdAt).getTime()) / 1000 / 60) + ' minutes ago'
+                                      ' ' + Math.floor((new Date().getTime() - new Date(item.createdAt).getTime()) / 1000 / 60) + ' ' + minutes_ago
                                     ) : (
-                                      ' ' + Math.floor((new Date().getTime() - new Date(item.createdAt).getTime()) / 1000 / 60 / 60) + ' hours ago'
+                                      ' ' + Math.floor((new Date().getTime() - new Date(item.createdAt).getTime()) / 1000 / 60 / 60) + ' ' + hours_ago
                                     )}
                                   </p>
 
