@@ -195,6 +195,8 @@ export default function Index({ params }: any) {
 
     Go_Sell_USDT: "",
 
+    Cancel_My_Order: "",
+
   } );
 
   useEffect(() => {
@@ -257,6 +259,8 @@ export default function Index({ params }: any) {
     Search_my_orders,
 
     Go_Sell_USDT,
+
+    Cancel_My_Order,
   } = data;
 
 
@@ -1459,7 +1463,7 @@ export default function Index({ params }: any) {
                               </div>
 
                               <div className="flex flex-col items-start">
-                                <p className="text-lg font-semibold text-white">Rate: {
+                                <p className="text-lg font-semibold text-white">{Rate}: {
 
                                   Number(item.krwAmount / item.usdtAmount).toFixed(2)
 
@@ -1508,7 +1512,7 @@ export default function Index({ params }: any) {
                                 ) : (item.walletAddress === address && item.status === 'ordered') ? (
 
                                   <div className="flex flex-row items-center gap-2">
-                                    <span>Seller: {item.nickname}</span>
+                                    <span>{Seller}: {item.nickname}</span>
                                     <span className="text-green-500">:{Me}</span>
                                            
                                     <button
@@ -1547,8 +1551,7 @@ export default function Index({ params }: any) {
                                           />
                                         )}
                                         <div className="flex flex-row xl:flex-col items-center gap-1">
-                                          <span>Cancel</span>
-                                          <span>My Order</span>
+                                          <span>{Cancel_My_Order}</span>
                                         </div>
                                       </div>
                                       
