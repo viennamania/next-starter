@@ -83,6 +83,8 @@
 
     "Failed_to_send_USDT": "Failed to send USDT",
 
+    
+
     "Go_Buy_USDT": "Go Buy USDT",
     "Go_Sell_USDT": "Go Sell USDT",
 
@@ -157,7 +159,10 @@
     "minutes_ago": "minutes ago",
     "seconds_ago": "seconds ago",
 
-    "Disconnect_Wallet": "Disconnect Wallet"
+    "Disconnect_Wallet": "Disconnect Wallet",
+
+
+    "Order_has_been_placed": "Order has been placed"
 
 
 }

@@ -197,6 +197,8 @@ export default function Index({ params }: any) {
 
     Cancel_My_Order: "",
 
+    Order_has_been_placed: "",
+
   } );
 
   useEffect(() => {
@@ -261,6 +263,8 @@ export default function Index({ params }: any) {
     Go_Sell_USDT,
 
     Cancel_My_Order,
+
+    Order_has_been_placed,
   } = data;
 
 
@@ -511,7 +515,9 @@ export default function Index({ params }: any) {
       //console.log('data', data);
 
       if (data.result) {
-        toast.success('Order has been placed');
+        toast.success(
+          Order_has_been_placed
+        );
 
         setUsdtAmount(0);
         setprivateSale(false);
@@ -1146,21 +1152,21 @@ export default function Index({ params }: any) {
                   <div className="p-2 xl:p-0  flex flex-row items-center justify-between gap-2">
 
                     <div className="flex flex-col gap-2 items-center">
-                      <div className="text-sm">Total</div>
+                      <div className="text-sm">{Total}</div>
                       <div className="text-xl font-semibold text-white">
                         {sellOrders.length}
                       </div>
                     </div>
 
                     <div className="flex flex-col gap-2 items-center">
-                      <div className="text-sm">Orders</div>
+                      <div className="text-sm">{Orders}</div>
                       <div className="text-xl font-semibold text-white">
                         {sellOrders.filter((item) => item.status === 'ordered').length}
                       </div>
                     </div>
 
                     <div className="flex flex-col gap-2 items-center">
-                      <div className="text-sm">Trades</div>
+                      <div className="text-sm">{Trades}</div>
                       <div className="text-xl font-semibold text-white">
 
                         {

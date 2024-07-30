@@ -52,7 +52,16 @@
     "Coming_Soon": "곧 출시 예정",
     "Open_Orders": "미체결 주문",
 
-    "Please_connect_your_wallet_first": "먼저 지갑을 연결해주세요",
+
+    "Please_connect_your_wallet_first": "Please connect your wallet first",
+
+
+    "USDT_sent_successfully": "USDT sent successfully",
+
+    "Failed_to_send_USDT": "Failed to send USDT",
+
+
+
 
     "Go_Buy_USDT": "USDT 구매하러 가기",
     "Go_Sell_USDT": "USDT 판매하러 가기",
@@ -120,6 +129,8 @@
     "minutes_ago": "분 전",
     "seconds_ago": "초 전",
 
-    "Disconnect_Wallet": "지갑 연결 해제"
+    "Disconnect_Wallet": "지갑 연결 해제",
+
+     "Order_has_been_placed": "주문이 완료되었습니다"
 
 }
