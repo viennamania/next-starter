@@ -131,7 +131,10 @@
 
 
     "Wallet_Settings": "Wallet Settings",
-    "Profile_Settings": "Profile Settings"
+    "Profile_Settings": "Profile Settings",
+
+    "My_Buy_USDT_Trades": "My Buy USDT Trades",
+    "My_Sell_USDT_Trades": "My Sell USDT Trades"
 
 
 }

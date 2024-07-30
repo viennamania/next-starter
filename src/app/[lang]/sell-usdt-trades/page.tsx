@@ -52,6 +52,10 @@ import Modal from '@/components/modal';
 
 import { useRouter }from "next//navigation";
 
+import AppBarComponent from "@/components/Appbar/AppBar";
+import { getDictionary } from "../../dictionaries";
+
+
 
 
 interface SellOrder {
@@ -114,10 +118,118 @@ const contract = getContract({
 
 
 
-const P2PTable = () => {
+export default function Index({ params }: any) {
+
+  //console.log('params', params);
+
+  const [data, setData] = useState({
+    title: "",
+    description: "",
+
+    menu : {
+      buy: "",
+      sell: "",
+      trade: "",
+      chat: "",
+      history: "",
+      settings: "",
+    },
+
+    Go_Home: "",
+    Buy: "",
+    Sell: "",
+    Amount: "",
+    Price: "",
+    Total: "",
+    Orders: "",
+    Trades: "",
+    Search_my_trades: "",
+
+    Seller: "",
+    Buyer: "",
+    Me: "",
+
+    Buy_USDT: "",
+    Rate: "",
+    Payment: "",
+    Bank_Transfer: "",
+
+    I_agree_to_the_terms_of_trade: "",
+    I_agree_to_cancel_the_trade: "",
+
+    Opened_at: "",
+    Cancelled_at: "",
+    Completed_at: "",
+
+    Waiting_for_seller_to_deposit: "",
+
+    to_escrow: "",
+    If_the_seller_does_not_deposit_the_USDT_to_escrow: "",
+    this_trade_will_be_cancelled_in: "",
+
+    Cancel_My_Trade: "",
 
 
+    Order_accepted_successfully: "",
+    Order_has_been_cancelled: "",
+    My_Order: "",
 
+    My_Sell_USDT_Trades: "",
+
+
+  } );
+
+  useEffect(() => {
+      async function fetchData() {
+          const dictionary = await getDictionary(params.lang);
+          setData(dictionary);
+      }
+      fetchData();
+  }, [params.lang]);
+
+  const {
+    title,
+    description,
+    menu,
+    Go_Home,
+    Buy,
+    Sell,
+    Amount,
+    Price,
+    Total,
+    Orders,
+    Trades,
+    Search_my_trades,
+    Seller,
+    Buyer,
+    Me,
+
+    Buy_USDT,
+    Rate,
+    Payment,
+    Bank_Transfer,
+    I_agree_to_the_terms_of_trade,
+    I_agree_to_cancel_the_trade,
+
+    Opened_at,
+    Cancelled_at,
+    Completed_at,
+
+    Waiting_for_seller_to_deposit,
+
+    to_escrow,
+
+    If_the_seller_does_not_deposit_the_USDT_to_escrow,
+    this_trade_will_be_cancelled_in,
+
+    Cancel_My_Trade,
+
+    Order_accepted_successfully,
+    Order_has_been_cancelled,
+    My_Order,
+
+    My_Sell_USDT_Trades,
+  } = data;
 
 
   const smartAccount = useActiveAccount();
@@ -160,56 +272,6 @@ const P2PTable = () => {
 
 
     const router = useRouter();
-
-
-  /*
-  return (
-    <div className="overflow-x-auto">
-      <table className="min-w-full bg-white border border-gray-200">
-        <thead>
-          <tr>
-            <th className="px-4 py-2 border-b">Advertiser (Completion rate)</th>
-            <th className="px-4 py-2 border-b">Price</th>
-            <th className="px-4 py-2 border-b">Limit/Available</th>
-            <th className="px-4 py-2 border-b">Payment method</th>
-            <th className="px-4 py-2 border-b">Trade</th>
-          </tr>
-        </thead>
-        <tbody>
-          {data.map((item, index) => (
-            <tr key={index} className="border-b">
-              <td className="px-4 py-2">
-                <span className={`inline-block w-2 h-2 rounded-full ${item.trades > 300 ? 'bg-green-500' : 'bg-gray-300'}`}></span>
-                <span className="ml-2">{item.advertiser}</span>
-                <span className="ml-2 text-gray-500">{item.trades} trades</span>
-              </td>
-              <td className="px-4 py-2">{item.price} KRW</td>
-              <td className="px-4 py-2">{item.limit} <br /> {item.available}</td>
-              <td className="px-4 py-2">
-                {item.paymentMethods.map((method, idx) => (
-                  <span key={idx} className="inline-block bg-yellow-100 text-yellow-800 text-xs px-2 rounded-full mr-2 mb-1">{method}</span>
-                ))}
-              </td>
-              <td className="px-4 py-2 text-green-500 cursor-pointer">Buy USDT</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
-  );
-    */
-
-  /*
-        <article>
-        <h2 className="text-lg font-semibold mb-2">{props.title}</h2>
-        <p className="text-sm text-zinc-400">{props.description}</p>
-      </article>
-    */
-
-
-
-
-
 
     
     const [sellOrders, setSellOrders] = useState<SellOrder[]>([]);
@@ -732,9 +794,19 @@ const P2PTable = () => {
           history back
           */}
   
-          <div className="flex justify-start space-x-4 mb-10">
-              <button onClick={() => router.push('/')} className="text-zinc-100 font-semibold underline">Go Home</button>
+          <AppBarComponent />
+          
+          <div className="mt-4 flex justify-start space-x-4 mb-10">
+              <button
+                onClick={() => router.push(
+                  '/' + params.lang
+                )}
+                className="text-zinc-100 font-semibold underline"
+              >
+                {Go_Home}
+              </button>
           </div>
+
 
 
           <div className="flex flex-col gap-5 items-start justify-center ">
@@ -747,7 +819,9 @@ const P2PTable = () => {
                       height={40}
                       className="rounded-lg"
                     />
-                  <div className="text-2xl font-semibold">My Sell USDT Trades</div>
+                  <div className="text-2xl font-semibold">
+                    {My_Sell_USDT_Trades}
+                  </div>
 
                   {!address && (
                     <ConnectButton
@@ -1598,4 +1672,3 @@ const TradeDetail = (
 
 
 
-export default P2PTable;

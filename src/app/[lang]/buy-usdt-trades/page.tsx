@@ -132,6 +132,9 @@ export default function Index({ params }: any) {
 
     Go_Home: "",
     Buy: "",
+    Sell: "",
+    Amount: "",
+    Price: "",
     Total: "",
     Orders: "",
     Trades: "",
@@ -140,6 +143,35 @@ export default function Index({ params }: any) {
     Seller: "",
     Buyer: "",
     Me: "",
+
+    Buy_USDT: "",
+    Rate: "",
+    Payment: "",
+    Bank_Transfer: "",
+
+    I_agree_to_the_terms_of_trade: "",
+    I_agree_to_cancel_the_trade: "",
+
+    Opened_at: "",
+    Cancelled_at: "",
+    Completed_at: "",
+
+    Waiting_for_seller_to_deposit: "",
+
+    to_escrow: "",
+    If_the_seller_does_not_deposit_the_USDT_to_escrow: "",
+    this_trade_will_be_cancelled_in: "",
+
+    Cancel_My_Trade: "",
+
+
+    Order_accepted_successfully: "",
+    Order_has_been_cancelled: "",
+    My_Order: "",
+
+    
+    My_Buy_USDT_Trades: "",
+
 
   } );
 
@@ -157,6 +189,9 @@ export default function Index({ params }: any) {
     menu,
     Go_Home,
     Buy,
+    Sell,
+    Amount,
+    Price,
     Total,
     Orders,
     Trades,
@@ -164,7 +199,35 @@ export default function Index({ params }: any) {
     Seller,
     Buyer,
     Me,
+
+    Buy_USDT,
+    Rate,
+    Payment,
+    Bank_Transfer,
+    I_agree_to_the_terms_of_trade,
+    I_agree_to_cancel_the_trade,
+
+    Opened_at,
+    Cancelled_at,
+    Completed_at,
+
+    Waiting_for_seller_to_deposit,
+
+    to_escrow,
+
+    If_the_seller_does_not_deposit_the_USDT_to_escrow,
+    this_trade_will_be_cancelled_in,
+
+    Cancel_My_Trade,
+
+    Order_accepted_successfully,
+    Order_has_been_cancelled,
+    My_Order,
+
+    My_Buy_USDT_Trades,
+
   } = data;
+
 
   const router = useRouter();
 
@@ -237,53 +300,6 @@ export default function Index({ params }: any) {
   } , [address]);
 
 
-
-
-
-
-  /*
-  return (
-    <div className="overflow-x-auto">
-      <table className="min-w-full bg-white border border-gray-200">
-        <thead>
-          <tr>
-            <th className="px-4 py-2 border-b">Advertiser (Completion rate)</th>
-            <th className="px-4 py-2 border-b">Price</th>
-            <th className="px-4 py-2 border-b">Limit/Available</th>
-            <th className="px-4 py-2 border-b">Payment method</th>
-            <th className="px-4 py-2 border-b">Trade</th>
-          </tr>
-        </thead>
-        <tbody>
-          {data.map((item, index) => (
-            <tr key={index} className="border-b">
-              <td className="px-4 py-2">
-                <span className={`inline-block w-2 h-2 rounded-full ${item.trades > 300 ? 'bg-green-500' : 'bg-gray-300'}`}></span>
-                <span className="ml-2">{item.advertiser}</span>
-                <span className="ml-2 text-gray-500">{item.trades} trades</span>
-              </td>
-              <td className="px-4 py-2">{item.price} KRW</td>
-              <td className="px-4 py-2">{item.limit} <br /> {item.available}</td>
-              <td className="px-4 py-2">
-                {item.paymentMethods.map((method, idx) => (
-                  <span key={idx} className="inline-block bg-yellow-100 text-yellow-800 text-xs px-2 rounded-full mr-2 mb-1">{method}</span>
-                ))}
-              </td>
-              <td className="px-4 py-2 text-green-500 cursor-pointer">Buy USDT</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
-  );
-    */
-
-  /*
-        <article>
-        <h2 className="text-lg font-semibold mb-2">{props.title}</h2>
-        <p className="text-sm text-zinc-400">{props.description}</p>
-      </article>
-    */
 
     const [isModalOpen, setModalOpen] = useState(false);
 
@@ -391,7 +407,7 @@ export default function Index({ params }: any) {
             //setSellOrders(data.result.orders);
             //openModal();
 
-            toast.success('Order accepted successfully');
+            toast.success(Order_accepted_successfully);
 
 
 
@@ -460,7 +476,14 @@ export default function Index({ params }: any) {
           <AppBarComponent />
   
           <div className="mt-4 flex justify-start space-x-4 mb-10">
-              <button onClick={() => router.push('/')} className="text-zinc-100 font-semibold underline">Go Home</button>
+              <button
+                onClick={() => router.push(
+                  '/' + params.lang
+                )}
+                className="text-zinc-100 font-semibold underline"
+              >
+                {Go_Home}
+              </button>
           </div>
 
 
@@ -474,7 +497,9 @@ export default function Index({ params }: any) {
                       height={40}
                       className="rounded-lg"
                     />
-                  <div className="text-2xl font-semibold">My Buy USDT Trades</div>
+                  <div className="text-2xl font-semibold">
+                    {My_Buy_USDT_Trades}
+                  </div>
 
 
 

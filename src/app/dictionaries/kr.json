@@ -96,7 +96,10 @@
 
  
     "Wallet_Settings": "지갑 설정",
-    "Profile_Settings": "프로필 설정"
+    "Profile_Settings": "프로필 설정",
+
+    "My_Buy_USDT_Trades": "내 USDT 구매 거래",
+    "My_Sell_USDT_Trades": "내 USDT 판매 거래"
     
 
 
