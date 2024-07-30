@@ -193,6 +193,8 @@ export default function Index({ params }: any) {
 
     Search_my_orders: "",
 
+    Go_Sell_USDT: "",
+
   } );
 
   useEffect(() => {
@@ -253,6 +255,8 @@ export default function Index({ params }: any) {
     Place_Order,
 
     Search_my_orders,
+
+    Go_Sell_USDT,
   } = data;
 
 
@@ -1482,8 +1486,8 @@ export default function Index({ params }: any) {
                                 (item.status === 'accepted' || item.status === 'paymentRequested') ? (
 
                                   <div className="flex flex-row items-center gap-2">
-                                    <span>Seller: {item.nickname}</span>
-                                    <span className="text-green-500">:Me</span>
+                                    <span>{Seller}: {item.nickname}</span>
+                                    <span className="text-green-500">:{Me}</span>
                                     
                                     {/* goto /sell-usdt/:id */}
 
@@ -1492,10 +1496,11 @@ export default function Index({ params }: any) {
                                         bg-blue-500 text-white px-3 py-2 rounded-md hover:bg-blue-600 cursor-pointer"
 
                                       onClick={() => {
-                                        router.push(`/sell-usdt/${item._id}`);
+                                        router.push(
+                                          "/" + params.lang + `/sell-usdt/${item._id}`);
                                       }}
                                     >
-                                      Go Trade
+                                      {Go_Sell_USDT}
                                     </div>
                                 
                                   </div>
@@ -1504,7 +1509,7 @@ export default function Index({ params }: any) {
 
                                   <div className="flex flex-row items-center gap-2">
                                     <span>Seller: {item.nickname}</span>
-                                    <span className="text-green-500">:Me</span>
+                                    <span className="text-green-500">:{Me}</span>
                                            
                                     <button
                                         disabled={cancellings[index]}
@@ -1555,7 +1560,7 @@ export default function Index({ params }: any) {
                                 ) : (
                                 
                                   <span>
-                                    Seller: {item.nickname}
+                                    {Seller}: {item.nickname}
                                   </span>
 
                                 )
@@ -1574,8 +1579,8 @@ export default function Index({ params }: any) {
                                 <div className="w-full mt-4 mb-2 flex flex-col items-start ">
 
                                   <p className="text-xl text-green-500 font-semibold">
-                                    Buyer: {
-                                      item.buyer.walletAddress === address ? item.buyer.nickname + ' :Me' :
+                                    {Buyer}: {
+                                      item.buyer.walletAddress === address ? item.buyer.nickname + ' :' + Me :
                                     
                                       item.buyer.nickname.substring(0, 1) + '****'
                                     }
