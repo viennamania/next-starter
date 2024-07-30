@@ -820,7 +820,7 @@ export default function Index({ params }: any) {
                       }
 
                       // redirect to settings page
-                      router.push("/profiles");
+                      router.push("/" + params.lang + "/settings");
 
                     }}
                     className="text-blue-500 hover:underline"
