@@ -831,12 +831,12 @@ export default function Index({ params }: any) {
                                 <p className="text-sm text-zinc-400">
                                   Opened {
                                     new Date().getTime() - new Date(item.createdAt).getTime() < 1000 * 60 ? (
-                                      ' ' + Math.floor((new Date().getTime() - new Date(item.createdAt).getTime()) / 1000) + ' ' + {seconds_ago}
+                                      ' ' + Math.floor((new Date().getTime() - new Date(item.createdAt).getTime()) / 1000) + ' ' + seconds_ago
                                     ) :
                                     new Date().getTime() - new Date(item.createdAt).getTime() < 1000 * 60 * 60 ? (
-                                    ' ' + Math.floor((new Date().getTime() - new Date(item.createdAt).getTime()) / 1000 / 60) + ' ' + {minutes_ago}
+                                    ' ' + Math.floor((new Date().getTime() - new Date(item.createdAt).getTime()) / 1000 / 60) + ' ' + minutes_ago
                                     ) : (
-                                      ' ' + Math.floor((new Date().getTime() - new Date(item.createdAt).getTime()) / 1000 / 60 / 60) + ' ' + {hours_ago}
+                                      ' ' + Math.floor((new Date().getTime() - new Date(item.createdAt).getTime()) / 1000 / 60 / 60) + ' ' + hours_ago
                                     )}
                                 </p>
 
