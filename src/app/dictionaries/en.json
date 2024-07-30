@@ -179,6 +179,19 @@
 
     "Trade_Started": "Started",
 
-    "Expires_in": "Expires in"
+    "Expires_in": "Expires in",
+
+    "Bank_Name": "Bank Name",
+    "Account_Number": "Account Number",
+    "Account_Holder": "Account Holder",
+    "Deposit_Name": "Deposit Name",
+    "Deposit_Amount": "Deposit Amount",
+    "Deposit_Deadline": "Deposit Deadline",
+
+
+    "Waiting_for_seller_to_confirm_payment": "Waiting for seller to confirm payment",
+
+  
+    "Confirm_Payment": "Confirm Payment"
 
 }

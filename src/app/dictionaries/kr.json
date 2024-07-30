@@ -18,8 +18,8 @@
     "My_Balance": "내 잔고",
     "My_Nickname": "내 닉네임",
 
-    "My_Buy_Trades": "내 매수 거래",
-    "My_Sell_Trades": "내 매도 거래",
+    "My_Buy_Trades": "내 구매 거래",
+    "My_Sell_Trades": "내 판매 거래",
 
     "Order": "주문",
     "Buy": "구매",
@@ -147,6 +147,17 @@
 
     "Trade_Started": "거래 시작",
 
-    "Expires_in": "만료까지 남은 시간"
+    "Expires_in": "만료까지 남은 시간",
+
+    "Bank_Name": "은행 이름",
+    "Account_Number": "계좌 번호",
+    "Account_Holder": "예금주",
+    "Deposit_Name": "입금자명",
+    "Deposit_Amount": "입금액",
+    "Deposit_Deadline": "입금 기한",
+
+    "Waiting_for_seller_to_confirm_payment": "판매자 결제 확인 대기 중",
+
+    "Confirm_Payment": "결제 확인"
 
 }

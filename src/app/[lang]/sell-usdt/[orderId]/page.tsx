@@ -222,6 +222,18 @@ export default function Index({ params }: any) {
       I_agree_to_escrow_USDT: "",
 
 
+ 
+      Bank_Name: "",
+      Account_Number: "",
+      Account_Holder: "",
+      Deposit_Name: "",
+      Deposit_Amount: "",
+      Deposit_Deadline: "",
+
+      Waiting_for_seller_to_confirm_payment: "",
+
+      Confirm_Payment: "",
+
     } );
   
     useEffect(() => {
@@ -273,6 +285,16 @@ export default function Index({ params }: any) {
       If_you_request_payment,
       I_agree_to_escrow_USDT,
 
+      Bank_Name,
+      Account_Number,
+      Account_Holder,
+      Deposit_Name,
+      Deposit_Amount,
+      Deposit_Deadline,
+
+      Waiting_for_seller_to_confirm_payment,
+
+      Confirm_Payment,
 
     } = data;
    
@@ -2001,7 +2023,7 @@ export default function Index({ params }: any) {
                                     height={32}
                                   />
                                   <div className="text-lg font-semibold text-green-500">
-                                    Bank Transfer
+                                    {Bank_Transfer}
                                   </div>
                                 </div>
 
@@ -2009,7 +2031,7 @@ export default function Index({ params }: any) {
                                 <div className='flex flex-row items-center gap-2'>
                                   <div className="w-2 h-2 rounded-full bg-green-500"></div>
                                   <div className="text-sm">
-                                    Bank Name: {item.seller?.bankInfo.bankName}
+                                    {Bank_Name}: {item.seller?.bankInfo.bankName}
                                   </div>
                                 </div>
 
@@ -2020,28 +2042,28 @@ export default function Index({ params }: any) {
                                     <div className='flex flex-row items-center gap-2'>
                                       <div className="w-2 h-2 rounded-full bg-green-500"></div>
                                       <div className="text-sm ">
-                                        Account Number: {item.seller?.bankInfo.accountNumber}
+                                        {Account_Number}: {item.seller?.bankInfo.accountNumber}
                                       </div>
                                     </div>
 
                                     <div className='flex flex-row items-center gap-2'>
                                       <div className="w-2 h-2 rounded-full bg-green-500"></div>
                                       <div className="text-sm">
-                                        Account Holder: {item.seller?.bankInfo.accountHolder}
+                                        {Account_Holder}: {item.seller?.bankInfo.accountHolder}
                                       </div>
                                     </div>
 
                                     <div className='flex flex-row items-center gap-2'>
                                       <div className="w-2 h-2 rounded-full bg-green-500"></div>
                                       <div className="text-sm">
-                                        Deposit Name: {item.tradeId}
+                                        {Deposit_Name}: {item.tradeId}
                                       </div>
                                     </div>
 
                                     <div className='flex flex-row items-center gap-2'>
                                       <div className="w-2 h-2 rounded-full bg-green-500"></div>
                                       <div className="text-sm">
-                                        Deposit Amount: {
+                                        {Deposit_Amount}: {
                                           item.krwAmount.toLocaleString('ko-KR', {
                                             style: 'currency',
                                             currency: 'KRW'
@@ -2060,7 +2082,7 @@ export default function Index({ params }: any) {
                                 <div className='flex flex-row items-center gap-2'>
                                   <div className="w-2 h-2 rounded-full bg-green-500"></div>
                                   <div className="text-sm">
-                                    Deposit Deadline: {
+                                    {Deposit_Deadline}: {
                                      
                                       new Date(new Date(item.paymentRequestedAt).getTime() + 1000 * 60 * 60 * 1).toLocaleString()
                                     
@@ -2085,7 +2107,7 @@ export default function Index({ params }: any) {
                                       className="animate-spin"
                                     />
 
-                                    <div>Waiting for seller to confirm payment...</div>
+                                    <div>{Waiting_for_seller_to_confirm_payment}...</div>
 
                                   </div>
                                   
@@ -2209,6 +2231,7 @@ export default function Index({ params }: any) {
                                         className=" w-6 h-6 rounded-md border border-gray-200"
                                     />
                                   </div>
+
                                   <span className="text-sm text-zinc-400">
 
                                     I agree to check the bank transfer of {
@@ -2218,6 +2241,7 @@ export default function Index({ params }: any) {
                                     })} from buyer ( {item.buyer.nickname} ) and transfer {item.usdtAmount} USDT to the buyer wallet address.
 
                                   </span>
+
                                 </div>
 
 
@@ -2262,7 +2286,7 @@ export default function Index({ params }: any) {
                                           
                                       }}
                                   >
-                                    Confirm Payment
+                                    {Confirm_Payment}
                                   </button>
                                 
                                 )}
