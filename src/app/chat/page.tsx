@@ -1,6 +1,6 @@
 'use client';
 
-import { Session, Chatbox } from "@talkjs/react";
+//import { Session, Chatbox } from "@talkjs/react";
 
 
 import dynamic from "next/dynamic";
@@ -164,7 +164,7 @@ function ChatPageContent() {
           />
           */}
 
-          {tradeId && address && nickname && (
+          {tradeId && address && nickname && avatar && (
             <Chat
 
               tradeId={tradeId}
@@ -172,6 +172,8 @@ function ChatPageContent() {
               userId={ nickname }
 
               nickname={  nickname }
+
+              profileUrl={ avatar }
             />
           )}
 

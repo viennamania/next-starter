@@ -355,9 +355,47 @@ export default function SellUsdt({ params }: { params: { orderId: string } }) {
     const closeModal = () => setModalOpen(false);
     const openModal = () => setModalOpen(true);
 
-    const goChat = () => {
-        console.log('Go Chat');
-        router.push(`/chat?tradeId=12345`);
+
+
+    const  goChat = async (
+
+      orderId: string,
+      tradeId: string
+    ) => {
+
+
+      const url = 'https://api-D2845744-81A3-4585-99FF-4DCABE2CA190.sendbird.com/v3/open_channels';
+
+
+
+      const result = await fetch(url, {
+        method: 'POST',
+
+        headers: {
+          'Content-Type': 'application/json',
+          'Api-Token': 'd5e9911aa317c4ee9a3be4fce38b878941f11c68',
+        },
+
+        body: JSON.stringify({
+          name: tradeId,
+          channel_url: orderId,
+          cover_url: 'https://next.unove.space/icon-trade.png',
+          custom_type: 'trade',
+
+        }),
+      });
+
+      const data = await result.json();
+
+      console.log('data', data);
+          
+
+      console.log('Go Chat');
+
+      router.push(`/chat?tradeId=${tradeId}`);
+
+
+
     }
 
 
@@ -1356,6 +1394,21 @@ export default function SellUsdt({ params }: { params: { orderId: string } }) {
                                   height={24}
                                 />
 
+                                {address && item.buyer.walletAddress === address && (
+                                  <button
+                                      className="text-sm bg-blue-500 text-white px-2 py-1 rounded-md"
+                                      onClick={() => {
+                                        //console.log('Chat');
+                                        
+                                        goChat(item._id, item.tradeId);
+
+                                      }}
+                                  >
+                                    Chat
+                                  </button>
+                                )}
+
+
                             </div>
 
                             {/* buyer */}
@@ -1389,14 +1442,29 @@ export default function SellUsdt({ params }: { params: { orderId: string } }) {
                                     }
                                 </h2>
 
-                                {item.buyer && (
-                                  <Image
-                                    src="/verified.png"
-                                    alt="Verified"
-                                    width={24}
-                                    height={24}
-                                  />
+                                
+                                <Image
+                                  src="/verified.png"
+                                  alt="Verified"
+                                  width={24}
+                                  height={24}
+                                />
+
+                                {/* if i am the seller, then show chat button */}
+                                {address && item.walletAddress === address && (
+                                  <button
+                                      className="text-sm bg-blue-500 text-white px-2 py-1 rounded-md"
+                                      onClick={() => {
+                                        //console.log('Chat');
+                                        
+                                        goChat(item._id, item.tradeId);
+
+                                      }}
+                                  >
+                                    Chat
+                                  </button>
                                 )}
+                                
 
                               </div>
 
@@ -1433,7 +1501,7 @@ export default function SellUsdt({ params }: { params: { orderId: string } }) {
 
 
                             {/* waiting for escrow */}
-                            {!address && item.status === 'accepted' && (
+                            {item.status === 'accepted' && (
                                 <div className="mt-10 mb-10 flex flex-row gap-2 items-center justify-start">
 
                                   {/* rotate loading icon */}
@@ -1451,6 +1519,7 @@ export default function SellUsdt({ params }: { params: { orderId: string } }) {
                                 </div>
 
                             )}
+
 
 
 
@@ -2083,7 +2152,7 @@ export default function SellUsdt({ params }: { params: { orderId: string } }) {
           <Modal isOpen={isModalOpen} onClose={closeModal}>
               <TradeDetail
                   closeModal={closeModal}
-                  goChat={goChat}
+                  //goChat={goChat}
               />
           </Modal>
 

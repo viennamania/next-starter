@@ -271,7 +271,7 @@ const P2PTable = () => {
 
     const  goChat = async (
 
-
+      orderId: string,
       tradeId: string
     ) => {
 
@@ -290,7 +290,7 @@ const P2PTable = () => {
 
         body: JSON.stringify({
           name: tradeId,
-          channel_url: tradeId,
+          channel_url: orderId,
           cover_url: 'https://next.unove.space/icon-trade.png',
           custom_type: 'trade',
 
@@ -994,11 +994,8 @@ const P2PTable = () => {
                                               text-white px-4 py-2 rounded-md`}
 
                                           onClick={() => {
-                                              //console.log('Buy USDT');
-                                              // go to chat
-                                              // close modal
-                                              //closeModal();
-                                              goChat(item.tradeId);
+
+                                              goChat(item._id, item.tradeId);
 
                                           }}
                                       >
@@ -1464,7 +1461,7 @@ const P2PTable = () => {
                   closeModal={closeModal}
                   goChat={
                     () => {
-                      goChat('12345');
+                      goChat('12345', '12345');
                     }
                   }
               />

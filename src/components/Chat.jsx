@@ -76,7 +76,9 @@ export default function Chat(
     tradeId,
 
     userId,
-    nickname
+    nickname,
+
+    profileUrl,
 } 
 
 
@@ -92,8 +94,8 @@ export default function Chat(
 
     // get params from url
 
-   
-    console.log("userId", userId);
+    console.log("Chat tradeId========", tradeId);
+    console.log("Chat userId==========", userId);
 
 
 
@@ -136,6 +138,7 @@ export default function Chat(
         <SendbirdProvider
             appId={APP_ID}
             userId={userId}
+            profileUrl={profileUrl}
         >
 
             {/*
