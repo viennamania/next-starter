@@ -155,7 +155,9 @@
 
     "hours_ago": "hours ago",
     "minutes_ago": "minutes ago",
-    "seconds_ago": "seconds ago"
+    "seconds_ago": "seconds ago",
+
+    "Disconnect_Wallet": "Disconnect Wallet"
 
 
 }

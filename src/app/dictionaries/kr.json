@@ -118,6 +118,8 @@
 
     "hours_ago": "시간 전",
     "minutes_ago": "분 전",
-    "seconds_ago": "초 전"
+    "seconds_ago": "초 전",
+
+    "Disconnect_Wallet": "지갑 연결 해제"
 
 }
