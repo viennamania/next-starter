@@ -1472,9 +1472,9 @@ export default function Index({ params }: any) {
 
 
                                 <h2 className="text-lg font-semibold">
-                                    Seller: {
+                                    {Seller}: {
 
-                                        item.walletAddress === address ? item.nickname + ' :Me' :
+                                        item.walletAddress === address ? item.nickname + ' :' + Me :
                                         
                                         item.nickname
 
@@ -1534,9 +1534,9 @@ export default function Index({ params }: any) {
                                 />
 
                                 <h2 className="text-lg font-semibold">
-                                    Buyer: {
+                                    {Buyer}: {
 
-                                        item.buyer.walletAddress === address ? item.buyer.nickname + ' :Me' :
+                                        item.buyer.walletAddress === address ? item.buyer.nickname + ' :' + Me :
 
                                         item.buyer ? item.buyer.nickname.substring(0, 1) + '***' : 'Anonymous'
 
