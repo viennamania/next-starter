@@ -57,6 +57,7 @@ import { useRouter }from "next//navigation";
 
 import AppBarComponent from "@/components/Appbar/AppBar";
 import { getDictionary } from "../../../dictionaries";
+import { Pay } from 'twilio/lib/twiml/VoiceResponse';
 
 
 
@@ -190,11 +191,22 @@ export default function Index({ params }: any) {
       Seller: "",
       Buyer: "",
       Me: "",
+
+      Price: "",
+      Amount: "",
+      Rate: "",
   
       Go_Buy_USDT: "",
       Go_Sell_USDT: "",
 
       Disconnect_Wallet: "",
+
+      My_Order: "",
+
+      Payment: "",
+      Bank_Transfer: "",
+
+
     } );
   
     useEffect(() => {
@@ -214,6 +226,10 @@ export default function Index({ params }: any) {
       Total,
       Orders,
       Trades,
+      Price,
+      Amount,
+      Rate,
+
       Search_my_trades,
       Seller,
       Buyer,
@@ -222,6 +238,11 @@ export default function Index({ params }: any) {
       Go_Sell_USDT,
 
       Disconnect_Wallet,
+
+      My_Order,
+
+      Payment,
+      Bank_Transfer,
     } = data;
    
  
@@ -1405,7 +1426,7 @@ export default function Index({ params }: any) {
                                 <p className="text-2xl font-semibold text-white">{item.usdtAmount} USDT</p>
 
                                 <p className="text-lg text-zinc-400">
-                                  Price: {
+                                  {Price}: {
                                     // currency
                                   
                                     Number(item.krwAmount).toLocaleString('ko-KR', {
@@ -1418,7 +1439,7 @@ export default function Index({ params }: any) {
                               </div>
 
                               <div className="flex flex-col items-start">
-                                <p className="text-lg font-semibold text-white">Rate: {
+                                <p className="text-lg font-semibold text-white">{Rate}: {
 
                                   Number(item.krwAmount / item.usdtAmount).toFixed(2)
 
@@ -1428,7 +1449,7 @@ export default function Index({ params }: any) {
                             </div>
 
 
-                            <p className="text-sm text-zinc-400">Payment: Bank Transfer ({item.seller?.bankInfo.bankName})</p>                         
+                            <p className="text-sm text-zinc-400">{Payment}: {Bank_Transfer} ({item.seller?.bankInfo.bankName})</p>                         
 
 
                             <div className=' mt-10 flex flex-row items-center gap-2 mb-2'>
@@ -1474,7 +1495,7 @@ export default function Index({ params }: any) {
                                   height={24}
                                 />
 
-                                {address && item.buyer.walletAddress === address && (
+                                {address && item.buyer && item.buyer.walletAddress === address && (
                                   <button
                                       className="text-sm bg-blue-500 text-white px-2 py-1 rounded-md"
                                       onClick={() => {
@@ -1827,7 +1848,7 @@ export default function Index({ params }: any) {
                                   
                                   {item.walletAddress === address ? (
                                     <div className="flex flex-col space-y-4">
-                                      My Order
+                                      {My_Order}
                                     </div>
                                   ) : (
                                     <div className="w-full flex items-center justify-center">
@@ -1869,7 +1890,7 @@ export default function Index({ params }: any) {
 
                                           }}
                                         >
-                                          Buy {item.usdtAmount} USDT
+                                          {Buy} {item.usdtAmount} USDT
                                         </button>
 
                                       )}
