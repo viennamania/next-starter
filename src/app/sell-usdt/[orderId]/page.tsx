@@ -1532,24 +1532,20 @@ export default function SellUsdt({ params }: { params: { orderId: string } }) {
 
                               {escrowing[index] && (
 
-                              <div className="p-2 flex flex-col gap-2">
-                                
-                                <div className="flex flex-row items-center gap-2">
-                                  <Image
-                                      src='/loading.png'
-                                      alt='loading'
-                                      width={32}
-                                      height={32}
-                                      className="animate-spin"
-                                  />
-                                  <div className="text-lg font-semibold text-white">
-                                    Escrowing {item.usdtAmount} USDT...
+                                <div className="flex flex-col gap-2">
+                                  
+                                  <div className="flex flex-row items-center gap-2">
+                                    <Image
+                                        src='/loading.png'
+                                        alt='loading'
+                                        width={32}
+                                        height={32}
+                                        className="animate-spin"
+                                    />
+                                    <div className="text-lg font-semibold text-white">
+                                      Escrowing {item.usdtAmount} USDT...
+                                    </div>
                                   </div>
-                                </div>
-
-                                {/* 1 escrow USDT */}
-                                {/* 2 request payment to buyer */}
-                                
 
                                 </div>
 
