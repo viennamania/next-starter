@@ -86,7 +86,7 @@
     "to_escrow": "에스크로 보관소로",
 
     "If_the_seller_does_not_deposit_the_USDT_to_escrow": "판매자가 USDT를 에스크로 보관소에 입금하지 않으면",
-    "this_trade_will_be_cancelled_in": "이 거래는 다음 시간에 취소됩니다:",
+    "this_trade_will_be_cancelled_in": "이 거래는 다음 시간이 지나면 취소됩니다:",
 
     "Cancel_My_Trade": "거래 취소하기",
 
