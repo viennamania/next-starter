@@ -1078,7 +1078,7 @@ export default function Index({ params }: any) {
                                   }}
                                 />
                                 <p className="text-xl text-green-500 font-semibold">
-                                  Buyer: {
+                                  {Buyer}: {
                                     item.buyer.walletAddress === address ? Me :
                                     item.buyer.nickname.substring(0, 1) + '***'
                                   }
@@ -1126,8 +1126,8 @@ export default function Index({ params }: any) {
                                       {this_trade_will_be_cancelled_in} {
 
                                         (1 - Math.floor((new Date().getTime() - new Date(item.acceptedAt).getTime()) / 1000 / 60 / 60) - 1) > 0
-                                        ? (1 - Math.floor((new Date().getTime() - new Date(item.acceptedAt).getTime()) / 1000 / 60 / 60) - 1) + ' ' + {hours}
-                                        : (60 - Math.floor((new Date().getTime() - new Date(item.acceptedAt).getTime()) / 1000 / 60) % 60) + ' ' + {minutes}
+                                        ? (1 - Math.floor((new Date().getTime() - new Date(item.acceptedAt).getTime()) / 1000 / 60 / 60) - 1) + ' ' + hours
+                                        : (60 - Math.floor((new Date().getTime() - new Date(item.acceptedAt).getTime()) / 1000 / 60) % 60) + ' ' + minutes
 
                                       } 
 
