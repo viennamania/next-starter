@@ -36,6 +36,7 @@
     "Total": "합계",
     "Orders": "주문",
     "Trades": "거래",
+    "Completed": "완료",
 
     "Search_my_trades": "내 거래 검색",
 
@@ -86,9 +87,14 @@
     "I_agree_to_the_terms_of_trade": "거래 조건에 동의합니다",
     "I_agree_to_cancel_the_trade": "거래 취소에 동의합니다",
 
-    "Opened_at": "시작 시간:",
-    "Cancelled_at": "취소 시간:",
-    "Completed_at": "완료 시간:",
+    "Opened_at": "주문시작:",
+    "Started_at": "거래시작:",
+    "Cancelled_at": "거래취소:",
+    "Completed_at": "거래완료:",
+
+    "TID": "거래번호",
+
+    "Trading_Time_is": "거래시간:",
 
     "Waiting_for_seller_to_deposit": "판매자 입금 대기 중",
 

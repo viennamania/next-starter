@@ -138,7 +138,10 @@ export default function Index({ params }: any) {
     Total: "",
     Orders: "",
     Trades: "",
+    Completed: "",
     Search_my_trades: "",
+
+    My_Balance: "",
 
     Seller: "",
     Buyer: "",
@@ -152,7 +155,12 @@ export default function Index({ params }: any) {
     I_agree_to_the_terms_of_trade: "",
     I_agree_to_cancel_the_trade: "",
 
+    TID: "",
+
+    Trading_Time_is: "",
+
     Opened_at: "",
+    Started_at: "",
     Cancelled_at: "",
     Completed_at: "",
 
@@ -171,6 +179,10 @@ export default function Index({ params }: any) {
 
     
     My_Buy_USDT_Trades: "",
+
+    hours: "",
+    minutes: "",
+    seconds: "",
 
 
   } );
@@ -195,7 +207,12 @@ export default function Index({ params }: any) {
     Total,
     Orders,
     Trades,
+    Completed,
     Search_my_trades,
+
+    My_Balance,
+
+
     Seller,
     Buyer,
     Me,
@@ -207,7 +224,11 @@ export default function Index({ params }: any) {
     I_agree_to_the_terms_of_trade,
     I_agree_to_cancel_the_trade,
 
+    TID,
+    Trading_Time_is,
+
     Opened_at,
+    Started_at,
     Cancelled_at,
     Completed_at,
 
@@ -225,6 +246,10 @@ export default function Index({ params }: any) {
     My_Order,
 
     My_Buy_USDT_Trades,
+
+    hours,
+    minutes,
+    seconds,
 
   } = data;
 
@@ -546,7 +571,7 @@ export default function Index({ params }: any) {
 
                 {/* my usdt balance */}
                 <div className="flex flex-col gap-2 items-start">
-                  <div className="text-sm">My Balance</div>
+                  <div className="text-sm">{My_Balance}</div>
                   <div className="text-5xl font-semibold text-white">
                     {Number(balance).toFixed(2)} <span className="text-lg">USDT</span>
                   </div>
@@ -562,21 +587,21 @@ export default function Index({ params }: any) {
                     <div className="text-sm">
                       {/* dot */}
                       <span className="inline-block w-2 h-2 rounded-full bg-green-500 mr-2"></span>
-                      Total: {sellOrders.length} EA ({
-                      Number(sellOrders.reduce((acc, item) => acc + item.usdtAmount, 0)).toFixed(2)
+                      {Total}: {sellOrders.length} EA ({
+                      Number(sellOrders.reduce((acc, item) => acc + item.usdtAmount, 0)).toFixed(0)
                       } USDT)</div>
                     <div className="text-sm">
                       {/* dot */}
                       <span className="inline-block w-2 h-2 rounded-full bg-green-500 mr-2"></span>
-                      Trades: {sellOrders.filter(item => item.status === 'accepted' || item.status === 'paymentRequested').length} EA ({
-                      sellOrders.filter(item => item.status === 'accepted' || item.status === 'paymentRequested').reduce((acc, item) => acc + item.usdtAmount, 0).toFixed(2)
+                      {Trades}: {sellOrders.filter(item => item.status === 'accepted' || item.status === 'paymentRequested').length} EA ({
+                      sellOrders.filter(item => item.status === 'accepted' || item.status === 'paymentRequested').reduce((acc, item) => acc + item.usdtAmount, 0).toFixed(0)
                       } USDT)</div>
 
                     <div className="text-sm">
                       {/* dot */}
                       <span className="inline-block w-2 h-2 rounded-full bg-green-500 mr-2"></span>
-                      Completed: {sellOrders.filter(item => item.status === 'paymentConfirmed').length} EA ({
-                      Number(sellOrders.filter(item => item.status === 'paymentConfirmed').reduce((acc, item) => acc + item.usdtAmount, 0)).toFixed(2)
+                      {Completed}: {sellOrders.filter(item => item.status === 'paymentConfirmed').length} EA ({
+                      Number(sellOrders.filter(item => item.status === 'paymentConfirmed').reduce((acc, item) => acc + item.usdtAmount, 0)).toFixed(0)
                       } USDT)</div>
 
                   </div>
@@ -585,10 +610,11 @@ export default function Index({ params }: any) {
                   {/* reload button */}
                   <button
 
+
                       disabled={reloadDisabled}
 
 
-                      className={`text-sm bg-green-500 text-white px-4 py-2 rounded-lg ${reloadDisabled ? 'bg-gray-200 text-gray-700' : ''}`}
+                      className={` hidden text-sm bg-green-500 text-white px-4 py-2 rounded-lg ${reloadDisabled ? 'bg-gray-200 text-gray-700' : ''}`}
 
                       onClick={() => {
 
@@ -639,7 +665,7 @@ export default function Index({ params }: any) {
 
                             <div className="flex flex-row items-center justify-between gap-2">
                               <p className="text-lg text-green-500">
-                                TID: {item.tradeId}
+                                {TID}: {item.tradeId}
                               </p>
                               {item.status === 'paymentConfirmed' && (
                                 <p className="text-sm text-zinc-400">
@@ -649,13 +675,13 @@ export default function Index({ params }: any) {
                             </div>
 
                             {item.status !== 'paymentConfirmed' && (
-                              <p className="mt-4 text-sm text-zinc-400">Trade started at {
+                              <p className="mt-4 text-sm text-zinc-400">{Started_at} {
                                 item.acceptedAt && new Date(item.acceptedAt).toLocaleString()
                               }</p>
                             )}
 
                             {item.status === 'paymentConfirmed' && (
-                              <p className="mt-4 text-sm text-zinc-400">Completed at {
+                              <p className="mt-4 text-sm text-zinc-400">{Completed_at} {
                                 item.paymentConfirmedAt && new Date(item.paymentConfirmedAt).toLocaleString()
                               }</p>
                             )}
@@ -688,11 +714,11 @@ export default function Index({ params }: any) {
                                 />
 
                                 <div className="text-sm text-green-500">
-                                  Total trading time is {
+                                  {Trading_Time_is} {
 
                                 ( (new Date(item.paymentConfirmedAt).getTime() - new Date(item.acceptedAt).getTime()) / 1000 / 60 ).toFixed(0) 
 
-                                  } minutes
+                                  } {minutes}
                                 </div>
                                 
                               </div>
@@ -707,7 +733,7 @@ export default function Index({ params }: any) {
                               <p className="text-2xl font-semibold text-white">{item.usdtAmount} USDT</p>
 
                               <p className="text-lg text-zinc-400">
-                                Price: {
+                                {Price}: {
                                   // currency
                                 
                                   Number(item.krwAmount).toLocaleString('ko-KR', {
@@ -720,7 +746,7 @@ export default function Index({ params }: any) {
                             </div>
 
                             <div className="flex flex-col items-start">
-                              <p className="text-lg font-semibold text-white">Rate: {
+                              <p className="text-lg font-semibold text-white">{Rate}: {
 
                                 Number(item.krwAmount / item.usdtAmount).toFixed(2)
 
@@ -732,7 +758,7 @@ export default function Index({ params }: any) {
 
 
                             <p className="mt-2 mb-2 flex items-center gap-2">
-                              <div className="flex items-center space-x-2">Seller: </div>
+                              <div className="flex items-center space-x-2">{Seller}: </div>
                               <Image
                                   src={item.avatar || '/profile-default.png'}
                                   alt="Avatar"
