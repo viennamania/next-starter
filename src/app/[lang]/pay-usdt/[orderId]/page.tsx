@@ -252,6 +252,8 @@ export default function Index({ params }: any) {
 
       Transfering_USDT_to_the_buyer_wallet_address: "",
 
+      Waiting_for_trading_partner_to_proceed: "",
+
     } );
   
     useEffect(() => {
@@ -329,6 +331,8 @@ export default function Index({ params }: any) {
       I_agree_to_check_the_bank_transfer_of,
 
       Transfering_USDT_to_the_buyer_wallet_address,
+
+      Waiting_for_trading_partner_to_proceed,
 
     } = data;
    
@@ -1490,30 +1494,31 @@ export default function Index({ params }: any) {
 
 
                           
-
-                            <div className="mt-10 flex flex-col items-start gap-2">
-                              <p className="text-sm text-zinc-400">
-                                {Payment}: {Bank_Transfer}
-                              </p>
-                              <p className="text-sm text-zinc-400">
-                                {Bank_Name}: {item.seller?.bankInfo.bankName}
-                              </p>
-                              <p className="text-sm text-zinc-400">
-                                {Account_Number}: {item.seller?.bankInfo.accountNumber}
-                              </p>
-                              <p className="text-sm text-zinc-400">
-                                {Account_Holder}: {item.seller?.bankInfo.accountHolder}
-                              </p>
-                              <p className="text-sm text-zinc-400">
-                                {Deposit_Name}: {item.tradeId}
-                              </p>
-                              <p className="text-sm text-zinc-400">
-                                {Deposit_Amount}: {item.krwAmount} KRW
-                              </p>
-                              <p className="text-sm text-zinc-400">
-                                {Deposit_Deadline}: 10 {minutes}
-                              </p>
-                            </div>
+                            {item.status === 'paymentRequested' && (
+                              <div className="mt-10 flex flex-col items-start gap-2">
+                                <p className="text-sm text-zinc-400">
+                                  {Payment}: {Bank_Transfer}
+                                </p>
+                                <p className="text-sm text-zinc-400">
+                                  {Bank_Name}: {item.seller?.bankInfo.bankName}
+                                </p>
+                                <p className="text-sm text-zinc-400">
+                                  {Account_Number}: {item.seller?.bankInfo.accountNumber}
+                                </p>
+                                <p className="text-sm text-zinc-400">
+                                  {Account_Holder}: {item.seller?.bankInfo.accountHolder}
+                                </p>
+                                <p className="text-sm text-zinc-400">
+                                  {Deposit_Name}: {item.tradeId}
+                                </p>
+                                <p className="text-sm text-zinc-400">
+                                  {Deposit_Amount}: {item.krwAmount} KRW
+                                </p>
+                                <p className="text-sm text-zinc-400">
+                                  {Deposit_Deadline}: 10 {minutes}
+                                </p>
+                              </div>
+                            )}
                            
 
                             {/*
@@ -1650,7 +1655,7 @@ export default function Index({ params }: any) {
 
 
                             {/* share button */}
-
+                              {/*
                               <div className='flex flex-row items-center justify-end gap-2'>
                                 <button
                                     className="flex text-sm bg-blue-500 text-white px-2 py-1 rounded-md"
@@ -1674,12 +1679,13 @@ export default function Index({ params }: any) {
                                   Share
                                 </button>
                               </div>
+                              */}
                             
 
 
 
                             {/* waiting for escrow */}
-                            {address && item.walletAddress !== address && item.status === 'accepted' && (
+                            {item.status === 'accepted' && (
                                 <div className="mt-10 mb-10 flex flex-row gap-2 items-center justify-start">
 
                                   {/* rotate loading icon */}
@@ -1692,11 +1698,20 @@ export default function Index({ params }: any) {
                                     className="animate-spin"
                                   />
 
+                                  {/*
                                   <span>
                                     {Waiting_for_seller_to_deposit}
                                     {' '}{item.usdtAmount} USDT
                                     {' '}{to_escrow}....
                                   </span>
+                                  */}
+
+                                  <span className="text-lg font-semibold text-white">
+                                   
+                                    {Waiting_for_trading_partner_to_proceed}...
+
+                                  </span>
+                                
 
 
 

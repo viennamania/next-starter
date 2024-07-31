@@ -220,7 +220,10 @@
   
     "SMS_will_be_sent_to_your_mobile_number": "SMS will be sent to your mobile number to notify you when the buyer accepts the order.",
 
-    "Accepting_Order": "Accepting Order"
+    "Accepting_Order": "Accepting Order",
+
+
+    "Waiting_for_trading_partner_to_proceed": "Waiting for trading partner to proceed"
 
 
 }
