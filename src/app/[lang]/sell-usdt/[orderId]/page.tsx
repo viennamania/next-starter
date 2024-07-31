@@ -238,6 +238,18 @@ export default function Index({ params }: any) {
 
       I_agree_to_the_terms_of_trade: "",
 
+      Requesting_Payment: "",
+
+      Deposit_Information: "",
+
+      Request_Payment: "",
+
+      Checking_the_bank_transfer_from_the_buyer: "",
+
+      I_agree_to_check_the_bank_transfer_of: "",
+
+      Transfering_USDT_to_the_buyer_wallet_address: "",
+
     } );
   
     useEffect(() => {
@@ -303,6 +315,18 @@ export default function Index({ params }: any) {
       Connect_Wallet_Description_For_Buyers,
 
       I_agree_to_the_terms_of_trade,
+
+      Requesting_Payment,
+
+      Deposit_Information,
+
+      Request_Payment,
+
+      Checking_the_bank_transfer_from_the_buyer,
+
+      I_agree_to_check_the_bank_transfer_of,
+
+      Transfering_USDT_to_the_buyer_wallet_address,
 
     } = data;
    
@@ -723,11 +747,13 @@ export default function Index({ params }: any) {
       }
 
       if (escrowing[index]) {
+        toast.error('Escrowing');
         return;
       }
 
 
       if (requestingPayment[index]) {
+        toast.error('Requesting payment');
         return;
       }
 
@@ -755,114 +781,138 @@ export default function Index({ params }: any) {
       });
       
 
-      const transactionResult = await sendAndConfirmTransaction({
-          transaction: transaction,
-          
-          account: smartAccount as any,
-      });
 
-      console.log(transactionResult);
+      try {
 
 
-      setEscrowing(
-        escrowing.map((item, idx) => {
-          if (idx === index) {
-            return false;
-          }
-          return item;
-        })
-      );
-
-
-
-      // send payment request
-
-      if (transactionResult) {
-
-        /*
-        setRequestingPayment(
-          requestingPayment.map((item, idx) => {
-            if (idx === index) {
-              return true;
-            }
-            return item;
-          })
-        );
-        */
-        
-        
-
-
-      
-        const response = await fetch('/api/order/requestPayment', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            orderId: orderId,
-            transactionHash: transactionResult.transactionHash,
-          })
+        const transactionResult = await sendAndConfirmTransaction({
+            transaction: transaction,
+            
+            account: smartAccount as any,
         });
 
-        const data = await response.json();
-
-        //console.log('data', data);
+        console.log(transactionResult);
 
 
-        /*
-        setRequestingPayment(
-          requestingPayment.map((item, idx) => {
+        setEscrowing(
+          escrowing.map((item, idx) => {
             if (idx === index) {
               return false;
             }
             return item;
           })
         );
-        */
+
+
+
+        // send payment request
+
+        if (transactionResult) {
+
+          /*
+          setRequestingPayment(
+            requestingPayment.map((item, idx) => {
+              if (idx === index) {
+                return true;
+              }
+              return item;
+            })
+          );
+          */
+          
+          
+
+
         
-
-
-        if (data.result) {
-
-          const response = await fetch('/api/order/getOneSellOrder', {
+          const response = await fetch('/api/order/requestPayment', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json'
             },
             body: JSON.stringify({
               orderId: orderId,
+              transactionHash: transactionResult.transactionHash,
             })
           });
-  
+
           const data = await response.json();
-  
-          ///console.log('data', data);
-  
-          if (data.result) {
-            setSellOrders(data.result.orders);
-          }
+
+          //console.log('data', data);
+
+
+          /*
+          setRequestingPayment(
+            requestingPayment.map((item, idx) => {
+              if (idx === index) {
+                return false;
+              }
+              return item;
+            })
+          );
+          */
           
 
 
-          // refresh balance
+          if (data.result) {
 
-          const result = await balanceOf({
-            contract,
-            address: address,
-          });
+            const response = await fetch('/api/order/getOneSellOrder', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({
+                orderId: orderId,
+              })
+            });
+    
+            const data = await response.json();
+    
+            ///console.log('data', data);
+    
+            if (data.result) {
+              setSellOrders(data.result.orders);
+            }
+            
 
-          //console.log(result);
 
-          setBalance( Number(result) / 10 ** 6 );
+            // refresh balance
+
+            const result = await balanceOf({
+              contract,
+              address: address,
+            });
+
+            //console.log(result);
+
+            setBalance( Number(result) / 10 ** 6 );
 
 
-          toast.success('Payment request has been sent');
-        } else {
-          toast.error('Payment request has been failed');
+            toast.success('Payment request has been sent');
+          } else {
+            toast.error('Payment request has been failed');
+          }
+
         }
 
+
+      } catch (error) {
+        console.error('Error:', error);
+
+        toast.error('Payment request has been failed');
+
+        setEscrowing(
+          escrowing.map((item, idx) => {
+            if (idx === index) {
+              return false;
+            }
+            return item;
+          })
+        );
+
+
       }
+
+
       
 
     }
@@ -1689,7 +1739,7 @@ export default function Index({ params }: any) {
 
 
                             {/* waiting for escrow */}
-                            {item.status === 'accepted' && (
+                            {address && item.walletAddress !== address && item.status === 'accepted' && (
                                 <div className="mt-10 mb-10 flex flex-row gap-2 items-center justify-start">
 
                                   {/* rotate loading icon */}
@@ -1767,13 +1817,9 @@ export default function Index({ params }: any) {
                                         className="animate-spin"
                                     />
                                     <div className="text-lg font-semibold text-white">
-                                      Requesting payment...
+                                      {Requesting_Payment}...
                                     </div>
                                   </div>
-
-                                  {/* 1 escrow USDT */}
-                                  {/* 2 request payment to buyer */}
-                                  
 
                                 </div>
 
@@ -1822,6 +1868,26 @@ export default function Index({ params }: any) {
                                   </div>
                               </div>
 
+
+
+                              <div className="mt-4 flex flex-col gap-2 text-sm text-left text-white">
+                                <div className='flex flex-row items-center gap-2'>
+                                  {/* dot */}
+                                  <div  className="w-2 h-2 rounded-full bg-green-500"></div>
+                                  <span>
+                                    {Bank_Transfer} {Deposit_Information}
+                                  </span>
+                                </div>
+                                <ul>
+                                  <li>
+                                    {item.seller?.bankInfo.bankName} {item.seller?.bankInfo.accountNumber} {item.seller?.bankInfo.accountHolder}
+                                  </li>
+                                  <li>{Deposit_Amount} : {item.krwAmount} KRW</li>
+                                  <li>{Deposit_Name} : {item.tradeId}</li>
+                                </ul>
+                              </div>
+
+
                               <button
                                   disabled={
                                     balance < item.usdtAmount || requestingPayment[index] || escrowing[index]
@@ -1857,9 +1923,10 @@ export default function Index({ params }: any) {
                                     <div className="flex flex-row items-center gap-2">
                                       <GearSetupIcon />
                                       <div className="text-lg font-semibold">
-                                      Request Payment
+                                      {Request_Payment}
                                       </div>
                                     </div>
+
                                     <div className="text-lg text-white">
                                       Insufficient Balance
                                     </div>
@@ -1895,21 +1962,26 @@ export default function Index({ params }: any) {
                                   <div className="flex flex-col gap-2">
 
                                     <div className="flex flex-row items-center gap-2">
-                                      <GearSetupIcon />
+                                      
+
+                                      {requestingPayment[index] || escrowing[index] ? (
+                                        <Image
+                                          src='/loading.png'
+                                          alt='loading'
+                                          width={32}
+                                          height={32}
+                                          className="animate-spin"
+                                        />
+                                      ) : (
+                                        <GearSetupIcon />
+                                      )}
+
+
                                       <div className="text-lg font-semibold">
-                                      Request Payment
+                                      {Request_Payment}
                                       </div>
                                     </div>
 
-                                    <div className="flex flex-col gap-2 text-sm text-left text-white">
-                                      <ul>
-                                        <li>
-                                          {item.seller?.bankInfo.bankName} {item.seller?.bankInfo.accountNumber} {item.seller?.bankInfo.accountHolder}
-                                        </li>
-                                        <li>Amount : {item.krwAmount} KRW</li>
-                                        <li>Deposit Name : {item.tradeId}</li>
-                                      </ul>
-                                    </div>
 
                                   </div>
                                 )}
@@ -2248,7 +2320,7 @@ export default function Index({ params }: any) {
                                       />
                                       <div className="text-lg font-semibold text-white">
                                         
-                                        Checking the bank transfer from the buyer ( {item.buyer.nickname} )...
+                                        {Checking_the_bank_transfer_from_the_buyer} ( {item.buyer.nickname} )...
 
 
                                       </div>
@@ -2259,15 +2331,15 @@ export default function Index({ params }: any) {
                                 )}
 
 
-
+                                {/*
                                 <div className="mt-5 flex flex-row items-center gap-2">
-                                  {/* dot */}
                                   <div  className="flex w-2 h-2 rounded-full bg-green-500"></div>
 
                                   <div className="text-sm text-zinc-400">
                                     If you confirm the payment, the escrowed {item.usdtAmount} USDT will be transferred to the buyer ( {item.buyer.nickname} ) wallet address.
                                   </div>
                                 </div>
+                                */}
 
                                 {/* check box for confirming payment */}
 
@@ -2292,12 +2364,18 @@ export default function Index({ params }: any) {
                                   </div>
 
                                   <span className="text-sm text-zinc-400">
-
+                                    {/*
                                     I agree to check the bank transfer of {
                                     item.krwAmount.toLocaleString('ko-KR', {
                                       style: 'currency',
                                       currency: 'KRW',
                                     })} from buyer ( {item.buyer.nickname} ) and transfer {item.usdtAmount} USDT to the buyer wallet address.
+                                    */}
+
+
+
+                                    {I_agree_to_check_the_bank_transfer_of}
+
 
                                   </span>
 
@@ -2322,7 +2400,12 @@ export default function Index({ params }: any) {
                                       className="animate-spin"
                                   />
                                   <div className="text-lg font-semibold text-white">
+
+                                    {/*
                                     Transfering {item.usdtAmount} USDT to the buyer ( {item.buyer.nickname} ) wallet address...
+                                    */}
+                                    {Transfering_USDT_to_the_buyer_wallet_address}...
+                                 
                                   </div>
                                 </div>
 

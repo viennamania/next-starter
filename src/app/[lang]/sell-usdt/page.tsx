@@ -206,6 +206,8 @@ export default function Index({ params }: any) {
     minutes_ago: "",
     seconds_ago: "",
 
+    SMS_will_be_sent_to_your_mobile_number: "",
+
   } );
 
   useEffect(() => {
@@ -279,6 +281,8 @@ export default function Index({ params }: any) {
     minutes_ago,
     seconds_ago,
 
+    SMS_will_be_sent_to_your_mobile_number,
+
 
   } = data;
 
@@ -296,7 +300,30 @@ export default function Index({ params }: any) {
     const router = useRouter();
 
 
+    const [phoneNumber, setPhoneNumber] = useState("");
 
+    useEffect(() => {
+  
+  
+      if (smartAccount) {
+  
+        //const phoneNumber = await getUserPhoneNumber({ client });
+        //setPhoneNumber(phoneNumber);
+  
+  
+        getUserPhoneNumber({ client }).then((phoneNumber) => {
+          setPhoneNumber(phoneNumber || "");
+        });
+  
+  
+  
+      }
+  
+    } , [smartAccount]);
+  
+   
+  
+    console.log(phoneNumber);
 
 
     const [balance, setBalance] = useState(0);
@@ -1028,7 +1055,22 @@ export default function Index({ params }: any) {
 
 
 
-                        
+                        {/* sms mobile number */}
+                        {address && phoneNumber && (
+                          <div className="mt-5 flex flex-col gap-2 items-start">
+                            <span className="text-sm text-zinc-400">
+                              SMS: {phoneNumber}
+                            </span>
+                           
+                            <div className="flex flex-row items-center gap-2">
+                              <div className="h-2 w-2 bg-zinc-400 rounded-full inline-block mr-2"></div>
+                              <span>
+                                 {SMS_will_be_sent_to_your_mobile_number}
+                              </span>
+                            </div>
+                            
+                          </div>
+                        )}
 
 
 

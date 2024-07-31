@@ -730,9 +730,8 @@ export default function Index({ params }: any) {
                           <div className="mt-4 flex flex-row items-between space-x-2">
 
                             <div className="flex flex-col items-start">
-                              <p className="text-2xl font-semibold text-white">{item.usdtAmount} USDT</p>
 
-                              <p className="text-lg text-zinc-400">
+                              <p className="text-2xl text-zinc-400">
                                 {Price}: {
                                   // currency
                                 
@@ -743,6 +742,10 @@ export default function Index({ params }: any) {
 
                                 }
                               </p>
+
+
+                              <p className="text-lg font-semibold text-white">{item.usdtAmount} USDT</p>
+
                             </div>
 
                             <div className="flex flex-col items-start">
