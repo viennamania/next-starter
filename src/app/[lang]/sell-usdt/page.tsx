@@ -1057,14 +1057,17 @@ export default function Index({ params }: any) {
 
                         {/* sms mobile number */}
                         {address && phoneNumber && (
-                          <div className="mt-5 flex flex-col gap-2 items-start">
-                            <span className="text-sm text-zinc-400">
-                              SMS: {phoneNumber}
-                            </span>
+                          <div className="mt-4 flex flex-col gap-2 items-start">
+                            <div className="flex flex-row items-center gap-2">
+                              <div className="h-2 w-2 bg-zinc-400 rounded-full inline-block mr-2"></div>
+                              <span className="text-sm text-zinc-400">
+                                SMS: {phoneNumber}
+                              </span>
+                            </div>
                            
                             <div className="flex flex-row items-center gap-2">
                               <div className="h-2 w-2 bg-zinc-400 rounded-full inline-block mr-2"></div>
-                              <span>
+                              <span className="text-sm text-zinc-400">
                                  {SMS_will_be_sent_to_your_mobile_number}
                               </span>
                             </div>
@@ -1078,7 +1081,7 @@ export default function Index({ params }: any) {
                         {/* After you place order and the buyer accepts the order, you can not cancel the order. */}
 
 
-                        <div className="mt-10 flex flex-row items-center gap-2">
+                        <div className="mt-4 flex flex-row items-center gap-2">
                           <input
                             disabled={!address || usdtAmount === 0 || sellOrdering}
                             type="checkbox"
@@ -1507,30 +1510,32 @@ export default function Index({ params }: any) {
 
 
 
-                            <div className="mt-4 flex flex-row items-between space-x-2">
+                            <div className="mt-4 flex flex-col items-start gap-2">
 
-                              <div className="flex flex-col items-start">
-                                <p className="text-2xl font-semibold text-white">{item.usdtAmount} USDT</p>
 
-                                <p className="text-lg text-zinc-400">
-                                  {Price}: {
-                                    // currency
-                                  
-                                    Number(item.krwAmount).toLocaleString('ko-KR', {
-                                      style: 'currency',
-                                      currency: 'KRW',
-                                    })
+                              <p className="text-2xl text-zinc-400">
+                                {Price}: {
+                                  // currency
+                                
+                                  Number(item.krwAmount).toLocaleString('ko-KR', {
+                                    style: 'currency',
+                                    currency: 'KRW',
+                                  })
 
-                                  }
-                                </p>
-                              </div>
+                                }
+                              </p>
 
-                              <div className="flex flex-col items-start">
+
+                              <div className="flex flex-row items-start gap-2">
+
+                                <p className="text-lg font-semibold text-white">{item.usdtAmount} USDT</p>
+
                                 <p className="text-lg font-semibold text-white">{Rate}: {
 
                                   Number(item.krwAmount / item.usdtAmount).toFixed(2)
 
                                 }</p>
+
                               </div>
 
                             </div>
