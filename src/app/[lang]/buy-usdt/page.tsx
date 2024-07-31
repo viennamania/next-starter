@@ -316,7 +316,7 @@ export default function Index({ params }: any) {
     })
     .then(response => response.json())
     .then(data => {
-        console.log('data', data);
+        ///console.log('data', data);
         setUser(data.result);
     })
     .catch((error) => {
@@ -608,6 +608,7 @@ export default function Index({ params }: any) {
     }
 
 
+    console.log('params.lang', params.lang);
 
 
     return (
@@ -891,17 +892,47 @@ export default function Index({ params }: any) {
                                     />
 
                                   
-                                    <p className="text-sm text-zinc-400">
-                                      {Order_Opened} {
-                                        new Date().getTime() - new Date(item.createdAt).getTime() < 1000 * 60 ? (
-                                          ' ' + Math.floor((new Date().getTime() - new Date(item.createdAt).getTime()) / 1000) + ' ' + seconds_ago
-                                        ) :
-                                        new Date().getTime() - new Date(item.createdAt).getTime() < 1000 * 60 * 60 ? (
-                                        ' ' + Math.floor((new Date().getTime() - new Date(item.createdAt).getTime()) / 1000 / 60) + ' ' + minutes_ago
-                                        ) : (
-                                          ' ' + Math.floor((new Date().getTime() - new Date(item.createdAt).getTime()) / 1000 / 60 / 60) + ' ' + hours_ago
-                                        )}
-                                    </p>
+
+                                    {params.lang === 'kr' ? (
+
+                                      <p className="text-sm text-zinc-400">
+
+                                      
+                                        {
+
+                                          new Date().getTime() - new Date(item.createdAt).getTime() < 1000 * 60 ? (
+                                            ' ' + Math.floor((new Date().getTime() - new Date(item.createdAt).getTime()) / 1000) + ' ' + seconds_ago
+                                          ) :
+                                          new Date().getTime() - new Date(item.createdAt).getTime() < 1000 * 60 * 60 ? (
+                                          ' ' + Math.floor((new Date().getTime() - new Date(item.createdAt).getTime()) / 1000 / 60) + ' ' + minutes_ago
+                                          ) : (
+                                            ' ' + Math.floor((new Date().getTime() - new Date(item.createdAt).getTime()) / 1000 / 60 / 60) + ' ' + hours_ago
+                                          )
+                                        }{' '}{Order_Opened} 
+
+                                      </p>
+                                      
+                                      ) : (
+
+                                        <p className="text-sm text-zinc-400">
+
+                                      
+                                        {Order_Opened}{' '}{
+
+                                          new Date().getTime() - new Date(item.createdAt).getTime() < 1000 * 60 ? (
+                                            ' ' + Math.floor((new Date().getTime() - new Date(item.createdAt).getTime()) / 1000) + ' ' + seconds_ago
+                                          ) :
+                                          new Date().getTime() - new Date(item.createdAt).getTime() < 1000 * 60 * 60 ? (
+                                          ' ' + Math.floor((new Date().getTime() - new Date(item.createdAt).getTime()) / 1000 / 60) + ' ' + minutes_ago
+                                          ) : (
+                                            ' ' + Math.floor((new Date().getTime() - new Date(item.createdAt).getTime()) / 1000 / 60 / 60) + ' ' + hours_ago
+                                          )
+                                        }
+
+                                      </p>
+
+
+                                      )}
 
                                   </div>
 
