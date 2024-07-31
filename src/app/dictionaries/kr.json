@@ -13,7 +13,7 @@
         "settings": "설정"
     },
 
-    "Go_Home": "홈으로 가기",
+    "Go_Home": "홈으로",
 
     "My_Balance": "내 잔고",
     "My_Nickname": "내 닉네임",
@@ -64,8 +64,8 @@
 
 
 
-    "Go_Buy_USDT": "USDT 구매하러 가기",
-    "Go_Sell_USDT": "USDT 판매하러 가기",
+    "Go_Buy_USDT": "USDT 구매",
+    "Go_Sell_USDT": "USDT 판매",
 
 
     "Enter_Wallet_Address": "지갑 주소 입력",

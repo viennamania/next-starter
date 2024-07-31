@@ -1006,7 +1006,7 @@ export default function Index({ params }: any) {
 
                                   {/* share button */}
                                   <button
-                                    className="text-sm bg-blue-500 text-white px-2 py-1 rounded-md hover:bg-blue-600"
+                                    className="ml-5 text-sm bg-blue-500 text-white px-2 py-1 rounded-md hover:bg-blue-600"
                                     onClick={() => {
 
                                       window.open(`https://next.unove.space/${params.lang}/sell-usdt/${item._id}`, '_blank');
