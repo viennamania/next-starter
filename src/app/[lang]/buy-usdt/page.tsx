@@ -860,80 +860,106 @@ export default function Index({ params }: any) {
                         >
 
                           {item.status === 'ordered' && (
-                            <div className="flex flex-col gpa-2 items-start justify-start">
+
+  
+                            <div className="w-full flex flex-col gpa-2 items-start justify-start">
 
 
-                              <div className="flex flex-row items-center space-x-2">
+                                <div className="w-full flex flex-row items-center justify-between gap-2">
 
-                                {/* if createdAt is recent 1 hours, show new badge */}
-                                {new Date().getTime() - new Date(item.createdAt).getTime() < 1000 * 60 * 60 && (
-                                  <Image
-                                    src="/icon-new.png"
-                                    alt="New"
-                                    width={28}
-                                    height={28}
-                                  />
-                                )}
+                                  <div className="flex flex-row items-center gap-2">
 
-                                <Image
-                                  src="/icon-public-sale.png"
-                                  alt="Public Sale"
-                                  width={28}
-                                  height={28}
-                                />
-
-                               
-                                <p className="text-sm text-zinc-400">
-                                  {Order_Opened} {
-                                    new Date().getTime() - new Date(item.createdAt).getTime() < 1000 * 60 ? (
-                                      ' ' + Math.floor((new Date().getTime() - new Date(item.createdAt).getTime()) / 1000) + ' ' + seconds_ago
-                                    ) :
-                                    new Date().getTime() - new Date(item.createdAt).getTime() < 1000 * 60 * 60 ? (
-                                    ' ' + Math.floor((new Date().getTime() - new Date(item.createdAt).getTime()) / 1000 / 60) + ' ' + minutes_ago
-                                    ) : (
-                                      ' ' + Math.floor((new Date().getTime() - new Date(item.createdAt).getTime()) / 1000 / 60 / 60) + ' ' + hours_ago
+                                    {/* if createdAt is recent 1 hours, show new badge */}
+                                    {new Date().getTime() - new Date(item.createdAt).getTime() < 1000 * 60 * 60 && (
+                                      <Image
+                                        src="/icon-new.png"
+                                        alt="New"
+                                        width={28}
+                                        height={28}
+                                      />
                                     )}
-                                </p>
 
-                              </div>
+                                    <Image
+                                      src="/icon-public-sale.png"
+                                      alt="Public Sale"
+                                      width={28}
+                                      height={28}
+                                    />
+
+                                  
+                                    <p className="text-sm text-zinc-400">
+                                      {Order_Opened} {
+                                        new Date().getTime() - new Date(item.createdAt).getTime() < 1000 * 60 ? (
+                                          ' ' + Math.floor((new Date().getTime() - new Date(item.createdAt).getTime()) / 1000) + ' ' + seconds_ago
+                                        ) :
+                                        new Date().getTime() - new Date(item.createdAt).getTime() < 1000 * 60 * 60 ? (
+                                        ' ' + Math.floor((new Date().getTime() - new Date(item.createdAt).getTime()) / 1000 / 60) + ' ' + minutes_ago
+                                        ) : (
+                                          ' ' + Math.floor((new Date().getTime() - new Date(item.createdAt).getTime()) / 1000 / 60 / 60) + ' ' + hours_ago
+                                        )}
+                                    </p>
+
+                                  </div>
 
 
-                              {24 - Math.floor((new Date().getTime() - new Date(item.createdAt).getTime()) / 1000 / 60 / 60) > 0 ? (
 
-                                <div className="mt-2 flex flex-row items-center space-x-2">
-                                  <Image
-                                    src="/icon-timer.webp"
-                                    alt="Timer"
-                                    width={28}
-                                    height={28}
-                                  />
-                                  <p className="text-sm text-zinc-400">{Expires_in} {
-  
-                                    24 - Math.floor((new Date().getTime() - new Date(item.createdAt).getTime()) / 1000 / 60 / 60) - 1
+                                  {/* share button */}
+                                  <button
+                                    className="text-sm bg-blue-500 text-white px-2 py-1 rounded-md hover:bg-blue-600"
+                                    onClick={() => {
 
-                                    } {hours} {
-                                      60 - Math.floor((new Date().getTime() - new Date(item.createdAt).getTime()) / 1000 / 60) % 60
-                                    } {minutes}
+                                      window.open(`https://next.unove.space/${params.lang}/sell-usdt/${item._id}`, '_blank');
 
-                                  </p>
+                                    }}
+                                  >
+                                    <Image
+                                      src="/icon-share.png"
+                                      alt="Share"
+                                      width={20}
+                                      height={20}
+                                    />
+                                  </button>
+
+
                                 </div>
 
-                              ) : (
-                                <div className="mt-2 flex flex-row items-center space-x-2">
-                                  {/*
-                                  <Image
-                                    src="/icon-timer.webp"
-                                    alt="Expired"
-                                    width={28}
-                                    height={28}
-                                  />
-                                  <p className="text-sm text-zinc-400">Expired</p>
-                                  */}
-                                </div>
-                              )}
-  
-                            
+
+                                {24 - Math.floor((new Date().getTime() - new Date(item.createdAt).getTime()) / 1000 / 60 / 60) > 0 ? (
+
+                                  <div className="mt-2 flex flex-row items-center space-x-2">
+                                    <Image
+                                      src="/icon-timer.webp"
+                                      alt="Timer"
+                                      width={28}
+                                      height={28}
+                                    />
+                                    <p className="text-sm text-zinc-400">{Expires_in} {
+    
+                                      24 - Math.floor((new Date().getTime() - new Date(item.createdAt).getTime()) / 1000 / 60 / 60) - 1
+
+                                      } {hours} {
+                                        60 - Math.floor((new Date().getTime() - new Date(item.createdAt).getTime()) / 1000 / 60) % 60
+                                      } {minutes}
+
+                                    </p>
+                                  </div>
+
+                                ) : (
+                                  <div className="mt-2 flex flex-row items-center space-x-2">
+                                    {/*
+                                    <Image
+                                      src="/icon-timer.webp"
+                                      alt="Expired"
+                                      width={28}
+                                      height={28}
+                                    />
+                                    <p className="text-sm text-zinc-400">Expired</p>
+                                    */}
+                                  </div>
+                                )}
+    
                             </div>
+
                           )}
 
 

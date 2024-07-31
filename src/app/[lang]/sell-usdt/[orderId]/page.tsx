@@ -1455,6 +1455,7 @@ export default function Index({ params }: any) {
 
                                 <div className='flex flex-row items-center gap-2 mb-4'>
                                   
+                                  
                                   <Image
                                     src='/icon-completed.png'
                                     alt='Completed'
@@ -1476,9 +1477,8 @@ export default function Index({ params }: any) {
                             <div className="mt-4 flex flex-row items-between space-x-2">
 
                               <div className="flex flex-col items-start">
-                                <p className="text-2xl font-semibold text-white">{item.usdtAmount} USDT</p>
 
-                                <p className="text-lg text-zinc-400">
+                                <p className="text-2xl text-zinc-400">
                                   {Price}: {
                                     // currency
                                   
@@ -1489,6 +1489,11 @@ export default function Index({ params }: any) {
 
                                   }
                                 </p>
+
+                                <p className="text-lg font-semibold text-white">{item.usdtAmount} USDT</p>
+
+
+
                               </div>
 
                               <div className="flex flex-col items-start">
@@ -1548,7 +1553,7 @@ export default function Index({ params }: any) {
                                   height={24}
                                 />
 
-                                {address && item.buyer && item.buyer.walletAddress === address && (
+                                {address && item.buyer && item.buyer?.walletAddress === address && (
                                   <button
                                       className="text-sm bg-blue-500 text-white px-2 py-1 rounded-md"
                                       onClick={() => {
@@ -1589,7 +1594,7 @@ export default function Index({ params }: any) {
                                 <h2 className="text-lg font-semibold">
                                     {Buyer}: {
 
-                                        item.buyer.walletAddress === address ? item.buyer.nickname + ' :' + Me :
+                                        item.buyer?.walletAddress === address ? item.buyer.nickname + ' :' + Me :
 
                                         item.buyer ? item.buyer.nickname.substring(0, 1) + '***' : 'Anonymous'
 
@@ -2037,7 +2042,7 @@ export default function Index({ params }: any) {
 
 
 
-                                {address && (item.walletAddress === address || item.buyer.walletAddress === address ) && (
+                                {address && (item.walletAddress === address || item.buyer?.walletAddress === address ) && (
                                   <>
                                     <div className='flex flex-row items-center gap-2'>
                                       <div className="w-2 h-2 rounded-full bg-green-500"></div>
