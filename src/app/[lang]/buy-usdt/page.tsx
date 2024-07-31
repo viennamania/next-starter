@@ -184,6 +184,8 @@ export default function Index({ params }: any) {
     Trade_Started: "",
     Expires_in: "",
 
+    Accepting_Order: "",
+
   } );
 
   useEffect(() => {
@@ -246,6 +248,8 @@ export default function Index({ params }: any) {
     Order_Opened,
     Trade_Started,
     Expires_in,
+
+    Accepting_Order,
 
 
   } = data;
@@ -1279,7 +1283,7 @@ export default function Index({ params }: any) {
                                     </div>
 
 
-                                    <div className="flex flex-row items-center gap-2">
+                                    <div className="mt-5 flex flex-row items-center gap-2">
 
                                       <button
                                         disabled={cancellings[index] || !agreementForCancelTrade[index]}
@@ -1407,7 +1411,7 @@ export default function Index({ params }: any) {
                                     height={35}
                                     className="animate-spin"
                                   />
-                                  <div>Accepting...</div>
+                                  <div>{Accepting_Order}...</div>
                                 </div>
 
 
@@ -1476,7 +1480,7 @@ export default function Index({ params }: any) {
                                           {/* input sms receiver mobile number */}
 
                                           {user && agreementForTrade[index] && (
-                                            <div className="mt-4 flex flex-row items-center justify-start gap-2">
+                                            <div className="mt-8 flex flex-row items-center justify-start gap-2">
 
                                               <span className="text-sm text-zinc-400">SMS</span>
 
@@ -1509,7 +1513,7 @@ export default function Index({ params }: any) {
 
                                           <button
                                             disabled={!user || !agreementForTrade[index]}
-                                            className={`m-4 text-lg text-white px-4 py-2 rounded-md
+                                            className={`m-10 text-lg text-white px-4 py-2 rounded-md
                                               ${!user || !agreementForTrade[index] ? 'bg-zinc-800' : 'bg-green-500 hover:bg-green-600'}
                                               `}
                                             onClick={() => {

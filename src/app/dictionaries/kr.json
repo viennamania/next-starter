@@ -182,7 +182,9 @@
     "Transfering_USDT_to_the_buyer_wallet_address": "구매자 지갑 주소로 USDT 전송 중",
 
 
-    "SMS_will_be_sent_to_your_mobile_number": "구매자가 주문을 수락하면 SMS가 귀하의 휴대폰 번호로 전송됩니다."
+    "SMS_will_be_sent_to_your_mobile_number": "구매자가 주문을 수락하면 SMS가 귀하의 휴대폰 번호로 전송됩니다.",
+
+    "Accepting_Order": "주문 수락 중"
 
 
 

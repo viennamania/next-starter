@@ -218,7 +218,9 @@
     "Transfering_USDT_to_the_buyer_wallet_address": "Transfering USDT to the buyer wallet address",
 
   
-    "SMS_will_be_sent_to_your_mobile_number": "SMS will be sent to your mobile number to notify you when the buyer accepts the order."
+    "SMS_will_be_sent_to_your_mobile_number": "SMS will be sent to your mobile number to notify you when the buyer accepts the order.",
+
+    "Accepting_Order": "Accepting Order"
 
 
 }
