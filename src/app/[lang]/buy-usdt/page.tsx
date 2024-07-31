@@ -1008,33 +1008,40 @@ export default function Index({ params }: any) {
 
 
 
-                            <div className="mt-4 flex flex-row items-between space-x-2">
+                  
 
-                              <div className="flex flex-col items-start">
-                                <p className="text-2xl font-semibold text-white">{item.usdtAmount} USDT</p>
+                            <div className="mt-4 flex flex-col items-start">
 
-                                <p className="text-lg text-zinc-400">
-                                  {Price}: {
-                                    // currency
-                                  
-                                    Number(item.krwAmount).toLocaleString('ko-KR', {
-                                      style: 'currency',
-                                      currency: 'KRW',
-                                    })
 
-                                  }
+
+                              <p className="text-2xl text-zinc-400">
+                                {Price}: {
+                                  // currency
+                                
+                                  Number(item.krwAmount).toLocaleString('ko-KR', {
+                                    style: 'currency',
+                                    currency: 'KRW',
+                                  })
+
+                                }
+                              </p>
+
+                              <div className="mt-2 flex flex-row items-start gap-2">
+
+                                <p className="text-xl font-semibold text-white">
+                                  {item.usdtAmount}{' '}USDT
                                 </p>
-                              </div>
-
-                              <div className="flex flex-row items-start gap-2">
                                 <p className="text-lg font-semibold text-white">{Rate}: {
 
                                   Number(item.krwAmount / item.usdtAmount).toFixed(2)
 
-                                }</p>
+                                  }</p>
                               </div>
 
+
                             </div>
+
+                    
 
                             <div className="mb-4 flex flex-col items-start text-sm ">
                               {Payment}: {Bank_Transfer} ({item.seller?.bankInfo.bankName})
