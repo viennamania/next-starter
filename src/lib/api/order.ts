@@ -573,6 +573,8 @@ export async function acceptSellOrder(data: any) {
     return null;
   }
 
+  const buyerMemo = data.buyerMemo || '';
+
   const client = await clientPromise;
   const collection = client.db('vienna').collection('orders');
 
@@ -593,6 +595,38 @@ export async function acceptSellOrder(data: any) {
   ///console.log('acceptSellOrder data.orderId: ' + data.orderId);
 
  
+  // *********************************************
+  // update status to accepted if status is ordered
+
+  // if status is not ordered, return null
+  // check condition and update status to accepted
+  // *********************************************
+
+  const result = await collection.findOneAndUpdate(
+    { _id: new ObjectId(data.orderId + ''), status: 'ordered' },
+    { $set: {
+      status: 'accepted',
+      acceptedAt: new Date().toISOString(),
+      tradeId: tradeId,
+      buyer: {
+        walletAddress: data.buyerWalletAddress,
+        nickname: data.buyerNickname,
+        avatar: data.buyerAvatar,
+        mobile: data.buyerMobile,
+        memo: buyerMemo,
+      },
+    } }
+  );
+
+
+
+
+
+
+
+
+
+  /*
   const result = await collection.updateOne(
     
     //{ _id: new ObjectId(data.orderId) },
@@ -618,6 +652,7 @@ export async function acceptSellOrder(data: any) {
       },
     } }
   );
+  */
 
 
   ////console.log('acceptSellOrder result: ' + result);
