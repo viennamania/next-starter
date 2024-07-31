@@ -2357,6 +2357,16 @@ export default function Index({ params }: any) {
                             )}
 
 
+                            {/* buyer mobile number */}
+                            {address && item.buyer?.walletAddress === address && (
+                              <div className="mt-4 flex flex-row items-center gap-2">
+                                <div className="text-lg font-semibold text-green-500">
+                                  SMS: {item.buyer?.mobile}
+                                </div>
+                              </div>
+                            )}
+
+
                         </article>
 
 
