@@ -656,7 +656,7 @@ const P2PTable = () => {
                                   src={item.avatar || '/profile-default.png'}
                                   alt="Avatar"
                                   width={28}
-                                  height={18}
+                                  height={28}
                                   priority={true} // Added priority property
                                   className="rounded-full"
                                   style={{

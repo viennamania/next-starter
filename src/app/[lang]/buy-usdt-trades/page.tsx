@@ -375,6 +375,13 @@ export default function Index({ params }: any) {
 
     
 
+    // check trade and complete trade
+
+    const [checkProceedTrade, setCheckProceedTrade] = useState(true);
+    const [checkCompleteTrade, setCheckCompleteTrade] = useState(true);
+
+
+
     
     const [sellOrders, setSellOrders] = useState<SellOrder[]>([]);
 
@@ -393,12 +400,37 @@ export default function Index({ params }: any) {
             
             //console.log('data', data);
 
-            setSellOrders(data.result.orders);
+            ///setSellOrders(data.result.orders);
+
+            if (checkProceedTrade && checkCompleteTrade) {
+                setSellOrders(data.result.orders);
+            }
+
+            if (checkProceedTrade && !checkCompleteTrade) {
+                setSellOrders(data.result.orders.filter((item: SellOrder) => item.status === 'accepted' || item.status === 'paymentRequested'));
+            }
+
+            if (!checkProceedTrade && checkCompleteTrade) {
+                setSellOrders(data.result.orders.filter((item: SellOrder) => item.status === 'paymentConfirmed'));
+            }
+
+            if (!checkProceedTrade && !checkCompleteTrade) {
+                setSellOrders([]);
+            }
+
+
         })
         .catch((error) => {
             console.error('Error:', error);
         });
-    } , [address]);
+    } , [address, checkProceedTrade, checkCompleteTrade]);
+
+
+
+
+  
+
+
 
 
     const [acceptingSellOrder, setAcceptingSellOrder] = useState(false);
@@ -582,32 +614,53 @@ export default function Index({ params }: any) {
                 <div className="flex flex-row items-center space-x-4">
 
 
-
-                  <div className="flex flex-col gap-2 items-center">
+                    {/*}
+                    <div className="flex flex-col gap-2 items-center">
                       <div className="text-sm">{Total}</div>
                       <div className="text-xl font-semibold text-white">
                         {sellOrders.filter((item) => item.status === 'accepted' || item.status === 'paymentRequested' || item.status === 'paymentConfirmed').length}
+                        {' '}
+                        ({Number(sellOrders.reduce((acc, item) => acc + item.usdtAmount, 0)).toFixed(0)} USDT)
                       </div>
-                      
                     </div>
+                    */}
 
                     <div className="flex flex-col gap-2 items-center">
-                      <div className="text-sm">{Trades}</div>
+                      <div className="flex flex-row items-center gap-2">
+                        <div className="text-sm">{Trades}</div>
+                        <input
+                          type="checkbox"
+                          checked={checkProceedTrade}
+                          onChange={(e) => setCheckProceedTrade(e.target.checked)}
+                          className="w-5 h-5 rounded-full"
+                        />
+                      </div>
+
                       <div className="text-xl font-semibold text-white">
                         {sellOrders.filter((item) => item.status === 'accepted' || item.status === 'paymentRequested').length}
+                        {' '}
+                        ({sellOrders.filter((item) => item.status === 'accepted' || item.status === 'paymentRequested').reduce((acc, item) => acc + item.usdtAmount, 0).toFixed(0)} USDT)
                       </div>
+
                     </div>
 
                     <div className="flex flex-col gap-2 items-center">
-                      <div className="text-sm">{Completed}</div>
-                      <div className="text-xl font-semibold text-white">
-
-                        {
-                          sellOrders.filter((item) => item.status === 'paymentConfirmed').length
-
-                        }
-
+                      <div className="flex flex-row items-center gap-2">
+                        <div className="text-sm">{Completed}</div>
+                        <input
+                          type="checkbox"
+                          checked={checkCompleteTrade}
+                          onChange={(e) => setCheckCompleteTrade(e.target.checked)}
+                          className="w-5 h-5 rounded-full"
+                        />
                       </div>
+
+                      <div className="text-xl font-semibold text-white">
+                        {sellOrders.filter((item) => item.status === 'paymentConfirmed').length}
+                        {' '}
+                        ({Number(sellOrders.filter((item) => item.status === 'paymentConfirmed').reduce((acc, item) => acc + item.usdtAmount, 0)).toFixed(0)} USDT)
+                      </div>
+
                     </div>
 
 
@@ -801,13 +854,14 @@ export default function Index({ params }: any) {
                                   src={item.avatar || '/profile-default.png'}
                                   alt="Avatar"
                                   width={28}
-                                  height={18}
+                                  height={28}
                                   priority={true} // Added priority property
                                   className="rounded-full"
                                   style={{
                                       objectFit: 'cover',
-                                      width: '28px',
-                                      height: '28px',
+                                      width: "28px",
+                                      height: "28px",
+                                     
                                   }}
                               />
                               <h2 className="text-lg font-semibold text-green-500">
