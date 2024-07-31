@@ -234,6 +234,10 @@ export default function Index({ params }: any) {
 
       Confirm_Payment: "",
 
+      Connect_Wallet_Description_For_Buyers: "",
+
+      I_agree_to_the_terms_of_trade: "",
+
     } );
   
     useEffect(() => {
@@ -295,6 +299,10 @@ export default function Index({ params }: any) {
       Waiting_for_seller_to_confirm_payment,
 
       Confirm_Payment,
+
+      Connect_Wallet_Description_For_Buyers,
+
+      I_agree_to_the_terms_of_trade,
 
     } = data;
    
@@ -583,6 +591,21 @@ export default function Index({ params }: any) {
     } , [usdtAmount, rate]);
 
 
+
+
+
+
+
+
+    /* agreement for trade */
+    const [agreementForTrade, setAgreementForTrade] = useState([] as boolean[]);
+    useEffect(() => {
+        setAgreementForTrade (
+            sellOrders.map((item, idx) => {
+                return false;
+            })
+        );
+    } , [sellOrders]);
 
     const [acceptingSellOrder, setAcceptingSellOrder] = useState([] as boolean[]);
 
@@ -1099,40 +1122,47 @@ export default function Index({ params }: any) {
 
           ) : (
             <div className="flex flex-col items-center space-y-4 mb-4">
-                        <ConnectButton
-                            
+                <ConnectButton
+                    
 
-                            client={client}
+                    client={client}
 
-                            wallets={wallets}
-                            
-                            accountAbstraction={{        
-                            chain: polygon,
-                            //chain: arbitrum,
-                            factoryAddress: "0x9Bb60d360932171292Ad2b80839080fb6F5aBD97", // polygon, arbitrum
-                            gasless: true,
-                            }}
-                            
-                            theme={"light"}
-                            connectModal={{
-                            size: "wide",
-
-
-                            }}
+                    wallets={wallets}
+                    
+                    accountAbstraction={{        
+                    chain: polygon,
+                    //chain: arbitrum,
+                    factoryAddress: "0x9Bb60d360932171292Ad2b80839080fb6F5aBD97", // polygon, arbitrum
+                    gasless: true,
+                    }}
+                    
+                    theme={"light"}
+                    connectModal={{
+                    size: "wide",
 
 
-                            
-                            appMetadata={
-                            {
-                                logoUrl: "https://next.unove.space/logo.png",
-                                name: "Next App",
-                                url: "https://next.unove.space",
-                                description: "This is a Next App.",
+                    }}
 
-                            }
-                            }
 
-                        />
+                    
+                    appMetadata={
+                    {
+                        logoUrl: "https://next.unove.space/logo.png",
+                        name: "Next App",
+                        url: "https://next.unove.space",
+                        description: "This is a Next App.",
+
+                    }
+                    }
+
+                />
+
+                <span className="text-lg text-zinc-400 xl:w-1/2 text-center">
+                  {Connect_Wallet_Description_For_Buyers}
+                </span>
+
+
+
             </div>
 
           )}
@@ -1639,7 +1669,7 @@ export default function Index({ params }: any) {
                                       //router.push(`/sell-usdt/${item._id}`);
 
                                       // copy link to clipboard
-                                      navigator.clipboard.writeText(`https://next.unove.space/en/sell-usdt/${item._id}`);
+                                      navigator.clipboard.writeText(`https://next.unove.space/${params.lang}/sell-usdt/${item._id}`);
                                       toast.success('Link has been copied');
 
                                     }}
@@ -1939,29 +1969,54 @@ export default function Index({ params }: any) {
                                        
                                       ) : (
 
+                                        <div className='mt-4 flex flex-col items-center gap-2'>
+
+
+                                          {/* agreement for trade */}
+                                          <div className="flex flex-row items-center space-x-2">
+                                            <input
+                                              disabled={!address}
+                                              type="checkbox"
+                                              checked={agreementForTrade[index]}
+                                              onChange={(e) => {
+                                                  setAgreementForTrade(
+                                                      sellOrders.map((item, idx) => {
+                                                          if (idx === index) {
+                                                              return e.target.checked;
+                                                          } else {
+                                                              return false;
+                                                          }
+                                                      })
+                                                  );
+                                              }}
+                                            />
+                                            <label className="text-sm text-zinc-400">
+                                              {I_agree_to_the_terms_of_trade}
+                                            </label>
+                                          </div>
+
+
 
                                         
-                                        <button
-                                          disabled={!user}
-                                          className="text-lg bg-green-500 text-white px-4 py-2 rounded-md mt-4"
-                                          onClick={() => {
-                                              ///console.log('Buy USDT');
+                                          <button
+                                          disabled={!user || !agreementForTrade[index]}
+                                          className={`text-lg text-white px-4 py-2 rounded-md
+                                            ${!user || !agreementForTrade[index] ? 'bg-zinc-800' : 'bg-green-500 hover:bg-green-600'}
+                                            `}
 
-                                              // open trade detail
-                                              // open modal of trade detail
+                                            onClick={() => {
+
+                                                acceoptSellOrder(index, item._id);
+                                          
+
+                                            }}
+                                          >
+                                            {Buy} {item.usdtAmount} USDT
+                                          </button>
 
 
 
-                                              //openModal();
-
-
-                                              acceoptSellOrder(index, item._id);
-                                        
-
-                                          }}
-                                        >
-                                          {Buy} {item.usdtAmount} USDT
-                                        </button>
+                                        </div>
 
                                       )}
 

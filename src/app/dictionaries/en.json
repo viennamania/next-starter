@@ -198,6 +198,9 @@
     "Waiting_for_seller_to_confirm_payment": "Waiting for seller to confirm payment",
 
   
-    "Confirm_Payment": "Confirm Payment"
+    "Confirm_Payment": "Confirm Payment",
+
+
+    "Connect_Wallet_Description_For_Buyers": "If you want to buy USDT, you need to connect your wallet. Please click the Connect Wallet button. This wallet is decentralized and secure."
 
 }

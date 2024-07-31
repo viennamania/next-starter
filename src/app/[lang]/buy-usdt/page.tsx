@@ -904,6 +904,7 @@ export default function Index({ params }: any) {
 
 
                                   {/* share button */}
+                                  {/*
                                   <button
                                     className="text-sm bg-blue-500 text-white px-2 py-1 rounded-md hover:bg-blue-600"
                                     onClick={() => {
@@ -919,6 +920,7 @@ export default function Index({ params }: any) {
                                       height={20}
                                     />
                                   </button>
+                                  */}
 
 
                                 </div>
@@ -964,8 +966,9 @@ export default function Index({ params }: any) {
 
 
 
-                            { (item.status === 'accepted' || item.status === 'paymentRequested' || item.status === 'cancelled') && (
-                              <div className={`
+                          { (item.status === 'accepted' || item.status === 'paymentRequested' || item.status === 'cancelled') && (
+                              
+                            <div className={`
                               ${item.status !== 'cancelled' && 'h-16'}
 
                               mb-4 flex flex-row items-center bg-zinc-800 px-2 py-1 rounded-md`}>
@@ -999,8 +1002,29 @@ export default function Index({ params }: any) {
                                   </p>
                                 )}
 
+
+
+                                  {/* share button */}
+                                  <button
+                                    className="text-sm bg-blue-500 text-white px-2 py-1 rounded-md hover:bg-blue-600"
+                                    onClick={() => {
+
+                                      window.open(`https://next.unove.space/${params.lang}/sell-usdt/${item._id}`, '_blank');
+
+                                    }}
+                                  >
+                                    <Image
+                                      src="/icon-share.png"
+                                      alt="Share"
+                                      width={20}
+                                      height={20}
+                                    />
+                                  </button>
+
+
+
                               </div>
-                            )}
+                          )}
 
 
                             {/*
@@ -1485,20 +1509,11 @@ export default function Index({ params }: any) {
 
                                           <button
                                             disabled={!user || !agreementForTrade[index]}
-                                            className={`m-4 text-lg bg-green-500 text-white px-4 py-2 rounded-md
-                                              ${!user || !agreementForTrade[index] ? 'opacity-50 cursor-not-allowed' : 'hover:bg-green-600'}
+                                            className={`m-4 text-lg text-white px-4 py-2 rounded-md
+                                              ${!user || !agreementForTrade[index] ? 'bg-zinc-800' : 'bg-green-500 hover:bg-green-600'}
                                               `}
                                             onClick={() => {
-                                                ///console.log('Buy USDT');
-
-                                                // open trade detail
-                                                // open modal of trade detail
-
-
-
-                                                //openModal();
-
-
+  
                                                 acceoptSellOrder(index, item._id, smsReceiverMobileNumbers[index]);
                                           
 
@@ -1506,6 +1521,8 @@ export default function Index({ params }: any) {
                                           >
                                             {Buy} {item.usdtAmount} USDT
                                           </button>
+
+
                                         </div>
 
                                       )}
