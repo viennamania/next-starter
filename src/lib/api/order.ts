@@ -769,6 +769,11 @@ export async function getTradesByWalletAddress(
   ).sort({ acceptedAt: -1 }).limit(limit).skip((page - 1) * limit).toArray();
 
 
+
+  //console.log('getTradesByWalletAddress results: ' + JSON.stringify(results)); 
+
+
+
   return {
     totalCount: results.length,
     orders: results,
