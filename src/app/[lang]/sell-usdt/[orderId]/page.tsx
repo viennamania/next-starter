@@ -1455,7 +1455,7 @@ export default function Index({ params }: any) {
 
                                 <div className='flex flex-row items-center gap-2 mb-4'>
                                   
-                                  
+
                                   <Image
                                     src='/icon-completed.png'
                                     alt='Completed'
@@ -1474,29 +1474,25 @@ export default function Index({ params }: any) {
                             )}
 
 
-                            <div className="mt-4 flex flex-row items-between space-x-2">
+                            <div className="mt-4 flex flex-col items-start">
 
-                              <div className="flex flex-col items-start">
+                              <p className="text-2xl text-zinc-400">
+                                {Price}: {
+                                  // currency
+                                
+                                  Number(item.krwAmount).toLocaleString('ko-KR', {
+                                    style: 'currency',
+                                    currency: 'KRW',
+                                  })
 
-                                <p className="text-2xl text-zinc-400">
-                                  {Price}: {
-                                    // currency
-                                  
-                                    Number(item.krwAmount).toLocaleString('ko-KR', {
-                                      style: 'currency',
-                                      currency: 'KRW',
-                                    })
+                                }
+                              </p>
 
-                                  }
-                                </p>
+
+                              <div className="mt-2 flex flex-row items-between space-x-2">
+
 
                                 <p className="text-lg font-semibold text-white">{item.usdtAmount} USDT</p>
-
-
-
-                              </div>
-
-                              <div className="flex flex-col items-start">
                                 <p className="text-lg font-semibold text-white">{Rate}: {
 
                                   Number(item.krwAmount / item.usdtAmount).toFixed(2)
@@ -1505,6 +1501,9 @@ export default function Index({ params }: any) {
                               </div>
 
                             </div>
+
+
+                          
 
 
                             <p className="text-sm text-zinc-400">{Payment}: {Bank_Transfer} ({item.seller?.bankInfo.bankName})</p>                         
