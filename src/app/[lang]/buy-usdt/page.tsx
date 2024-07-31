@@ -397,12 +397,14 @@ export default function Index({ params }: any) {
 
         fetchSellOrders();
 
+        /*
         const interval = setInterval(() => {
             fetchSellOrders();
         }, 10000);
 
 
         return () => clearInterval(interval);
+        */
 
 
 
@@ -436,8 +438,23 @@ export default function Index({ params }: any) {
     } , [sellOrders]);
 
 
+    // sms receiver mobile number array
+    const [smsReceiverMobileNumbers, setSmsReceiverMobileNumbers] = useState([] as string[]);
+    useEffect(() => {
+        setSmsReceiverMobileNumbers(
+            sellOrders.map((item, idx) => {
+                return user?.mobile || '';
+            })
+        );
+    } , [sellOrders, user]);
 
-    const acceoptSellOrder = (index: number, orderId: string) => {
+
+
+    const acceoptSellOrder = (
+      index: number,
+      orderId: string,
+      smsNumber: string,
+    ) => {
 
         if (!user) {
             return;
@@ -464,7 +481,10 @@ export default function Index({ params }: any) {
                 buyerWalletAddress: user.walletAddress,
                 buyerNickname: user.nickname,
                 buyerAvatar: user.avatar,
-                buyerMobile: user.mobile,
+
+                //buyerMobile: user.mobile,
+                buyerMobile: smsNumber,
+
             }),
         })
         .then(response => response.json())
@@ -691,71 +711,98 @@ export default function Index({ params }: any) {
 
 
 
-                <div className="p-2 xl:p-0  flex flex-row items-center justify-between gap-2">
+                <div className="w-full flex flex-row items-between justify-start gap-2">
 
-                  <div className="flex flex-col gap-2 items-center">
-                    <div className="text-sm">{Total}</div>
-                    <div className="text-xl font-semibold text-white">
-                      {sellOrders.length}
+                  <div className="flex flex-row items-center  gap-2">
+
+                    <div className="flex flex-col gap-2 items-center">
+                      <div className="text-sm">{Total}</div>
+                      <div className="text-xl font-semibold text-white">
+                        {sellOrders.length}
+                      </div>
+                      
                     </div>
-                    
+
+                    <div className="flex flex-col gap-2 items-center">
+                      <div className="text-sm">{Orders}</div>
+                      <div className="text-xl font-semibold text-white">
+                        {sellOrders.filter((item) => item.status === 'ordered').length}
+                      </div>
+                    </div>
+
+                    <div className="flex flex-col gap-2 items-center">
+                      <div className="text-sm">{Trades}</div>
+                      <div className="text-xl font-semibold text-white">
+
+                        {
+                          //sellOrders.filter((item) => item.status === 'accepted').length
+                          sellOrders.filter((item) => item.status === 'accepted' || item.status === 'paymentRequested').length
+
+                        }
+
+                      </div>
+                    </div>
+
+
+
+                    <div className="ml-5 flex flex-col gap-2 items-start justify-end">
+                      <div className="flex flex-row items-center gap-2">
+                        <Image
+                          src={user?.avatar || "/profile-default.png"}
+                          alt="Avatar"
+                          width={20}
+                          height={20}
+                          priority={true} // Added priority property
+                          className="rounded-full"
+                          style={{
+                              objectFit: 'cover',
+                              width: '20px',
+                              height: '20px',
+                          }}
+                        />
+                        <div className="text-lg font-semibold text-white ">{user?.nickname}</div>
+                      </div>
+                      {/* checkbox for search my trades */}
+                      <div className="flex flex-row items-center gap-2">
+                        <input
+                          disabled={!address}
+                          type="checkbox"
+                          checked={searchMyTrades}
+                          onChange={(e) => setSearchMyTrades(e.target.checked)}
+                          className="w-5 h-5"
+                        />
+                        <label className="text-sm text-zinc-400">{Search_my_trades}</label>
+                      </div>
+                    </div>
+
                   </div>
 
-                  <div className="flex flex-col gap-2 items-center">
-                    <div className="text-sm">{Orders}</div>
-                    <div className="text-xl font-semibold text-white">
-                      {sellOrders.filter((item) => item.status === 'ordered').length}
-                    </div>
+
+                  <div className="ml-10 flex flex-row items-center gap-2">
+                    {/* reload button */}
+                    <button
+                      className="text-sm bg-zinc-800 px-2 py-1 rounded-md"
+                      onClick={() => {
+                        fetch('/api/order/getAllSellOrdersForBuyer', {
+                          method: 'POST',
+                          headers: {
+                            'Content-Type': 'application/json',
+                          },
+                          body: JSON.stringify({
+                          }),
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            ///console.log('data', data);
+                            setSellOrders(data.result.orders);
+                        })
+                      }}
+                    >
+                      Reload
+                    </button>
                   </div>
 
-                  <div className="flex flex-col gap-2 items-center">
-                    <div className="text-sm">{Trades}</div>
-                    <div className="text-xl font-semibold text-white">
-
-                      {
-                        //sellOrders.filter((item) => item.status === 'accepted').length
-                        sellOrders.filter((item) => item.status === 'accepted' || item.status === 'paymentRequested').length
-
-                      }
-
-                    </div>
-                  </div>
-
-
-
-                  <div className="ml-5 flex flex-col gap-2 items-start justify-end">
-                    <div className="flex flex-row items-center gap-2">
-                      <Image
-                        src={user?.avatar || "/profile-default.png"}
-                        alt="Avatar"
-                        width={20}
-                        height={20}
-                        priority={true} // Added priority property
-                        className="rounded-full"
-                        style={{
-                            objectFit: 'cover',
-                            width: '20px',
-                            height: '20px',
-                        }}
-                      />
-                      <div className="text-lg font-semibold text-white ">{user?.nickname}</div>
-                    </div>
-                    {/* checkbox for search my trades */}
-                    <div className="flex flex-row items-center gap-2">
-                      <input
-                        disabled={!address}
-                        type="checkbox"
-                        checked={searchMyTrades}
-                        onChange={(e) => setSearchMyTrades(e.target.checked)}
-                        className="w-5 h-5"
-                      />
-                      <label className="text-sm text-zinc-400">{Search_my_trades}</label>
-                    </div>
-                  </div>
-
-
-
-                  </div>
+                </div>
 
 
 
@@ -1152,6 +1199,7 @@ export default function Index({ params }: any) {
                                   <div className="mt-4 flex flex-col items-center justify-center gap-2">
 
 
+
                                     <div className="flex flex-row items-center gap-2">
                                       <input
                                         type="checkbox"
@@ -1338,6 +1386,11 @@ export default function Index({ params }: any) {
 
                                         <div className="mt-4 flex flex-col items-center justify-center">
 
+
+
+
+
+
                                           {/* agreement for trade */}
                                           <div className="flex flex-row items-center space-x-2">
                                             <input
@@ -1361,9 +1414,45 @@ export default function Index({ params }: any) {
                                             </label>
                                           </div>
 
+
+
+                                          {/* input sms receiver mobile number */}
+
+                                          {user && agreementForTrade[index] && (
+                                            <div className="mt-4 flex flex-row items-center justify-start gap-2">
+
+                                              <span className="text-sm text-zinc-400">SMS</span>
+
+                                              <div className="flex flex-col items-start justify-start">
+                                                <input
+                                                  disabled={!user || !agreementForTrade[index]}
+                                                  type="text"
+                                                  placeholder="SMS Receiver Mobile Number"
+                                                  className={`w-full px-4 py-2 rounded-md text-black`}
+                                                  value={smsReceiverMobileNumbers[index]}
+                                                  onChange={(e) => {
+                                                      setSmsReceiverMobileNumbers(
+                                                          smsReceiverMobileNumbers.map((item, idx) => {
+                                                              if (idx === index) {
+                                                                  return e.target.value;
+                                                              } else {
+                                                                  return item;
+                                                              }
+                                                          })
+                                                      );
+                                                  }}
+                                                />
+                                              </div>
+                                            </div>
+                                          )}
+
+
+
+
+
                                           <button
                                             disabled={!user || !agreementForTrade[index]}
-                                            className={`text-lg bg-green-500 text-white px-4 py-2 rounded-md mt-4
+                                            className={`m-4 text-lg bg-green-500 text-white px-4 py-2 rounded-md
                                               ${!user || !agreementForTrade[index] ? 'opacity-50 cursor-not-allowed' : 'hover:bg-green-600'}
                                               `}
                                             onClick={() => {
@@ -1377,7 +1466,7 @@ export default function Index({ params }: any) {
                                                 //openModal();
 
 
-                                                acceoptSellOrder(index, item._id);
+                                                acceoptSellOrder(index, item._id, smsReceiverMobileNumbers[index]);
                                           
 
                                             }}
