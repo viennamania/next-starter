@@ -287,6 +287,7 @@ export async function getAllUsers(
   console.log('page: ' + page);
 
   // walletAddress is not empty and not null
+  // order by nickname asc
 
   const users = await collection
     .find<UserProps>(
@@ -303,7 +304,7 @@ export async function getAllUsers(
       },
       
     )
-    .sort({ _id: -1 })
+    .sort({ nickname: 1 })
     .toArray();
 
 
