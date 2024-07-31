@@ -581,30 +581,65 @@ export default function Index({ params }: any) {
 
                 <div className="flex flex-row items-center space-x-4">
 
-                  {/* trades is the status is accepted or paymentRequested */}
 
+
+                  <div className="flex flex-col gap-2 items-center">
+                      <div className="text-sm">{Total}</div>
+                      <div className="text-xl font-semibold text-white">
+                        {sellOrders.filter((item) => item.status === 'accepted' || item.status === 'paymentRequested' || item.status === 'paymentConfirmed').length}
+                      </div>
+                      
+                    </div>
+
+                    <div className="flex flex-col gap-2 items-center">
+                      <div className="text-sm">{Trades}</div>
+                      <div className="text-xl font-semibold text-white">
+                        {sellOrders.filter((item) => item.status === 'accepted' || item.status === 'paymentRequested').length}
+                      </div>
+                    </div>
+
+                    <div className="flex flex-col gap-2 items-center">
+                      <div className="text-sm">{Completed}</div>
+                      <div className="text-xl font-semibold text-white">
+
+                        {
+                          sellOrders.filter((item) => item.status === 'paymentConfirmed').length
+
+                        }
+
+                      </div>
+                    </div>
+
+
+
+
+
+
+                  {/* trades is the status is accepted or paymentRequested */}
+                  {/*
                   <div className="flex flex-col xl:flex-row gap-2 xl:gap-5 items-start">
                     <div className="text-sm">
-                      {/* dot */}
+
                       <span className="inline-block w-2 h-2 rounded-full bg-green-500 mr-2"></span>
                       {Total}: {sellOrders.length} EA ({
                       Number(sellOrders.reduce((acc, item) => acc + item.usdtAmount, 0)).toFixed(0)
                       } USDT)</div>
                     <div className="text-sm">
-                      {/* dot */}
+
                       <span className="inline-block w-2 h-2 rounded-full bg-green-500 mr-2"></span>
                       {Trades}: {sellOrders.filter(item => item.status === 'accepted' || item.status === 'paymentRequested').length} EA ({
                       sellOrders.filter(item => item.status === 'accepted' || item.status === 'paymentRequested').reduce((acc, item) => acc + item.usdtAmount, 0).toFixed(0)
                       } USDT)</div>
 
                     <div className="text-sm">
-                      {/* dot */}
+      
                       <span className="inline-block w-2 h-2 rounded-full bg-green-500 mr-2"></span>
                       {Completed}: {sellOrders.filter(item => item.status === 'paymentConfirmed').length} EA ({
                       Number(sellOrders.filter(item => item.status === 'paymentConfirmed').reduce((acc, item) => acc + item.usdtAmount, 0)).toFixed(0)
                       } USDT)</div>
 
                   </div>
+                  */}
 
 
                   {/* reload button */}
