@@ -62,7 +62,7 @@ export async function POST(request: NextRequest) {
 
     try {
 
-      const msgBody = `[UNOVE] TID[${tradeId}] ${bankName} ${accountNumber} ${accountHolder} 입금자명:[${depositName}] ${amount}원 입금 부탁드립니다.`;
+      const msgBody = `[UNOVE] TID[${tradeId}] ${bankName} ${accountNumber} ${accountHolder} 입금자명:[${depositName}] ${amount}원`;
 
       message = await client.messages.create({
         ///body: "This is the ship that made the Kessel Run in fourteen parsecs?",
