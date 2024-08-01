@@ -525,9 +525,6 @@ export default function Index({ params }: any) {
     } , [countdown]);
 
 
-    // check table view or card view
-    const [tableView, setTableView] = useState(true);
-
 
     return (
 
@@ -740,436 +737,417 @@ export default function Index({ params }: any) {
                 </div>
 
 
-                {/* select table view or card view */}
-                <div className="flex flex-row items-center space-x-4">
-                  <div className="text-sm">Table View</div>
-                  <input
-                    type="checkbox"
-                    checked={tableView}
-                    onChange={(e) => setTableView(e.target.checked)}
-                    className="w-5 h-5 rounded-full"
-                  />
-                </div>
+                {/* table list of sell orders */}
+                <table className="w-full">
+                    <thead>
+                        <tr>
+                            <th className="text-left">{TID}</th>
+
+                            <th className="text-left">Memo</th>
+                           
+                            <th className="text-left">{Seller}</th>
+                            <th className="text-left">{Amount}</th>
+                            <th className="text-left">{Price}</th>
+                            <th className="text-left">{Rate}</th>
+
+                            <th className="text-left">{Payment}</th>
+                            
+                            <th className="text-left">Status</th>
+
+                            <th className="text-left">{Trading_Time_is}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {sellOrders.map((item, index) => (
+                            <tr key={index}>
+                                <td>{item.tradeId}</td>
+
+                                <td>
+                                  {item.buyer?.memo}
+                                </td>
+
+                                <td>{item.nickname}</td>
+                                <td>{item.usdtAmount}</td>
+                                <td>{Number(item.krwAmount).toLocaleString('ko-KR', {
+                                  style: 'currency',
+                                  currency: 'KRW',
+                                })}</td>
+                                <td>{Number(item.krwAmount / item.usdtAmount).toFixed(2)}</td>
 
 
-                {tableView ? (
-
-                  <table className="w-full">
-                  <thead>
-                      <tr
-                          className="bg-gray-800 text-white text-xs h-10"
-                      >
 
 
-                          <th className="text-left">{TID}</th>
+                                <td>
+                                  {item.seller?.bankInfo.bankName} {item.seller?.bankInfo.accountNumber} {item.seller?.bankInfo.accountHolder}
+                                </td>
+                                <td>
+                                  {item.status === 'paymentConfirmed' && (
+                                    <span className="text-green-500">{Completed}</span>
+                                  )}
+                                  {item.status === 'accepted' && (
+                                    <span className="text-yellow-500">{Waiting_for_seller_to_deposit}</span>
+                                  )}
+                                  {item.status === 'paymentRequested' && (
+                                    <span className="text-yellow-500">{Waiting_for_seller_to_deposit}</span>
+                                  )}
+                                  {item.status === 'cancelled' && (
+                                    <span className="text-red-500">{Cancelled}</span>
+                                  )}
+                                </td>
+                                <td>
+                                  {item.status === 'paymentConfirmed' &&
+                                  
+                                  ( ( (new Date(item.paymentConfirmedAt).getTime() - new Date(item.acceptedAt).getTime()) / 1000 / 60 ).toFixed(0) ) + ' ' + minutes
+                                  
+                                  }
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
 
-                          <th className="text-left">Memo</th>
-                        
-                          <th className="text-left">{Seller}</th>
-                          <th className="text-left">{Amount}</th>
-                          <th className="text-left">{Price}</th>
-                          <th className="text-left">{Rate}</th>
 
-                          <th className="text-left">{Payment}</th>
-                          
-                          <th className="text-left">Status</th>
 
-                          <th className="text-left">{Trading_Time_is}</th>
-                      </tr>
-                  </thead>
-                  <tbody>
-                      {sellOrders.map((item, index) => (
-                          <tr
+
+
+                <div className="w-full grid gap-4 lg:grid-cols-3 justify-center">
+
+                    {sellOrders.map((item, index) => (
+
+                        <article
                             key={index}
-                            className="border-b border-gray-200 hover:bg-gray-800 hover:bg-opacity-10 text-xs h-10">
-                              <td>{item.tradeId}</td>
-
-                              <td>
-                                {item.buyer?.memo}
-                              </td>
-
-                              <td>{item.nickname}</td>
-                              <td>{item.usdtAmount}</td>
-                              <td>{Number(item.krwAmount).toLocaleString('ko-KR', {
-                                style: 'currency',
-                                currency: 'KRW',
-                              })}</td>
-                              <td>{Number(item.krwAmount / item.usdtAmount).toFixed(2)}</td>
-
-
-
-
-                              <td>
-                                {item.seller?.bankInfo.bankName} {item.seller?.bankInfo.accountNumber} {item.seller?.bankInfo.accountHolder}
-                              </td>
-                              <td>
-                                {item.status === 'paymentConfirmed' && (
-                                  <span className="text-green-500">{Completed}</span>
-                                )}
-                                {item.status === 'accepted' && (
-                                  <span className="text-yellow-500">{Waiting_for_seller_to_deposit}</span>
-                                )}
-                                {item.status === 'paymentRequested' && (
-                                  <span className="text-yellow-500">{Waiting_for_seller_to_deposit}</span>
-                                )}
-                                {item.status === 'cancelled' && (
-                                  <span className="text-red-500">{Cancelled}</span>
-                                )}
-                              </td>
-                              <td>
-                                {item.status === 'paymentConfirmed' &&
-                                
-                                ( ( (new Date(item.paymentConfirmedAt).getTime() - new Date(item.acceptedAt).getTime()) / 1000 / 60 ).toFixed(0) ) + ' ' + minutes
-                                
-                                }
-                              </td>
-                          </tr>
-                      ))}
-                  </tbody>
-                  </table>
-
-                ) : (
-
-                  <div className="w-full grid gap-4 lg:grid-cols-3 justify-center">
-
-                      {sellOrders.map((item, index) => (
-
-                          <article
-                              key={index}
-                              className={`
-                                w-96 xl:w-full bg-black p-4 rounded-md
-                                ${item.status === 'paymentConfirmed' ? 'bg-gray-800' : 'bg-black border border-gray-200'}
-                                
-                              `}
+                            className={`
+                              w-96 xl:w-full bg-black p-4 rounded-md
+                              ${item.status === 'paymentConfirmed' ? 'bg-gray-800' : 'bg-black border border-gray-200'}
                               
-                            >
+                            `}
+                            
+                          >
 
-                              <div className="flex flex-row items-center justify-between gap-2">
-                                <p className="text-lg text-green-500">
-                                  {TID}: {item.tradeId}
+                            <div className="flex flex-row items-center justify-between gap-2">
+                              <p className="text-lg text-green-500">
+                                {TID}: {item.tradeId}
+                              </p>
+                              {item.status === 'paymentConfirmed' && (
+                                <p className="text-sm text-zinc-400">
+                                  {new Date(item.acceptedAt).toLocaleString()}
                                 </p>
-                                {item.status === 'paymentConfirmed' && (
-                                  <p className="text-sm text-zinc-400">
-                                    {new Date(item.acceptedAt).toLocaleString()}
-                                  </p>
-                                )}
-                              </div>
-
-                              {item.status !== 'paymentConfirmed' && (
-                                <p className="mt-4 text-sm text-zinc-400">{Started_at} {
-                                  item.acceptedAt && new Date(item.acceptedAt).toLocaleString()
-                                }</p>
                               )}
-
-                              {item.status === 'paymentConfirmed' && (
-                                <p className="mt-4 text-sm text-zinc-400">{Completed_at} {
-                                  item.paymentConfirmedAt && new Date(item.paymentConfirmedAt).toLocaleString()
-                                }</p>
-                              )}
-
-                              {item.status === 'cancelled' && (
-                                <div className="mt-4 flex flex-row items-center gap-2">
-                                  <Image
-                                    src='/icon-cancelled.webp'
-                                    alt='cancel'
-                                    width={20}
-                                    height={20}
-                                  />
-                                  <p className="text-sm text-red-500">
-                                    Cancelled at {
-                                      new Date(item.cancelledAt).toLocaleDateString() + ' ' + new Date(item.cancelledAt).toLocaleTimeString()
-                                    }
-                                  </p>
-                                </div>
-                              )}
-
-                
-                              {item.status === 'paymentConfirmed' && (
-                                <div className="mt-4 flex flex-row items-center gap-2">
-
-                                  <Image
-                                    src='/timer.png'
-                                    alt='timer'
-                                    width={28}
-                                    height={28}
-                                  />
-
-                                  <div className="text-sm text-green-500">
-                                    {Trading_Time_is} {
-
-                                  ( (new Date(item.paymentConfirmedAt).getTime() - new Date(item.acceptedAt).getTime()) / 1000 / 60 ).toFixed(0) 
-
-                                    } {minutes}
-                                  </div>
-                                  
-                                </div>
-                              )}
-
-
-
-
-                            <div className="mt-4 flex flex-col items-between gap-2">
-
-                          
-
-                              <p className="text-2xl text-zinc-400">
-                                {Price}: {
-                                  // currency
-                                
-                                  Number(item.krwAmount).toLocaleString('ko-KR', {
-                                    style: 'currency',
-                                    currency: 'KRW',
-                                  })
-
-                                }
-                              </p>
-
-                              <div className="flex flex-row items-start gap-2">
-                                <p className="text-lg font-semibold text-white">{item.usdtAmount} USDT</p>
-
-                                <p className="text-lg font-semibold text-white">{Rate}: {
-
-                                  Number(item.krwAmount / item.usdtAmount).toFixed(2)
-
-                                }</p>
-      
-                              </div>
-
                             </div>
-                          
 
+                            {item.status !== 'paymentConfirmed' && (
+                              <p className="mt-4 text-sm text-zinc-400">{Started_at} {
+                                item.acceptedAt && new Date(item.acceptedAt).toLocaleString()
+                              }</p>
+                            )}
 
-                              <p className="mt-2 mb-2 flex items-center gap-2">
-                                <div className="flex items-center space-x-2">{Seller}: </div>
+                            {item.status === 'paymentConfirmed' && (
+                              <p className="mt-4 text-sm text-zinc-400">{Completed_at} {
+                                item.paymentConfirmedAt && new Date(item.paymentConfirmedAt).toLocaleString()
+                              }</p>
+                            )}
+
+                            {item.status === 'cancelled' && (
+                              <div className="mt-4 flex flex-row items-center gap-2">
                                 <Image
-                                    src={item.avatar || '/profile-default.png'}
-                                    alt="Avatar"
-                                    width={28}
-                                    height={28}
-                                    priority={true} // Added priority property
-                                    className="rounded-full"
-                                    style={{
-                                        objectFit: 'cover',
-                                        width: "28px",
-                                        height: "28px",
-                                      
-                                    }}
+                                  src='/icon-cancelled.webp'
+                                  alt='cancel'
+                                  width={20}
+                                  height={20}
                                 />
-                                <h2 className="text-lg font-semibold text-green-500">
-                                  {item.nickname}
-                                </h2>
+                                <p className="text-sm text-red-500">
+                                  Cancelled at {
+                                    new Date(item.cancelledAt).toLocaleDateString() + ' ' + new Date(item.cancelledAt).toLocaleTimeString()
+                                  }
+                                </p>
+                              </div>
+                            )}
+
+              
+                            {item.status === 'paymentConfirmed' && (
+                              <div className="mt-4 flex flex-row items-center gap-2">
+
+                                <Image
+                                  src='/timer.png'
+                                  alt='timer'
+                                  width={28}
+                                  height={28}
+                                />
+
+                                <div className="text-sm text-green-500">
+                                  {Trading_Time_is} {
+
+                                ( (new Date(item.paymentConfirmedAt).getTime() - new Date(item.acceptedAt).getTime()) / 1000 / 60 ).toFixed(0) 
+
+                                  } {minutes}
+                                </div>
+                                
+                              </div>
+                            )}
 
 
-                                <button
-                                  className="bg-green-500 text-white px-4 py-2 rounded-lg"
-                                  onClick={() => {
-                                      //console.log('Buy USDT');
-                                      // go to chat
-                                      // close modal
-                                      //closeModal();
-                                      goChat(item._id, item.tradeId);
 
+
+                          <div className="mt-4 flex flex-col items-between gap-2">
+
+                         
+
+                            <p className="text-2xl text-zinc-400">
+                              {Price}: {
+                                // currency
+                              
+                                Number(item.krwAmount).toLocaleString('ko-KR', {
+                                  style: 'currency',
+                                  currency: 'KRW',
+                                })
+
+                              }
+                            </p>
+
+                            <div className="flex flex-row items-start gap-2">
+                              <p className="text-lg font-semibold text-white">{item.usdtAmount} USDT</p>
+
+                              <p className="text-lg font-semibold text-white">{Rate}: {
+
+                                Number(item.krwAmount / item.usdtAmount).toFixed(2)
+
+                              }</p>
+    
+                            </div>
+
+                          </div>
+                        
+
+
+                            <p className="mt-2 mb-2 flex items-center gap-2">
+                              <div className="flex items-center space-x-2">{Seller}: </div>
+                              <Image
+                                  src={item.avatar || '/profile-default.png'}
+                                  alt="Avatar"
+                                  width={28}
+                                  height={28}
+                                  priority={true} // Added priority property
+                                  className="rounded-full"
+                                  style={{
+                                      objectFit: 'cover',
+                                      width: "28px",
+                                      height: "28px",
+                                     
                                   }}
-                                >
-                                  Chat
-                                </button>
-
-                              </p>
-
-                              {/* waiting for escrow */}
-                              {item.status === 'accepted' && (
-                                  <div className="mt-4 flex flex-row gap-2 items-center justify-start">
-
-                                    {/* rotate loading icon */}
-                                  
-                                    <Image
-                                      src="/loading.png"
-                                      alt="Escrow"
-                                      width={32}
-                                      height={32}
-                                      className="animate-spin"
-                                    />
-
-                                    <div>Waiting for seller to deposit {item.usdtAmount} USDT to escrow...</div>
-
-                                  </div>
-                              )}
+                              />
+                              <h2 className="text-lg font-semibold text-green-500">
+                                {item.nickname}
+                              </h2>
 
 
+                              <button
+                                className="bg-green-500 text-white px-4 py-2 rounded-lg"
+                                onClick={() => {
+                                    //console.log('Buy USDT');
+                                    // go to chat
+                                    // close modal
+                                    //closeModal();
+                                    goChat(item._id, item.tradeId);
 
+                                }}
+                              >
+                                Chat
+                              </button>
 
+                            </p>
 
-                              {item.status === 'paymentConfirmed' && (
-                                <div className="w-full flex flex-col items-start gap-2">
-                                  <div className="flex flex-row items-center gap-2">
-                                    <div className="text-lg font-semibold text-red-500">
-                                      - {item.krwAmount} KRW
-                                    </div>
-                                    <div className="text-lg font-semibold text-white">
-                                      /
-                                    </div>
-                                    <div className="text-lg font-semibold text-green-500">
-                                      + {item.usdtAmount} USDT
-                                    </div>
-                                  </div>
+                            {/* waiting for escrow */}
+                            {item.status === 'accepted' && (
+                                <div className="mt-4 flex flex-row gap-2 items-center justify-start">
 
-                                  
+                                  {/* rotate loading icon */}
+                                
+                                  <Image
+                                    src="/loading.png"
+                                    alt="Escrow"
+                                    width={32}
+                                    height={32}
+                                    className="animate-spin"
+                                  />
 
-                                  
+                                  <div>Waiting for seller to deposit {item.usdtAmount} USDT to escrow...</div>
 
                                 </div>
-                              )}
+                            )}
 
 
-                              {/*item.paymentRequestedAt && (
-                                <p className="text-sm text-zinc-400">Payment requested at<br />{
-                                  item.paymentRequestedAt && new Date(item.paymentRequestedAt).toLocaleString()
-                                }</p>
-                              )*/}
 
-                              {item.status === 'paymentRequested' && (
-                                <div className="mt-4 mb-2 flex flex-col gap-2 text-sm text-left bg-gray-800 p-4 rounded-md">
-                                  <p className="text-xl text-white font-semibold">
-                                    Payment Infomation
-                                  </p>
+
+
+                            {item.status === 'paymentConfirmed' && (
+                              <div className="w-full flex flex-col items-start gap-2">
+                                <div className="flex flex-row items-center gap-2">
+                                  <div className="text-lg font-semibold text-red-500">
+                                    - {item.krwAmount} KRW
+                                  </div>
+                                  <div className="text-lg font-semibold text-white">
+                                    /
+                                  </div>
+                                  <div className="text-lg font-semibold text-green-500">
+                                    + {item.usdtAmount} USDT
+                                  </div>
+                                </div>
 
                                 
-                                  <ul>
 
-                                    <li className="text-lg" >{item.seller?.bankInfo.bankName} {item.seller?.bankInfo.accountNumber} {item.seller?.bankInfo.accountHolder}</li>
-                                    <li className="text-lg">Amount : {item.krwAmount} KRW</li>
-                                    
-                                    <li className="mt-2">You must deposit to the above account using deposit name<br /><br />
-                                      <span className="text-red-500 font-semibold text-xl">{item.tradeId}</span>
-                                    </li>
+                                
 
-                                    {/*
-                                    <li className="mt-2">
-                                      After deposit, click the button below.
-                                    </li>
-                                    */}
+                              </div>
+                            )}
 
-                                  </ul>
+
+                            {/*item.paymentRequestedAt && (
+                              <p className="text-sm text-zinc-400">Payment requested at<br />{
+                                item.paymentRequestedAt && new Date(item.paymentRequestedAt).toLocaleString()
+                              }</p>
+                            )*/}
+
+                            {item.status === 'paymentRequested' && (
+                              <div className="mt-4 mb-2 flex flex-col gap-2 text-sm text-left bg-gray-800 p-4 rounded-md">
+                                <p className="text-xl text-white font-semibold">
+                                  Payment Infomation
+                                </p>
+
+                              
+                                <ul>
+
+                                  <li className="text-lg" >{item.seller?.bankInfo.bankName} {item.seller?.bankInfo.accountNumber} {item.seller?.bankInfo.accountHolder}</li>
+                                  <li className="text-lg">Amount : {item.krwAmount} KRW</li>
+                                  
+                                  <li className="mt-2">You must deposit to the above account using deposit name<br /><br />
+                                    <span className="text-red-500 font-semibold text-xl">{item.tradeId}</span>
+                                  </li>
 
                                   {/*
-                                  <button className="m-2 bg-green-500 text-white px-4 py-2 rounded-lg">
-                                    Payment Completed
-                                  </button>
+                                  <li className="mt-2">
+                                    After deposit, click the button below.
+                                  </li>
                                   */}
 
-                                </div>
-                              )}
+                                </ul>
 
-
-                              {/*
-                              {item.status === 'accepted' && (
-                                <button className="mt-2 mb-2 bg-green-500 text-white px-4 py-2 rounded-lg">
-                                  Cancel Trade
+                                {/*
+                                <button className="m-2 bg-green-500 text-white px-4 py-2 rounded-lg">
+                                  Payment Completed
                                 </button>
-                              )}
-                              */}
-                              
+                                */}
+
+                              </div>
+                            )}
+
+
+                            {/*
+                            {item.status === 'accepted' && (
+                              <button className="mt-2 mb-2 bg-green-500 text-white px-4 py-2 rounded-lg">
+                                Cancel Trade
+                              </button>
+                            )}
+                            */}
+                            
 
 
 
 
+
+                           
 
                             
 
-                              
 
 
 
+                            {item.status === 'ordered' && (
+                              <>
 
-                              {item.status === 'ordered' && (
+                              {acceptingSellOrder ? (
+                                  <button
+                                      disabled={true}
+                                      className="text-lg bg-gray-200 text-gray-700 px-4 py-2 rounded-md mt-4"
+                                  >
+                                      Processing...
+                                  </button>
+                              ) : (
                                 <>
-
-                                {acceptingSellOrder ? (
-                                    <button
-                                        disabled={true}
-                                        className="text-lg bg-gray-200 text-gray-700 px-4 py-2 rounded-md mt-4"
-                                    >
-                                        Processing...
-                                    </button>
-                                ) : (
-                                  <>
-                                    
-                                    {item.walletAddress === address ? (
-                                      <div className="flex flex-col space-y-4">
-                                        My Order
-                                      </div>
-                                    ) : (
-
-                                        <button
-                                            disabled={!user}
-                                            className="text-lg bg-green-500 text-white px-4 py-2 rounded-md mt-4"
-                                            onClick={() => {
-                                                console.log('Buy USDT');
-
-                                                // open trade detail
-                                                // open modal of trade detail
-
-
-
-                                                //openModal();
-
-
-                                                acceoptSellOrder(item._id);
-                                          
-
-                                            }}
-                                        >
-                                            Buy USDT
-                                        </button>
-
-                                      )}
-
-                                    </>
-
-                                  )}
-
-                                </>
-
-                              )}
-
-
-                              {item.status === 'paymentConfirmed' && (
-                                <div className="w-full mt-2 mb-2 flex flex-col items-center ">
                                   
-                                  <Image
-                                    src='/confirmed.png'
-                                    alt='confirmed'
-                                    width={200}
-                                    height={200}
-                                  />
+                                  {item.walletAddress === address ? (
+                                    <div className="flex flex-col space-y-4">
+                                      My Order
+                                    </div>
+                                  ) : (
+
+                                      <button
+                                          disabled={!user}
+                                          className="text-lg bg-green-500 text-white px-4 py-2 rounded-md mt-4"
+                                          onClick={() => {
+                                              console.log('Buy USDT');
+
+                                              // open trade detail
+                                              // open modal of trade detail
 
 
-                                </div>
-                              )}
+
+                                              //openModal();
 
 
-                          {/* status */}
+                                              acceoptSellOrder(item._id);
+                                        
 
-                          <div className="mt-10 flex flex-row items-start justify-end">
-                            <div className="text-xs text-zinc-400">
-                              {item.status === 'ordered' ? 'Order opened at ' + new Date(item.createdAt).toLocaleString()
-                              : item.status === 'accepted' ? 'Trade started at ' + new Date(item.acceptedAt).toLocaleString()
-                              : item.status === 'paymentRequested' ? 'Payment requested at ' + new Date(item.paymentRequestedAt).toLocaleString()
-                              : item.status === 'cancelled' ? 'Trade cancelled at ' + new Date(item.cancelledAt).toLocaleString()
-                              : item.status === 'paymentConfirmed' ? 'Trade completed at ' + new Date(item.paymentConfirmedAt).toLocaleString()
-                              : 'Unknown'}
-                            </div>
+                                          }}
+                                      >
+                                          Buy USDT
+                                      </button>
+
+                                    )}
+
+                                  </>
+
+                                )}
+
+                              </>
+
+                            )}
+
+
+                            {item.status === 'paymentConfirmed' && (
+                              <div className="w-full mt-2 mb-2 flex flex-col items-center ">
+                                
+                                <Image
+                                  src='/confirmed.png'
+                                  alt='confirmed'
+                                  width={200}
+                                  height={200}
+                                />
+
+
+                              </div>
+                            )}
+
+
+                        {/* status */}
+
+                        <div className="mt-10 flex flex-row items-start justify-end">
+                          <div className="text-xs text-zinc-400">
+                            {item.status === 'ordered' ? 'Order opened at ' + new Date(item.createdAt).toLocaleString()
+                            : item.status === 'accepted' ? 'Trade started at ' + new Date(item.acceptedAt).toLocaleString()
+                            : item.status === 'paymentRequested' ? 'Payment requested at ' + new Date(item.paymentRequestedAt).toLocaleString()
+                            : item.status === 'cancelled' ? 'Trade cancelled at ' + new Date(item.cancelledAt).toLocaleString()
+                            : item.status === 'paymentConfirmed' ? 'Trade completed at ' + new Date(item.paymentConfirmedAt).toLocaleString()
+                            : 'Unknown'}
                           </div>
+                        </div>
 
 
 
-                          </article>
+                        </article>
 
-                      ))}
+                    ))}
 
-                  </div>
-
-                )}
+                </div>
 
             </div>
 

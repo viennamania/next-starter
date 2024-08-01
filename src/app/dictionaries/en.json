@@ -59,6 +59,7 @@
     "Orders": "Orders",
     "Trades": "Trades",
     "Completed": "Completed",
+    "Cancelled": "Cancelled",
 
     "Search_my_trades": "Search my trades",
 
