@@ -119,6 +119,18 @@ export default function SettingsPage({ params }: any) {
 
         Wallet_Settings: "",
         Profile_Settings: "",
+
+        Profile: "",
+        My_Profile_Picture: "",
+  
+        Edit: "",
+
+
+        Cancel: "",
+        Save: "",
+        Enter_your_nickname: "",
+
+        Seller: "",
     
     } );
     
@@ -153,6 +165,18 @@ export default function SettingsPage({ params }: any) {
 
         Wallet_Settings,
         Profile_Settings,
+
+        Profile,
+        My_Profile_Picture,
+  
+        Edit,
+
+        Cancel,
+        Save,
+        Enter_your_nickname,
+
+        Seller,
+
     } = data;
     
     
@@ -548,7 +572,7 @@ export default function SettingsPage({ params }: any) {
                             <div className='flex flex-row xl:flex-row gap-2 items-center justify-between border border-gray-300 p-4 rounded-lg'>
 
                                 <div className="bg-green-500 text-sm text-zinc-100 p-2 rounded">
-                                    My Profile Picture
+                                    {My_Profile_Picture}
                                 </div>
 
                                 <div className="p-2 bg-zinc-800 rounded text-zinc-100 text-xl font-semibold">
@@ -567,7 +591,7 @@ export default function SettingsPage({ params }: any) {
                             <div className='flex flex-row gap-2 items-center justify-between border border-gray-300 p-4 rounded-lg'>
 
                                 <div className="bg-green-500 text-sm text-zinc-100 p-2 rounded">
-                                   My Nickname
+                                    {My_Nickname}
                                 </div>
 
                                 <div className="p-2 bg-zinc-800 rounded text-zinc-100 text-xl font-semibold">
@@ -587,7 +611,7 @@ export default function SettingsPage({ params }: any) {
                                     } }
                                     className="p-2 bg-blue-500 text-zinc-100 rounded"
                                 >
-                                    {nicknameEdit ? 'Cancel' : 'Edit'}
+                                    {nicknameEdit ? Cancel : Edit}
                                 </button>
 
                                 <Image
@@ -610,13 +634,13 @@ export default function SettingsPage({ params }: any) {
                                 <div
                                     className="bg-green-500 text-sm text-zinc-100 p-2 rounded"
                                 >
-                                    Nickname
+                                    {My_Nickname}
                                 </div>
 
                                 <input
                                     disabled={!address}
                                     className="p-2 w-64 text-zinc-100 bg-zinc-800 rounded text-2xl font-semibold"
-                                    placeholder="Enter your nickname"
+                                    placeholder={Enter_your_nickname}
                                     
                                     //value={nickname}
                                     value={editedNickname}
@@ -654,7 +678,7 @@ export default function SettingsPage({ params }: any) {
                                         setUserData();
                                     }}
                                 >
-                                    Save
+                                    {Save}
                                 </button>
 
                                 
@@ -708,7 +732,7 @@ export default function SettingsPage({ params }: any) {
                             <div className='flex flex-row gap-2 items-center justify-between border border-gray-300 p-4 rounded-lg'>
 
                                 <div className="bg-green-500 text-sm text-zinc-100 p-2 rounded">
-                                    Seller
+                                    {Seller}
                                 </div>
 
                                 <div className="flex flex-col p-2 bg-zinc-800 rounded text-zinc-100 text-xl font-semibold">
@@ -732,7 +756,7 @@ export default function SettingsPage({ params }: any) {
                                     }}
                                     className="p-2 bg-blue-500 text-zinc-100 rounded"
                                 >
-                                    Sell USDT
+                                    {Sell_USDT}
                                 </button>
 
 

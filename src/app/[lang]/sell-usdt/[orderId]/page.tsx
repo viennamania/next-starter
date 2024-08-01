@@ -256,6 +256,16 @@ export default function Index({ params }: any) {
 
       Escrow: "",
 
+      Profile: "",
+      My_Profile_Picture: "",
+  
+      Edit: "",
+
+
+      Cancel: "",
+      Save: "",
+      Enter_your_nickname: "",
+
     } );
   
     useEffect(() => {
@@ -339,6 +349,15 @@ export default function Index({ params }: any) {
       TID,
 
       Escrow,
+
+      Profile,
+      My_Profile_Picture,
+
+      Edit,
+
+      Cancel,
+      Save,
+      Enter_your_nickname,
 
     } = data;
    

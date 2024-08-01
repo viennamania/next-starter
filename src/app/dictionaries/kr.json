@@ -121,6 +121,14 @@
     "Wallet_Settings": "지갑 설정",
     "Profile_Settings": "프로필 설정",
 
+    "Profile": "프로필",
+    "My_Profile_Picture": "내 프로필 사진",
+
+    "Edit": "수정",
+    "Cancel": "취소",
+    "Save": "저장",
+    "Enter_your_nickname": "닉네임 입력",
+
     "My_Buy_USDT_Trades": "내 USDT 구매내역",
     "My_Sell_USDT_Trades": "내 USDT 판매내역",
 

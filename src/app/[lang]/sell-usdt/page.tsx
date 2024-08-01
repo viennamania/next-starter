@@ -208,6 +208,11 @@ export default function Index({ params }: any) {
 
     SMS_will_be_sent_to_your_mobile_number: "",
 
+    Profile : "",
+    My_Profile_Picture : "",
+
+    Edit : "",
+
   } );
 
   useEffect(() => {
@@ -282,6 +287,11 @@ export default function Index({ params }: any) {
     seconds_ago,
 
     SMS_will_be_sent_to_your_mobile_number,
+
+    Profile,
+    My_Profile_Picture,
+
+    Edit,
 
 
   } = data;
