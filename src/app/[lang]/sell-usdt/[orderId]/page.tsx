@@ -250,6 +250,8 @@ export default function Index({ params }: any) {
 
       Transfering_USDT_to_the_buyer_wallet_address: "",
 
+      Anonymous: "",
+
     } );
   
     useEffect(() => {
@@ -327,6 +329,8 @@ export default function Index({ params }: any) {
       I_agree_to_check_the_bank_transfer_of,
 
       Transfering_USDT_to_the_buyer_wallet_address,
+
+      Anonymous,
 
     } = data;
    
@@ -1245,7 +1249,9 @@ export default function Index({ params }: any) {
                               height: '20px',
                           }}
                         />
-                        <div className="text-lg font-semibold text-white ">{user?.nickname}</div>
+                        <div className="text-lg font-semibold text-white ">{
+                          user?.nickname ? user.nickname : Anonymous
+                        }</div>
                       </div>
                     </div>
 
@@ -1611,9 +1617,9 @@ export default function Index({ params }: any) {
                                 <h2 className="text-lg font-semibold">
                                     {Seller}: {
 
-                                        item.walletAddress === address ? item.nickname + ' :' + Me :
+                                        item.walletAddress === address ? item.nickname ? item.nickname : Anonymous  + ' :' + Me :
                                         
-                                        item.nickname
+                                        item.nickname ? item.nickname : Anonymous
 
                                     }
                                 </h2>
@@ -1675,9 +1681,9 @@ export default function Index({ params }: any) {
                                   <h2 className="text-lg font-semibold">
                                       {Buyer}: {
 
-                                          item.buyer?.walletAddress === address ? item.buyer.nickname + ' :' + Me :
+                                          item.buyer?.walletAddress === address ? item.buyer.nickname ? item.buyer.nickname : Anonymous + ' :' + Me :
 
-                                          item.buyer ? item.buyer.nickname : 'Anonymous'
+                                          item.buyer ? item.buyer.nickname : Anonymous
 
                                       }
                                   </h2>
@@ -2335,7 +2341,9 @@ export default function Index({ params }: any) {
                                       />
                                       <div className="text-lg font-semibold text-white">
                                         
-                                        {Checking_the_bank_transfer_from_the_buyer} ( {item.buyer.nickname} )...
+                                        {Checking_the_bank_transfer_from_the_buyer} ( {
+                                          item.buyer.nickname ? item.buyer.nickname : Anonymous
+                                        } )...
 
 
                                       </div>
