@@ -93,6 +93,8 @@ interface SellOrder {
   buyer: any;
 
   privateSale: boolean;
+
+
 }
 
 
@@ -208,6 +210,8 @@ export default function Index({ params }: any) {
 
     SMS_will_be_sent_to_your_mobile_number: "",
 
+    Anonymous: "",
+
   } );
 
   useEffect(() => {
@@ -282,6 +286,8 @@ export default function Index({ params }: any) {
     seconds_ago,
 
     SMS_will_be_sent_to_your_mobile_number,
+
+    Anonymous,
 
 
   } = data;
@@ -829,7 +835,9 @@ export default function Index({ params }: any) {
                                 }}
 
                               />
-                              <div className="text-lg font-semibold text-white">{nickname}</div>
+                              <div className="text-lg font-semibold text-white">{
+                              nickname ? nickname : Anonymous
+                              }</div>
 
                               <Image
                                 src="/verified.png"
@@ -1255,7 +1263,9 @@ export default function Index({ params }: any) {
                               height: '20px',
                           }}
                         />
-                        <div className="text-lg font-semibold text-white ">{user?.nickname}</div>
+                        <div className="text-lg font-semibold text-white ">{
+                          user?.nickname ? user?.nickname : Anonymous
+                        }</div>
                       </div>
                       {/* checkbox for search my trades */}
                       <div className="flex flex-row items-center gap-2">
@@ -1558,7 +1568,9 @@ export default function Index({ params }: any) {
                                 (item.status === 'accepted' || item.status === 'paymentRequested') ? (
 
                                   <div className="flex flex-row items-center gap-2">
-                                    <span>{Seller}: {item.nickname}</span>
+                                    <span>{Seller}: {
+                                    item.nickname ? item.nickname : Anonymous
+                                    }</span>
                                     <span className="text-green-500">:{Me}</span>
                                     
                                     {/* goto /sell-usdt/:id */}
@@ -1580,7 +1592,9 @@ export default function Index({ params }: any) {
                                 ) : (item.walletAddress === address && item.status === 'ordered') ? (
 
                                   <div className="flex flex-row items-center gap-2">
-                                    <span>{Seller}: {item.nickname}</span>
+                                    <span>{Seller}: {
+                                      item.nickname ? item.nickname : Anonymous
+                                    }</span>
                                     <span className="text-green-500">:{Me}</span>
                                            
                                     <button
@@ -1631,7 +1645,10 @@ export default function Index({ params }: any) {
                                 ) : (
                                 
                                   <span>
-                                    {Seller}: {item.nickname}
+                                    {Seller}: {
+                                    item.nickname
+                                    ? item.nickname : Anonymous
+                                  }
                                   </span>
 
                                 )

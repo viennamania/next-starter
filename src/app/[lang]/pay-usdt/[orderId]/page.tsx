@@ -254,6 +254,8 @@ export default function Index({ params }: any) {
 
       Waiting_for_trading_partner_to_proceed: "",
 
+      Anonymous: "",
+
     } );
   
     useEffect(() => {
@@ -333,6 +335,8 @@ export default function Index({ params }: any) {
       Transfering_USDT_to_the_buyer_wallet_address,
 
       Waiting_for_trading_partner_to_proceed,
+
+      Anonymous,
 
     } = data;
    
@@ -1155,7 +1159,9 @@ export default function Index({ params }: any) {
                               height: '20px',
                           }}
                         />
-                        <div className="text-lg font-semibold text-white ">{user?.nickname}</div>
+                        <div className="text-lg font-semibold text-white ">{
+                          user?.nickname ? user.nickname : Anonymous
+                        }</div>
                       </div>
                     </div>
 
@@ -2293,7 +2299,9 @@ export default function Index({ params }: any) {
                                       />
                                       <div className="text-lg font-semibold text-white">
                                         
-                                        {Checking_the_bank_transfer_from_the_buyer} ( {item.buyer.nickname} )...
+                                        {Checking_the_bank_transfer_from_the_buyer} ( {
+                                        item.buyer.nickname ? item.buyer.nickname : Anonymous
+                                        } )...
 
 
                                       </div>

@@ -173,6 +173,8 @@ export default function Index({ params }: any) {
     Open_Orders: "",
     Please_connect_your_wallet_first: "",
 
+    Anonymous: "",
+
   } );
 
   useEffect(() => {
@@ -204,6 +206,9 @@ export default function Index({ params }: any) {
     Coming_Soon,
     Open_Orders,
     Please_connect_your_wallet_first,
+
+    Anonymous,
+    
   } = data;
 
 
@@ -851,7 +856,7 @@ export default function Index({ params }: any) {
 
                 <div className=" flex flex-row gap-2 justify-center items-center">
                   <h2 className="text-3xl font-semibold text-zinc-100">
-                    {nickname}
+                    {nickname || Anonymous}
                   </h2>
                   {userCode && (
                     <Image

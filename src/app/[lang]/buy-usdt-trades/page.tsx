@@ -81,6 +81,8 @@ interface SellOrder {
   tradeId: string;
 
   buyer: any;
+
+
 }
 
 
@@ -188,6 +190,8 @@ export default function Index({ params }: any) {
     minutes: "",
     seconds: "",
 
+    Anonymous: "",
+
 
   } );
 
@@ -258,6 +262,8 @@ export default function Index({ params }: any) {
     hours,
     minutes,
     seconds,
+
+    Anonymous,
 
   } = data;
 
@@ -816,7 +822,9 @@ export default function Index({ params }: any) {
                                 {item.buyer?.memo}
                               </td>
 
-                              <td>{item.nickname}</td>
+                              <td>{
+                                item.nickname ? item.nickname : Anonymous
+                                }</td>
                               <td>{item.usdtAmount}</td>
                               <td>{Number(item.krwAmount).toLocaleString('ko-KR', {
                                 style: 'currency',
@@ -987,7 +995,9 @@ export default function Index({ params }: any) {
                                     }}
                                 />
                                 <h2 className="text-lg font-semibold text-green-500">
-                                  {item.nickname}
+                                  {
+                                    item.nickname ? item.nickname : Anonymous
+                                  }
                                 </h2>
 
 

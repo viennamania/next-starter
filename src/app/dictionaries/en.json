@@ -65,6 +65,8 @@
 
     "Search_my_trades": "Search my trades",
 
+    "Anonymous": "Anonymous",
+
     "Seller": "Seller",
     "Buyer": "Buyer",
     "Me": "Me",
@@ -228,6 +230,9 @@
 
 
     "Waiting_for_trading_partner_to_proceed": "Waiting for trading partner to proceed"
+
+
+
 
 
 }

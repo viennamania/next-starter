@@ -143,6 +143,8 @@ export default function Index({ params }: any) {
     Trades: "",
     Search_my_trades: "",
 
+    Anonymous: "",
+
     Seller: "",
     Buyer: "",
     Me: "",
@@ -209,6 +211,9 @@ export default function Index({ params }: any) {
     Orders,
     Trades,
     Search_my_trades,
+
+    Anonymous,
+
     Seller,
     Buyer,
     Me,
@@ -264,6 +269,29 @@ export default function Index({ params }: any) {
   const smartAccount = useActiveAccount();
 
   const address = smartAccount?.address || "";
+
+
+  const [phoneNumber, setPhoneNumber] = useState("");
+
+  useEffect(() => {
+
+
+    if (smartAccount) {
+
+      //const phoneNumber = await getUserPhoneNumber({ client });
+      //setPhoneNumber(phoneNumber);
+
+
+      getUserPhoneNumber({ client }).then((phoneNumber) => {
+        setPhoneNumber(phoneNumber || "");
+      });
+
+
+
+    }
+
+  } , [smartAccount]);
+
 
 
   const [balance, setBalance] = useState(0);
@@ -442,6 +470,7 @@ export default function Index({ params }: any) {
     } , [sellOrders]);
 
 
+    /*
     // sms receiver mobile number array
     const [smsReceiverMobileNumbers, setSmsReceiverMobileNumbers] = useState([] as string[]);
     useEffect(() => {
@@ -451,6 +480,12 @@ export default function Index({ params }: any) {
             })
         );
     } , [sellOrders, user]);
+    */
+
+    const [smsReceiverMobileNumber, setSmsReceiverMobileNumber] = useState('');
+    useEffect(() => {
+        setSmsReceiverMobileNumber(phoneNumber);
+    } , [phoneNumber]);
 
 
 
@@ -460,7 +495,10 @@ export default function Index({ params }: any) {
       smsNumber: string,
     ) => {
 
-        if (!user) {
+        if (!address) {
+
+            toast.error('Please connect your wallet');
+
             return;
         }
 
@@ -482,9 +520,9 @@ export default function Index({ params }: any) {
             },
             body: JSON.stringify({
                 orderId: orderId,
-                buyerWalletAddress: user.walletAddress,
-                buyerNickname: user.nickname,
-                buyerAvatar: user.avatar,
+                buyerWalletAddress: address,
+                buyerNickname: user ? user.nickname : '',
+                buyerAvatar: user ? user.avatar : '',
 
                 //buyerMobile: user.mobile,
                 buyerMobile: smsNumber,
@@ -765,7 +803,11 @@ export default function Index({ params }: any) {
                               height: '20px',
                           }}
                         />
-                        <div className="text-lg font-semibold text-white ">{user?.nickname}</div>
+                        <div className="text-lg font-semibold text-white ">
+                          {
+                            user && user.nickname ? user.nickname : Anonymous
+                          }
+                          </div>
                       </div>
                       {/* checkbox for search my trades */}
                       <div className="flex flex-row items-center gap-2">
@@ -1196,7 +1238,7 @@ export default function Index({ params }: any) {
                                   <p className="text-xl text-red-500 font-semibold">
                                     {Buyer}: {
                                       item.buyer.walletAddress === address ? Me :
-                                      item.buyer.nickname.substring(0, 1) + '***'
+                                      item.buyer.nickname ? item.buyer.nickname : Anonymous
                                     }
                                   </p>
  
@@ -1510,28 +1552,20 @@ export default function Index({ params }: any) {
 
                                           {/* input sms receiver mobile number */}
 
-                                          {user && agreementForTrade[index] && (
+                                          {address && agreementForTrade[index] && (
                                             <div className="mt-8 flex flex-row items-center justify-start gap-2">
 
                                               <span className="text-sm text-zinc-400">SMS</span>
 
                                               <div className="flex flex-col items-start justify-start">
                                                 <input
-                                                  disabled={!user || !agreementForTrade[index]}
+                                                  disabled={!address || !agreementForTrade[index]}
                                                   type="text"
                                                   placeholder="SMS Receiver Mobile Number"
                                                   className={`w-full px-4 py-2 rounded-md text-black`}
-                                                  value={smsReceiverMobileNumbers[index]}
+                                                  value={smsReceiverMobileNumber}
                                                   onChange={(e) => {
-                                                      setSmsReceiverMobileNumbers(
-                                                          smsReceiverMobileNumbers.map((item, idx) => {
-                                                              if (idx === index) {
-                                                                  return e.target.value;
-                                                              } else {
-                                                                  return item;
-                                                              }
-                                                          })
-                                                      );
+                                                      setSmsReceiverMobileNumber(e.target.value);
                                                   }}
                                                 />
                                               </div>
@@ -1543,13 +1577,13 @@ export default function Index({ params }: any) {
 
 
                                           <button
-                                            disabled={!user || !agreementForTrade[index]}
+                                            disabled={!address || !agreementForTrade[index]}
                                             className={`m-10 text-lg text-white px-4 py-2 rounded-md
-                                              ${!user || !agreementForTrade[index] ? 'bg-zinc-800' : 'bg-green-500 hover:bg-green-600'}
+                                              ${!address || !agreementForTrade[index] ? 'bg-zinc-800' : 'bg-green-500 hover:bg-green-600'}
                                               `}
                                             onClick={() => {
   
-                                                acceoptSellOrder(index, item._id, smsReceiverMobileNumbers[index]);
+                                                acceoptSellOrder(index, item._id, smsReceiverMobileNumber);
                                           
 
                                             }}
