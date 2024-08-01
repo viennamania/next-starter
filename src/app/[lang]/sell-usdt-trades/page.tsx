@@ -1069,9 +1069,15 @@ export default function Index({ params }: any) {
 
 
                             {item.status === 'paymentConfirmed' && (
-                              <p className="mt-5 text-xl text-green-500">
-                                {Buyer}: {item.buyer.nickname} {item.buyer.memo && `(${item.buyer.memo})`}
-                              </p>
+                              <div className="flex flex-col gap-2">
+                                <p className="mt-5 text-xl text-green-500">
+                                  {Buyer}: {item.buyer.nickname}
+                                </p>
+                                <p className="text-sm text-green-500">
+                                  Memo: {' '}{item.buyer.memo && item.buyer.memo}
+                                </p>
+
+                              </div>
                             )}
 
 
@@ -1083,7 +1089,8 @@ export default function Index({ params }: any) {
 
                                       {/* buyer info */}
                                       <div className="flex flex-col items-start gap-2">
-                                        <p className="text-lg text-green-500">{Buyer}: {item.buyer.nickname} {item.buyer.memo && `(${item.buyer.memo})`}</p>
+                                        <p className="text-lg text-green-500">{Buyer}: {item.buyer.nickname}</p>
+                                        <p className="text-lg text-green-500">Memo: {item.buyer.memo}</p>
                                       </div>
                                     
                                       <button
