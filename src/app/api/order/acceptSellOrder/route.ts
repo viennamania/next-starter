@@ -14,7 +14,7 @@ export async function POST(request: NextRequest) {
 
   const body = await request.json();
 
-  const { orderId, buyerWalletAddress, buyerNickname, buyerAvatar, buyerMobile } = body;
+  const { orderId, buyerWalletAddress, buyerNickname, buyerAvatar, buyerMobile, buyerMemo } = body;
 
   console.log("orderId", orderId);
   
@@ -25,6 +25,7 @@ export async function POST(request: NextRequest) {
     buyerNickname: buyerNickname,
     buyerAvatar: buyerAvatar,
     buyerMobile: buyerMobile,
+    buyerMemo: buyerMemo,
   });
 
   ////console.log("result", result);

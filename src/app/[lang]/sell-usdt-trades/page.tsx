@@ -1070,7 +1070,7 @@ export default function Index({ params }: any) {
 
                             {item.status === 'paymentConfirmed' && (
                               <p className="mt-5 text-xl text-green-500">
-                                {Buyer}: {item.buyer.nickname}
+                                {Buyer}: {item.buyer.nickname} {item.buyer.memo && `(${item.buyer.memo})`}
                               </p>
                             )}
 
