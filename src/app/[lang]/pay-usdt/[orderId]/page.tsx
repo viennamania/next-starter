@@ -1586,68 +1586,86 @@ export default function Index({ params }: any) {
                             {/* buyer */}
                             {item.buyer && (
 
-                              <div className='mt-10 flex flex-row items-center gap-2 mb-2'>
+                              <div className='mt-10 flex flex-col items-start gap-2'>
 
-                                {item.buyer.mobile && (
-                                  <div className='flex flex-row items-center gap-2'>
-                                    <span className="text-lg font-semibold text-white">User: </span>
-                                    <span className="text-2xl text-zinc-400">
-                                      {item.buyer.mobile}
-                                    </span>
-                                  </div>
+                                {/* buyer memo */}
 
-                                )}
-
-
-                                {/*}
-                                <Image
-                                  src={item.buyer.avatar || "/profile-default.png"}
-                                  alt="Profile Image"
-                                  width={32}
-                                  height={32}
-                                  priority={true} // Added priority property
-                                  className="rounded-full"
-                                  style={{
-                                      objectFit: 'cover',
-                                      width: '32px',
-                                      height: '32px',
-                                  }}
-                                />
-
-                                <h2 className="text-lg font-semibold">
-                                    {Buyer}: {
-
-                                        item.buyer?.walletAddress === address ? item.buyer.nickname + ' :' + Me :
-
-                                        item.buyer ? item.buyer.nickname.substring(0, 1) + '***' : 'Anonymous'
-
+                                <div className='flex flex-row items-center gap-2'>
+                                  <span className="text-lg font-semibold text-white">User ID: </span>
+                                  <span className="text-2xl text-green-500">
+                                    {
+                                      // if ':' is included in the memo, then remove prefix
+                                      item.buyer.memo.includes(':') ? item.buyer.memo.split(':')[1] :
+                                      item.buyer.memo
                                     }
-                                </h2>
+                                  </span>
+                                </div>
 
-                                
-                                <Image
-                                  src="/verified.png"
-                                  alt="Verified"
-                                  width={24}
-                                  height={24}
-                                />
-                                */}
 
-                                {/* if i am the seller, then show chat button */}
-                                {address && item.walletAddress === address && (
-                                  <button
-                                      className="text-sm bg-blue-500 text-white px-2 py-1 rounded-md"
-                                      onClick={() => {
-                                        //console.log('Chat');
-                                        
-                                        goChat(item._id, item.tradeId);
+                                <div className='flex flex-row items-center gap-2 mb-2'>
 
-                                      }}
-                                  >
-                                    Chat
-                                  </button>
-                                )}
-                                
+                                  {item.buyer.mobile && (
+                                    <div className='flex flex-row items-center gap-2'>
+                                      <span className="text-lg font-semibold text-white">User SMS: </span>
+                                      <span className="text-2xl text-zinc-400">
+                                        {item.buyer.mobile}
+                                      </span>
+                                    </div>
+
+                                  )}
+
+
+                                  {/*}
+                                  <Image
+                                    src={item.buyer.avatar || "/profile-default.png"}
+                                    alt="Profile Image"
+                                    width={32}
+                                    height={32}
+                                    priority={true} // Added priority property
+                                    className="rounded-full"
+                                    style={{
+                                        objectFit: 'cover',
+                                        width: '32px',
+                                        height: '32px',
+                                    }}
+                                  />
+
+                                  <h2 className="text-lg font-semibold">
+                                      {Buyer}: {
+
+                                          item.buyer?.walletAddress === address ? item.buyer.nickname + ' :' + Me :
+
+                                          item.buyer ? item.buyer.nickname.substring(0, 1) + '***' : 'Anonymous'
+
+                                      }
+                                  </h2>
+
+                                  
+                                  <Image
+                                    src="/verified.png"
+                                    alt="Verified"
+                                    width={24}
+                                    height={24}
+                                  />
+                                  */}
+
+                                  {/* if i am the seller, then show chat button */}
+                                  {address && item.walletAddress === address && (
+                                    <button
+                                        className="text-sm bg-blue-500 text-white px-2 py-1 rounded-md"
+                                        onClick={() => {
+                                          //console.log('Chat');
+                                          
+                                          goChat(item._id, item.tradeId);
+
+                                        }}
+                                    >
+                                      Chat
+                                    </button>
+                                  )}
+                                  
+
+                                </div>
 
                               </div>
 
