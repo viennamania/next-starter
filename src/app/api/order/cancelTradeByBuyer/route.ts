@@ -45,17 +45,22 @@ export async function POST(request: NextRequest) {
 
     let message = null;
 
+    try {
 
-    const msgBody = `[UNOVE] TID[${tradeId}] Your sell order has been cancelled by ${buyer?.nickname}!`;
+      const msgBody = `[UNOVE] TID[${tradeId}] Your sell order has been cancelled by ${buyer?.nickname}!`;
 
-    message = await client.messages.create({
-      ///body: "This is the ship that made the Kessel Run in fourteen parsecs?",
-      body: msgBody,
-      from: "+17622254217",
-      to: to,
-    });
+      message = await client.messages.create({
+        ///body: "This is the ship that made the Kessel Run in fourteen parsecs?",
+        body: msgBody,
+        from: "+17622254217",
+        to: to,
+      });
 
-    console.log(message.sid);
+      console.log(message.sid);
+
+    } catch (e) {
+      console.error('Error sending SMS', e);
+    }
 
 
 

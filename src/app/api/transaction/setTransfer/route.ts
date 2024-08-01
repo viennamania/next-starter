@@ -50,16 +50,21 @@ export async function POST(request: NextRequest) {
       let message = null;
 
 
-      const body = `[UNOVE] You have received ${amount} USDT from ${fromUserNickname}!`;
+      try {
+        const body = `[UNOVE] You have received ${amount} USDT from ${fromUserNickname}!`;
 
-      message = await client.messages.create({
-        ///body: "This is the ship that made the Kessel Run in fourteen parsecs?",
-        body: body,
-        from: "+17622254217",
-        to: to,
-      });
+        message = await client.messages.create({
+          ///body: "This is the ship that made the Kessel Run in fourteen parsecs?",
+          body: body,
+          from: "+17622254217",
+          to: to,
+        });
 
-      console.log(message.sid);
+        console.log(message.sid);
+
+      } catch (e) {
+        console.error('Error sending SMS', e);
+      }
 
   }
 
