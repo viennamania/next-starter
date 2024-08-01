@@ -254,6 +254,8 @@ export default function Index({ params }: any) {
 
       TID: "",
 
+      Escrow: "",
+
     } );
   
     useEffect(() => {
@@ -335,6 +337,8 @@ export default function Index({ params }: any) {
       Anonymous,
 
       TID,
+
+      Escrow,
 
     } = data;
    
@@ -1824,7 +1828,7 @@ export default function Index({ params }: any) {
 
                               {escrowing[index] === false && requestingPayment[index] === true && (
                                 <div className="flex flex-col gpa-2">
-                                  Escrow {item.usdtAmount} USDT to the smart contract has been completed.
+                                  {Escrow} {item.usdtAmount} USDT to the smart contract has been completed.
                                 </div>
                               )}
 
