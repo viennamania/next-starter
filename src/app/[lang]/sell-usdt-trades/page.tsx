@@ -310,6 +310,13 @@ export default function Index({ params }: any) {
     const [sellOrders, setSellOrders] = useState<SellOrder[]>([]);
 
 
+
+    const [checkCancelledTrade, setCheckCancelledTrade] = useState(true);
+    const [checkProceedTrade, setCheckProceedTrade] = useState(true);
+    const [checkCompleteTrade, setCheckCompleteTrade] = useState(true);
+
+
+
     useEffect(() => {
 
         if (!address) {
@@ -333,7 +340,46 @@ export default function Index({ params }: any) {
           ///console.log('data', data);
   
           if (data.result) {
-            setSellOrders(data.result.orders);
+            ////setSellOrders(data.result.orders);
+
+
+
+            if (checkProceedTrade && checkCompleteTrade && checkCancelledTrade) {
+              setSellOrders(data.result.orders);
+            }
+
+            if (checkProceedTrade && !checkCompleteTrade && !checkCancelledTrade) {
+                setSellOrders(data.result.orders.filter((item: SellOrder) => item.status === 'accepted' || item.status === 'paymentRequested'));
+            }
+
+            if (!checkProceedTrade && checkCompleteTrade && !checkCancelledTrade) {
+                setSellOrders(data.result.orders.filter((item: SellOrder) => item.status === 'paymentConfirmed'));
+            }
+
+            if (!checkProceedTrade && !checkCompleteTrade && checkCancelledTrade) {
+                setSellOrders(data.result.orders.filter((item: SellOrder) => item.status === 'cancelled'));
+            }
+
+            if (checkProceedTrade && checkCompleteTrade && !checkCancelledTrade) {
+              setSellOrders(data.result.orders.filter((item: SellOrder) => item.status === 'accepted' || item.status === 'paymentRequested' || item.status === 'paymentConfirmed'));
+            }
+
+            if (checkProceedTrade && !checkCompleteTrade && checkCancelledTrade) {
+              setSellOrders(data.result.orders.filter((item: SellOrder) => item.status === 'accepted' || item.status === 'paymentRequested' || item.status === 'cancelled'));
+            }
+
+            if (!checkProceedTrade && checkCompleteTrade && checkCancelledTrade) {
+              setSellOrders(data.result.orders.filter((item: SellOrder) => item.status === 'paymentConfirmed' || item.status === 'cancelled'));
+            }
+
+            if (!checkProceedTrade && !checkCompleteTrade && !checkCancelledTrade) {
+                setSellOrders([]);
+            }
+
+
+
+
+
           }
   
         };
@@ -350,7 +396,7 @@ export default function Index({ params }: any) {
         return () => clearInterval(interval);
         */
   
-    }, [address]);
+    }, [address, checkProceedTrade, checkCompleteTrade, checkCancelledTrade]);
 
 
 
@@ -428,6 +474,10 @@ export default function Index({ params }: any) {
     } , [usdtAmount]);
 
 
+
+
+
+
     const [sellOrdering, setSellOrdering] = useState(false);
 
     const sellOrder = async () => {
@@ -475,7 +525,42 @@ export default function Index({ params }: any) {
           const data = await response.json();
           //console.log('data', data);
           if (data.result) {
-            setSellOrders(data.result.orders);
+            ///setSellOrders(data.result.orders);
+
+
+
+            if (checkProceedTrade && checkCompleteTrade && checkCancelledTrade) {
+              setSellOrders(data.result.orders);
+            }
+
+            if (checkProceedTrade && !checkCompleteTrade && !checkCancelledTrade) {
+                setSellOrders(data.result.orders.filter((item: SellOrder) => item.status === 'accepted' || item.status === 'paymentRequested'));
+            }
+
+            if (!checkProceedTrade && checkCompleteTrade && !checkCancelledTrade) {
+                setSellOrders(data.result.orders.filter((item: SellOrder) => item.status === 'paymentConfirmed'));
+            }
+
+            if (!checkProceedTrade && !checkCompleteTrade && checkCancelledTrade) {
+                setSellOrders(data.result.orders.filter((item: SellOrder) => item.status === 'cancelled'));
+            }
+
+            if (checkProceedTrade && checkCompleteTrade && !checkCancelledTrade) {
+              setSellOrders(data.result.orders.filter((item: SellOrder) => item.status === 'accepted' || item.status === 'paymentRequested' || item.status === 'paymentConfirmed'));
+            }
+
+            if (checkProceedTrade && !checkCompleteTrade && checkCancelledTrade) {
+              setSellOrders(data.result.orders.filter((item: SellOrder) => item.status === 'accepted' || item.status === 'paymentRequested' || item.status === 'cancelled'));
+            }
+
+            if (!checkProceedTrade && checkCompleteTrade && checkCancelledTrade) {
+              setSellOrders(data.result.orders.filter((item: SellOrder) => item.status === 'paymentConfirmed' || item.status === 'cancelled'));
+            }
+
+            if (!checkProceedTrade && !checkCompleteTrade && !checkCancelledTrade) {
+                setSellOrders([]);
+            }
+
           }
         });
 
@@ -907,25 +992,106 @@ export default function Index({ params }: any) {
 
 
 
+                <div className="flex flex-row items-center space-x-4">
+
+
+
+                    {/*}
+                    <div className="flex flex-col gap-2 items-center">
+                      <div className="text-sm">{Total}</div>
+                      <div className="text-xl font-semibold text-white">
+                        {sellOrders.filter((item) => item.status === 'accepted' || item.status === 'paymentRequested' || item.status === 'paymentConfirmed').length}
+                        {' '}
+                        ({Number(sellOrders.reduce((acc, item) => acc + item.usdtAmount, 0)).toFixed(0)} USDT)
+                      </div>
+                    </div>
+                    */}
+
+                    {/* cancelled trade */}
+                    <div className="flex flex-col gap-2 items-center">
+                      
+                      <div className="flex flex-row items-center gap-2">
+                        <div className="text-sm">{Cancelled}</div>
+                        <input
+                          type="checkbox"
+                          checked={checkCancelledTrade}
+                          onChange={(e) => setCheckCancelledTrade(e.target.checked)}
+                          className="w-5 h-5 rounded-full"
+                        />
+                      </div>
+
+                      <div className="text-xl font-semibold text-white">
+                        {sellOrders.filter((item) => item.status === 'cancelled').length}
+                        {' '}
+                        ({Number(sellOrders.filter((item) => item.status === 'cancelled').reduce((acc, item) => acc + item.usdtAmount, 0)).toFixed(0)} USDT)
+                      </div>
+                    </div>
+
+
+
+                    <div className="flex flex-col gap-2 items-center">
+                      
+                      <div className="flex flex-row items-center gap-2">
+                        <div className="text-sm">{Trades}</div>
+                        <input
+                          type="checkbox"
+                          checked={checkProceedTrade}
+                          onChange={(e) => setCheckProceedTrade(e.target.checked)}
+                          className="w-5 h-5 rounded-full"
+                        />
+                      </div>
+
+                      <div className="text-xl font-semibold text-white">
+                        {sellOrders.filter((item) => item.status === 'accepted' || item.status === 'paymentRequested').length}
+                        {' '}
+                        ({sellOrders.filter((item) => item.status === 'accepted' || item.status === 'paymentRequested').reduce((acc, item) => acc + item.usdtAmount, 0).toFixed(0)} USDT)
+                      </div>
+
+                    </div>
+
+                    <div className="flex flex-col gap-2 items-center">
+                      <div className="flex flex-row items-center gap-2">
+                        <div className="text-sm">{Completed}</div>
+                        <input
+                          type="checkbox"
+                          checked={checkCompleteTrade}
+                          onChange={(e) => setCheckCompleteTrade(e.target.checked)}
+                          className="w-5 h-5 rounded-full"
+                        />
+                      </div>
+
+                      <div className="text-xl font-semibold text-white">
+                        {sellOrders.filter((item) => item.status === 'paymentConfirmed').length}
+                        {' '}
+                        ({Number(sellOrders.filter((item) => item.status === 'paymentConfirmed').reduce((acc, item) => acc + item.usdtAmount, 0)).toFixed(0)} USDT)
+                      </div>
+
+                    </div>
+
+                </div>
+
+
 
                 {/* Sell Orders: 2 EA (132 USDT), Trades: 10 EA (43 USDT) */}
                 {/* trades is the status is accepted or paymentRequested */}
+                {/*
                 <div className="flex flex-col xl:flex-row gap-2 xl:gap-5 items-start">
                   <div className="text-sm">
-                    {/* dot */}
+                  
                     <span className="inline-block w-2 h-2 rounded-full bg-green-500 mr-2"></span>
                     {Total}: {sellOrders.length} EA ({Number(sellOrders.reduce((acc, item) => acc + item.usdtAmount, 0)).toFixed(0)} USDT)</div>
                   <div className="text-sm">
-                    {/* dot */}
+                  
                     <span className="inline-block w-2 h-2 rounded-full bg-green-500 mr-2"></span>
                     {Trades}: {sellOrders.filter(item => item.status === 'accepted' || item.status === 'paymentRequested').length} EA ({Number(sellOrders.filter(item => item.status === 'accepted' || item.status === 'paymentRequested').reduce((acc, item) => acc + item.usdtAmount, 0)).toFixed(0)} USDT)</div>
 
                   <div className="text-sm">
-                    {/* dot */}
+                  
                     <span className="inline-block w-2 h-2 rounded-full bg-green-500 mr-2"></span>
                     {Completed}: {sellOrders.filter(item => item.status === 'paymentConfirmed').length} EA ({Number(sellOrders.filter(item => item.status === 'paymentConfirmed').reduce((acc, item) => acc + item.usdtAmount, 0)).toFixed(0)} USDT)</div>
 
                 </div>
+                */}
 
 
 
