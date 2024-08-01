@@ -1078,7 +1078,7 @@ export default function Index({ params }: any) {
                             {(item.status === 'accepted' || item.status === 'paymentRequested') && (
                                 <div className="w-full mt-2 mb-2 flex flex-col items-start ">
 
-                                  <div className="flex flex-row items-center gap-2">
+                                  <div className="flex flex-col items-center gap-2">
                     
 
                                       {/* buyer info */}
