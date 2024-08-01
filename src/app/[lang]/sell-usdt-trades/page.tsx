@@ -1118,6 +1118,8 @@ export default function Index({ params }: any) {
 
 
                           <th className="text-left">{TID}</th>
+                          <th className="text-left">{Started_at}</th>
+                          <th className="text-left">{Trading_Time_is}</th>
 
                           <th className="text-left">Memo</th>
                         
@@ -1131,7 +1133,7 @@ export default function Index({ params }: any) {
                           
                           <th className="text-left">Status</th>
 
-                          <th className="text-left">{Trading_Time_is}</th>
+                          
                       </tr>
                   </thead>
                   <tbody>
@@ -1140,6 +1142,14 @@ export default function Index({ params }: any) {
                             key={index}
                             className="border-b border-gray-200 hover:bg-gray-800 hover:bg-opacity-10 text-xs h-10">
                               <td>{item.tradeId}</td>
+                              <td>{new Date(item.acceptedAt).toLocaleString()}</td>
+                              <td>
+                                {item.status === 'paymentConfirmed' &&
+                                
+                                ( ( (new Date(item.paymentConfirmedAt).getTime() - new Date(item.acceptedAt).getTime()) / 1000 / 60 ).toFixed(0) ) + ' ' + minutes
+                                
+                                }
+                              </td>
 
                               <td>
                                 {item.seller?.memo}
@@ -1183,13 +1193,7 @@ export default function Index({ params }: any) {
                                   <span className="text-red-500">{Cancelled}</span>
                                 )}
                               </td>
-                              <td>
-                                {item.status === 'paymentConfirmed' &&
-                                
-                                ( ( (new Date(item.paymentConfirmedAt).getTime() - new Date(item.acceptedAt).getTime()) / 1000 / 60 ).toFixed(0) ) + ' ' + minutes
-                                
-                                }
-                              </td>
+
                           </tr>
                       ))}
                   </tbody>
