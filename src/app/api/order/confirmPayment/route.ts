@@ -186,18 +186,27 @@ export async function POST(request: NextRequest) {
     
     
         let message = null;
+
+
+        try {
     
     
-        const msgBody = `[UNOVE] TID[${tradeId}] You received ${amount} USDT from ${nickname}! https://next.unove.space/en/sell-usdt/${orderId}`;
-    
-        message = await client.messages.create({
-          ///body: "This is the ship that made the Kessel Run in fourteen parsecs?",
-          body: msgBody,
-          from: "+17622254217",
-          to: to,
-        });
-    
-        console.log(message.sid);
+          const msgBody = `[UNOVE] TID[${tradeId}] You received ${amount} USDT from ${nickname}! https://next.unove.space/en/sell-usdt/${orderId}`;
+      
+          message = await client.messages.create({
+            ///body: "This is the ship that made the Kessel Run in fourteen parsecs?",
+            body: msgBody,
+            from: "+17622254217",
+            to: to,
+          });
+      
+          console.log(message.sid);
+
+        } catch (error) {
+            
+          console.log("error", error);
+      
+        }
     
     
     

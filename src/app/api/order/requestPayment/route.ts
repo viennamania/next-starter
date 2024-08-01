@@ -60,17 +60,26 @@ export async function POST(request: NextRequest) {
 
     let message = null;
 
+    try {
 
-    const msgBody = `[UNOVE] TID[${tradeId}] ${bankName} ${accountNumber} ${accountHolder} 입금자명:[${depositName}] ${amount}원 입금 부탁드립니다.`;
+      const msgBody = `[UNOVE] TID[${tradeId}] ${bankName} ${accountNumber} ${accountHolder} 입금자명:[${depositName}] ${amount}원 입금 부탁드립니다.`;
 
-    message = await client.messages.create({
-      ///body: "This is the ship that made the Kessel Run in fourteen parsecs?",
-      body: msgBody,
-      from: "+17622254217",
-      to: to,
-    });
+      message = await client.messages.create({
+        ///body: "This is the ship that made the Kessel Run in fourteen parsecs?",
+        body: msgBody,
+        from: "+17622254217",
+        to: to,
+      });
 
-    console.log(message.sid);
+      console.log(message.sid);
+
+    } catch (e) {
+        
+      console.log("error", e);
+
+    }
+
+
 
 
 
