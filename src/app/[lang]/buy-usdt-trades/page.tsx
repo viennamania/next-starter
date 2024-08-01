@@ -384,7 +384,7 @@ export default function Index({ params }: any) {
     
 
     // check trade and complete trade
-
+    const [checkCancelledTrade, setCheckCancelledTrade] = useState(true);
     const [checkProceedTrade, setCheckProceedTrade] = useState(true);
     const [checkCompleteTrade, setCheckCompleteTrade] = useState(true);
 
@@ -408,30 +408,48 @@ export default function Index({ params }: any) {
             
             //console.log('data', data);
 
-            ///setSellOrders(data.result.orders);
-
-            if (checkProceedTrade && checkCompleteTrade) {
-                setSellOrders(data.result.orders);
+            if (checkProceedTrade && checkCompleteTrade && checkCancelledTrade) {
+              setSellOrders(data.result.orders);
             }
 
-            if (checkProceedTrade && !checkCompleteTrade) {
+            if (checkProceedTrade && !checkCompleteTrade && !checkCancelledTrade) {
                 setSellOrders(data.result.orders.filter((item: SellOrder) => item.status === 'accepted' || item.status === 'paymentRequested'));
             }
 
-            if (!checkProceedTrade && checkCompleteTrade) {
+            if (!checkProceedTrade && checkCompleteTrade && !checkCancelledTrade) {
                 setSellOrders(data.result.orders.filter((item: SellOrder) => item.status === 'paymentConfirmed'));
             }
 
-            if (!checkProceedTrade && !checkCompleteTrade) {
+            if (!checkProceedTrade && !checkCompleteTrade && checkCancelledTrade) {
+                setSellOrders(data.result.orders.filter((item: SellOrder) => item.status === 'cancelled'));
+            }
+
+            if (checkProceedTrade && checkCompleteTrade && !checkCancelledTrade) {
+              setSellOrders(data.result.orders.filter((item: SellOrder) => item.status === 'accepted' || item.status === 'paymentRequested' || item.status === 'paymentConfirmed'));
+            }
+
+            if (checkProceedTrade && !checkCompleteTrade && checkCancelledTrade) {
+              setSellOrders(data.result.orders.filter((item: SellOrder) => item.status === 'accepted' || item.status === 'paymentRequested' || item.status === 'cancelled'));
+            }
+
+            if (!checkProceedTrade && checkCompleteTrade && checkCancelledTrade) {
+              setSellOrders(data.result.orders.filter((item: SellOrder) => item.status === 'paymentConfirmed' || item.status === 'cancelled'));
+            }
+
+            if (!checkProceedTrade && !checkCompleteTrade && !checkCancelledTrade) {
                 setSellOrders([]);
             }
+
+
+
+
 
 
         })
         .catch((error) => {
             console.error('Error:', error);
         });
-    } , [address, checkProceedTrade, checkCompleteTrade]);
+    } , [address, checkProceedTrade, checkCompleteTrade, checkCancelledTrade]);
 
 
 
@@ -635,6 +653,28 @@ export default function Index({ params }: any) {
                       </div>
                     </div>
                     */}
+
+
+                    {/* cancelled trade */}
+                    <div className="flex flex-col gap-2 items-center">
+                      
+                      <div className="flex flex-row items-center gap-2">
+                        <div className="text-sm">{Cancelled}</div>
+                        <input
+                          type="checkbox"
+                          checked={checkCancelledTrade}
+                          onChange={(e) => setCheckCancelledTrade(e.target.checked)}
+                          className="w-5 h-5 rounded-full"
+                        />
+                      </div>
+
+                      <div className="text-xl font-semibold text-white">
+                        {sellOrders.filter((item) => item.status === 'cancelled').length}
+                        {' '}
+                        ({Number(sellOrders.filter((item) => item.status === 'cancelled').reduce((acc, item) => acc + item.usdtAmount, 0)).toFixed(0)} USDT)
+                      </div>
+                    </div>
+
 
                     <div className="flex flex-col gap-2 items-center">
                       <div className="flex flex-row items-center gap-2">
