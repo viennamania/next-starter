@@ -140,6 +140,8 @@ export default function Index({ params }: any) {
     Buy: "",
     Sell: "",
     Amount: "",
+    Buy_Amount: "",
+    Sell_Amount: "",
     Price: "",
     Total: "",
     Orders: "",
@@ -209,6 +211,8 @@ export default function Index({ params }: any) {
     Buy,
     Sell,
     Amount,
+    Buy_Amount,
+    Sell_Amount,
     Price,
     Total,
     Orders,
@@ -952,7 +956,7 @@ export default function Index({ params }: any) {
                           <th className="text-left">Memo</th>
                         
                           <th className="text-left">{Buyer}</th>
-                          <th className="text-left">{Amount}</th>
+                          <th className="text-left">{Sell_Amount}</th>
                           <th className="text-left">{Price}</th>
                           <th className="text-left">{Rate}</th>
 

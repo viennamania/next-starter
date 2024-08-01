@@ -25,6 +25,8 @@
     "Buy": "구매",
     "Sell": "판매",
     "Amount": "수량",
+    "Buy_Amount": "구매 수량",
+    "Sell_Amount": "판매 수량",
     "Price": "가격",
 
     "Contact_Us": "문의하기",
