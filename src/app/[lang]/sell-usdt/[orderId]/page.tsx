@@ -252,6 +252,8 @@ export default function Index({ params }: any) {
 
       Anonymous: "",
 
+      TID: "",
+
     } );
   
     useEffect(() => {
@@ -331,6 +333,8 @@ export default function Index({ params }: any) {
       Transfering_USDT_to_the_buyer_wallet_address,
 
       Anonymous,
+
+      TID,
 
     } = data;
    
@@ -1388,7 +1392,7 @@ export default function Index({ params }: any) {
                                 )}
 
                                 <p className=" text-xl font-semibold text-green-500 ">
-                                  TID: {item.tradeId}
+                                  {TID}: {item.tradeId}
                                 </p>
 
                                 {/* reload button */}
