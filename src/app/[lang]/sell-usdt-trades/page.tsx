@@ -157,6 +157,7 @@ export default function Index({ params }: any) {
     Buy_USDT: "",
     Rate: "",
     Payment: "",
+    Payment_Amount: "",
     Bank_Transfer: "",
 
     I_agree_to_the_terms_of_trade: "",
@@ -225,6 +226,7 @@ export default function Index({ params }: any) {
     Buy_USDT,
     Rate,
     Payment,
+    Payment_Amount,
     Bank_Transfer,
     I_agree_to_the_terms_of_trade,
     I_agree_to_cancel_the_trade,
@@ -955,6 +957,7 @@ export default function Index({ params }: any) {
                           <th className="text-left">{Rate}</th>
 
                           <th className="text-left">{Payment}</th>
+                          <th className="text-left">{Payment_Amount}</th>
                           
                           <th className="text-left">Status</th>
 
@@ -986,6 +989,16 @@ export default function Index({ params }: any) {
                               <td>
                                 {item.seller?.bankInfo.bankName} {item.seller?.bankInfo.accountNumber} {item.seller?.bankInfo.accountHolder}
                               </td>
+
+                              <td>
+                                {item.status === 'paymentConfirmed' && (
+                                  Number(item.krwAmount).toLocaleString('ko-KR', {
+                                    style: 'currency',
+                                    currency: 'KRW',
+                                  })
+                                )}
+                              </td>
+                              
                               <td>
                                 {item.status === 'paymentConfirmed' && (
                                   <span className="text-green-500">{Completed}</span>
