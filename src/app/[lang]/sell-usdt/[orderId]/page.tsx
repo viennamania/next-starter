@@ -1675,10 +1675,16 @@ export default function Index({ params }: any) {
 
                                         item.buyer?.walletAddress === address ? item.buyer.nickname + ' :' + Me :
 
-                                        item.buyer ? item.buyer.nickname.substring(0, 1) + '***' : 'Anonymous'
+                                        item.buyer ? item.buyer.nickname : 'Anonymous'
 
                                     }
                                 </h2>
+
+                                {item.buyer?.memo && (
+                                  <h2 className="text-lg font-semibold">
+                                      {item.buyer.memo}
+                                  </h2>
+                                )}
 
                                 
                                 <Image

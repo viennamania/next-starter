@@ -1081,6 +1081,10 @@ export default function Index({ params }: any) {
                                   <div className="flex flex-row items-center gap-2">
                     
 
+                                      {/* buyer info */}
+                                      <div className="flex flex-col items-start gap-2">
+                                        <p className="text-lg text-green-500">{Buyer}: {item.buyer.nickname} {item.buyer.memo && `(${item.buyer.memo})`}</p>
+                                      </div>
                                     
                                       <button
                                           disabled={
