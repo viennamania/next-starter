@@ -60,6 +60,9 @@ import { getDictionary } from "../../../dictionaries";
 import { Pay } from 'twilio/lib/twiml/VoiceResponse';
 
 
+import Chat from "@/components/Chat";
+
+
 
 
 
@@ -607,11 +610,67 @@ export default function Index({ params }: any) {
 
       //router.push(`/chat?channel=${orderId}`);
 
-      router.push(`/${params.lang}/chat/${orderId}`);
+      //router.push(`/${params.lang}/chat/${orderId}`);
 
 
 
     }
+
+
+    useEffect(() => {
+
+
+      if (sellOrders.length === 0) {
+        return;
+      }
+
+ 
+
+        const  goChat = async ( ) => {
+    
+    
+          const url = 'https://api-D2845744-81A3-4585-99FF-4DCABE2CA190.sendbird.com/v3/open_channels';
+    
+    
+          const result = await fetch(url, {
+            method: 'POST',
+    
+            headers: {
+              'Content-Type': 'application/json',
+              'Api-Token': 'd5e9911aa317c4ee9a3be4fce38b878941f11c68',
+            },
+    
+            body: JSON.stringify({
+              name: sellOrders[0].tradeId,
+              channel_url: sellOrders[0]._id,
+              cover_url: 'https://next.unove.space/icon-trade.png',
+              custom_type: 'trade',
+    
+            }),
+          });
+    
+          const data = await result.json();
+    
+          console.log('data', data);
+              
+    
+          console.log('Go Chat');
+    
+          //router.push(`/chat?channel=${orderId}`);
+    
+          //router.push(`/${params.lang}/chat/${orderId}`);
+    
+    
+    
+        }
+
+        
+          goChat();
+        
+
+
+    } , [ sellOrders ]);
+
 
 
     const [usdtAmount, setUsdtAmount] = useState(0);
@@ -2506,6 +2565,14 @@ export default function Index({ params }: any) {
                         </article>
 
 
+
+
+
+
+
+
+
+
                       </div>
 
 
@@ -2513,7 +2580,30 @@ export default function Index({ params }: any) {
 
                 </div>
 
+
+
+
+
             </div>
+
+
+            {orderId && address && user && user.nickname && user.avatar && (
+                  <div className='w-full  '>
+                    <Chat
+
+                      channel={orderId}
+
+                      userId={ user.nickname }
+
+                      nickname={ user.nickname }
+
+                      profileUrl={ user.avatar }
+                    />
+                  </div>
+                )}
+
+
+
 
             
           </div>
