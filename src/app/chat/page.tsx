@@ -70,7 +70,7 @@ function ChatPageContent() {
   const channel = searchParams.get('channel')
  
 
-  console.log("channel", channel);
+  console.log("ChatPageContent channel", channel);
 
 
 
@@ -167,7 +167,7 @@ function ChatPageContent() {
           {channel && address && nickname && avatar && (
             <Chat
 
-              channelUrl={channel}
+              channel={channel}
 
               userId={ nickname }
 

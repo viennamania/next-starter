@@ -66,12 +66,12 @@ const ChannelSettingsPage = () => {
 
 
 
-// /chat?tradeId=101168
+// /chat?channel=101168
 
 export default function Chat(
     {
 
-    channelUrl,
+    channel,
 
     userId,
     nickname,
@@ -92,7 +92,7 @@ export default function Chat(
 
     // get params from url
 
-    console.log("Chat tradeId========", tradeId);
+    console.log("Chat channel========", channel);
     console.log("Chat userId==========", userId);
 
 
@@ -148,7 +148,7 @@ export default function Chat(
             <OpenChannel
                 //channelUrl={'sendbird_open_channel_18053_3b9b531f3d94bb5b03b72bb8b5684eb7586db969'}
 
-                channelUrl={channelUrl}
+                channelUrl={channel}
             />
 
 
