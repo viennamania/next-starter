@@ -108,6 +108,7 @@
 
     "Rate": "Rate",
 
+    "Payment_Infomation": "Payment Infomation",
     "Payment": "Payment",
     "Bank_Transfer": "Bank Transfer",
     "Payment_Amount": "Payment Amount",
@@ -122,6 +123,7 @@
     "Started_at": "Started at",
     "Cancelled_at": "Cancelled at",
     "Completed_at": "Completed at",
+    "Payment_Requested_at": "Payment Requested at",
 
     "TID": "TID",
 
@@ -247,7 +249,14 @@
 
     "Escrow": "Escrow",
 
-    "EA": "EA"
+    "EA": "EA",
 
+    "Status": "Status",
+
+
+    "Table_View": "Table View",
+
+  
+    "I_gree_to_escrow_USDT_to_the_smart_contract_and_request_payment_to_the_buyer": "I agree to escrow USDT to the smart contract and request payment to the buyer."
 
 }

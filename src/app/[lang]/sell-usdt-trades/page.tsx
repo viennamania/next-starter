@@ -55,6 +55,7 @@ import { useRouter }from "next//navigation";
 import AppBarComponent from "@/components/Appbar/AppBar";
 import { getDictionary } from "../../dictionaries";
 import { Start } from "twilio/lib/twiml/VoiceResponse";
+import { Table } from "@mui/material";
 
 
 
@@ -192,6 +193,19 @@ export default function Index({ params }: any) {
     minutes: "",
     seconds: "",
 
+    Table_View: "",
+    Payment_Requested_at: "",
+
+    Status: "",
+
+    Deposit_Name: "",
+
+    Escrow: "",
+
+    I_gree_to_escrow_USDT_to_the_smart_contract_and_request_payment_to_the_buyer: "",
+
+    Payment_Infomation: "",
+
 
   } );
 
@@ -261,6 +275,19 @@ export default function Index({ params }: any) {
     hours,
     minutes,
     seconds,
+
+    Table_View,
+    Payment_Requested_at,
+
+    Status,
+
+    Deposit_Name,
+
+    Escrow,
+
+    I_gree_to_escrow_USDT_to_the_smart_contract_and_request_payment_to_the_buyer,
+
+    Payment_Infomation,
 
   } = data;
 
@@ -1098,7 +1125,7 @@ export default function Index({ params }: any) {
 
                 {/* select table view or card view */}
                 <div className="flex flex-row items-center space-x-4">
-                  <div className="text-sm">Table View</div>
+                  <div className="text-sm">{Table_View}</div>
                   <input
                     type="checkbox"
                     checked={tableView}
@@ -1131,7 +1158,7 @@ export default function Index({ params }: any) {
                           <th className="text-left">{Payment}</th>
                           <th className="text-left">{Payment_Amount}</th>
                           
-                          <th className="text-left">Status</th>
+                          <th className="text-left">{Status}</th>
 
                           
                       </tr>
@@ -1318,11 +1345,12 @@ export default function Index({ params }: any) {
                           
 
                                   <p className="text-sm  text-gray-400">
-                                    Payment requested at<br />{new Date(item.paymentRequestedAt).toLocaleDateString() + ' ' + new Date(item.paymentRequestedAt).toLocaleTimeString()}
+                                    {Payment_Requested_at}
+                                    <br />{new Date(item.paymentRequestedAt).toLocaleDateString() + ' ' + new Date(item.paymentRequestedAt).toLocaleTimeString()}
                                   </p>
 
                                   <p className="text-xl text-green-500">
-                                    Payment Information
+                                    {Payment_Information}
                                   </p>
 
                                   <div className="flex flex-col gap-2 text-sm text-left text-white">
@@ -1331,9 +1359,9 @@ export default function Index({ params }: any) {
                                       <li>
                                         {item.seller?.bankInfo.bankName} {item.seller?.bankInfo.accountNumber} {item.seller?.bankInfo.accountHolder}
                                       </li>
-                                      <li>Amount : {item.krwAmount} KRW</li>
+                                      <li>{Payment_Amount} : {item.krwAmount} KRW</li>
                                       {/* 입금자명 표시 */}
-                                      <li>Deposit Name : {item.tradeId}</li>
+                                      <li>{Deposit_Name} : {item.tradeId}</li>
                                     </ul>
 
                                   </div>
@@ -1437,7 +1465,7 @@ export default function Index({ params }: any) {
 
                                         {escrowing[index] === false && requestingPayment[index] === true && (
                                           <div className="flex flex-col gpa-2">
-                                            Escrow {item.usdtAmount} USDT to the smart contract has been completed.
+                                            {Escrow} {item.usdtAmount} USDT to the smart contract has been completed.
                                           </div>
                                         )}
                                         
@@ -1498,9 +1526,10 @@ export default function Index({ params }: any) {
                                             </div>
                                             <div className="text-sm text-zinc-400">
 
+                                              {/*
                                               I agree to escrow {item.usdtAmount} USDT to the smart contract and request payment to the buyer ( {item.buyer.nickname} )
-
-
+                                              */}
+                                              {I_gree_to_escrow_USDT_to_the_smart_contract_and_request_payment_to_the_buyer} ({Buyer}: {item.buyer.nickname} )
                                             </div>
                                         </div>
 
@@ -1630,7 +1659,7 @@ export default function Index({ params }: any) {
                                       />
 
                                       <span className="textlg text-white">
-                                        Escrow: {item.usdtAmount} USDT
+                                        {Escrow}: {item.usdtAmount} USDT
                                       </span>
 
                                       <button

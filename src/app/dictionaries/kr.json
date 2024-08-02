@@ -87,6 +87,7 @@
 
     "Rate": "환율",
 
+    "Payment_Infomation": "결제 정보",
     "Payment": "결제",
     "Bank_Transfer": "은행 송금",
     "Payment_Amount": "결제 금액",
@@ -98,6 +99,7 @@
     "Started_at": "거래시작:",
     "Cancelled_at": "거래취소:",
     "Completed_at": "거래완료:",
+    "Payment_Requested_at": "결제요청:",
 
     "TID": "거래번호",
 
@@ -209,7 +211,14 @@
 
     "Escrow": "에스크로",
 
-    "EA": "개"
+    "EA": "개",
+
+    "Status": "상태",
+
+    "Table_View": "테이블 보기",
+
+    "I_gree_to_escrow_USDT_to_the_smart_contract_and_request_payment_to_the_buyer": "USDT를 에스크로 보관소에 보내고 구매자에게 결제를 요청하는 것에 동의합니다."
+
 
 
 }

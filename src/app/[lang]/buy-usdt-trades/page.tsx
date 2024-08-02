@@ -194,6 +194,10 @@ export default function Index({ params }: any) {
 
     Waiting_for_seller_to_deposit_USDT_to_escrow: "",
 
+    Table_View: "",
+
+    Status: "",
+
 
 
   } );
@@ -269,6 +273,10 @@ export default function Index({ params }: any) {
     Anonymous,
 
     Waiting_for_seller_to_deposit_USDT_to_escrow,
+
+    Table_View,
+
+    Status,
 
   } = data;
 
@@ -781,7 +789,7 @@ export default function Index({ params }: any) {
 
                 {/* select table view or card view */}
                 <div className="flex flex-row items-center space-x-4">
-                  <div className="text-sm">Table View</div>
+                  <div className="text-sm">{Table_View}</div>
                   <input
                     type="checkbox"
                     checked={tableView}
@@ -814,7 +822,7 @@ export default function Index({ params }: any) {
                           <th className="text-left">{Payment}</th>
                           <th className="text-left">{Payment_Amount}</th>
                           
-                          <th className="text-left">Status</th>
+                          <th className="text-left">{Status}</th>
 
                           
                       </tr>
