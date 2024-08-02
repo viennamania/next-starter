@@ -88,19 +88,7 @@ const wallets = [
 
 const contractAddress = "0xc2132D05D31c914a87C6611C10748AEb04B58e8F"; // USDT on Polygon
 
-
-
- // get a contract
- const contract = getContract({
-  // the client you have created via `createThirdwebClient()`
-  client,
-  // the chain the contract is deployed on
-  chain: polygon,
-  // the contract's address
-  address: contractAddress,
-  // OPTIONAL: the contract's abi
-  //abi: [...],
-});
+const contractAddressArbitrum = "0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9"; // USDT on Arbitrum
 
 
 
@@ -132,12 +120,39 @@ console.log("contractEditorDrop", contractEditorDrop);
 
 
 
+
 ///export default function Home() {
 
 export default function Index({ params }: any) {
 
 
   console.log("params", params);
+
+
+
+
+  const contract = getContract({
+    // the client you have created via `createThirdwebClient()`
+    client,
+    // the chain the contract is deployed on
+    
+    
+    chain: params.chain === "arbitrum" ? arbitrum : polygon,
+  
+  
+  
+    // the contract's address
+    ///address: contractAddress,
+
+    address: params.chain === "arbitrum" ? contractAddressArbitrum : contractAddress,
+
+
+    // OPTIONAL: the contract's abi
+    //abi: [...],
+  });
+
+
+  
 
 
 
@@ -255,15 +270,27 @@ export default function Index({ params }: any) {
 
     if (!address) return;
     // get the balance
+
+
+    if (!contract) {
+      return;
+    }
+
     const getBalance = async () => {
-      const result = await balanceOf({
-        contract,
-        address: address,
-      });
-  
-      //console.log(result);
-  
-      setBalance( Number(result) / 10 ** 6 );
+
+      try {
+        const result = await balanceOf({
+          contract,
+          address: address,
+        });
+    
+        //console.log(result);
+    
+        setBalance( Number(result) / 10 ** 6 );
+
+      } catch (error) {
+        console.error("Error getting balance", error);
+      }
 
     };
 
@@ -278,7 +305,10 @@ export default function Index({ params }: any) {
 
     return () => clearInterval(interval);
 
-  } , [address]);
+  } , [address, contract]);
+
+
+
 
 
   const [loadingAnimation, setLoadingAnimation] = useState(false);
@@ -569,7 +599,9 @@ export default function Index({ params }: any) {
 
         <div className="flex flex-col justify-between items-center gap-2 mb-5">
           <AppBarComponent />
+
           {/* select input for network selection (polygon, arbitrum) */}
+          {/*
           <div className="flex flex-row gap-2 justify-center items-center">
             <button
               onClick={() => {
@@ -601,6 +633,8 @@ export default function Index({ params }: any) {
 
 
           </div>
+          */}
+
         </div>
 
 
@@ -677,14 +711,16 @@ export default function Index({ params }: any) {
                         <button
                             onClick={() => {
                                 window.open(`
-                                    https://polygonscan.com/token/0xc2132d05d31c914a87c6611c10748aeb04b58e8f?a=${address}
+                                  ${params.chain === "arbitrum" ? "https://arbiscan.io/address/" : "https://polygonscan.com/address/"}${address}
                                     `, "_blank");
                             }}
                             className="p-2 bg-zinc-200 text-zinc-800 rounded"
                         >
                             <Image
-                                src="/logo-polygon.png"
-                                alt="Polygon"
+                                //src="/logo-polygon.png"
+
+                                src={`/logo-${params.chain}.png`}
+                                alt="Network"
                                 width={18}
                                 height={18}
                                 
@@ -692,8 +728,9 @@ export default function Index({ params }: any) {
                         </button>
                     ) : (
                       <Image
-                        src="/logo-polygon.png"
-                        alt="Polygon"
+                        //src="/logo-polygon.png"
+                        src={`/logo-${params.chain}.png`}
+                        alt="Network"
                         width={20}
                         height={20}
                         className='ml-2 animate-spin'
@@ -782,7 +819,7 @@ export default function Index({ params }: any) {
 
                       // redirect to send USDT page
                       router.push(
-                        "/" + params.lang + "/send-usdt-favorite"
+                        "/" + params.lang + "/" + params.chain + "/send-usdt-favorite"
                       );
 
                     }}
@@ -965,144 +1002,6 @@ export default function Index({ params }: any) {
               </div>
 
 
-              {/* My Buy Trades */}
-
-              {/*
-
-              <div className="bg-zinc-800 p-5 rounded-lg text-center">
-
-
-
-                <div className="flex flex-row justify-between items-start">
-
-                    <div className="flex flex-row gap-2 justify-center items-center">
-                      <Image
-                        src="/trade-buy.png"
-                        alt="buy"
-                        width={40}
-                        height={40}
-                        className="rounded-lg"
-                      />
-
-                    </div>
-
-         
-                    <button
-
-                      onClick={() => {
-
-                        if (!address) {
-                          toast.error('Please connect your wallet first');
-                          return;
-                        }
-
-                        // redirect to settings page
-                        router.push("/buy-usdt-trades");
-
-                      }}
-                      className="text-blue-500 hover:underline"
-                    >
-                      <GearSetupIcon />
-
-                    </button>
-                    
-
-                  </div>
-
-
-
-
-                <h2 className="text-3xl font-semibold text-zinc-100">
-                  {buyTrades.length} EA
-                </h2>
-                <p className="text-zinc-300">My Buy Trades</p>
-
-                <div className="grid gap-4 lg:grid-cols-3 justify-center mt-4">
-
-                  {buyTrades.map((trade: any) => (
-                    <ArticleCard
-                      key={trade.id}
-                      title={`${trade.usdtAmount} USDT - Seller: ${trade.nickname}`}
-                      avatar={trade.avatar}
-                      href={`/buy-usdt-trades`}
-                      description={
-                        `TID: ${trade.tradeId} - 
-                        ${trade.status === 'pending' ? 'Pending' : trade.status === 'accepted' ? 'Waiting for payment' : trade.status === 'paymentRequested' ? 'You need to pay' : 'Rejected'}`
-                      }
-                    />
-                  ))}
-
-                </div>
-
-              </div>
-              */}
-
-              {/* My Sell Trades */}
-              {/*
-
-              <div className="bg-zinc-800 p-5 rounded-lg text-center">
-
-
-                <div className="flex flex-row justify-between items-start">
-
-                    <Image
-                      src="/trade-sell.png"
-                      alt="USDT"
-                      width={40}
-                      height={40}
-                      className="rounded-lg"
-                    />
-
-
-                    <button
-
-                      onClick={() => {
-
-                        if (!address) {
-                          toast.error('Please connect your wallet first');
-                          return;
-                        }
-
-                        // redirect to settings page
-                        router.push("/sell-usdt-trades");
-
-                      }}
-                      className="text-blue-500 hover:underline"
-                    >
-                      <GearSetupIcon />
-
-                    </button>
-
-                  </div>
-
-
-
-                <h2 className="text-3xl font-semibold text-zinc-100">
-                  {sellTrades.length} EA
-                </h2>
-                <p className="text-zinc-300">My Sell Trades</p>
-
-                <div className="grid gap-4 lg:grid-cols-3 justify-center mt-4">
-
-                  {sellTrades.map((trade: any) => (
-                    <ArticleCard
-                      key={trade.id}
-                      title={`${trade.usdtAmount} USDT - Buyer: ${trade.buyer.nickname}`}
-                      avatar={trade.buyer.avatar}
-                      href={`/sell-usdt-trades`}
-                      description={
-                        `Trade ID: ${trade.tradeId} - ${trade.status?.toUpperCase()}`
-                      }
-                    />
-                  ))}
-
-                </div>
-
-              </div>
-              */}
-
-           
- 
 
           {!address && (
             <>
@@ -1213,53 +1112,7 @@ export default function Index({ params }: any) {
 
         </div>
 
-
-        
-
-
-
-
         {/*}
-        {address && (
-          <div className="flex flex-row justify-center mb-10 gap-10">
-
-            <div className="flex flex-col items-center mr-4">
-              <h3 className="text-sm font-semibold text-zinc-100">My Phone Number</h3>
-              <p className="text-zinc-300 text-2xl">{phoneNumber}</p>
-            </div>
-
-            <div className="flex justify-center">
-                <button
-                  onClick={() => {
-                    // disconnect wallet
-
-
-                    activeWallet?.disconnect();
-
-                    
-                    
-                    window.location.reload();
-
-                  }}
-                  className="text-sm bg-red-500 text-white p-2 rounded-lg hover:bg-red-600"
-                >
-                  Disconnect
-                </button>
-            </div>
-          </div>
-          
-        )}
-        */}
-
-
-        {/*
-        <ThirdwebResources />
-        */}
-
-     
-        {/*
-        <MarketResources />
-        */}
         <div className="grid gap-4 lg:grid-cols-3 justify-center">
 
           <ArticleCard
@@ -1278,18 +1131,10 @@ export default function Index({ params }: any) {
             description={Sell_Description}
           />
             
-          
-
-          {/*
-          <ArticleCard
-            title="How to use USDT"
-            href="/"
-            description="Learn how to use USDT in your favorite DeFi apps"
-          />
-          */}
 
 
         </div>
+        */}
 
 
         {/* Best Sellers */}
