@@ -305,6 +305,7 @@ export default function Index({ params }: any) {
 
   useEffect(() => {
 
+    if (!address) return;
     // get the balance
     const getBalance = async () => {
       const result = await balanceOf({
@@ -472,7 +473,9 @@ export default function Index({ params }: any) {
 
       console.log('Go Chat');
 
-      router.push(`/chat?channel=${orderId}`);
+      //router.push(`/chat?channel=${orderId}`);
+
+      router.push(`/${params.lang}/chat/${orderId}`);
 
 
 

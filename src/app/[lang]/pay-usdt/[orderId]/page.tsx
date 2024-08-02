@@ -583,7 +583,9 @@ export default function Index({ params }: any) {
 
       console.log('Go Chat');
 
-      router.push(`/chat?channel=${orderId}`);
+      //router.push(`/chat?channel=${orderId}`);
+
+      router.push(`/${params.lang}/chat/${orderId}`);
 
 
 

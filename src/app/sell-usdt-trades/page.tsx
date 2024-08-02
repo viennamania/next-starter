@@ -133,6 +133,7 @@ const P2PTable = () => {
 
   useEffect(() => {
 
+    if (!address) return;
     // get the balance
     const getBalance = async () => {
       const result = await balanceOf({

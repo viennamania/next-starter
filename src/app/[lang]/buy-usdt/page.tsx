@@ -300,6 +300,7 @@ export default function Index({ params }: any) {
 
   useEffect(() => {
 
+    if (!address) return;
     // get the balance
     const getBalance = async () => {
       const result = await balanceOf({
@@ -366,9 +367,58 @@ export default function Index({ params }: any) {
     const closeModal = () => setModalOpen(false);
     const openModal = () => setModalOpen(true);
 
-    const goChat = () => {
-        console.log('Go Chat');
-        router.push(`/chat?tradeId=12345`);
+    const  goChat = async (
+      orderId: string,
+      tradeId: string
+    ) => {
+
+      console.log('orderId', orderId);
+      console.log('tradeId', tradeId);
+
+
+
+      const url = 'https://api-D2845744-81A3-4585-99FF-4DCABE2CA190.sendbird.com/v3/open_channels';
+
+
+
+      const result = await fetch(url, {
+        method: 'POST',
+
+        headers: {
+          'Content-Type': 'application/json',
+          'Api-Token': 'd5e9911aa317c4ee9a3be4fce38b878941f11c68',
+        },
+
+        body: JSON.stringify({
+          name: tradeId,
+          channel_url: orderId,
+          cover_url: 'https://next.unove.space/icon-trade.png',
+          custom_type: 'trade',
+
+        }),
+      });
+
+      const data = await result.json();
+
+      console.log('data', data);
+      
+      if (data.error) {
+
+        console.error('Error:', data.error.message);
+
+        //toast.error(data.error.message);
+        //return;
+      }
+
+
+      console.log('Go Chat');
+
+      //router.push(`/chat?channel=${orderId}`);
+
+      router.push(`/${params.lang}/chat/${orderId}`);
+
+
+
     }
 
     
@@ -1176,47 +1226,70 @@ export default function Index({ params }: any) {
 
 
 
-                            
-                            <p className="mt-2 mb-2 flex items-center gap-2">
+                            <div className="flex flex-col items-start justify-start gap-2">
+                              <p className="mt-2 mb-2 flex items-center gap-2">
 
-                              <Image
-                                  src={item.avatar || '/profile-default.png'}
-                                  alt="Avatar"
-                                  width={32}
-                                  height={32}
-                                  priority={true} // Added priority property
-                                  className="rounded-full"
-                                  style={{
-                                      objectFit: 'cover',
-                                      width: '32px',
-                                      height: '32px',
+                                <Image
+                                    src={item.avatar || '/profile-default.png'}
+                                    alt="Avatar"
+                                    width={32}
+                                    height={32}
+                                    priority={true} // Added priority property
+                                    className="rounded-full"
+                                    style={{
+                                        objectFit: 'cover',
+                                        width: '32px',
+                                        height: '32px',
+                                    }}
+                                />
+
+                                <div className="flex items-center space-x-2">{Seller}:</div>
+
+                                <h2 className="text-lg font-semibold">
+                                  {item.walletAddress === address ? 'Me' : item.nickname}
+                                
+                                </h2>
+
+                                <Image
+                                  src="/verified.png"
+                                  alt="Verified"
+                                  width={20}
+                                  height={20}
+                                  className="rounded-lg"
+                                />
+
+                                <Image
+                                  src="/best-seller.png"
+                                  alt="Best Seller"
+                                  width={20}
+                                  height={20}
+                                  className="rounded-lg"
+                                />
+
+                              </p>
+
+
+                              {address && item.walletAddress !== address && item.buyer && item.buyer.walletAddress === address && (
+                                <button
+                                  className="bg-green-500 text-white px-4 py-2 rounded-lg"
+                                  onClick={() => {
+                                      //console.log('Buy USDT');
+                                      // go to chat
+                                      // close modal
+                                      //closeModal();
+                                      goChat(item._id, item.tradeId);
+
                                   }}
-                              />
+                                >
+                                  Chat with Seller
+                                </button>
+                              )}
 
-                              <div className="flex items-center space-x-2">{Seller}:</div>
 
-                              <h2 className="text-lg font-semibold">
-                                {item.walletAddress === address ? 'Me' : item.nickname}
-                               
-                              </h2>
+                            </div>
 
-                              <Image
-                                src="/verified.png"
-                                alt="Verified"
-                                width={20}
-                                height={20}
-                                className="rounded-lg"
-                              />
 
-                              <Image
-                                src="/best-seller.png"
-                                alt="Best Seller"
-                                width={20}
-                                height={20}
-                                className="rounded-lg"
-                              />
 
-                            </p>
 
                             {/* buyer cancelled the trade */}
                             {item.status === 'cancelled' && (
@@ -1651,7 +1724,7 @@ export default function Index({ params }: any) {
           <Modal isOpen={isModalOpen} onClose={closeModal}>
               <TradeDetail
                   closeModal={closeModal}
-                  goChat={goChat}
+                  //goChat={goChat}
               />
           </Modal>
 

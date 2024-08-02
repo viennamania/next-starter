@@ -298,6 +298,7 @@ export default function Index({ params }: any) {
 
   useEffect(() => {
 
+    if (!address) return;
     // get the balance
     const getBalance = async () => {
       const result = await balanceOf({
@@ -406,7 +407,9 @@ export default function Index({ params }: any) {
 
       console.log('Go Chat');
 
-      router.push(`/chat?channel=${orderId}`);
+      //router.push(`/chat?channel=${orderId}`);
+
+      router.push(`/${params.lang}/chat/${orderId}`);
 
 
 
@@ -1004,6 +1007,7 @@ export default function Index({ params }: any) {
 
 
                               <p className="mt-2 mb-2 flex items-center gap-2">
+
                                 <div className="flex items-center space-x-2">{Seller}: </div>
                                 <Image
                                     src={item.avatar || '/profile-default.png'}
@@ -1026,6 +1030,7 @@ export default function Index({ params }: any) {
                                 </h2>
 
 
+
                                 <button
                                   className="bg-green-500 text-white px-4 py-2 rounded-lg"
                                   onClick={() => {
@@ -1037,7 +1042,7 @@ export default function Index({ params }: any) {
 
                                   }}
                                 >
-                                  Chat
+                                  Chat with Seller
                                 </button>
 
                               </p>

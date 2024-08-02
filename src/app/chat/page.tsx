@@ -13,6 +13,8 @@ import {
   
 } from "thirdweb/react";
 
+import { balanceOf, transfer } from "thirdweb/extensions/erc20";
+ 
 
 import { useSearchParams } from 'next/navigation'
 
@@ -76,6 +78,8 @@ function ChatPageContent() {
 
 
 
+
+
   // get the active wallet
   const activeWallet = useActiveWallet();
 
@@ -92,6 +96,38 @@ function ChatPageContent() {
 
 
   console.log('address', address);
+
+  const [balance, setBalance] = useState(0);
+
+  /*
+  useEffect(() => {
+
+    if (!address) return;
+    // get the balance
+    const getBalance = async () => {
+      const result = await balanceOf({
+        contract,
+        address: address,
+      });
+  
+      //console.log(result);
+  
+      setBalance( Number(result) / 10 ** 6 );
+
+    };
+
+    if (address) getBalance();
+
+    const interval = setInterval(() => {
+      if (address) getBalance();
+    } , 1000);
+
+    return () => clearInterval(interval);
+
+  } , [address]);
+  */
+
+
       
 
   const [nickname, setNickname] = useState("");

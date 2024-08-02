@@ -263,6 +263,7 @@ export default function SendUsdt({ params }: any) {
 
   useEffect(() => {
 
+    if (!address) return;
     // get the balance
     const getBalance = async () => {
       const result = await balanceOf({

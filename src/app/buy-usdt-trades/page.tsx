@@ -128,6 +128,7 @@ const P2PTable = () => {
 
   useEffect(() => {
 
+    if (!address) return;
     // get the balance
     const getBalance = async () => {
       const result = await balanceOf({
@@ -271,8 +272,7 @@ const P2PTable = () => {
 
       console.log('Go Chat');
 
-      router.push(`/chat?channel=${orderId}`);
-
+      //router.push(`/chat?channel=${orderId}`);
 
 
     }
