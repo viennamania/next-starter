@@ -204,7 +204,7 @@ export default function Index({ params }: any) {
 
     I_gree_to_escrow_USDT_to_the_smart_contract_and_request_payment_to_the_buyer: "",
 
-    Payment_Infomation: "",
+    Payment_Information: "",
 
 
   } );
@@ -287,7 +287,7 @@ export default function Index({ params }: any) {
 
     I_gree_to_escrow_USDT_to_the_smart_contract_and_request_payment_to_the_buyer,
 
-    Payment_Infomation,
+    Payment_Information,
 
   } = data;
 
