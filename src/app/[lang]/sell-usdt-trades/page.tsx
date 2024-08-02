@@ -1395,7 +1395,7 @@ export default function Index({ params }: any) {
                               {(item.status === 'accepted' || item.status === 'paymentRequested') && (
                                   <div className="w-full mt-2 mb-2 flex flex-col items-start ">
 
-                                    <div className="flex flex-col items-center gap-2">
+                                    <div className="flex flex-col items-start gap-2">
                       
 
                                         {/* buyer info */}
@@ -1416,14 +1416,17 @@ export default function Index({ params }: any) {
 
                                             onClick={() => {
 
-                                                goChat(item._id, item.tradeId);
+                                                ///goChat(item._id, item.tradeId);
+
+                                                router.push(`/${params.lang}/sell-usdt/${item._id}`);
+
 
                                             }}
                                         >
                                             Chat with Buyer 
                                             {
                                               balance >=item.usdtAmount && item.buyer.nickname && (
-                                              <span className="text-sm text-white ml-2">({item.buyer.nickname})</span>
+                                              <span className="text-lg text-white ml-2">({item.buyer.nickname})</span>
                                             )}
                                             
 

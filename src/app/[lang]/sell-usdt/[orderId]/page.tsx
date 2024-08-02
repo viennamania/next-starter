@@ -1247,6 +1247,7 @@ export default function Index({ params }: any) {
           {address ? (
             <div className="flex flex-col items-center space-y-4 mb-4">
               {/* disconnect button */}
+              {/*}
               <button
                 onClick={() => {
 
@@ -1261,6 +1262,7 @@ export default function Index({ params }: any) {
               >
                 {Disconnect_Wallet}
               </button>
+              */}
             </div>
 
           ) : (
@@ -1317,32 +1319,54 @@ export default function Index({ params }: any) {
                 {address && (
                   <div className="w-full flex flex-col items-start justify-between gap-2">
                     {/* my usdt balance */}
-                    <div className="flex flex-col gap-2 items-start">
-                      <div className="text-5xl font-semibold text-white">
-                        {Number(balance).toFixed(2)} <span className="text-lg">USDT</span>
+                    <div className='flex flex-row items-center gap-2'>
+
+                      <div className="flex flex-col gap-2 items-start">
+                        <div className="text-5xl font-semibold text-white">
+                          {Number(balance).toFixed(2)} <span className="text-lg">USDT</span>
+                        </div>
+                      </div>
+
+                      <div className="flex flex-col gap-2 items-start justify-center">
+                        
+                          <Image
+                            src={user?.avatar || "/profile-default.png"}
+                            alt="Avatar"
+                            width={20}
+                            height={20}
+                            priority={true} // Added priority property
+                            className="rounded-full"
+                            style={{
+                                objectFit: 'cover',
+                                width: '20px',
+                                height: '20px',
+                            }}
+                          />
+                          <div className="text-lg font-semibold text-white ">{
+                            user?.nickname ? user.nickname : Anonymous
+                          }</div>
+                       
                       </div>
                     </div>
 
-                    <div className="flex flex-col gap-2 items-start justify-end">
-                      <div className="flex flex-row items-center gap-2">
-                        <Image
-                          src={user?.avatar || "/profile-default.png"}
-                          alt="Avatar"
-                          width={20}
-                          height={20}
-                          priority={true} // Added priority property
-                          className="rounded-full"
-                          style={{
-                              objectFit: 'cover',
-                              width: '20px',
-                              height: '20px',
-                          }}
+
+                    {orderId && address && user && user.nickname && user.avatar && (
+                      <div className=' w-full  '>
+                        <Chat
+
+                          channel={orderId}
+
+                          userId={ user.nickname }
+
+                          nickname={ user.nickname }
+
+                          profileUrl={ user.avatar }
                         />
-                        <div className="text-lg font-semibold text-white ">{
-                          user?.nickname ? user.nickname : Anonymous
-                        }</div>
                       </div>
-                    </div>
+                    )}
+
+
+
 
                   </div>
                 )}
@@ -2587,20 +2611,6 @@ export default function Index({ params }: any) {
             </div>
 
 
-            {orderId && address && user && user.nickname && user.avatar && (
-                  <div className='w-full  '>
-                    <Chat
-
-                      channel={orderId}
-
-                      userId={ user.nickname }
-
-                      nickname={ user.nickname }
-
-                      profileUrl={ user.avatar }
-                    />
-                  </div>
-                )}
 
 
 

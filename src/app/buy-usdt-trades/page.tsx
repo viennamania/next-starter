@@ -677,6 +677,7 @@ const P2PTable = () => {
                                     // go to chat
                                     // close modal
                                     //closeModal();
+
                                     goChat(item._id, item.tradeId);
 
                                 }}

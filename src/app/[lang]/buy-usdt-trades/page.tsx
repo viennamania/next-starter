@@ -1005,8 +1005,8 @@ export default function Index({ params }: any) {
                             </div>
                           
 
-
-                              <p className="mt-2 mb-2 flex items-center gap-2">
+                              <div className="mt-2 mb-2 flex flex-col items-start gap-2">
+                              <p className="flex items-center gap-2">
 
                                 <div className="flex items-center space-x-2">{Seller}: </div>
                                 <Image
@@ -1030,22 +1030,24 @@ export default function Index({ params }: any) {
                                 </h2>
 
 
-
-                                <button
+                              </p>
+                              <button
                                   className="bg-green-500 text-white px-4 py-2 rounded-lg"
                                   onClick={() => {
                                       //console.log('Buy USDT');
                                       // go to chat
                                       // close modal
                                       //closeModal();
-                                      goChat(item._id, item.tradeId);
+                                      //goChat(item._id, item.tradeId);
+
+                                      router.push(`/${params.lang}/sell-usdt/${item._id}`);
 
                                   }}
                                 >
                                   Chat with Seller
                                 </button>
 
-                              </p>
+                              </div>
 
                               {/* waiting for escrow */}
                               {item.status === 'accepted' && (
