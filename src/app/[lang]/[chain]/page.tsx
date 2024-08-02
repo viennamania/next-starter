@@ -94,35 +94,6 @@ const contractAddressArbitrum = "0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9"; //
 
 
 
-/*
-const editionDropAddress = "0x41FBA0bd9f4DC9a968a10aEBb792af6A09969F60";
-
-
-
-
- // get a contract
- const contractEditorDrop = getContract({
-  // the client you have created via `createThirdwebClient()`
-  client,
-  // the chain the contract is deployed on
-  chain: polygon,
-  // the contract's address
-  address: editionDropAddress,
-  // OPTIONAL: the contract's abi
-  //abi: [...],
-})
-
-
-
-console.log("contractEditorDrop", contractEditorDrop);
-*/
-
-
-
-
-
-///export default function Home() {
-
 export default function Index({ params }: any) {
 
 
@@ -754,7 +725,7 @@ export default function Index({ params }: any) {
 
                       // redirect to settings page
                       router.push(
-                        "/" + params.lang + "/settings"
+                        "/" + params.lang + "/" + params.chain + "/settings"
                       );
 
                     }}
