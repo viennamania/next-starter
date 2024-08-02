@@ -192,6 +192,9 @@ export default function Index({ params }: any) {
 
     Anonymous: "",
 
+    Waiting_for_seller_to_deposit_USDT_to_escrow: "",
+
+
 
   } );
 
@@ -264,6 +267,8 @@ export default function Index({ params }: any) {
     seconds,
 
     Anonymous,
+
+    Waiting_for_seller_to_deposit_USDT_to_escrow,
 
   } = data;
 
@@ -352,6 +357,10 @@ export default function Index({ params }: any) {
       tradeId: string
     ) => {
 
+      console.log('orderId', orderId);
+      console.log('tradeId', tradeId);
+
+
 
       const url = 'https://api-D2845744-81A3-4585-99FF-4DCABE2CA190.sendbird.com/v3/open_channels';
 
@@ -377,11 +386,19 @@ export default function Index({ params }: any) {
       const data = await result.json();
 
       console.log('data', data);
-          
+      
+      if (data.error) {
+
+        console.error('Error:', data.error.message);
+
+        //toast.error(data.error.message);
+        //return;
+      }
+
 
       console.log('Go Chat');
 
-      router.push(`/chat?tradeId=${tradeId}`);
+      router.push(`/chat?channel=${orderId}`);
 
 
 
@@ -1031,7 +1048,9 @@ export default function Index({ params }: any) {
                                       className="animate-spin"
                                     />
 
-                                    <div>Waiting for seller to deposit {item.usdtAmount} USDT to escrow...</div>
+                                    <div>
+                                      {Waiting_for_seller_to_deposit_USDT_to_escrow}
+                                    </div>
 
                                   </div>
                               )}

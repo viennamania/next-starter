@@ -604,7 +604,7 @@ export default function Index({ params }: any) {
 
       console.log('Go Chat');
 
-      router.push(`/chat?tradeId=${tradeId}`);
+      router.push(`/chat?channel=${orderId}`);
 
 
 

@@ -67,10 +67,10 @@ function ChatPageContent() {
   
   const searchParams = useSearchParams()
  
-  const tradeId = searchParams.get('tradeId')
+  const channel = searchParams.get('channel')
  
 
-  console.log("tradeId", tradeId);
+  console.log("channel", channel);
 
 
 
@@ -164,10 +164,10 @@ function ChatPageContent() {
           />
           */}
 
-          {tradeId && address && nickname && avatar && (
+          {channel && address && nickname && avatar && (
             <Chat
 
-              tradeId={tradeId}
+              channelUrl={channel}
 
               userId={ nickname }
 
