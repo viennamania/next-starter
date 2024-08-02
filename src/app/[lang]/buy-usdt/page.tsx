@@ -1277,7 +1277,9 @@ export default function Index({ params }: any) {
                                       // go to chat
                                       // close modal
                                       //closeModal();
-                                      goChat(item._id, item.tradeId);
+                                      ///goChat(item._id, item.tradeId);
+
+                                      router.push(`/${params.lang}/sell-usdt/${item._id}`);
 
                                   }}
                                 >

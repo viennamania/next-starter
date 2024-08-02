@@ -1751,6 +1751,7 @@ export default function Index({ params }: any) {
                                   height={24}
                                 />
 
+                                {/*
                                 {address && item.buyer && item.buyer?.walletAddress === address && (
                                   <button
                                       className="text-sm bg-blue-500 text-white px-2 py-1 rounded-md"
@@ -1764,6 +1765,7 @@ export default function Index({ params }: any) {
                                     Chat
                                   </button>
                                 )}
+                                */}
 
 
                             </div>
@@ -1811,6 +1813,7 @@ export default function Index({ params }: any) {
                                   
 
                                   {/* if i am the seller, then show chat button */}
+                                  {/*
                                   {address && item.walletAddress === address && (
                                     <button
                                         className="text-sm bg-blue-500 text-white px-2 py-1 rounded-md"
@@ -1824,6 +1827,7 @@ export default function Index({ params }: any) {
                                       Chat
                                     </button>
                                   )}
+                                  */}
                                   
 
                                 </div>
