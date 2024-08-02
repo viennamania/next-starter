@@ -952,7 +952,7 @@ export default function Index({ params }: any) {
 
 
                 {/* my buy trades button and my sell trades button */}
-                
+                {/*
                 <div className="flex flex-row gap-2 justify-center items-center mt-10">
                   <button
                     disabled={!address}
@@ -997,6 +997,7 @@ export default function Index({ params }: any) {
                   </button>
 
                 </div>
+                */}
 
 
               </div>
