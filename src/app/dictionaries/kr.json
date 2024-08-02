@@ -164,7 +164,7 @@
 
     "I_agree_to_escrow_USDT": "USDT를 에스크로 보관소에 보내는 것에 동의합니다.",
 
-    "Order_Opened": "주문 시작",
+    "Order_Opened": "판매 시작",
 
     "Trade_Started": "거래 시작",
 
@@ -204,7 +204,9 @@
     "Waiting_for_trading_partner_to_proceed": "거래 상대방이 진행 중입니다. 잠시만 기다려주세요.",
 
 
-    "Escrow": "에스크로"
+    "Escrow": "에스크로",
+
+    "EA": "개"
 
 
 }

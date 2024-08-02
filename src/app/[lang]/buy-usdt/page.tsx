@@ -761,13 +761,13 @@ export default function Index({ params }: any) {
                     <div className="flex flex-col gap-2 items-center">
                       <div className="text-sm">{Total}</div>
                       <div className="text-xl font-semibold text-white">
-                        {sellOrders.length}
+                        {sellOrders.length} 
                       </div>
                       
                     </div>
 
                     <div className="flex flex-col gap-2 items-center">
-                      <div className="text-sm">{Orders}</div>
+                      <div className="text-sm">{Sell}</div>
                       <div className="text-xl font-semibold text-white">
                         {sellOrders.filter((item) => item.status === 'ordered').length}
                       </div>
@@ -1237,8 +1237,8 @@ export default function Index({ params }: any) {
                                   />
                                   <p className="text-xl text-red-500 font-semibold">
                                     {Buyer}: {
-                                      item.buyer.walletAddress === address ? Me :
-                                      item.buyer.nickname ? item.buyer.nickname : Anonymous
+                                      address && item.buyer.walletAddress === address ? Me :
+                                      address && item.buyer.nickname ? item.buyer.nickname : Anonymous
                                     }
                                   </p>
  
