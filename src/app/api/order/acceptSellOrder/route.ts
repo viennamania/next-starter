@@ -70,7 +70,7 @@ export async function POST(request: NextRequest) {
 
       
 
-      const msgBody2 = `[UNOVE] TID[${tradeId}] Check following link to proceed with the trade: https://next.unove.space/${lang}/${chain}/sell-usdt/${orderId}`;
+      const msgBody2 = `[UNOVE] TID[${tradeId}] Check the trade: https://next.unove.space/${lang}/${chain}/sell-usdt/${orderId}`;
 
       message = await client.messages.create({
         body: msgBody2,

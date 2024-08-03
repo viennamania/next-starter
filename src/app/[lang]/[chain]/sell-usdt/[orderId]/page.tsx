@@ -443,7 +443,7 @@ export default function Index({ params }: any) {
 
       return () => clearInterval(interval);
   
-    } , [address]);
+    } , [address, contract]);
 
 
 
