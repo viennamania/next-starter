@@ -815,7 +815,9 @@ export default function Index({ params }: any) {
 
                       // comming soon
 
-                      toast.success(Coming_Soon);
+                      //toast.success(Coming_Soon);
+
+                      router.push('/' + params.lang + '/' + params.chain + '/sell-usdt');
 
 
                     }}
