@@ -148,6 +148,7 @@ export default function SettingsPage({ params }: any) {
         Cancel: "",
         Save: "",
         Enter_your_nickname: "",
+        Nickname_should_be_5_10_characters: "",
 
         Seller: "",
     
@@ -193,6 +194,7 @@ export default function SettingsPage({ params }: any) {
         Cancel,
         Save,
         Enter_your_nickname,
+        Nickname_should_be_5_10_characters,
 
         Seller,
 
@@ -303,7 +305,7 @@ export default function SettingsPage({ params }: any) {
 
         if (editedNickname.length < 5 || editedNickname.length > 10) {
 
-            toast.error('Nickname should be at least 5 characters and at most 10 characters');
+            toast.error(Nickname_should_be_5_10_characters);
             return;
         }
         
@@ -745,8 +747,9 @@ export default function SettingsPage({ params }: any) {
 
                                 />
                                 <div className='flex flex-row gap-2 items-center justify-between'>
-                                    <div className="text-xs font-semibold">5-10 characters</div>
-                                    <div className="text-xs font-semibold">alphanumeric lowercase</div>
+                                    <span className='text-xs font-semibold'>
+                                        {Nickname_should_be_5_10_characters}
+                                    </span>
                                 </div>
                                 <button
                                     disabled={!address}
@@ -827,6 +830,7 @@ export default function SettingsPage({ params }: any) {
                                 </div>
 
                                 {/* goto seller page /sell-usdt */}
+                                {/*}
                                 <button
                                     onClick={() => {
                                         window.location.href = '/sell-usdt';
@@ -835,6 +839,7 @@ export default function SettingsPage({ params }: any) {
                                 >
                                     {Sell_USDT}
                                 </button>
+                                */}
 
 
                                 <Image

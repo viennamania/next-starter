@@ -97,6 +97,21 @@ export default function SettingsPage({ params }: any) {
 
         Wallet_Settings: "",
         Profile_Settings: "",
+
+
+        My_Wallet_Address: "",
+        My_Phone_Number: "",
+    
+        Wallet_Address_Description1: "",
+        Wallet_Address_Description2: "",
+    
+        I_understand_that_I_should_never_deposit_any_other_tokens: "",
+
+        Copy: "",
+
+        Disconnect_Wallet: "",
+    
+
     
     } );
     
@@ -131,6 +146,19 @@ export default function SettingsPage({ params }: any) {
 
         Wallet_Settings,
         Profile_Settings,
+
+        My_Wallet_Address,
+        My_Phone_Number,
+
+        Wallet_Address_Description1,
+        Wallet_Address_Description2,
+
+        I_understand_that_I_should_never_deposit_any_other_tokens,
+
+        Copy,
+
+        Disconnect_Wallet,
+
     } = data;
     
     
@@ -416,7 +444,8 @@ export default function SettingsPage({ params }: any) {
 
                                 <div className='flex flex-row items-center gap-2'>    
                                     <div className="bg-green-500 text-sm text-zinc-100 p-2 rounded">
-                                        My Wallet Address
+                                       
+                                        {My_Wallet_Address}
                                     </div>
                                     {/* button for polygon explorer */}
                                     {address ? (
@@ -459,8 +488,7 @@ export default function SettingsPage({ params }: any) {
 
                                 <div className='flex flex-col items-start gap-2'>
                                     <div className='text-sm text-red-500'>
-                                        The address of this wallet is USDT Tether compatible on ${params.chain} blockchain only.
-                                        You should never deposit any other tokens (e.g. Ethereum) to this address.
+                                        {Wallet_Address_Description1}{' '}{params.chain}{' '}{Wallet_Address_Description2}
                                     </div>
                                 </div>
 
@@ -474,7 +502,7 @@ export default function SettingsPage({ params }: any) {
                                         className='w-6 h-6'
                                     />
                                     <div className='text-lg text-zinc-100 font-semibold'>
-                                        I understand that I should never deposit any other tokens (e.g. Ethereum) to this address.
+                                        {I_understand_that_I_should_never_deposit_any_other_tokens}
                                     </div>
                                 </div>
 
@@ -492,7 +520,7 @@ export default function SettingsPage({ params }: any) {
                                         ${!address || !agreementCopy ? 'bg-gray-300 text-gray-500' : 'bg-blue-500'}
                                     `}
                                     >
-                                    Copy
+                                    {Copy}
                                 </button>
 
                             </div>
@@ -509,7 +537,7 @@ export default function SettingsPage({ params }: any) {
                         <div className='flex flex-col xl:flex-row gap-2 items-center justify-between border border-gray-300 p-4 rounded-lg'>
                                 
                             <div className="bg-green-500 text-sm text-zinc-100 p-2 rounded">
-                                My Phone Number
+                                {My_Phone_Number}
                             </div>
 
                             <div className="p-2 bg-zinc-800 rounded text-zinc-100 text-2xl font-semibold">
@@ -524,7 +552,7 @@ export default function SettingsPage({ params }: any) {
                                 }}
                                 className="p-2 bg-blue-500 text-zinc-100 rounded"
                             >
-                                Copy
+                                {Copy}
                             </button>
                         
                         </div>
@@ -542,7 +570,7 @@ export default function SettingsPage({ params }: any) {
                                     }}
                                     className="p-2 bg-red-500 text-zinc-100 rounded"
                                 >
-                                    Disconnect Wallet
+                                    {Disconnect_Wallet}
                                 </button>
 
 

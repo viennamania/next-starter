@@ -129,7 +129,11 @@
     "Edit": "수정",
     "Cancel": "취소",
     "Save": "저장",
+    "Copy": "복사",
     "Enter_your_nickname": "닉네임 입력",
+
+    "Nickname_should_be_5_10_characters": "닉네임은 5-10자로 영문 소문자와 숫자만 포함해야 합니다.",
+
 
     "My_Buy_USDT_Trades": "내 USDT 구매내역",
     "My_Sell_USDT_Trades": "내 USDT 판매내역",
@@ -217,8 +221,16 @@
 
     "Table_View": "테이블 보기",
 
-    "I_gree_to_escrow_USDT_to_the_smart_contract_and_request_payment_to_the_buyer": "USDT를 에스크로 보관소에 보내고 구매자에게 결제를 요청하는 것에 동의합니다."
+    "I_gree_to_escrow_USDT_to_the_smart_contract_and_request_payment_to_the_buyer": "USDT를 에스크로 보관소에 보내고 구매자에게 결제를 요청하는 것에 동의합니다.",
 
+
+    "My_Wallet_Address": "내 지갑 주소",
+    "My_Phone_Number": "내 전화번호",
+
+    "Wallet_Address_Description1": "이 지갑의 주소는",
+    "Wallet_Address_Description2": "블록체인에서 USDT 테더와 호환됩니다. 이 주소로 다른 토큰(예: 이더리움)을 절대 입금하지 마십시오.",
+
+    "I_understand_that_I_should_never_deposit_any_other_tokens": "다른 토큰(예: 이더리움)을 이 주소로 입금해서는 안 된다는 것을 이해합니다."
 
 
 }

@@ -558,17 +558,16 @@ export default function Index({ params }: any) {
   return (
 
 
-
     <main className="p-4 pb-10 min-h-[100vh] flex items-start justify-center container max-w-screen-lg mx-auto">
 
 
-      <div className="py-20">
+      <div className="py-0 w-full">
         
         {/*
         <Header />
         */}
 
-        <div className="flex flex-col justify-between items-center gap-2 mb-5">
+        <div className="w-full flex flex-col justify-between items-center gap-2 mb-5">
           <AppBarComponent />
 
           {/* select input for network selection (polygon, arbitrum) */}
@@ -611,7 +610,7 @@ export default function Index({ params }: any) {
 
   
 
-        <div className="mt-4 flex flex-col justify-center gap-5 mb-10">
+        <div className="mt-4 w-full flex flex-col xl:flex-row justify-center gap-5 mb-10">
 
 
 
@@ -662,10 +661,10 @@ export default function Index({ params }: any) {
         
             
               
-              <div className="bg-zinc-800 p-5 rounded-lg text-center">
+              <div className="flex flex-col bg-zinc-800 p-5 rounded-lg text-center">
 
 
-                <div className="flex flex-row justify-between items-start">
+                <div className="flex flex-row justify-between items-center">
 
                   <div className="flex flex-row gap-2 justify-center items-center">
                     {/* Tether USDT logo */}
@@ -835,20 +834,20 @@ export default function Index({ params }: any) {
 
 
 
-              <div className="bg-zinc-800 p-5 rounded-lg text-center">
+              <div className="flex flex-col bg-zinc-800 p-5 rounded-lg text-center">
 
-                <div className="flex flex-row justify-between items-start">
+                <div className="flex flex-row justify-between items-center">
                   <Image
                     src={avatar || "/profile-default.png"}
                     alt="Profile Image"
-                    width={38}
-                    height={38}
+                    width={35}
+                    height={35}
                     priority={true} // Added priority property
                     className="rounded-full"
                     style={{
                         objectFit: 'cover',
-                        width: '38px',
-                        height: '38px',
+                        width: '35px',
+                        height: '35px',
                     }}
                   />
 
@@ -863,7 +862,11 @@ export default function Index({ params }: any) {
                       }
 
                       // redirect to settings page
-                      router.push("/" + params.lang + "/profiles");
+                      router.push("/" + params.lang + "/" + params.chain + "/profiles");
+
+
+                    
+
 
                     }}
                     className="text-blue-500 hover:underline"
@@ -873,53 +876,50 @@ export default function Index({ params }: any) {
                   </button>
 
 
-
-
                 </div>
-
-                
+    
                 {loadingUser ? (
 
-                  <div className="flex flex-row justify-center items-center">
+                  <div className="mt-4 flex flex-row justify-center items-center">
                     <Image
                       src="/loading.png"
                       alt="Loading"
-                      width={40}
-                      height={40}
+                      width={35}
+                      height={35}
                       className="animate-spin"
                     />
                   </div>
 
                 ) : (
 
-                <div className=" flex flex-row gap-2 justify-center items-center">
-                  <h2 className="text-3xl font-semibold text-zinc-100">
-                    {nickname}
-                  </h2>
-                  {userCode && (
-                    <Image
-                      src="/verified.png"
-                      alt="Verified"
-                      width={20}
-                      height={20}
-                      className="rounded-lg"
-                    />
-                  )}
-                  {seller && (
-                    <Image
-                      src="/best-seller.png"
-                      alt="Best Seller"
-                      width={20}
-                      height={20}
-                      className="rounded-lg"
-                    />
-                  )}
-                </div>
+                  <div className="mt-4 flex flex-row gap-2 justify-center items-center">
+                    <h2 className="text-3xl font-semibold text-zinc-100">
+                      {nickname}
+                    </h2>
+                    {userCode && (
+                      <Image
+                        src="/verified.png"
+                        alt="Verified"
+                        width={20}
+                        height={20}
+                        className="rounded-lg"
+                      />
+                    )}
+                    {seller && (
+                      <Image
+                        src="/best-seller.png"
+                        alt="Best Seller"
+                        width={20}
+                        height={20}
+                        className="rounded-lg"
+                      />
+                    )}
+                  </div>
 
                 )}
 
 
-                <p className="text-zinc-300">{My_Nickname}</p>
+                <p className="text-sm text-zinc-300">{My_Nickname}</p>
 
 
                 {/* my buy trades button and my sell trades button */}

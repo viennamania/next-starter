@@ -156,7 +156,10 @@
     "Edit": "Edit",
     "Cancel": "Cancel",
     "Save": "Save",
+    "Copy": "Copy",
     "Enter_your_nickname": "Enter your nickname",
+
+    "Nickname_should_be_5_10_characters": "Nickname should be 5-10 characters long and contain only alphanumeric lowercase characters.",
 
 
     "My_Buy_USDT_Trades": "My Buy USDT Trades",
@@ -257,6 +260,16 @@
     "Table_View": "Table View",
 
   
-    "I_gree_to_escrow_USDT_to_the_smart_contract_and_request_payment_to_the_buyer": "I agree to escrow USDT to the smart contract and request payment to the buyer."
+    "I_gree_to_escrow_USDT_to_the_smart_contract_and_request_payment_to_the_buyer": "I agree to escrow USDT to the smart contract and request payment to the buyer.",
+
+
+    "My_Wallet_Address": "My Wallet Address",
+    "My_Phone_Number": "My Phone Number",
+
+    "Wallet_Address_Description1": "The address of this wallet is",
+    "Wallet_Address_Description2": "compatible with USDT Tether on the blockchain. Do not deposit any other tokens (e.g., Ethereum) to this address.",
+
+    "I_understand_that_I_should_never_deposit_any_other_tokens": "I understand that I should never deposit any other tokens (e.g., Ethereum) to this address."
+
 
 }
