@@ -84,7 +84,11 @@ export async function POST(request: NextRequest) {
 
   const { lang, chain, orderId } = body;
 
+  console.log("lang", lang);
+  console.log("chain", chain);
+
   console.log("orderId", orderId);
+
 
 
 
@@ -133,7 +137,7 @@ export async function POST(request: NextRequest) {
     if (chain === "polygon") {
       const contract = getContract({
         client,
-        chain: chain,
+        chain: polygon,
         address: tokenContractAddressUSDT, // erc20 contract from thirdweb.com/explore
       });
     
@@ -152,7 +156,7 @@ export async function POST(request: NextRequest) {
     } else if (chain === "arbitrum") {
       const contract = getContract({
         client,
-        chain: chain,
+        chain: arbitrum,
         address: contractAddressArbitrum, // erc20 contract from thirdweb.com/explore
       });
     

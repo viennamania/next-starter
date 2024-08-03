@@ -1444,7 +1444,7 @@ export default function Index({ params }: any) {
 
 
                     {orderId && address && user && user.nickname && user.avatar && (
-                      <div className=' w-full  '>
+                      <div className=' w-full '>
                         <Chat
 
                           channel={orderId}
@@ -1462,7 +1462,7 @@ export default function Index({ params }: any) {
 
 
 
-                <div className="w-full mb-10 grid grid-cols-1 gap-4  justify-center">
+                <div className="w-full mb-10 grid grid-cols-1 gap-4  justify-center  ">
 
                     {sellOrders.map((item, index) => (
 
@@ -1693,31 +1693,6 @@ export default function Index({ params }: any) {
                                   <p className=" text-xl font-semibold text-green-500 ">
                                     {TID}: {item.tradeId}
                                   </p>
-
-                                  {/* reload button */}
-                                  {item.status !== 'paymentConfirmed' && ( 
-                                    <button
-                                      className="text-sm bg-green-500 text-white px-2 py-1 rounded-md"
-                                      onClick={() => {
-                                        fetch('/api/order/getOneSellOrder', {
-                                          method: 'POST',
-                                          headers: {
-                                            'Content-Type': 'application/json'
-                                          },
-                                          body: JSON.stringify({
-                                            orderId: item._id,
-                                          })
-                                        })
-                                        .then(response => response.json())
-                                        .then(data => {
-                                          //console.log('data', data);
-                                          setSellOrders(data.result.orders);
-                                        });
-                                      }}
-                                    >
-                                      Reload
-                                    </button>
-                                  )}
 
 
 
