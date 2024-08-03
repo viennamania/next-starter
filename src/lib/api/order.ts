@@ -112,6 +112,8 @@ export async function insertSellOrder(data: any) {
   const result = await collection.insertOne(
 
     {
+      lang: data.lang,
+      chain: data.chain,
       walletAddress: data.walletAddress,
       nickname: nickname,
       mobile: mobile,

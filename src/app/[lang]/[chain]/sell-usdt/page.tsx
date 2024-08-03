@@ -460,6 +460,8 @@ export default function Index({ params }: any) {
               'Content-Type': 'application/json'
             },
             body: JSON.stringify({
+              lang: params.lang,
+              chain: params.chain,
               walletAddress: address,
               searchMyOrders: searchMyOrders
             })
@@ -488,7 +490,7 @@ export default function Index({ params }: any) {
 
         return () => clearInterval(interval);
   
-    }, [address, searchMyOrders]);
+    }, [address, searchMyOrders, params.lang, params.chain]);
 
 
 
@@ -571,6 +573,8 @@ export default function Index({ params }: any) {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
+          lang: params.lang,
+          chain: params.chain,
           walletAddress: address,
           usdtAmount: usdtAmount,
           krwAmount: krwAmount,
@@ -700,7 +704,7 @@ export default function Index({ params }: any) {
   
           <div className="mt-4 flex justify-start space-x-4 mb-10">
               <button
-                onClick={() => router.push('/' + params.lang)}
+                onClick={() => router.push('/' + params.lang + '/' + params.chain)}
                 className="text-zinc-100 font-semibold underline">
                 {Go_Home}
                 </button>
@@ -833,7 +837,7 @@ export default function Index({ params }: any) {
               </div>
 
 
-                <div className="flex flex-row items-start justify-between gap-2">
+                <div className="flex flex-row items-center justify-between gap-5">
                   {/* my usdt balance */}
                   <div className="flex flex-col gap-2 items-start">
                     <div className="text-5xl font-semibold text-white">
@@ -841,7 +845,22 @@ export default function Index({ params }: any) {
                     </div>
                   </div>
 
-
+                  <div className="flex flex-row items-center gap-2">
+                        <Image
+                          src={user?.avatar || "/profile-default.png"}
+                          alt="Avatar"
+                          width={20}
+                          height={20}
+                          priority={true} // Added priority property
+                          className="rounded-full"
+                          style={{
+                              objectFit: 'cover',
+                              width: '20px',
+                              height: '20px',
+                          }}
+                        />
+                        <div className="text-lg font-semibold text-white ">{user?.nickname}</div>
+                      </div>
 
                 </div>
 
@@ -1329,22 +1348,7 @@ export default function Index({ params }: any) {
 
 
                     <div className="ml-5 flex flex-col gap-2 items-start justify-end">
-                      <div className="flex flex-row items-center gap-2">
-                        <Image
-                          src={user?.avatar || "/profile-default.png"}
-                          alt="Avatar"
-                          width={20}
-                          height={20}
-                          priority={true} // Added priority property
-                          className="rounded-full"
-                          style={{
-                              objectFit: 'cover',
-                              width: '20px',
-                              height: '20px',
-                          }}
-                        />
-                        <div className="text-lg font-semibold text-white ">{user?.nickname}</div>
-                      </div>
+
                       {/* checkbox for search my trades */}
                       <div className="flex flex-row items-center gap-2">
                         <input

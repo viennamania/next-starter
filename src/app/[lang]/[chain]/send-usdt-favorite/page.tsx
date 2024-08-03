@@ -729,6 +729,7 @@ export default function SendUsdt({ params }: any) {
             </div>
 
 
+          
             {/* my usdt balance */}
             <div className="w-full flex flex-col gap-2 items-start">
               <div className="text-sm">{My_Balance}</div>
@@ -762,174 +763,83 @@ export default function SendUsdt({ params }: any) {
             <div className='w-full  flex flex-col gap-5 border border-gray-300 p-4 rounded-lg'>
 
 
+
               <div className="text-lg">{Enter_the_amount_and_recipient_address}</div>
 
-              <input
-                disabled={sending}
-                type="number"
-                //placeholder="Enter amount"
-                className="w-full p-2 border border-gray-300 rounded text-black text-5xl font-semibold "
-                
-                value={amount}
 
-                onChange={(e) => (
+              <div className='flex flex-col xl:flex-row gap-5 items-center justify-between'>
 
-                  // check if the value is a number
+                <input
+                  disabled={sending}
+                  type="number"
+                  //placeholder="Enter amount"
+                  className="w-full p-2 border border-gray-300 rounded text-black text-5xl font-semibold "
+                  
+                  value={amount}
 
+                  onChange={(e) => (
 
-                  // check if start 0, if so remove it
-
-                  e.target.value = e.target.value.replace(/^0+/, ''),
+                    // check if the value is a number
 
 
+                    // check if start 0, if so remove it
 
-                  // check balance
+                    e.target.value = e.target.value.replace(/^0+/, ''),
 
-                  setAmount(e.target.value as any)
 
-                )}
-              />
 
+                    // check balance
+
+                    setAmount(e.target.value as any)
+
+                  )}
+                />
+           
 
             
-              {/*
-              <input
-                  type="text"
-                  placeholder="Enter address"
-                  className="w-80 p-2 border border-gray-300 rounded text-black"
-                  value={toAddress}
-                  onChange={(e) => setToAddress(e.target.value)}
-              />
-              */}
-              {/* user list and select one */}
+            
+                {!wantToReceiveWalletAddress ? (
+                  <>
+                  <div className='w-full flex flex-row gap-5 items-center justify-between'>
+                    <select
+                      disabled={sending}
 
-              {!wantToReceiveWalletAddress ? (
-                <>
-                <div className='flex flex-row gap-5 items-center justify-between'>
-                  <select
-                    disabled={sending}
+                      className="
+                        
+                        w-full p-2 border border-gray-300 rounded text-black text-2xl font-semibold "
+                        
+                      value={
+                        recipient?.nickname
+                      }
 
-                    className="
+
+                      onChange={(e) => {
+
+                        const selectedUser = users.find((user) => user.nickname === e.target.value) as any;
+
+                        console.log("selectedUser", selectedUser);
+
+                        setRecipient(selectedUser);
+
+                      } } 
+
+                    >
+                      <option value="">{Select_a_user}</option>
                       
-                      w-full p-2 border border-gray-300 rounded text-black text-2xl font-semibold "
-                      
-                    value={
-                      recipient?.nickname
-                    }
 
+                      {users.map((user) => (
+                        <option key={user.id} value={user.nickname}>{user.nickname}</option>
+                      ))}
+                    </select>
 
-                    onChange={(e) => {
+                    {/* select user profile image */}
 
-                      const selectedUser = users.find((user) => user.nickname === e.target.value) as any;
-
-                      console.log("selectedUser", selectedUser);
-
-                      setRecipient(selectedUser);
-
-                    } } 
-
-                  >
-                    <option value="">{Select_a_user}</option>
-                    
-
-                    {users.map((user) => (
-                      <option key={user.id} value={user.nickname}>{user.nickname}</option>
-                    ))}
-                  </select>
-
-                  {/* select user profile image */}
-
-                  <div className=" w-48 flex flex-row gap-2 items-center justify-center">
-                    <Image
-                      src={recipient?.avatar || '/profile-default.png'}
-                      alt="profile"
-                      width={38}
-                      height={38}
-                      className="rounded-full"
-                      style={{
-                        objectFit: 'cover',
-                        width: '38px',
-                        height: '38px',
-                      }}
-                    />
-
-                    {recipient?.walletAddress && (
+                    <div className=" w-48 flex flex-row gap-2 items-center justify-center">
                       <Image
-                        src="/verified.png"
-                        alt="check"
-                        width={28}
-                        height={28}
-                      />
-                    )}
-
-                  </div>
-
-
-                </div>
-             
-
-                {/* input wallet address */}
-                
-                <input
-                  disabled={true}
-                  type="text"
-                  placeholder={User_wallet_address}
-                  className="w-full p-2 border border-gray-300 rounded text-white text-sm xl:text-lg font-semibold"
-                  value={recipient?.walletAddress}
-                  onChange={(e) => {
-  
-                    
-                    
-                      getUserByWalletAddress(e.target.value)
-
-                      .then((data) => {
-
-                        //console.log("data", data);
-
-                        const checkUser = data;
-
-                        if (checkUser) {
-                          setRecipient(checkUser as any);
-                        } else {
-                          
-                          setRecipient({
-                            ...recipient,
-                            walletAddress: e.target.value,
-                          });
-                          
-                        }
-
-                      });
-
-                  } }
-                />
-
-              </>
-
-              ) : (
-
-                <div className='flex flex-col gap-5 items-center justify-between'>
-                  <input
-                    disabled={sending}
-                    type="text"
-                    placeholder="Enter wallet address"
-                    className="w-full p-2 border border-gray-300 rounded text-white bg-black text-sm xl:text-2xl font-semibold"
-                    value={recipient.walletAddress}
-                    onChange={(e) => setRecipient({
-                      ...recipient,
-                      walletAddress: e.target.value,
-                    })}
-                  />
-
-                  {isWhateListedUser ? (
-                    <div className="flex flex-row gap-2 items-center justify-center">
-
-
-                      <Image
-                        src={recipient.avatar || '/profile-default.png'}
+                        src={recipient?.avatar || '/profile-default.png'}
                         alt="profile"
-                        width={30}
-                        height={30}
+                        width={38}
+                        height={38}
                         className="rounded-full"
                         style={{
                           objectFit: 'cover',
@@ -937,40 +847,132 @@ export default function SendUsdt({ params }: any) {
                           height: '38px',
                         }}
                       />
-                      <div className="text-white">{recipient?.nickname}</div>
-                      <Image
-                        src="/verified.png"
-                        alt="check"
-                        width={30}
-                        height={30}
-                      />
-                      
+
+                      {recipient?.walletAddress && (
+                        <Image
+                          src="/verified.png"
+                          alt="check"
+                          width={28}
+                          height={28}
+                        />
+                      )}
+
                     </div>
-                  ) : (
-                    <>
 
-                    {recipient?.walletAddress && (
-                      <div className='flex flex-row gap-2 items-center justify-center'>
-                        {/* dot icon */}
-                        <div className="w-4 h-4 bg-green-500 rounded-full mr-2"></div>
+                    
 
-                        <div className="text-red-500">
-                          {This_address_is_not_white_listed}<br />
-                          {If_you_are_sure_please_click_the_send_button}
-                        </div>
+
+                  </div>
+              
+
+                    {/* input wallet address */}
+                    
+                    <input
+                      disabled={true}
+                      type="text"
+                      placeholder={User_wallet_address}
+                      className="w-full p-2 border border-gray-300 rounded text-white text-sm xl:text-lg font-semibold"
+                      value={recipient?.walletAddress}
+                      onChange={(e) => {
+      
+                        
+                        
+                          getUserByWalletAddress(e.target.value)
+
+                          .then((data) => {
+
+                            //console.log("data", data);
+
+                            const checkUser = data;
+
+                            if (checkUser) {
+                              setRecipient(checkUser as any);
+                            } else {
+                              
+                              setRecipient({
+                                ...recipient,
+                                walletAddress: e.target.value,
+                              });
+                              
+                            }
+
+                          });
+
+                      } }
+                    />
+
+
+          
+
+
+                </>
+
+                ) : (
+
+                  <div className='flex flex-col gap-5 items-center justify-between'>
+                    <input
+                      disabled={sending}
+                      type="text"
+                      placeholder="Enter wallet address"
+                      className=" w-96 p-2 border border-gray-300 rounded text-white bg-black text-sm xl:text-2xl font-semibold"
+                      value={recipient.walletAddress}
+                      onChange={(e) => setRecipient({
+                        ...recipient,
+                        walletAddress: e.target.value,
+                      })}
+                    />
+
+                    {isWhateListedUser ? (
+                      <div className="flex flex-row gap-2 items-center justify-center">
+
+
+                        <Image
+                          src={recipient.avatar || '/profile-default.png'}
+                          alt="profile"
+                          width={30}
+                          height={30}
+                          className="rounded-full"
+                          style={{
+                            objectFit: 'cover',
+                            width: '38px',
+                            height: '38px',
+                          }}
+                        />
+                        <div className="text-white">{recipient?.nickname}</div>
+                        <Image
+                          src="/verified.png"
+                          alt="check"
+                          width={30}
+                          height={30}
+                        />
+                        
                       </div>
+                    ) : (
+                      <>
 
+                      {recipient?.walletAddress && (
+                        <div className='flex flex-row gap-2 items-center justify-center'>
+                          {/* dot icon */}
+                          <div className="w-4 h-4 bg-green-500 rounded-full mr-2"></div>
+
+                          <div className="text-red-500">
+                            {This_address_is_not_white_listed}<br />
+                            {If_you_are_sure_please_click_the_send_button}
+                          </div>
+                        </div>
+
+                      )}
+
+                      </>
                     )}
 
-                    </>
-                  )}
 
 
+                  </div>
 
-                </div>
+                )} 
 
-              )} 
-
+              </div>
 
 
 
