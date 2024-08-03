@@ -1313,7 +1313,7 @@ export default function Index({ params }: any) {
                                       //closeModal();
                                       ///goChat(item._id, item.tradeId);
 
-                                      router.push(`/${params.lang}/sell-usdt/${item._id}`);
+                                      router.push(`/${params.lang}/${params.chain}/sell-usdt/${item._id}`);
 
                                   }}
                                 >
