@@ -977,58 +977,99 @@ export default function Index({ params }: any) {
 
           {!address && (
 
-            <ConnectButton
+            <>
 
-              client={client}
-
-              // Connect Wallet button text change
-              
+              {params.chain === "polygon" && (
 
 
-              // inAppWallet
+                <ConnectButton
 
-              //wallets={wallets}
+                  client={client}
 
-              wallets={wallets}
-              
-              accountAbstraction={{   
-                
-                chain: params.chain,
-                //
-                //chain: polygon,
+                  wallets={wallets}
+                  
+                  accountAbstraction={{   
+                    
+                    chain: polygon,
+                    //
+                    //chain: polygon,
 
-                //chain: arbitrum,
-                factoryAddress: "0x9Bb60d360932171292Ad2b80839080fb6F5aBD97", // polygon, arbitrum
-                gasless: true,
-              }}
-              
-              theme={"light"}
-              connectModal={{
-                size: "wide",
-                
-                //title: "Connect",
+                    //chain: arbitrum,
+                    factoryAddress: "0x9Bb60d360932171292Ad2b80839080fb6F5aBD97", // polygon, arbitrum
+                    gasless: true,
+                  }}
+                  
+                  theme={"light"}
+                  connectModal={{
+                    size: "wide",
+                    
+                    //title: "Connect",
 
 
 
-              }}
+                  }}
 
 
-              
-              appMetadata={
-                {
-                  logoUrl: "https://next.unove.space/logo.png",
-                  name: "Next App",
-                  url: "https://next.unove.space",
-                  description: "This is a Next App.",
+                  
+                  appMetadata={
+                    {
+                      logoUrl: "https://next.unove.space/logo.png",
+                      name: "Next App",
+                      url: "https://next.unove.space",
+                      description: "This is a Next App.",
 
-                }
-              }
+                    }
+                  }
 
-              // custom
+                />
 
-              
-            />
+              )}
 
+
+
+              {params.chain === "arbitrum" && (
+                  
+                  <ConnectButton
+  
+                    client={client}
+  
+                    wallets={wallets}
+                    
+                    accountAbstraction={{   
+                      
+                      chain: arbitrum,
+                      //
+                      //chain: polygon,
+  
+                      //chain: arbitrum,
+                      factoryAddress: "0x9Bb60d360932171292Ad2b80839080fb6F5aBD97", // polygon, arbitrum
+                      gasless: true,
+                    }}
+                    
+                    theme={"light"}
+                    connectModal={{
+                      size: "wide",
+                      
+                      //title: "Connect",
+
+                    }}
+
+                    appMetadata={
+                      {
+                        logoUrl: "https://next.unove.space/logo.png",
+                        name: "Next App",
+                        url: "https://next.unove.space",
+                        description: "This is a Next App.",
+  
+                      }
+                    }
+
+                  />
+
+              )}
+
+
+            </>
 
           )}
 
