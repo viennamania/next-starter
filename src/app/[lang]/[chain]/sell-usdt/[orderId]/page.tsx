@@ -497,6 +497,18 @@ export default function Index({ params }: any) {
         }
         
         const fetchSellOrders = async () => {
+
+          if (acceptingSellOrder.length > 0) {
+            return;
+          }
+
+          if (requestingPayment.length > 0) {
+            return;
+          }
+
+
+
+
           // api call
           const response = await fetch('/api/order/getOneSellOrder', {
             method: 'POST',
@@ -520,15 +532,6 @@ export default function Index({ params }: any) {
   
         fetchSellOrders();
 
-        // if address is null 
-        //fetch sell orders every 10 seconds
-
-        if (!address) {
-          const interval = setInterval(() => {
-            fetchSellOrders();
-          }, 10000);
-          return () => clearInterval(interval);
-        }
 
 
         
@@ -1273,7 +1276,7 @@ export default function Index({ params }: any) {
           {address ? (
             <div className="flex flex-col items-center space-y-4 mb-4">
               {/* disconnect button */}
-              {/*}
+              
               <button
                 onClick={() => {
 
@@ -1288,7 +1291,7 @@ export default function Index({ params }: any) {
               >
                 {Disconnect_Wallet}
               </button>
-              */}
+              
             </div>
 
           ) : (
