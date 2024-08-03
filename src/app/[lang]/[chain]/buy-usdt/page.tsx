@@ -720,40 +720,102 @@ export default function Index({ params }: any) {
 
 
 
+
                   {!address && (
+
+                    <>
+
+                      {params.chain === "polygon" && (
+
+
                         <ConnectButton
+
+                          client={client}
+
+                          wallets={wallets}
+                          
+                          accountAbstraction={{   
+                            
+                            chain: polygon,
+                            //
+                            //chain: polygon,
+
+                            //chain: arbitrum,
+                            factoryAddress: "0x9Bb60d360932171292Ad2b80839080fb6F5aBD97", // polygon, arbitrum
+                            gasless: true,
+                          }}
+                          
+                          theme={"light"}
+                          connectModal={{
+                            size: "wide",
+                            
+                            //title: "Connect",
+
+
+
+                          }}
+
+
+                          
+                          appMetadata={
+                            {
+                              logoUrl: "https://next.unove.space/logo.png",
+                              name: "Next App",
+                              url: "https://next.unove.space",
+                              description: "This is a Next App.",
+
+                            }
+                          }
+
+                        />
+
+                      )}
+
+
+
+                      {params.chain === "arbitrum" && (
+                          
+                          <ConnectButton
 
                             client={client}
 
                             wallets={wallets}
                             
-                            accountAbstraction={{        
-                            chain: params.chain,
-                            //chain: arbitrum,
-                            factoryAddress: "0x9Bb60d360932171292Ad2b80839080fb6F5aBD97", // polygon, arbitrum
-                            gasless: true,
+                            accountAbstraction={{   
+                              
+                              chain: arbitrum,
+                              //
+                              //chain: polygon,
+
+                              //chain: arbitrum,
+                              factoryAddress: "0x9Bb60d360932171292Ad2b80839080fb6F5aBD97", // polygon, arbitrum
+                              gasless: true,
                             }}
                             
                             theme={"light"}
                             connectModal={{
-                            size: "wide",
-
+                              size: "wide",
+                              
+                              //title: "Connect",
 
                             }}
 
-
-                            
                             appMetadata={
-                            {
+                              {
                                 logoUrl: "https://next.unove.space/logo.png",
                                 name: "Next App",
                                 url: "https://next.unove.space",
                                 description: "This is a Next App.",
 
-                            }
+                              }
                             }
 
-                        />
+                          />
+
+                      )}
+
+
+                    </>
 
                     )}
 
