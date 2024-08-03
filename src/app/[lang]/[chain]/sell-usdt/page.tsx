@@ -229,6 +229,10 @@ export default function Index({ params }: any) {
 
     Escrow: "",
 
+    TID: "",
+
+    Chat_with_Buyer: "",
+
   } );
 
   useEffect(() => {
@@ -310,6 +314,10 @@ export default function Index({ params }: any) {
     Edit,
 
     Escrow,
+
+    TID,
+
+    Chat_with_Buyer,
 
   } = data;
 
@@ -1547,7 +1555,7 @@ export default function Index({ params }: any) {
 
 
                                 <p className="text-xl font-semibold text-green-500 ">
-                                  TID: {item.tradeId}
+                                  {TID}: {item.tradeId}
                                 </p>
 
                               </div>
@@ -1567,7 +1575,7 @@ export default function Index({ params }: any) {
                                 />
 
                                 <p className="text-xl font-semibold text-green-500 ">
-                                  TID: {item.tradeId}
+                                  {TID}: {item.tradeId}
                                 </p>
                               </div>
 
@@ -1654,18 +1662,19 @@ export default function Index({ params }: any) {
                                     <span className="text-green-500">:{Me}</span>
                                     
                                     {/* goto /sell-usdt/:id */}
-
+                                    {/*
                                     <div
                                       className="text-sm
                                         bg-blue-500 text-white px-3 py-2 rounded-md hover:bg-blue-600 cursor-pointer"
 
                                       onClick={() => {
                                         router.push(
-                                          "/" + params.lang + `/sell-usdt/${item._id}`);
+                                          "/" + params.lang + "/" + params.chain + `/sell-usdt/${item._id}`);
                                       }}
                                     >
                                       {Go_Sell_USDT}
                                     </div>
+                                    */}
                                 
                                   </div>
 
@@ -1739,15 +1748,38 @@ export default function Index({ params }: any) {
 
                             {(item.status === 'accepted' || item.status === 'paymentRequested' || item.status === 'paymentConfirmed' || item.status === 'cancelled') 
                               && (
-                                <div className="w-full mt-4 mb-2 flex flex-col items-start ">
+                                <div className="w-full mt-4 mb-2 flex flex-row gap-2 items-start ">
 
                                   <p className="text-xl text-green-500 font-semibold">
                                     {Buyer}: {
                                       item.buyer.walletAddress === address ? item.buyer.nickname + ' :' + Me :
                                     
-                                      item.buyer.nickname.substring(0, 1) + '****'
+                                      item.buyer.nickname
                                     }
                                   </p>
+
+
+                                  {address && item.walletAddress === address && (
+                                    <>
+                                    {/* chat with buyer */}
+
+                                    <button
+                                      className="bg-blue-500 text-white px-2 py-1 rounded-md"
+                                      onClick={() => {
+                                        
+
+                                        router.push("/" + params.lang + "/" + params.chain + `/sell-usdt/${item._id}`);
+
+                                      }}
+                                    >
+                                      {Chat_with_Buyer}
+                                    </button>
+                                    
+                                    
+                                    </>
+                                  )}
+
+
 
                                 </div>
                             )}

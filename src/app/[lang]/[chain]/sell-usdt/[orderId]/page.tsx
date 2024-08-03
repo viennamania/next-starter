@@ -498,13 +498,6 @@ export default function Index({ params }: any) {
         
         const fetchSellOrders = async () => {
 
-          if (acceptingSellOrder.length > 0) {
-            return;
-          }
-
-          if (requestingPayment.length > 0) {
-            return;
-          }
 
 
 
@@ -534,15 +527,16 @@ export default function Index({ params }: any) {
 
 
 
-        
+        /*
         const interval = setInterval(() => {
 
           fetchSellOrders();
-        }, 10000);
+        }, 100000);
         
         return () => clearInterval(interval);
+        */
   
-    }, [orderId, address]);
+    }, [orderId, address ]);
 
 
 
@@ -907,7 +901,7 @@ export default function Index({ params }: any) {
             account: smartAccount as any,
         });
 
-        console.log(transactionResult);
+        console.log("transactionResult===", transactionResult);
 
 
         setEscrowing(
@@ -955,7 +949,7 @@ export default function Index({ params }: any) {
 
           const data = await response.json();
 
-          //console.log('data', data);
+          console.log('/api/order/requestPayment data====', data);
 
 
           /*
