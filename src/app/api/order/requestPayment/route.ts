@@ -18,7 +18,7 @@ export async function POST(request: NextRequest) {
           amount: amount
   */
 
-  const { orderId, transactionHash } = body;
+  const { lang, chain, orderId, transactionHash } = body;
 
   console.log("orderId", orderId);
   

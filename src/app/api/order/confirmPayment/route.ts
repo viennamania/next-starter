@@ -24,7 +24,10 @@ import {
 } from "thirdweb";
 
 //import { polygonAmoy } from "thirdweb/chains";
-import { polygon } from "thirdweb/chains";
+import {
+  polygon,
+  arbitrum,
+ } from "thirdweb/chains";
 
 import {
   privateKeyToAccount,
@@ -62,11 +65,14 @@ export const config = {
 
 
 
-const chain = polygon;
+//const chain = polygon;
 
 
 // USDT Token (USDT)
 const tokenContractAddressUSDT = '0xc2132D05D31c914a87C6611C10748AEb04B58e8F';
+
+const contractAddressArbitrum = "0x2f2a2543B76A4166549F7aab2e75Bef0aefC5B0f"; // USDT on Arbitrum
+
 
 
 
@@ -76,7 +82,7 @@ export async function POST(request: NextRequest) {
 
   const body = await request.json();
 
-  const { orderId } = body;
+  const { lang, chain, orderId } = body;
 
   console.log("orderId", orderId);
 
@@ -121,27 +127,50 @@ export async function POST(request: NextRequest) {
   
 
 
-
+    let sendDataStore = null;
 
     
+    if (chain === "polygon") {
+      const contract = getContract({
+        client,
+        chain: chain,
+        address: tokenContractAddressUSDT, // erc20 contract from thirdweb.com/explore
+      });
     
-    const contract = getContract({
-      client,
-      chain: chain,
-      address: tokenContractAddressUSDT, // erc20 contract from thirdweb.com/explore
-    });
+              
+      const transactionSendToStore = transfer({
+        contract,
+        to: toAddressStore,
+        amount: sendAmountToStore,
+      });
 
-            
-    const transactionSendToStore = transfer({
-      contract,
-      to: toAddressStore,
-      amount: sendAmountToStore,
-    });
+      sendDataStore = await sendAndConfirmTransaction({
+        transaction: transactionSendToStore,
+        account: account,
+      });
+ 
+    } else if (chain === "arbitrum") {
+      const contract = getContract({
+        client,
+        chain: chain,
+        address: contractAddressArbitrum, // erc20 contract from thirdweb.com/explore
+      });
+    
+              
+      const transactionSendToStore = transfer({
+        contract,
+        to: toAddressStore,
+        amount: sendAmountToStore,
+      });
 
-    const sendDataStore = await sendAndConfirmTransaction({
-      transaction: transactionSendToStore,
-      account: account,
-    });
+      sendDataStore = await sendAndConfirmTransaction({
+        transaction: transactionSendToStore,
+        account: account,
+      });
+ 
+    }
+
+
 
     if (sendDataStore) {
 
@@ -151,6 +180,8 @@ export async function POST(request: NextRequest) {
     
 
       const result = await confirmPayment({
+        lang: lang,
+        chain: chain,
         orderId: orderId,
         transactionHash: sendDataStore.transactionHash,
       });
@@ -191,7 +222,7 @@ export async function POST(request: NextRequest) {
         try {
     
     
-          const msgBody = `[UNOVE] TID[${tradeId}] You received ${amount} USDT from ${nickname}! https://next.unove.space/en/sell-usdt/${orderId}`;
+          const msgBody = `[UNOVE] TID[${tradeId}] You received ${amount} USDT from ${nickname}! https://next.unove.space/${lang}/${chain}/sell-usdt/${orderId}`;
       
           message = await client.messages.create({
             ///body: "This is the ship that made the Kessel Run in fourteen parsecs?",

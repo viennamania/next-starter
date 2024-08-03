@@ -126,19 +126,6 @@ const contractAddressArbitrum = "0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9"; //
 
 
 
-// get a contract
-const contract = getContract({
-  // the client you have created via `createThirdwebClient()`
-  client,
-  // the chain the contract is deployed on
-  chain: polygon,
-  // the contract's address
-  address: contractAddress,
-  // OPTIONAL: the contract's abi
-  //abi: [...],
-});
-
-
 
 
 
@@ -175,6 +162,33 @@ export default function SellUsdt({ orderId }: InferGetStaticPropsType<typeof get
 export default function Index({ params }: any) {
 
     //console.log('params', params);
+
+
+
+
+
+    const contract = getContract({
+      // the client you have created via `createThirdwebClient()`
+      client,
+      // the chain the contract is deployed on
+      
+      
+      chain: params.chain === "arbitrum" ? arbitrum : polygon,
+    
+    
+    
+      // the contract's address
+      ///address: contractAddress,
+  
+      address: params.chain === "arbitrum" ? contractAddressArbitrum : contractAddress,
+  
+  
+      // OPTIONAL: the contract's abi
+      //abi: [...],
+    });
+  
+
+
   
     const [data, setData] = useState({
       title: "",
@@ -928,6 +942,8 @@ export default function Index({ params }: any) {
               'Content-Type': 'application/json'
             },
             body: JSON.stringify({
+              lang: params.lang,
+              chain: params.chain,
               orderId: orderId,
               transactionHash: transactionResult.transactionHash,
             })
@@ -1156,6 +1172,8 @@ export default function Index({ params }: any) {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
+        lang: params.lang,
+        chain: params.chain,
         orderId: orderId,
       })
     });
@@ -1213,7 +1231,7 @@ export default function Index({ params }: any) {
         max-w-screen-lg
         mx-auto">
 
-        <div className="py-0  ">
+        <div className="py-0  w-full">
   
           {/* goto home button using go back icon
           history back
@@ -1221,7 +1239,7 @@ export default function Index({ params }: any) {
 
           <AppBarComponent />
   
-          <div className="mt-4 flex flex-row gap-2 justify-center space-x-4 mb-10">
+          <div className="mt-4 w-full flex flex-row gap-2 justify-center space-x-4 mb-10">
               {/* history back */}
               {/* if you want to go back to the previous page */}
 
@@ -1241,12 +1259,14 @@ export default function Index({ params }: any) {
                 {Go_Buy_USDT}
               </button>
               {/* Go to Sell USDT */}
+              {/*
               <button
                   onClick={() => router.push('/' + params.lang + '/' + params.chain + '/sell-usdt')}
                   className="text-zinc-100 font-semibold underline"
               >
                 {Go_Sell_USDT}
               </button>
+              */}
           </div>
 
           {address ? (
@@ -1377,20 +1397,18 @@ export default function Index({ params }: any) {
 
 
 
-          <div className=" flex flex-col xl:flex-row items-start justify-center space-y-4">
-
                 {address && (
-                  <div className="w-full flex flex-col items-start justify-between gap-2">
+                  <div className="w-full flex flex-row items-start justify-between gap-2">
                     {/* my usdt balance */}
-                    <div className='flex flex-row items-center gap-2'>
+                    <div className='w-full flex flex-row items-between justify-start gap-5'>
 
-                      <div className="flex flex-col gap-2 items-start">
+                      <div className=" flex flex-col gap-2 items-start">
                         <div className="text-5xl font-semibold text-white">
                           {Number(balance).toFixed(2)} <span className="text-lg">USDT</span>
                         </div>
                       </div>
 
-                      <div className="flex flex-col gap-2 items-start justify-center">
+                      <div className="flex flex-row gap-2 items-center justify-center">
                         
                           <Image
                             src={user?.avatar || "/profile-default.png"}
@@ -1413,6 +1431,17 @@ export default function Index({ params }: any) {
                     </div>
 
 
+
+
+                  </div>
+                )}
+
+
+
+
+          <div className="w-full flex flex-col gap-2 xl:flex-row items-start justify-center ">
+
+
                     {orderId && address && user && user.nickname && user.avatar && (
                       <div className=' w-full  '>
                         <Chat
@@ -1429,10 +1458,6 @@ export default function Index({ params }: any) {
                     )}
 
 
-
-
-                  </div>
-                )}
 
 
 

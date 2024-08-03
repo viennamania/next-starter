@@ -14,12 +14,14 @@ export async function POST(request: NextRequest) {
 
   const body = await request.json();
 
-  const { orderId, buyerWalletAddress, buyerNickname, buyerAvatar, buyerMobile, buyerMemo } = body;
+  const { lang, chain, orderId, buyerWalletAddress, buyerNickname, buyerAvatar, buyerMobile, buyerMemo } = body;
 
   console.log("orderId", orderId);
   
 
   const result = await acceptSellOrder({
+    lang: lang,
+    chain: chain,
     orderId: orderId,
     buyerWalletAddress: buyerWalletAddress,
     buyerNickname: buyerNickname,
@@ -68,7 +70,7 @@ export async function POST(request: NextRequest) {
 
       
 
-      const msgBody2 = `[UNOVE] TID[${tradeId}] Check following link to proceed with the trade: https://next.unove.space/en/sell-usdt/${orderId}`;
+      const msgBody2 = `[UNOVE] TID[${tradeId}] Check following link to proceed with the trade: https://next.unove.space/${lang}/${chain}/sell-usdt/${orderId}`;
 
       message = await client.messages.create({
         body: msgBody2,
