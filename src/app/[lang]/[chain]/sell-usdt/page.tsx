@@ -115,24 +115,35 @@ const contractAddressArbitrum = "0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9"; //
 
 
 
-// get a contract
-const contract = getContract({
-  // the client you have created via `createThirdwebClient()`
-  client,
-  // the chain the contract is deployed on
-  chain: polygon,
-  // the contract's address
-  address: contractAddress,
-  // OPTIONAL: the contract's abi
-  //abi: [...],
-});
-
-
-
 
 export default function Index({ params }: any) {
 
   //console.log('params', params);
+
+
+
+  const contract = getContract({
+    // the client you have created via `createThirdwebClient()`
+    client,
+    // the chain the contract is deployed on
+    
+    
+    chain: params.chain === "arbitrum" ? arbitrum : polygon,
+  
+  
+  
+    // the contract's address
+    ///address: contractAddress,
+
+    address: params.chain === "arbitrum" ? contractAddressArbitrum : contractAddress,
+
+
+    // OPTIONAL: the contract's abi
+    //abi: [...],
+  });
+
+
+
 
   const [data, setData] = useState({
     title: "",
@@ -216,6 +227,8 @@ export default function Index({ params }: any) {
 
     Edit : "",
 
+    Escrow: "",
+
   } );
 
   useEffect(() => {
@@ -296,6 +309,7 @@ export default function Index({ params }: any) {
 
     Edit,
 
+    Escrow,
 
   } = data;
 
@@ -366,7 +380,7 @@ export default function Index({ params }: any) {
 
       return () => clearInterval(interval);
   
-    } , [address]);
+    } , [address, contract]);
 
 
 
@@ -704,8 +718,8 @@ export default function Index({ params }: any) {
                     className="rounded-lg"
                   />
                   <Image
-                    src="/logo-polygon.png"
-                    alt="Polygon"
+                    src={params.chain === "arbitrum" ? "/logo-arbitrum.png" : "/logo-polygon.png"}
+                    alt="Chain"
                     width={32}
                     height={32}
                     className="rounded-lg"
@@ -716,40 +730,101 @@ export default function Index({ params }: any) {
 
 
 
-                    {!address && (
+                  {!address && (
+
+                    <>
+
+                      {params.chain === "polygon" && (
+
+
                         <ConnectButton
+
+                          client={client}
+
+                          wallets={wallets}
+                          
+                          accountAbstraction={{   
+                            
+                            chain: polygon,
+                            //
+                            //chain: polygon,
+
+                            //chain: arbitrum,
+                            factoryAddress: "0x9Bb60d360932171292Ad2b80839080fb6F5aBD97", // polygon, arbitrum
+                            gasless: true,
+                          }}
+                          
+                          theme={"light"}
+                          connectModal={{
+                            size: "wide",
+                            
+                            //title: "Connect",
+
+
+
+                          }}
+
+
+                          
+                          appMetadata={
+                            {
+                              logoUrl: "https://next.unove.space/logo.png",
+                              name: "Next App",
+                              url: "https://next.unove.space",
+                              description: "This is a Next App.",
+
+                            }
+                          }
+
+                        />
+
+                      )}
+
+
+
+                      {params.chain === "arbitrum" && (
+                          
+                          <ConnectButton
 
                             client={client}
 
                             wallets={wallets}
                             
-                            accountAbstraction={{        
-                            chain: polygon,
-                            //chain: arbitrum,
-                            factoryAddress: "0x9Bb60d360932171292Ad2b80839080fb6F5aBD97", // polygon, arbitrum
-                            gasless: true,
+                            accountAbstraction={{   
+                              
+                              chain: arbitrum,
+                              //
+                              //chain: polygon,
+
+                              //chain: arbitrum,
+                              factoryAddress: "0x9Bb60d360932171292Ad2b80839080fb6F5aBD97", // polygon, arbitrum
+                              gasless: true,
                             }}
                             
                             theme={"light"}
                             connectModal={{
-                            size: "wide",
-
+                              size: "wide",
+                              
+                              //title: "Connect",
 
                             }}
 
-
-                            
                             appMetadata={
-                            {
+                              {
                                 logoUrl: "https://next.unove.space/logo.png",
                                 name: "Next App",
                                 url: "https://next.unove.space",
                                 description: "This is a Next App.",
 
-                            }
+                              }
                             }
 
-                        />
+                          />
+
+                      )}
+
+
+                    </>
 
                     )}
 
@@ -1776,12 +1851,23 @@ export default function Index({ params }: any) {
                                       width={32}
                                       height={32}
                                     />
-                                    <div>Escrow: {item.usdtAmount} USDT</div>
+                                    <div>{Escrow}: {item.usdtAmount} USDT</div>
                                     <button
                                       className="bg-white text-black px-2 py-2 rounded-md"
                                       onClick={() => {
                                           // new window for smart contract
-                                          window.open(`https://polygonscan.com/tx/${item.escrowTransactionHash}`);
+                                          ///window.open(`https://polygonscan.com/tx/${item.escrowTransactionHash}`);
+
+
+                                          {
+                                            params.chain === 'polygon' ? (
+                                              window.open(`https://polygonscan.com/tx/${item.escrowTransactionHash}`)
+                                            ) : (
+                                              window.open(`https://etherscan.io/tx/${item.escrowTransactionHash}`)
+                                            )
+                                          }
+
+
                                       }}
                                     >
                                       <Image
