@@ -269,7 +269,12 @@
     "Wallet_Address_Description1": "The address of this wallet is",
     "Wallet_Address_Description2": "compatible with USDT Tether on the blockchain. Do not deposit any other tokens (e.g., Ethereum) to this address.",
 
-    "I_understand_that_I_should_never_deposit_any_other_tokens": "I understand that I should never deposit any other tokens (e.g., Ethereum) to this address."
+    "I_understand_that_I_should_never_deposit_any_other_tokens": "I understand that I should never deposit any other tokens (e.g., Ethereum) to this address.",
+
+
+    "Chat_with_Seller": "Chat with Seller",
+    "Chat_with_Buyer": "Chat with Buyer"
+
 
 
 }

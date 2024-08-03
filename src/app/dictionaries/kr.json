@@ -230,7 +230,10 @@
     "Wallet_Address_Description1": "이 지갑의 주소는",
     "Wallet_Address_Description2": "블록체인에서 USDT 테더와 호환됩니다. 이 주소로 다른 토큰(예: 이더리움)을 절대 입금하지 마십시오.",
 
-    "I_understand_that_I_should_never_deposit_any_other_tokens": "다른 토큰(예: 이더리움)을 이 주소로 입금해서는 안 된다는 것을 이해합니다."
+    "I_understand_that_I_should_never_deposit_any_other_tokens": "다른 토큰(예: 이더리움)을 이 주소로 입금해서는 안 된다는 것을 이해합니다.",
+
+    "Chat_with_Seller": "판매자와 채팅",
+    "Chat_with_Buyer": "구매자와 채팅"
 
 
 }

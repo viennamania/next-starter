@@ -49,6 +49,7 @@ import { add } from "thirdweb/extensions/farcaster/keyGateway";
 
 import AppBarComponent from "@/components/Appbar/AppBar";
 import { getDictionary } from "../../../dictionaries";
+import Chat from "@/components/Chat";
 
 
 
@@ -208,6 +209,9 @@ export default function Index({ params }: any) {
 
     Escrow: "",
 
+    Chat_with_Seller: "",
+    Chat_with_Buyer: "",
+
   } );
 
   useEffect(() => {
@@ -277,6 +281,9 @@ export default function Index({ params }: any) {
     Accepting_Order,
 
     Escrow,
+
+    Chat_with_Seller,
+    Chat_with_Buyer,
 
 
   } = data;
@@ -1042,6 +1049,7 @@ export default function Index({ params }: any) {
 
                                         <p className="text-sm text-zinc-400">
 
+
                                       
                                         {Order_Opened}{' '}{
 
@@ -1055,10 +1063,12 @@ export default function Index({ params }: any) {
                                           )
                                         }
 
+
+
                                       </p>
 
 
-                                      )}
+                                    )}
 
                                   </div>
 
@@ -1150,17 +1160,51 @@ export default function Index({ params }: any) {
                                     {new Date(item.acceptedAt).toLocaleString()}
                                   </p>
                                 ) : (
-                                  <p className="ml-2 text-sm text-zinc-400">
-                                    {Trade_Started} {
-                                      new Date().getTime() - new Date(item.acceptedAt).getTime() < 1000 * 60 ? (
-                                        ' ' + Math.floor((new Date().getTime() - new Date(item.acceptedAt).getTime()) / 1000) + ' ' + seconds_ago
-                                      ) :
-                                      new Date().getTime() - new Date(item.acceptedAt).getTime() < 1000 * 60 * 60 ? (
-                                      ' ' + Math.floor((new Date().getTime() - new Date(item.acceptedAt).getTime()) / 1000 / 60) + ' ' + minutes_ago
-                                      ) : (
-                                        ' ' + Math.floor((new Date().getTime() - new Date(item.acceptedAt).getTime()) / 1000 / 60 / 60) + ' ' + hours_ago
-                                      )}
-                                  </p>
+                                  
+                                  <>
+                                    {params.lang === 'kr' ? (
+
+                                      <p className="ml-2 text-sm text-zinc-400">
+
+                                      
+                                        {new Date().getTime() - new Date(item.acceptedAt).getTime() < 1000 * 60 ? (
+                                          ' ' + Math.floor((new Date().getTime() - new Date(item.acceptedAt).getTime()) / 1000) + ' ' + seconds_ago
+                                        ) :
+                                        new Date().getTime() - new Date(item.acceptedAt).getTime() < 1000 * 60 * 60 ? (
+                                        ' ' + Math.floor((new Date().getTime() - new Date(item.acceptedAt).getTime()) / 1000 / 60) + ' ' + minutes_ago
+                                        ) : (
+                                          ' ' + Math.floor((new Date().getTime() - new Date(item.acceptedAt).getTime()) / 1000 / 60 / 60) + ' ' + hours_ago
+                                        )
+                                        }{' '}{Trade_Started}
+
+                                      </p>
+
+
+
+                                    ) : (
+
+                                      <p className="ml-2 text-sm text-zinc-400">
+
+                                        {Trade_Started} {
+                                          new Date().getTime() - new Date(item.acceptedAt).getTime() < 1000 * 60 ? (
+                                            ' ' + Math.floor((new Date().getTime() - new Date(item.acceptedAt).getTime()) / 1000) + ' ' + seconds_ago
+                                          ) :
+                                          new Date().getTime() - new Date(item.acceptedAt).getTime() < 1000 * 60 * 60 ? (
+                                          ' ' + Math.floor((new Date().getTime() - new Date(item.acceptedAt).getTime()) / 1000 / 60) + ' ' + minutes_ago
+                                          ) : (
+                                            ' ' + Math.floor((new Date().getTime() - new Date(item.acceptedAt).getTime()) / 1000 / 60 / 60) + ' ' + hours_ago
+                                          )
+                                        }
+
+                                      </p>
+
+                                    )}
+
+
+
+
+                                  </>
+                                 
                                 )}
 
 
@@ -1170,7 +1214,13 @@ export default function Index({ params }: any) {
                                     className="ml-5 text-sm bg-blue-500 text-white px-2 py-1 rounded-md hover:bg-blue-600"
                                     onClick={() => {
 
-                                      window.open(`https://next.unove.space/${params.lang}/${params.chain}/sell-usdt/${item._id}`, '_blank');
+                                      //window.open(`https://next.unove.space/${params.lang}/${params.chain}/sell-usdt/${item._id}`, '_blank');
+
+                                      // copy to clipboard
+
+                                      navigator.clipboard.writeText(`https://next.unove.space/${params.lang}/${params.chain}/sell-usdt/${item._id}`);
+
+                                      toast.success('Link copied to clipboard');
 
                                     }}
                                   >
@@ -1317,7 +1367,7 @@ export default function Index({ params }: any) {
 
                                   }}
                                 >
-                                  Chat with Seller
+                                  {Chat_with_Seller + ' ' + item.nickname}
                                 </button>
                               )}
 
