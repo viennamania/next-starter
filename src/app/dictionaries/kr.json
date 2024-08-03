@@ -70,14 +70,14 @@
 
 
 
-    "Go_Buy_USDT": "USDT 구매",
-    "Go_Sell_USDT": "USDT 판매",
+    "Go_Buy_USDT": "USDT 구매하기",
+    "Go_Sell_USDT": "USDT 판매하기",
 
 
-    "Enter_Wallet_Address": "지갑 주소 입력",
-    "Enter_the_amount_and_recipient_address": "금액과 수취인 주소 입력",
+    "Enter_Wallet_Address": "수취인 지갑주소 입력",
+    "Enter_the_amount_and_recipient_address": "보낼 금액과 수취인 지갑주소 입력",
     "Select_a_user": "수취인 선택",
-    "User_wallet_address": "수취인 지갑 주소",
+    "User_wallet_address": "수취인 지갑주소",
 
     "This_address_is_not_white_listed": "이 주소는 화이트리스트에 없습니다.",
 
@@ -197,10 +197,10 @@
 
     "Checking_the_bank_transfer_from_the_buyer": "구매자의 은행 송금 확인 중",
 
-    "I_agree_to_check_the_bank_transfer_of": "구매자의 KRW 은행 송금을 확인하고 USDT를 구매자의 지갑 주소로 전송하는 것에 동의합니다.",
+    "I_agree_to_check_the_bank_transfer_of": "구매자의 KRW 은행 송금을 확인하고 USDT를 구매자의 지갑주소로 전송하는 것에 동의합니다.",
 
 
-    "Transfering_USDT_to_the_buyer_wallet_address": "구매자 지갑 주소로 USDT 전송 중",
+    "Transfering_USDT_to_the_buyer_wallet_address": "구매자 지갑주소로 USDT 전송 중",
 
 
     "SMS_will_be_sent_to_your_mobile_number": "구매자가 주문을 수락하면 SMS가 귀하의 휴대폰 번호로 전송됩니다.",
@@ -224,7 +224,7 @@
     "I_gree_to_escrow_USDT_to_the_smart_contract_and_request_payment_to_the_buyer": "USDT를 에스크로 보관소에 보내고 구매자에게 결제를 요청하는 것에 동의합니다.",
 
 
-    "My_Wallet_Address": "내 지갑 주소",
+    "My_Wallet_Address": "내 지갑주소",
     "My_Phone_Number": "내 전화번호",
 
     "Wallet_Address_Description1": "이 지갑의 주소는",

@@ -665,31 +665,32 @@ export default function SendUsdt({ params }: any) {
 
             </div>
 
-              {/* goto buy usdt page */}
-              <div className="text-sm font-semibold text-zinc-100 mt-2 w-full text-right">
-   
-                <a
-                  href={'/' + params.lang + '/buy-usdt'}
-                  className="text-zinc-100 underline"
-                >
-                  {Go_Buy_USDT}
-                </a>
-              </div>
+            {/* goto buy usdt page */}
+            <div className="text-sm font-semibold text-zinc-100 mt-2 w-full text-right">
+  
+              <a
+                href={'/' + params.lang + '/' + params.chain + '/buy-usdt'}
+                className="text-zinc-100 underline"
+              >
+                {Go_Buy_USDT}
+              </a>
+            </div>
 
 
             {/* my usdt balance */}
             <div className="w-full flex flex-col gap-2 items-start">
               <div className="text-sm">{My_Balance}</div>
               <div className='w-full flex flex-row items-center justify-between'>
+
                 <div className="text-5xl font-semibold text-white">
                   {Number(balance).toFixed(2)} <span className="text-lg">USDT</span>
                 </div>
 
-                <div className="text-xs font-semibold text-white">
+                <div className="flex flex-row items-center justify-center gap-2 text-xs font-semibold text-white">
                   {/* check box for receiver address input box */}
                   <input
                     type="checkbox"
-                    className="mr-2 w-5 h-5"
+                    className="w-6 h-6"
                     checked={wantToReceiveWalletAddress}
                     onChange={(e) => (
                       setWantToReceiveWalletAddress(e.target.checked),
@@ -701,6 +702,7 @@ export default function SendUsdt({ params }: any) {
                   />
                   <div className="text-xs">{Enter_Wallet_Address}</div>
                 </div>
+
               </div>
             </div>
 

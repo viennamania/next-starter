@@ -834,7 +834,7 @@ export default function Index({ params }: any) {
 
 
 
-              <div className="flex flex-col bg-zinc-800 p-5 rounded-lg text-center">
+              <div className="w-full flex flex-col bg-zinc-800 p-5 rounded-lg text-center">
 
                 <div className="flex flex-row justify-between items-center">
                   <Image
@@ -878,7 +878,7 @@ export default function Index({ params }: any) {
 
                 </div>
     
-                {loadingUser ? (
+                {address && loadingUser ? (
 
                   <div className="mt-4 flex flex-row justify-center items-center">
                     <Image
@@ -976,107 +976,58 @@ export default function Index({ params }: any) {
 
 
           {!address && (
-            <>
-              {params.chain === "polygon" && (
 
-                <ConnectButton
+            <ConnectButton
 
-                  client={client}
+              client={client}
 
-                  // Connect Wallet button text change
-                  
+              // Connect Wallet button text change
+              
 
 
-                  // inAppWallet
+              // inAppWallet
 
-                  //wallets={wallets}
+              //wallets={wallets}
 
-                  wallets={wallets}
-                  
-                  accountAbstraction={{   
-                    
-                    chain: polygon,
-                    //
-                    //chain: polygon,
+              wallets={wallets}
+              
+              accountAbstraction={{   
+                
+                chain: params.chain,
+                //
+                //chain: polygon,
 
-                    //chain: arbitrum,
-                    factoryAddress: "0x9Bb60d360932171292Ad2b80839080fb6F5aBD97", // polygon, arbitrum
-                    gasless: true,
-                  }}
-                  
-                  theme={"light"}
-                  connectModal={{
-                    size: "wide",
-                    
-                    //title: "Connect",
+                //chain: arbitrum,
+                factoryAddress: "0x9Bb60d360932171292Ad2b80839080fb6F5aBD97", // polygon, arbitrum
+                gasless: true,
+              }}
+              
+              theme={"light"}
+              connectModal={{
+                size: "wide",
+                
+                //title: "Connect",
 
 
 
-                  }}
+              }}
 
 
-                  
-                  appMetadata={
-                    {
-                      logoUrl: "https://next.unove.space/logo.png",
-                      name: "Next App",
-                      url: "https://next.unove.space",
-                      description: "This is a Next App.",
+              
+              appMetadata={
+                {
+                  logoUrl: "https://next.unove.space/logo.png",
+                  name: "Next App",
+                  url: "https://next.unove.space",
+                  description: "This is a Next App.",
 
-                    }
-                  }
+                }
+              }
 
-                  // custom
+              // custom
 
-                  
-                />
-
-              )}
-
-              {params.chain === "arbitrum" && (
-
-                <ConnectButton
-
-                  client={client}
-
-                  // Connect Wallet button text change
-
-                  wallets={wallets}
-
-                  accountAbstraction={{   
-                    
-                    chain: arbitrum,
-                    factoryAddress: "0x9Bb60d360932171292Ad2b80839080fb6F5aBD97", // polygon, arbitrum
-                    gasless: true,
-                  }}
-
-                  theme={"light"}
-
-                  connectModal={{
-                    size: "wide",
-                    
-                    //title: "Connect",
-
-                  }}
-
-                  appMetadata={
-                    {
-                      logoUrl: "https://next.unove.space/logo.png",
-                      name: "Next App",
-                      url: "https://next.unove.space",
-                      description: "This is a Next App.",
-
-                    }
-                  }
-
-                  // custom
-
-                />
-              )}
-
-
-
-            </>
+              
+            />
 
 
           )}

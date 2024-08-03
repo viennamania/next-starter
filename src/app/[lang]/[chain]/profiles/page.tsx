@@ -487,7 +487,7 @@ export default function SettingsPage({ params }: any) {
 
         <main className="p-4 pb-10 min-h-[100vh] flex items-start justify-center container max-w-screen-lg mx-auto">
 
-            <div className="py-20 w-full">
+            <div className="py-0 w-full">
         
                 {/* goto home button using go back icon
                 history back
@@ -530,7 +530,7 @@ export default function SettingsPage({ params }: any) {
                                     
                                     accountAbstraction={{        
                                     
-                                    chain: polygon,
+                                    chain: params.chain,
 
                                     //chain: arbitrum,
                                     factoryAddress: "0x9Bb60d360932171292Ad2b80839080fb6F5aBD97", // polygon, arbitrum
