@@ -34,7 +34,7 @@ const nextConfig = {
 
 
 
-  
+  /*
   async headers() {
     return [
       {
@@ -61,6 +61,7 @@ const nextConfig = {
       },
     ];
   },
+  */
   
 
   
