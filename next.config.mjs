@@ -48,11 +48,15 @@ const nextConfig = {
             //value: '*', // Allow requests from this origin
             //https://vienna-mania.vercel.app, http://localhost:3000
 
-            value: 'https://vienna-mania.vercel.app, http://localhost:3000', // Allow requests from this origin
+            ///value: 'https://vienna-mania.vercel.app, http://localhost:3000', // Allow requests from this origin
+
+            value: 'https://vienna-mania.vercel.app', // Allow requests from this origin
+
 
 
 
           },
+       
         ],
       },
     ];
