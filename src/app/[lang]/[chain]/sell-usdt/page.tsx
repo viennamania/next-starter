@@ -233,6 +233,23 @@ export default function Index({ params }: any) {
 
     Chat_with_Buyer: "",
 
+    Table_View: "",
+    Started_at: "",
+    Trading_Time_is: "",
+    Memo: "",
+    Sell_Amount: "",
+    Status: "",
+    Payment_Amount: "",
+
+    hours: "",
+    minutes: "",
+    seconds: "",
+
+    Opened: "",
+    Completed: "",
+    Cancelled: "",
+
+
   } );
 
   useEffect(() => {
@@ -318,6 +335,22 @@ export default function Index({ params }: any) {
     TID,
 
     Chat_with_Buyer,
+
+    Table_View,
+    Started_at,
+    Trading_Time_is,
+    Memo,
+    Sell_Amount,
+    Status,
+    Payment_Amount,
+
+    hours,
+    minutes,
+    seconds,
+
+    Opened,
+    Completed,
+    Cancelled,
 
   } = data;
 
@@ -449,7 +482,7 @@ export default function Index({ params }: any) {
     
     const [sellOrders, setSellOrders] = useState<SellOrder[]>([]);
 
-    const [searchMyOrders, setSearchMyOrders] = useState(false);
+    const [searchMyOrders, setSearchMyOrders] = useState(true);
 
 
     useEffect(() => {
@@ -695,6 +728,8 @@ export default function Index({ params }: any) {
 
 
 
+    // check table view or card view
+    const [tableView, setTableView] = useState(false);
 
 
     
@@ -1322,9 +1357,10 @@ export default function Index({ params }: any) {
                   </div>
 
          
+                  <div className="mt-10 w-full flex flex-row items-center justify-between gap-4">
 
                   {/* total sell orders */}
-                  <div className="p-2 xl:p-0  flex flex-row items-center justify-between gap-2">
+                  <div className="p-2 flex flex-row items-center justify-between gap-2">
 
                     <div className="flex flex-col gap-2 items-center">
                       <div className="text-sm">{Total}</div>
@@ -1355,7 +1391,7 @@ export default function Index({ params }: any) {
 
 
 
-                    <div className="ml-5 flex flex-col gap-2 items-start justify-end">
+                    <div className="hidden ml-5  flex-col gap-2 items-start justify-end">
 
                       {/* checkbox for search my trades */}
                       <div className="flex flex-row items-center gap-2">
@@ -1375,6 +1411,136 @@ export default function Index({ params }: any) {
 
 
                   </div>
+
+
+                  {/* select table view or card view */}
+                  <div className="flex flex-row items-center space-x-4">
+                      <div className="text-sm">{Table_View}</div>
+                      <input
+                        type="checkbox"
+                        checked={tableView}
+                        onChange={(e) => setTableView(e.target.checked)}
+                        className="w-5 h-5 rounded-full"
+                      />
+                  </div>
+                  
+                </div>
+
+
+                {tableView ? (
+
+                  <table className="w-full">
+                  <thead>
+                      <tr
+                          className="bg-gray-800 text-white text-xs h-10"
+                      >
+
+                          <th className="text-left">{Opened_at}</th>
+                          <th className="text-left">{TID}</th>
+                          <th className="text-left">{Started_at}</th>
+                          <th className="text-left">{Trading_Time_is}</th>
+
+                          <th className="text-left">Memo</th>
+                        
+                          <th className="text-left">{Buyer}</th>
+                          <th className="text-left">{Sell_Amount}</th>
+                          <th className="text-left">{Price}</th>
+                          <th className="text-left">{Rate}</th>
+
+                          <th className="text-left">{Payment}</th>
+                          <th className="text-left">{Payment_Amount}</th>
+                          
+                          <th className="text-left">{Status}</th>
+
+                          
+                      </tr>
+                  </thead>
+                  <tbody>
+                      {sellOrders.map((item, index) => (
+                          <tr
+                            key={index}
+                            className="border-b border-gray-200 hover:bg-gray-800 hover:bg-opacity-10 text-xs h-10">
+                              
+                              <td>
+                                {
+                                  new Date().getTime() - new Date(item.createdAt).getTime() < 1000 * 60 ? (
+                                    ' ' + Math.floor((new Date().getTime() - new Date(item.createdAt).getTime()) / 1000) + ' ' + seconds_ago
+                                  ) :
+                                  new Date().getTime() - new Date(item.createdAt).getTime() < 1000 * 60 * 60 ? (
+                                    ' ' + Math.floor((new Date().getTime() - new Date(item.createdAt).getTime()) / 1000 / 60) + ' ' + minutes_ago
+                                  ) : (
+                                    ' ' + Math.floor((new Date().getTime() - new Date(item.createdAt).getTime()) / 1000 / 60 / 60) + ' ' + hours_ago
+                                  )}
+                              </td>
+                              
+                              <td>{item.tradeId}</td>
+                              
+                              <td>
+
+                                {item.acceptedAt && (
+                                  new Date(item.acceptedAt).toLocaleString()
+                                )}
+                                
+                              </td>
+
+                              <td>
+                                {item.status === 'paymentConfirmed' &&
+                                
+                                ( ( (new Date(item.paymentConfirmedAt).getTime() - new Date(item.acceptedAt).getTime()) / 1000 / 60 ).toFixed(0) ) + ' ' + minutes
+                                
+                                }
+                              </td>
+
+                              <td>
+                                {item.seller && item.seller.memo}
+                              </td>
+
+                              <td>{item.buyer && item.buyer.nickname}</td>
+                              <td>{item.usdtAmount}</td>
+                              <td>{Number(item.krwAmount).toLocaleString('ko-KR', {
+                                style: 'currency',
+                                currency: 'KRW',
+                              })}</td>
+                              <td>{Number(item.krwAmount / item.usdtAmount).toFixed(2)}</td>
+
+
+
+
+                              <td>
+                                {item.seller?.bankInfo.bankName} {item.seller?.bankInfo.accountNumber} {item.seller?.bankInfo.accountHolder}
+                              </td>
+
+                              <td>
+                                {item.status === 'paymentConfirmed' && (
+                                  Number(item.krwAmount).toLocaleString('ko-KR', {
+                                    style: 'currency',
+                                    currency: 'KRW',
+                                  })
+                                )}
+                              </td>
+                              
+                              <td>
+                                {item.status === 'paymentConfirmed' && (
+                                  <span className="text-green-500">{Completed}</span>
+                                )}
+                                {item.status === 'accepted' && (
+                                  <span className="text-yellow-500">{Waiting_for_seller_to_deposit}</span>
+                                )}
+                                {item.status === 'paymentRequested' && (
+                                  <span className="text-yellow-500">{Waiting_for_seller_to_deposit}</span>
+                                )}
+                                {item.status === 'cancelled' && (
+                                  <span className="text-red-500">{Cancelled}</span>
+                                )}
+                              </td>
+
+                          </tr>
+                      ))}
+                  </tbody>
+                  </table>
+
+                  ) : (
+
 
 
                   <div className=" w-full grid gap-4 xl:grid-cols-3 justify-center">
@@ -1474,7 +1640,7 @@ export default function Index({ params }: any) {
                                   )}
 
                                   <p className="text-sm text-zinc-400">
-                                    Opened {
+                                    {Opened_at} {
                                     new Date().getTime() - new Date(item.createdAt).getTime() < 1000 * 60 ? (
                                       ' ' + Math.floor((new Date().getTime() - new Date(item.createdAt).getTime()) / 1000) + ' ' + seconds_ago
                                     ) :
@@ -1942,7 +2108,10 @@ export default function Index({ params }: any) {
 
                     ))}
 
-                </div>
+                  </div>
+
+
+                )}
 
             </div>
 

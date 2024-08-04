@@ -799,7 +799,9 @@ export default function Index({ params }: any) {
                   </button>
 
                   <button
-                    disabled={!address}
+                    
+                    //disabled={!address}
+
                     onClick={() => {
                       // pay USDT
                       //console.log("pay USDT");
@@ -815,9 +817,9 @@ export default function Index({ params }: any) {
 
                       // comming soon
 
-                      //toast.success(Coming_Soon);
+                      toast.success(Coming_Soon);
 
-                      router.push('/' + params.lang + '/' + params.chain + '/sell-usdt');
+                      //router.push('/' + params.lang + '/' + params.chain + '/sell-usdt');
 
 
                     }}
@@ -942,30 +944,9 @@ export default function Index({ params }: any) {
                 <p className="text-sm text-zinc-300">{My_Nickname}</p>
 
 
-                {/* my buy trades button and my sell trades button */}
-                {/*
+              
                 <div className="flex flex-row gap-2 justify-center items-center mt-10">
-                  <button
-                    disabled={!address}
-                    onClick={() => {
-                      // my buy trades
-                      //console.log("my buy trades");
-                      if (!address) {
-                        toast.error(Please_connect_your_wallet_first);
-                        return;
-                      }
-
-                      // redirect to buy trades page
-                      router.push(
-                        "/" + params.lang + "/buy-usdt-trades"
-                      );
-
-                    }}
-                    className="w-40 bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
-                  >
-                    {My_Buy_Trades}
-                  </button>
-
+ 
                   <button
                     disabled={!address}
                     onClick={() => {
@@ -976,9 +957,14 @@ export default function Index({ params }: any) {
                         return;
                       }
 
+                      if (!seller && !userCode) {
+                        toast.error('Please verify your account first for selling');
+                        return;
+                      }
+
                       // redirect to sell trades page
                       router.push(
-                        "/" + params.lang + "/sell-usdt-trades"
+                        "/" + params.lang + "/" + params.chain + "/sell-usdt"
                       );
 
                     }}
@@ -988,7 +974,7 @@ export default function Index({ params }: any) {
                   </button>
 
                 </div>
-                */}
+                
 
 
               </div>

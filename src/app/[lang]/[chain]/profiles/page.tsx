@@ -832,16 +832,17 @@ export default function SettingsPage({ params }: any) {
                                 </div>
 
                                 {/* goto seller page /sell-usdt */}
-                                {/*}
+                                
                                 <button
                                     onClick={() => {
-                                        window.location.href = '/sell-usdt';
+                                        router.push('/' + params.lang + '/' + params.chain + '/sell-usdt');
+
                                     }}
                                     className="p-2 bg-blue-500 text-zinc-100 rounded"
                                 >
                                     {Sell_USDT}
                                 </button>
-                                */}
+                                
 
 
                                 <Image
