@@ -95,10 +95,10 @@
     "I_agree_to_the_terms_of_trade": "거래 조건에 동의합니다",
     "I_agree_to_cancel_the_trade": "거래 취소에 동의합니다",
 
-    "Opened_at": "주문시작:",
-    "Started_at": "거래시작:",
-    "Cancelled_at": "거래취소:",
-    "Completed_at": "거래완료:",
+    "Opened_at": "주문시작",
+    "Started_at": "거래시작",
+    "Cancelled_at": "거래취소",
+    "Completed_at": "거래완료",
     "Payment_Requested_at": "결제요청:",
 
     "TID": "거래번호",

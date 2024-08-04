@@ -1424,6 +1424,23 @@ export default function Index({ params }: any) {
                           <div className="text-lg font-semibold text-white ">{
                             user?.nickname ? user.nickname : Anonymous
                           }</div>
+
+                          {user?.seller && (
+                            <div className="flex flex-row items-center gap-2">
+                              <Image
+                                src="/verified.png"
+                                alt="Verified"
+                                width={24}
+                                height={24}
+                              />
+                              <Image
+                                src="/best-seller.png"
+                                alt="Best Seller"
+                                width={24}
+                                height={24}
+                              />
+                            </div>
+                          )}
                        
                       </div>
                     </div>
@@ -1438,25 +1455,6 @@ export default function Index({ params }: any) {
 
 
               <div className="mt-4 w-full flex flex-col gap-5 xl:flex-row items-start justify-center ">
-
-
-                    {orderId && address && user && user.nickname && user.avatar && (
-                      <div className=' w-full '>
-                        <Chat
-
-                          channel={orderId}
-
-                          userId={ user.nickname }
-
-                          nickname={ user.nickname }
-
-                          profileUrl={ user.avatar }
-                        />
-                      </div>
-                    )}
-
-
-
 
 
                 <div className="w-full mb-10 grid grid-cols-1 gap-4  justify-center  ">
@@ -2647,7 +2645,20 @@ export default function Index({ params }: any) {
 
                 </div>
 
+                {orderId && address && user && user.nickname && user.avatar && (
+                  <div className=' w-full '>
+                    <Chat
 
+                      channel={orderId}
+
+                      userId={ user.nickname }
+
+                      nickname={ user.nickname }
+
+                      profileUrl={ user.avatar }
+                    />
+                  </div>
+                )}
 
 
 

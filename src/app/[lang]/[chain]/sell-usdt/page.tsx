@@ -903,6 +903,22 @@ export default function Index({ params }: any) {
                           }}
                         />
                         <div className="text-lg font-semibold text-white ">{user?.nickname}</div>
+                        {seller && (
+                          <>
+                            <Image
+                              src="/verified.png"
+                              alt="Verified"
+                              width={20}
+                              height={20}
+                            />
+                            <Image
+                              src="/best-seller.png"
+                              alt="Best Seller"
+                              width={20}
+                              height={20}
+                            />
+                          </>
+                        )}
                       </div>
 
                 </div>
@@ -957,44 +973,6 @@ export default function Index({ params }: any) {
                             </div>
 
                           </div>
-
-
-                          {/* my seller info */}
-
-                          {address && seller && (
-
-
-
-                            <div className="mt-4 flex flex-row items-center gap-2">
-                              <Image
-                                src={avatar}
-                                alt="Profile"
-                                width={24}
-                                height={24}
-                                className="rounded-full"
-                                style={{
-                                  objectFit: 'cover',
-                                  width: '24px',
-                                  height: '24px'
-                                }}
-
-                              />
-                              <div className="text-lg font-semibold text-white">{nickname}</div>
-
-                              <Image
-                                src="/verified.png"
-                                alt="Verified"
-                                width={24}
-                                height={24}
-                              />
-                              <Image
-                                src="/best-seller.png"
-                                alt="Identity"
-                                width={24}
-                                height={24}
-                              />
-                            </div>
-                          )}
 
 
                           <p className="mt-4 text-xl font-bold text-zinc-400">1 USDT = {
@@ -1054,10 +1032,10 @@ export default function Index({ params }: any) {
 
 
                           {seller && (
-                          <p className=" text-sm text-zinc-400">
-                            {Payment}: {Bank_Transfer} ({seller?.bankInfo.bankName})
-                          </p>
-                        )}
+                            <p className=" text-sm text-zinc-400">
+                              {Payment}: {Bank_Transfer} ({seller?.bankInfo.bankName} {seller?.bankInfo.accountNumber} {seller?.bankInfo.accountHolder})
+                            </p>
+                          )}
 
                         </div>
 
@@ -1359,15 +1337,17 @@ export default function Index({ params }: any) {
          
                   <div className="mt-10 w-full flex flex-row items-center justify-between gap-4">
 
-                  {/* total sell orders */}
+                 
                   <div className="p-2 flex flex-row items-center justify-between gap-2">
 
+                    {/*
                     <div className="flex flex-col gap-2 items-center">
                       <div className="text-sm">{Total}</div>
                       <div className="text-xl font-semibold text-white">
                         {sellOrders.length}
                       </div>
                     </div>
+                    */}
 
                     <div className="flex flex-col gap-2 items-center">
                       <div className="text-sm">{Orders}</div>
@@ -1386,6 +1366,22 @@ export default function Index({ params }: any) {
 
                         }
 
+                      </div>
+                    </div>
+
+                    {/* completed trades */}
+                    <div className="flex flex-col gap-2 items-center">
+                      <div className="text-sm">{Completed}</div>
+                      <div className="text-xl font-semibold text-white">
+                        {sellOrders.filter((item) => item.status === 'paymentConfirmed').length}
+                      </div>
+                    </div>
+
+                    {/* cancelled trades */}
+                    <div className="flex flex-col gap-2 items-center">
+                      <div className="text-sm">{Cancelled}</div>
+                      <div className="text-xl font-semibold text-white">
+                        {sellOrders.filter((item) => item.status === 'cancelled').length}
                       </div>
                     </div>
 
@@ -1640,7 +1636,10 @@ export default function Index({ params }: any) {
                                   )}
 
                                   <p className="text-sm text-zinc-400">
-                                    {Opened_at} {
+
+
+
+                                    {params.lang === 'en' && Opened_at} {
                                     new Date().getTime() - new Date(item.createdAt).getTime() < 1000 * 60 ? (
                                       ' ' + Math.floor((new Date().getTime() - new Date(item.createdAt).getTime()) / 1000) + ' ' + seconds_ago
                                     ) :
@@ -1648,7 +1647,9 @@ export default function Index({ params }: any) {
                                       ' ' + Math.floor((new Date().getTime() - new Date(item.createdAt).getTime()) / 1000 / 60) + ' ' + minutes_ago
                                     ) : (
                                       ' ' + Math.floor((new Date().getTime() - new Date(item.createdAt).getTime()) / 1000 / 60 / 60) + ' ' + hours_ago
-                                    )}
+                                    )}{' '}{params.lang === 'kr' && Opened_at}
+
+
                                   </p>
 
                                 </div>
