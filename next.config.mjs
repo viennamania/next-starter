@@ -34,7 +34,7 @@ const nextConfig = {
 
 
 
-  /*
+  
   async headers() {
     return [
       {
@@ -44,13 +44,20 @@ const nextConfig = {
           {
             key: 'Access-Control-Allow-Origin',
             //value: 'https://gpgpu-lac.vercel.app', // Allow requests from this origin
-            value: '*', // Allow requests from this origin
+            
+            //value: '*', // Allow requests from this origin
+            //https://vienna-mania.vercel.app, http://localhost:3000
+
+            value: 'https://vienna-mania.vercel.app, http://localhost:3000', // Allow requests from this origin
+
+
+
           },
         ],
       },
     ];
   },
-  */
+  
 
   
 };
