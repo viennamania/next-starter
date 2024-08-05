@@ -584,7 +584,7 @@ export default function Index({ params }: any) {
 
       fetchSellOrders();
 
-    } , [selectedKrwAmount, params.lang, params.chain]);
+    } , [selectedKrwAmount, params.lang, params.chain, orderId]);
 
     
 
@@ -604,7 +604,7 @@ export default function Index({ params }: any) {
       const mobile = '010-1234-5678';
 
 
-      const response = await fetch('/api/user/setUserWithoutWalletAddress', {
+      const response = await fetch('/api/user/setUser/VeWithoutWalletAddress', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

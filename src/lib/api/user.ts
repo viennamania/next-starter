@@ -114,6 +114,81 @@ export async function insertOne(data: any) {
 
 
 
+
+
+export async function insertOneVerified(data: any) {
+
+  //console.log('insertOne data: ' + JSON.stringify(data));
+
+  if (!data.walletAddress || !data.nickname || !data.mobile) {
+    return null;
+  }
+
+
+  const client = await clientPromise;
+  const collection = client.db('vienna').collection('users');
+
+  // check same walletAddress or smae nickname
+
+  const checkUser = await collection.findOne<UserProps>(
+    {
+      $or: [
+        { walletAddress: data.walletAddress },
+        { nickname: data.nickname },
+      ]
+    },
+    { projection: { _id: 0, emailVerified: 0 } }
+  );
+
+  ///console.log('checkUser: ' + checkUser);
+
+
+  if (checkUser) {
+    return null;
+  }
+
+
+  // generate id 100000 ~ 999999
+
+  const id = Math.floor(Math.random() * 900000) + 100000;
+
+
+  const result = await collection.insertOne(
+
+    {
+      id: id,
+      email: data.email,
+      nickname: data.nickname,
+      mobile: data.mobile,
+
+      walletAddress: data.walletAddress,
+
+
+      createdAt: new Date().toISOString(),
+
+      settlementAmountOfFee: "0",
+
+      verified: true,
+    }
+  );
+
+
+  if (result) {
+    return {
+      id: id,
+      email: data.email,
+      nickname: data.nickname,
+      mobile: data.mobile,
+    };
+  } else {
+    return null;
+  }
+  
+
+}
+
+
+
 export async function updateOne(data: any) {
 
 

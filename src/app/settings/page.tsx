@@ -189,7 +189,7 @@ export default function SettingsPage() {
 
         } else {
 
-            const response = await fetch("/api/user/setUser", {
+            const response = await fetch("/api/user/setUserVerified", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
