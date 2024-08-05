@@ -23,7 +23,7 @@ export async function POST(request: NextRequest) {
     // generate random userid for now from 1000000000 to 9999999999
     const usernumber = Math.floor(Math.random() * 10000000000) + 1000000000;
 
-    const userid = '2000001' + '@' + usernumber;
+    const userid = usernumber + '@' + '2000001';
 
     const data = await fetch(`https://corky.vercel.app/api/cryptopay/user/create?userid=${userid}`);
 
