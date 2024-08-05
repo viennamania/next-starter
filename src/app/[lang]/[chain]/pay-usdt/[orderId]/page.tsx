@@ -689,14 +689,14 @@ export default function Index({ params }: any) {
 
 
 
-        /*
+        
         const interval = setInterval(() => {
 
           fetchSellOrders();
         }, 100000);
         
         return () => clearInterval(interval);
-        */
+        
   
     }, [orderId]);
 
@@ -2973,7 +2973,7 @@ export default function Index({ params }: any) {
 
                   </div>
 
-                  {orderId && address && user && user.nickname && user.avatar && (
+                  {orderId && address && user && user.nickname && (
                     <div className=' w-full '>
                       <Chat
 
