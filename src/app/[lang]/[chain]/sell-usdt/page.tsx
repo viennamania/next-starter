@@ -1939,7 +1939,10 @@ export default function Index({ params }: any) {
 
                                       }}
                                     >
-                                      {Chat_with_Buyer}
+                                      
+                                      퍈매 진행하기
+
+
                                     </button>
                                     
                                     
