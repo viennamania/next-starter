@@ -683,6 +683,7 @@ export default function Index({ params }: any) {
     const [selectedKrwAmount, setSelectedKrwAmount] = useState(10000);
 
 
+    const [depositName, setDepositName] = useState('');
 
 
 
@@ -2032,36 +2033,56 @@ export default function Index({ params }: any) {
                         </div>
 
 
+                        <div className='mt-5 flex flex-row gap-2 items-center justify-center'>
 
-                        <button
-                          disabled={!address || !selectedKrwAmount || acceptingSellOrderRandom}
-                          className={`mt-10 flex flex-row text-lg text-white px-4 py-2 rounded-md
-                          ${!user || !selectedKrwAmount || acceptingSellOrderRandom ? 'bg-zinc-800' : 'bg-green-500 hover:bg-green-600'}
-                          `}
-
-                          onClick={() => {
-
-                              ////acceoptSellOrder(index, item._id);
-
-                              acceptSellOrderRandom(selectedKrwAmount);
-                        
-
-                          }}
-                        >
-                          {/* loaaing icon */}
-                          {acceptingSellOrderRandom && (
-                            <Image
-                              src="/loading.png"
-                              alt="Loading"
-                              width={24}
-                              height={24}
-                              className='animate-spin'
-                            />
-                          )}
-                          <span  className="ml-2">
-                            USDT {Buy}
+                          {/* input deposit name */}
+                          <span className="text-lg text-white">
+                            {Deposit_Name}
                           </span>
-                        </button>
+                          <input
+                            type="text"
+                            value={depositName}
+                            onChange={(e) => setDepositName(e.target.value)}
+                            placeholder={Deposit_Name}
+                            className="text-lg bg-black text-white px-4 py-2 rounded-md border border-zinc-100"
+                          />
+                          
+
+
+
+                          <button
+                            disabled={!address || !selectedKrwAmount || acceptingSellOrderRandom}
+                            className={`flex flex-row text-lg text-white px-4 py-2 rounded-md
+                            ${!user || !selectedKrwAmount || acceptingSellOrderRandom ? 'bg-zinc-800' : 'bg-green-500 hover:bg-green-600'}
+                            `}
+
+                            onClick={() => {
+
+                                ////acceoptSellOrder(index, item._id);
+
+                                acceptSellOrderRandom(selectedKrwAmount);
+                          
+
+                            }}
+                          >
+                            {/* loaaing icon */}
+                            {acceptingSellOrderRandom && (
+                              <Image
+                                src="/loading.png"
+                                alt="Loading"
+                                width={24}
+                                height={24}
+                                className='animate-spin'
+                              />
+                            )}
+                            
+                            <span  className="ml-2">
+                              USDT {Buy}
+                            </span>
+
+                          </button>
+
+                        </div>
 
 
                       </div>
