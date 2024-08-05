@@ -1518,6 +1518,30 @@ export default function Index({ params }: any) {
                 {address}
               </div>
 
+              {/* sending to shop address */}
+
+              {orderId && sellOrders.length > 0 && sellOrders[0].status === 'paymentConfirmed' && (
+
+                <div className='flex flex-row gap-2 items-center justify-center'>
+                  {/* loading image */}
+                  <Image
+                    src="/loading.png"
+                    alt="Loading"
+                    width={24}
+                    height={24}
+                    className='animate-spin'
+                  />
+
+                  <div className="text-lg text-white">
+                    Sending the USDT to the shop address...
+                  </div>
+                </div>
+
+              )}
+
+               
+
+
               {/* disconnect button */}
               {/*
               
@@ -2973,7 +2997,7 @@ export default function Index({ params }: any) {
 
                   </div>
 
-                  {orderId && address && user && user.nickname && (
+                  {orderId && address && user && user.nickname && sellOrders.length > 0 && sellOrders[0].status !== 'paymentConfirmed' && (
                     <div className=' w-full '>
                       <Chat
 
