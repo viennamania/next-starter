@@ -487,6 +487,14 @@ export default function Index({ params }: any) {
 
 
 
+    // nickname
+
+
+
+
+    const [nickname, setNickname] = useState('');
+
+    const [inputNickname, setInputNickname] = useState('');
 
 
 
@@ -501,7 +509,13 @@ export default function Index({ params }: any) {
 
       const fetchSellOrders = async () => {
 
-        if (!address) {
+        
+        if (orderId === '0') {
+          return
+        }
+
+
+        if (!nickname) {
           return;
         }
 
@@ -510,8 +524,41 @@ export default function Index({ params }: any) {
         }
 
 
+
+        const mobile = '010-1234-5678';
+
+
+        const response = await fetch('/api/user/setUserWithoutWalletAddress', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            nickname: nickname,
+            mobile: mobile,
+          }),
+        });
+    
+        const data = await response.json();
+    
+        console.log('setUserWithoutWalletAddress data', data);
+
+        if (!data.walletAddress) {
+
+          toast.error('User registration has been failed');
+          return;
+        }
+
+        const walletAddress = data.walletAddress;
+
+        setAddress(walletAddress);
+
+
+
+
+
         // api call
-        const response = await fetch('/api/order/getAllSellOrders', {
+        const responseGetAllSellOrders = await fetch('/api/order/getAllSellOrders', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
@@ -522,19 +569,19 @@ export default function Index({ params }: any) {
           })
         });
 
-        const data = await response.json();
+        const dataGetAllSellOrders = await responseGetAllSellOrders.json();
 
         
         //console.log('data', data);
 
 
 
-        if (data.result) {
+        if (dataGetAllSellOrders.result) {
 
           // find one of sell order which is krwAmount is selectedKrwAmount and status is ordered
           
 
-          const order = data.result.orders.find((item: any) => {
+          const order = dataGetAllSellOrders.result.orders.find((item: any) => {
             return item.krwAmount === selectedKrwAmount && item.status === 'ordered';
           });
 
@@ -550,7 +597,7 @@ export default function Index({ params }: any) {
 
       fetchSellOrders();
 
-    } , [address, selectedKrwAmount, params.lang, params.chain]);
+    } , [orderId, nickname, selectedKrwAmount, params.lang, params.chain]);
 
     
 
@@ -588,8 +635,12 @@ export default function Index({ params }: any) {
           if (data.result) {
 
             if (data.result.orders.length > 0) {
+
               setSellOrders(data.result.orders);
-              setAddress(data.result.orders[0].walletAddress);
+
+              setAddress(data.result.orders[0].buyer.walletAddress);
+
+              setNickname(data.result.orders[0].buyer.nickname);
             }
 
 
@@ -1307,7 +1358,7 @@ export default function Index({ params }: any) {
 
   const setUserWithoutWalletAddress = async () => {
 
-    const nickname = prompt('Enter your nickname');
+    ///////const nickname = prompt('Enter your nickname');
 
     if (!nickname) {
 
@@ -1330,9 +1381,9 @@ export default function Index({ params }: any) {
 
     const data = await response.json();
 
-    console.log('setUserWithoutWalletAddress data', data);
+    console.log('setUserWithoutWalletAddress data.walletAddress', data.walletAddress);
 
-    if (data.result) {
+    if (data.walletAddress) {
 
       //setAddress(data.result);
 
@@ -1428,6 +1479,7 @@ export default function Index({ params }: any) {
               </div>
 
               {/* disconnect button */}
+              {/*
               
               <button
                 onClick={() => {
@@ -1447,118 +1499,43 @@ export default function Index({ params }: any) {
               >
                 {Disconnect_Wallet}
               </button>
+              */}
               
             </div>
 
           ) : (
-            <div className="mt-5 flex flex-col items-center space-y-4 mb-4">
+            <div className="w-full mt-5 flex flex-row items-center justify-center gap-2 mb-4">
 
 
+
+              {/* input nickname
+                setNickname
+              */}
+
+              <input
+                type="text"
+                value={inputNickname}
+                onChange={(e) => setInputNickname(e.target.value)}
+
+
+
+                placeholder={Enter_your_nickname}
+                className="text-lg bg-black text-white px-4 py-2 rounded-md border border-zinc-100"
+              />
+                
+            
               <button
-                onClick={() => {
-                  setUserWithoutWalletAddress();
-                }}
+                ///onClick={setUserWithoutWalletAddress}
+                
+                onClick={() => setNickname(inputNickname)}
+
+
                 className="text-lg bg-green-500 text-white px-4 py-2 rounded-md"
               >
-                지갑 연결
+                {Go_Buy_USDT}
               </button>
 
-                {/*
-                {params.chain === "polygon" && (
 
-
-                  <ConnectButton
-
-                    client={client}
-
-                    wallets={wallets}
-                    
-                    accountAbstraction={{   
-                      
-                      chain: polygon,
-                      //
-                      //chain: polygon,
-
-                      //chain: arbitrum,
-                      factoryAddress: "0x9Bb60d360932171292Ad2b80839080fb6F5aBD97", // polygon, arbitrum
-                      gasless: true,
-                    }}
-                    
-                    theme={"light"}
-                    connectModal={{
-                      size: "wide",
-                      
-                      //title: "Connect",
-
-
-
-                    }}
-
-
-                    
-                    appMetadata={
-                      {
-                        logoUrl: "https://next.unove.space/logo.png",
-                        name: "Next App",
-                        url: "https://next.unove.space",
-                        description: "This is a Next App.",
-
-                      }
-                    }
-
-                  />
-
-                )}
-
-
-
-                {params.chain === "arbitrum" && (
-                    
-                    <ConnectButton
-    
-                      client={client}
-    
-                      wallets={wallets}
-                      
-                      accountAbstraction={{   
-                        
-                        chain: arbitrum,
-                        //
-                        //chain: polygon,
-    
-                        //chain: arbitrum,
-                        factoryAddress: "0x9Bb60d360932171292Ad2b80839080fb6F5aBD97", // polygon, arbitrum
-                        gasless: true,
-                      }}
-                      
-                      theme={"light"}
-                      connectModal={{
-                        size: "wide",
-                        
-                        //title: "Connect",
-
-                      }}
-
-                      appMetadata={
-                        {
-                          logoUrl: "https://next.unove.space/logo.png",
-                          name: "Next App",
-                          url: "https://next.unove.space",
-                          description: "This is a Next App.",
-    
-                        }
-                      }
-
-                    />
-
-                )}
-
-
-
-                <span className="text-lg text-zinc-400 xl:w-1/2 text-center">
-                  {Connect_Wallet_Description_For_Buyers}
-                </span>
-                */}
 
 
             </div>
@@ -1567,7 +1544,7 @@ export default function Index({ params }: any) {
 
 
 
-                {address && (
+                {true && (
                   <div className="w-full flex flex-col items-start justify-between gap-2">
 
                     {/* my usdt balance */}
@@ -2439,7 +2416,7 @@ export default function Index({ params }: any) {
 
                                             
                                               <button
-                                              disabled={!user || !agreementForTrade[index]}
+                                              disabled={!address || !agreementForTrade[index]}
                                               className={`text-lg text-white px-4 py-2 rounded-md
                                                 ${!user || !agreementForTrade[index] ? 'bg-zinc-800' : 'bg-green-500 hover:bg-green-600'}
                                                 `}
