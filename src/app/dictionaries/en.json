@@ -273,7 +273,13 @@
 
 
     "Chat_with_Seller": "Chat with Seller",
-    "Chat_with_Buyer": "Chat with Buyer"
+    "Chat_with_Buyer": "Chat with Buyer",
+
+ 
+    "You_must_have_a_wallet_address_to_buy_USDT": "You must have a wallet address to buy USDT",
+
+
+    "Make_Wallet_Address": "Make Wallet Address"
 
 
 

@@ -233,7 +233,13 @@
     "I_understand_that_I_should_never_deposit_any_other_tokens": "다른 토큰(예: 이더리움)을 이 주소로 입금해서는 안 된다는 것을 이해합니다.",
 
     "Chat_with_Seller": "판매자와 채팅",
-    "Chat_with_Buyer": "구매자와 채팅"
+    "Chat_with_Buyer": "구매자와 채팅",
+
+    "You_must_have_a_wallet_address_to_buy_USDT": "USDT를 구매하려면 지갑주소가 필요합니다.",
+
+
+    "Make_Wallet_Address": "지갑주소 만들기"
+
 
 
 }

@@ -289,6 +289,13 @@ export default function Index({ params }: any) {
       Save: "",
       Enter_your_nickname: "",
 
+      Nickname_should_be_5_10_characters: "",
+
+      You_must_have_a_wallet_address_to_buy_USDT: "",
+      Make_Wallet_Address: "",
+
+      My_Wallet_Address: "",
+
     } );
   
     useEffect(() => {
@@ -381,6 +388,13 @@ export default function Index({ params }: any) {
       Cancel,
       Save,
       Enter_your_nickname,
+
+      Nickname_should_be_5_10_characters,
+
+      You_must_have_a_wallet_address_to_buy_USDT,
+      Make_Wallet_Address,
+
+      My_Wallet_Address,
 
     } = data;
    
@@ -576,49 +590,51 @@ export default function Index({ params }: any) {
 
     
 
-    useEffect(() => {
+  
 
-      const fetchWalletAddress = async () => {
+    const fetchWalletAddress = async (
+      paramNickname: string
+    ) => {
 
-        if (!nickname) {
-          return;
-        }
-
-
-        const mobile = '010-1234-5678';
-
-
-        const response = await fetch('/api/user/setUserWithoutWalletAddress', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            nickname: nickname,
-            mobile: mobile,
-          }),
-        });
-    
-        const data = await response.json();
-    
-        console.log('setUserWithoutWalletAddress data', data);
-
-        if (!data.walletAddress) {
-
-          toast.error('User registration has been failed');
-          return;
-        }
-
-        const walletAddress = data.walletAddress;
-
-        setAddress(walletAddress);
-
-
+      if (nickname) {
+        return;
       }
 
-      fetchWalletAddress();
 
-    } , [nickname ]);
+      const mobile = '010-1234-5678';
+
+
+      const response = await fetch('/api/user/setUserWithoutWalletAddress', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          nickname: paramNickname,
+          mobile: mobile,
+        }),
+      });
+  
+      const data = await response.json();
+  
+      console.log('setUserWithoutWalletAddress data', data);
+
+      if (!data.walletAddress) {
+
+        toast.error('User registration has been failed');
+        return;
+      }
+
+      const walletAddress = data.walletAddress;
+
+      setAddress(walletAddress);
+
+      setNickname(paramNickname);
+
+
+    }
+
+ 
 
     
 
@@ -1496,7 +1512,7 @@ export default function Index({ params }: any) {
 
               {/* wallet address */}
               <div className="text-lg text-white">
-                Wallet Address
+                {My_Wallet_Address}
               </div>
               <div className="text-sm xl:text-lg text-white">
                 {address}
@@ -1534,31 +1550,64 @@ export default function Index({ params }: any) {
 
 
              {orderId === '0' && (
-                <>
+                <div className='w-full flex flex-col xl:flex-row gap-2 items-center xl:items-end justify-center'>
 
-              <input
-                type="text"
-                value={inputNickname}
-                onChange={(e) => setInputNickname(e.target.value)}
+                    <span className="text-sm text-white">
+                      {You_must_have_a_wallet_address_to_buy_USDT}
+                    </span>
 
+                    <div className='flex flex-col gap-2 items-center justify-center'>
 
+                      <span className="text-sm text-white">
+                        {Nickname_should_be_5_10_characters}
+                      </span>
 
-                placeholder={Enter_your_nickname}
-                className="text-lg bg-black text-white px-4 py-2 rounded-md border border-zinc-100"
-              />
-                
-            
-              <button
-                ///onClick={setUserWithoutWalletAddress}
-                
-                onClick={() => setNickname(inputNickname)}
+                      <input
+                        type="text"
+                        value={inputNickname}
+                        onChange={(e) => {
 
 
-                className="text-lg bg-green-500 text-white px-4 py-2 rounded-md"
-              >
-                {Go_Buy_USDT}
-              </button>
-              </>
+                          // check alphabet and number 5-10 characters
+
+                          //e.target.value = e.target.value.replace(/[^a-zA-Z0-9]/g, '');
+
+
+
+
+                          setInputNickname(
+
+                            e.target.value.replace(/[^a-zA-Z0-9]/g, '').substring(0, 10)
+                          );
+
+
+
+                        } }
+
+
+
+                        placeholder={Enter_your_nickname}
+                        className="text-lg bg-black text-white px-4 py-2 rounded-md border border-zinc-100"
+                      />
+
+
+                    </div>
+
+
+                      
+                  
+                    <button
+                      ///onClick={setUserWithoutWalletAddress}
+                      
+                      onClick={() => fetchWalletAddress(inputNickname)}
+
+
+                      className="text-lg bg-green-500 text-white px-4 py-2 rounded-md"
+                    >
+                      {Make_Wallet_Address}
+                    </button>
+
+                </div>
 
               )}
 
