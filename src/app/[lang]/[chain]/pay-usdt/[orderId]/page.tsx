@@ -1333,6 +1333,7 @@ export default function Index({ params }: any) {
       })
     );
 
+    
 
 
     const response = await fetch('/api/order/confirmPayment', {
