@@ -294,7 +294,7 @@ export async function getAllUsers(
       {
 
 
-        walletAddress: { $exists: true, $ne: null },
+        walletAddress: { $exists: true, $ne: null, $verified: true },
         
 
       },
