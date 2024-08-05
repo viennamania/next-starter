@@ -160,6 +160,8 @@ export default function SendUsdt({ params }: any) {
 
     Sending: "",
 
+
+
   } );
 
   useEffect(() => {
@@ -871,7 +873,7 @@ export default function SendUsdt({ params }: any) {
                       disabled={true}
                       type="text"
                       placeholder={User_wallet_address}
-                      className=" w-96 p-2 border border-gray-300 rounded text-white text-xs xl:text-lg font-semibold"
+                      className=" w-80  xl:w-96 p-2 border border-gray-300 rounded text-white text-xs xl:text-lg font-semibold"
                       value={recipient?.walletAddress}
                       onChange={(e) => {
       
@@ -913,8 +915,8 @@ export default function SendUsdt({ params }: any) {
                     <input
                       disabled={sending}
                       type="text"
-                      placeholder="Enter wallet address"
-                      className=" w-96 p-2 border border-gray-300 rounded text-white bg-black text-sm xl:text-sm font-semibold"
+                      placeholder={User_wallet_address}
+                      className=" w-80 xl:w-96 p-2 border border-gray-300 rounded text-white bg-black text-sm xl:text-sm font-semibold"
                       value={recipient.walletAddress}
                       onChange={(e) => setRecipient({
                         ...recipient,
