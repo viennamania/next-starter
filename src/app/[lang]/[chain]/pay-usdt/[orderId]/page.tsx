@@ -62,6 +62,7 @@ import { Pay } from 'twilio/lib/twiml/VoiceResponse';
 
 
 import Chat from "@/components/Chat";
+import { add } from 'thirdweb/extensions/farcaster/keyGateway';
 
 
 
@@ -489,7 +490,67 @@ export default function Index({ params }: any) {
 
 
 
+    // select krw amount (10000, 20000, 30000, 40000, 50000, 100000, 200000, 300000, 400000, 500000)
 
+    const [krwAmounts, setKrwAmounts] = useState([10000, 20000, 30000, 40000, 50000, 100000, 200000, 300000, 400000, 500000]);
+    // select one of krw amount
+
+    const [selectedKrwAmount, setSelectedKrwAmount] = useState(10000);
+
+    useEffect(() => {
+
+      const fetchSellOrders = async () => {
+
+        if (!address) {
+          return;
+        }
+
+        if (!selectedKrwAmount) {
+          return;
+        }
+
+
+        // api call
+        const response = await fetch('/api/order/getAllSellOrders', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            lang: params.lang,
+            chain: params.chain,
+          })
+        });
+
+        const data = await response.json();
+
+        
+        //console.log('data', data);
+
+
+
+        if (data.result) {
+
+          // find one of sell order which is krwAmount is selectedKrwAmount and status is ordered
+          
+
+          const order = data.result.orders.find((item: any) => {
+            return item.krwAmount === selectedKrwAmount && item.status === 'ordered';
+          });
+
+          if (order) {
+            setSellOrders([order]);
+          } else {
+            toast.error('Sell order not found');
+          }
+
+        }
+
+      }
+
+      fetchSellOrders();
+
+    } , [address, selectedKrwAmount, params.lang, params.chain]);
 
     
 
@@ -525,7 +586,13 @@ export default function Index({ params }: any) {
           console.log('data', data);
   
           if (data.result) {
-            setSellOrders(data.result.orders);
+
+            if (data.result.orders.length > 0) {
+              setSellOrders(data.result.orders);
+              setAddress(data.result.orders[0].walletAddress);
+            }
+
+
           }
   
         };
@@ -543,7 +610,7 @@ export default function Index({ params }: any) {
         return () => clearInterval(interval);
         */
   
-    }, [orderId, address ]);
+    }, [orderId]);
 
 
 
@@ -814,7 +881,7 @@ export default function Index({ params }: any) {
             toast.success('Order accepted successfully');
 
 
-
+            /*
             fetch('/api/order/getOneSellOrder', {
                 method: 'POST',
                 headers: {
@@ -829,6 +896,15 @@ export default function Index({ params }: any) {
                 ///console.log('data', data);
                 setSellOrders(data.result.orders);
             })
+            */
+
+
+            // reouter to
+
+            router.push('/' + params.lang + '/' + params.chain + '/pay-usdt/' + orderId);
+
+
+
 
         })
         .catch((error) => {
@@ -1360,7 +1436,11 @@ export default function Index({ params }: any) {
 
                     
                     
-                  window.location.reload();
+                  //window.location.reload();
+
+                  router.push('/' + params.lang + '/' + params.chain + '/pay-usdt/0');
+
+
 
                 }}
                 className="text-lg bg-red-500 text-white px-4 py-2 rounded-md"
@@ -1488,7 +1568,8 @@ export default function Index({ params }: any) {
 
 
                 {address && (
-                  <div className="w-full flex flex-row items-start justify-between gap-2">
+                  <div className="w-full flex flex-col items-start justify-between gap-2">
+
                     {/* my usdt balance */}
                     <div className='w-full flex flex-row items-between justify-start gap-5'>
 
@@ -1536,6 +1617,37 @@ export default function Index({ params }: any) {
                        
                       </div>
                     </div>
+
+
+                    {/* select one of krw amounts combo box */}
+                    {/* combo box */}
+
+                    {/* 10000, 20000, 30000, 40000, 50000, 100000, 200000, 300000, 400000, 500000 */}
+
+                    <div className="flex flex-row items-center justify-start gap-2">
+
+                      <div className="text-lg text-white">{Price}</div>
+
+                      <select
+                        value={selectedKrwAmount}
+                        onChange={(e) => {
+                          setSelectedKrwAmount(Number(e.target.value));
+                        }}
+                        className="text-lg bg-black text-white px-4 py-2 rounded-md"
+                      >
+                        {krwAmounts.map((item, index) => (
+                          <option key={index} value={item}>{item} KRW</option>
+                        ))}
+                      </select>
+                        
+
+                    </div>
+                    
+
+
+
+
+
 
 
 
