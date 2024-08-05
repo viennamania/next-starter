@@ -60,7 +60,7 @@ import { getDictionary } from "../../../dictionaries";
 export default function SettingsPage({ params }: any) {
 
 
-    console.log("params", params);
+    console.log("SettingsPage params", params);
     
     
     
@@ -404,7 +404,7 @@ export default function SettingsPage({ params }: any) {
                                         
                                         accountAbstraction={{        
                                         
-                                        chain: params.chain,
+                                        chain: polygon,
 
                                         //chain: arbitrum,
                                         factoryAddress: "0x9Bb60d360932171292Ad2b80839080fb6F5aBD97", // polygon, arbitrum
