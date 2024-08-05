@@ -773,7 +773,7 @@ export default function SendUsdt({ params }: any) {
                   disabled={sending}
                   type="number"
                   //placeholder="Enter amount"
-                  className="w-full p-2 border border-gray-300 rounded text-black text-5xl font-semibold "
+                  className=" w-64 p-2 border border-gray-300 rounded text-black text-5xl font-semibold "
                   
                   value={amount}
 
@@ -806,7 +806,7 @@ export default function SendUsdt({ params }: any) {
 
                       className="
                         
-                        w-full p-2 border border-gray-300 rounded text-black text-2xl font-semibold "
+                        w-56 p-2 border border-gray-300 rounded text-black text-2xl font-semibold "
                         
                       value={
                         recipient?.nickname
@@ -871,7 +871,7 @@ export default function SendUsdt({ params }: any) {
                       disabled={true}
                       type="text"
                       placeholder={User_wallet_address}
-                      className="w-full p-2 border border-gray-300 rounded text-white text-sm xl:text-lg font-semibold"
+                      className=" w-96 p-2 border border-gray-300 rounded text-white text-xs xl:text-lg font-semibold"
                       value={recipient?.walletAddress}
                       onChange={(e) => {
       
@@ -914,7 +914,7 @@ export default function SendUsdt({ params }: any) {
                       disabled={sending}
                       type="text"
                       placeholder="Enter wallet address"
-                      className=" w-96 p-2 border border-gray-300 rounded text-white bg-black text-sm xl:text-2xl font-semibold"
+                      className=" w-96 p-2 border border-gray-300 rounded text-white bg-black text-sm xl:text-sm font-semibold"
                       value={recipient.walletAddress}
                       onChange={(e) => setRecipient({
                         ...recipient,
