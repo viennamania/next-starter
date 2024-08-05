@@ -65,6 +65,7 @@ import Chat from "@/components/Chat";
 import { add } from 'thirdweb/extensions/farcaster/keyGateway';
 
 
+import { useSearchParams } from "next/navigation";
 
 
 
@@ -163,6 +164,14 @@ export default function SellUsdt({ orderId }: InferGetStaticPropsType<typeof get
 export default function Index({ params }: any) {
 
     //console.log('params', params);
+
+    // get params
+
+    const searchParams = useSearchParams();
+
+    const storeUser = searchParams.get('storeUser');
+
+    console.log('storeUser', storeUser);
 
 
 
@@ -432,11 +441,6 @@ export default function Index({ params }: any) {
 
 
 
-
-
-
-
-
     const [balance, setBalance] = useState(0);
     useEffect(() => {
 
@@ -489,7 +493,7 @@ export default function Index({ params }: any) {
                 walletAddress: address,
             }),
         })
-        .then(response => response.json())
+        .then(response => response?.json())
         .then(data => {
             //console.log('data', data);
             setUser(data.result);
@@ -506,9 +510,121 @@ export default function Index({ params }: any) {
 
 
 
-    const [nickname, setNickname] = useState('');
+    const [nickname, setNickname] = useState(storeUser);
 
     const [inputNickname, setInputNickname] = useState('');
+
+
+
+
+
+
+
+
+
+    const fetchWalletAddress = async (
+      paramNickname: string
+    ) => {
+
+      if (nickname) {
+        return;
+      }
+
+
+      const mobile = '010-1234-5678';
+
+
+      const response = await fetch('/api/user/setUserWithoutWalletAddress', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          nickname: paramNickname,
+          mobile: mobile,
+        }),
+      });
+  
+      const data = await response?.json();
+  
+      console.log('setUserWithoutWalletAddress data', data);
+
+      if (!data.walletAddress) {
+
+        toast.error('User registration has been failed');
+        return;
+      }
+
+      const walletAddress = data.walletAddress;
+
+      setAddress(walletAddress);
+
+      setNickname(paramNickname);
+
+
+    }
+
+ 
+
+    useEffect(() => {
+
+
+
+      const fetchWalletAddress = async ( ) => {
+  
+        if (!nickname) {
+          return;
+        }
+  
+  
+        const mobile = '010-1234-5678';
+  
+  
+        const response = await fetch('/api/user/setUserWithoutWalletAddress', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            nickname: nickname,
+            mobile: mobile,
+          }),
+        });
+    
+        const data = await response?.json();
+    
+        console.log('setUserWithoutWalletAddress data', data);
+  
+        if (!data.walletAddress) {
+  
+          toast.error('User registration has been failed');
+          return;
+        }
+  
+        const walletAddress = data.walletAddress;
+
+        console.log('walletAddress', walletAddress);
+
+
+  
+        setAddress(walletAddress);
+  
+  
+      }
+  
+
+
+
+      fetchWalletAddress();
+
+
+    } , [nickname]);
+
+
+
+
+
+
 
 
 
@@ -526,7 +642,7 @@ export default function Index({ params }: any) {
     const [sellOrders, setSellOrders] = useState<SellOrder[]>([]);
 
 
-
+    /*
     useEffect(() => {
 
       const fetchSellOrders = async () => {
@@ -585,57 +701,12 @@ export default function Index({ params }: any) {
       fetchSellOrders();
 
     } , [selectedKrwAmount, params.lang, params.chain, orderId]);
-
+    */
     
 
     
 
   
-
-    const fetchWalletAddress = async (
-      paramNickname: string
-    ) => {
-
-      if (nickname) {
-        return;
-      }
-
-
-      const mobile = '010-1234-5678';
-
-
-      const response = await fetch('/api/user/setUser/VeWithoutWalletAddress', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          nickname: paramNickname,
-          mobile: mobile,
-        }),
-      });
-  
-      const data = await response.json();
-  
-      console.log('setUserWithoutWalletAddress data', data);
-
-      if (!data.walletAddress) {
-
-        toast.error('User registration has been failed');
-        return;
-      }
-
-      const walletAddress = data.walletAddress;
-
-      setAddress(walletAddress);
-
-      setNickname(paramNickname);
-
-
-    }
-
- 
-
     
 
     
@@ -665,7 +736,7 @@ export default function Index({ params }: any) {
             })
           });
   
-          const data = await response.json();
+          const data = await response?.json();
   
           console.log('data', data);
   
@@ -693,7 +764,7 @@ export default function Index({ params }: any) {
         const interval = setInterval(() => {
 
           fetchSellOrders();
-        }, 100000);
+        }, 10000);
         
         return () => clearInterval(interval);
         
@@ -958,7 +1029,7 @@ export default function Index({ params }: any) {
                 buyerMobile: user.mobile,
             }),
         })
-        .then(response => response.json())
+        .then(response => response?.json())
         .then(data => {
 
             console.log('data', data);
@@ -979,7 +1050,7 @@ export default function Index({ params }: any) {
                   orderId: orderId,
                 }),
             })
-            .then(response => response.json())
+            .then(response => response?.json())
             .then(data => {
                 ///console.log('data', data);
                 setSellOrders(data.result.orders);
@@ -1118,7 +1189,7 @@ export default function Index({ params }: any) {
             })
           });
 
-          const data = await response.json();
+          const data = await response?.json();
 
           console.log('/api/order/requestPayment data====', data);
 
@@ -1148,7 +1219,7 @@ export default function Index({ params }: any) {
               })
             });
     
-            const data = await response.json();
+            const data = await response?.json();
     
             ///console.log('data', data);
     
@@ -1238,7 +1309,7 @@ export default function Index({ params }: any) {
         })
       });
 
-      const data = await response.json();
+      const data = await response?.json();
 
       //console.log('data', data);
 
@@ -1259,7 +1330,7 @@ export default function Index({ params }: any) {
             walletAddress: address
           })
         }).then(async (response) => {
-          const data = await response.json();
+          const data = await response?.json();
           //console.log('data', data);
           if (data.result) {
             setSellOrders(data.result.orders);
@@ -1333,7 +1404,7 @@ export default function Index({ params }: any) {
       })
     );
 
-    
+
 
 
     const response = await fetch('/api/order/confirmPayment', {
@@ -1348,7 +1419,7 @@ export default function Index({ params }: any) {
       })
     });
 
-    const data = await response.json();
+    const data = await response?.json();
 
     //console.log('data', data);
 
@@ -1364,7 +1435,7 @@ export default function Index({ params }: any) {
         })
       });
 
-      const data = await response.json();
+      const data = await response?.json();
 
       ///console.log('data', data);
 
@@ -1418,7 +1489,7 @@ export default function Index({ params }: any) {
       }),
     });
 
-    const data = await response.json();
+    const data = await response?.json();
 
     console.log('setUserWithoutWalletAddress data.walletAddress', data.walletAddress);
 
@@ -1443,7 +1514,7 @@ export default function Index({ params }: any) {
           walletAddress: data.result.walletAddress,
         }),
       })
-      .then(response => response.json())
+      .then(response => response?.json())
       .then(data => {
           console.log('data=======', data);
           setUser(data.result);
@@ -1461,6 +1532,115 @@ export default function Index({ params }: any) {
 
 
   }
+
+
+  const [acceptingSellOrderRandom, setAcceptingSellOrderRandom] = useState(false);
+
+  const acceptSellOrderRandom = async (
+    krwAmount: number
+  ) => {
+
+    if (acceptingSellOrderRandom) {
+      return;
+    }
+
+    setAcceptingSellOrderRandom(true);
+
+    // fectch sell order and accept one of them
+
+    const responseGetAllSellOrders = await fetch('/api/order/getAllSellOrders', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        lang: params.lang,
+        chain: params.chain,
+      })
+    });
+
+    const dataGetAllSellOrders = await responseGetAllSellOrders.json();
+
+    //console.log('data', data);
+
+    if (dataGetAllSellOrders.result) {
+
+      // find one of sell order which is krwAmount is selectedKrwAmount and status is ordered
+      
+
+      const order = dataGetAllSellOrders.result.orders.find((item: any) => {
+        return item.krwAmount === krwAmount && item.status === 'ordered';
+      });
+
+      if (order) {
+
+        // accept sell order
+
+        const response = await fetch('/api/order/acceptSellOrder', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            orderId: order._id,
+            buyerWalletAddress: address,
+            buyerNickname: nickname,
+            buyerAvatar: '',
+            buyerMobile: '010-1234-5678',
+          }),
+        });
+
+        const data = await response?.json();
+
+        if (data.result) {
+          toast.success('Order accepted successfully');
+
+          router.push('/' + params.lang + '/' + params.chain + '/pay-usdt/' + order._id);
+
+        }
+
+
+
+        //setSellOrders([order]);
+      } else {
+        toast.error('Sell order not found');
+      }
+
+    }
+
+    setAcceptingSellOrderRandom(false);
+
+  }
+
+
+
+
+
+
+
+
+
+
+  if (orderId === '0' && !storeUser) {
+    return (
+      <div>
+        Store user not found
+      </div>
+    );
+  }
+
+  const storecode = storeUser?.split('@').slice(-1)[0];
+  const memberid = storeUser?.split('@').slice(0, -1).join('@');
+
+  if (orderId === '0' && storecode !== '2000001') {
+    return (
+      <div>
+        Store code is invalid
+      </div>
+    );
+  }
+  
+
 
 
 
@@ -1522,7 +1702,7 @@ export default function Index({ params }: any) {
 
               {/* sending to shop address */}
 
-              {orderId && sellOrders.length > 0 && sellOrders[0].status === 'paymentConfirmed' && (
+              {orderId && sellOrders.length > 0 && sellOrders[0].status === 'paymentConfirmed' && balance > 0 && (
 
                 <div className='flex flex-row gap-2 items-center justify-center'>
                   {/* loading image */}
@@ -1535,8 +1715,17 @@ export default function Index({ params }: any) {
                   />
 
                   <div className="text-lg text-white">
-                    Sending the USDT to the shop address...
+                   Waiting for the USDT to be sent to the store address...
                   </div>
+                </div>
+
+              )}
+
+
+              {orderId && sellOrders.length > 0 && sellOrders[0].status === 'paymentConfirmed' && balance === 0 && (
+
+                <div className='flex flex-row gap-2 items-center justify-center'>
+                  Successfully sent USDT to the store address!
                 </div>
 
               )}
@@ -1576,8 +1765,9 @@ export default function Index({ params }: any) {
 
 
              {orderId === '0' && (
-                <div className='w-full flex flex-col xl:flex-row gap-2 items-center xl:items-end justify-center'>
+                <div className='hidden w-full flex-col xl:flex-row gap-2 items-center xl:items-end justify-center'>
 
+                
                     <span className="text-sm text-white">
                       {You_must_have_a_wallet_address_to_buy_USDT}
                     </span>
@@ -1590,7 +1780,13 @@ export default function Index({ params }: any) {
 
                       <input
                         type="text"
+
+                        value={nickname || ''}
+
+                        /*
                         value={inputNickname}
+
+                        
                         onChange={(e) => {
 
 
@@ -1609,6 +1805,7 @@ export default function Index({ params }: any) {
 
 
                         } }
+                          */
 
 
 
@@ -1625,7 +1822,9 @@ export default function Index({ params }: any) {
                     <button
                       ///onClick={setUserWithoutWalletAddress}
                       
-                      onClick={() => fetchWalletAddress(inputNickname)}
+                      ///onClick={() => fetchWalletAddress(inputNickname)}
+
+                      onClick={() => fetchWalletAddress(nickname || '')}
 
 
                       className="text-lg bg-green-500 text-white px-4 py-2 rounded-md"
@@ -1658,7 +1857,7 @@ export default function Index({ params }: any) {
                         </div>
                       </div>
 
-                      <div className="flex flex-row gap-2 items-center justify-center">
+                      <div className="hidden flex-row gap-2 items-center justify-center">
                         
                           <Image
                             src={user?.avatar || "/profile-default.png"}
@@ -1704,101 +1903,140 @@ export default function Index({ params }: any) {
                     {/* 10000, 20000, 30000, 40000, 50000, 100000, 200000, 300000, 400000, 500000 */}
 
                     {orderId === '0' && (
-                      <div className="grid grid-cols-2 xl:grid-cols-5 gap-4 w-full">
 
-                          <button
-                            onClick={() => setSelectedKrwAmount(10000)}
-                            className={`${
-                              selectedKrwAmount === 10000 ? 'bg-green-500' : 'bg-black'
-                            } text-lg text-white px-4 py-2 rounded-md border border-zinc-100`}
-                          >
-                            10,000 KRW
-                          </button>
+                      <div className='w-full flex flex-col gap-2 items-center justify-start'>
 
-                          <button
-                            onClick={() => setSelectedKrwAmount(20000)}
-                            className={`${
-                              selectedKrwAmount === 20000 ? 'bg-green-500' : 'bg-black'
-                            } text-lg text-white px-4 py-2 rounded-md border border-zinc-100`}
-                          >
-                            20,000 KRW
-                          </button>
+                        <div className="grid grid-cols-2 xl:grid-cols-5 gap-4 w-full">
 
-                          <button
-                            onClick={() => setSelectedKrwAmount(30000)}
-                            className={`${
-                              selectedKrwAmount === 30000 ? 'bg-green-500' : 'bg-black'
-                            } text-lg text-white px-4 py-2 rounded-md border border-zinc-100`}
-                          >
-                            30,000 KRW
-                          </button>
+                            <button
+                              onClick={() => setSelectedKrwAmount(10000)}
+                              className={`${
+                                selectedKrwAmount === 10000 ? 'bg-green-500' : 'bg-black'
+                              } text-lg text-white px-4 py-2 rounded-md border border-zinc-100`}
+                            >
+                              10,000 KRW
+                            </button>
 
-                          <button
-                            onClick={() => setSelectedKrwAmount(40000)}
-                            className={`${
-                              selectedKrwAmount === 40000 ? 'bg-green-500' : 'bg-black'
-                            } text-lg text-white px-4 py-2 rounded-md border border-zinc-100`}
-                          >
-                            40,000 KRW
-                          </button>
+                            <button
+                              onClick={() => setSelectedKrwAmount(20000)}
+                              className={`${
+                                selectedKrwAmount === 20000 ? 'bg-green-500' : 'bg-black'
+                              } text-lg text-white px-4 py-2 rounded-md border border-zinc-100`}
+                            >
+                              20,000 KRW
+                            </button>
 
-                          <button
-                            onClick={() => setSelectedKrwAmount(50000)}
-                            className={`${
-                              selectedKrwAmount === 50000 ? 'bg-green-500' : 'bg-black'
-                            } text-lg text-white px-4 py-2 rounded-md border border-zinc-100`}
-                          >
-                            50,000 KRW
-                          </button>
+                            <button
+                              onClick={() => setSelectedKrwAmount(30000)}
+                              className={`${
+                                selectedKrwAmount === 30000 ? 'bg-green-500' : 'bg-black'
+                              } text-lg text-white px-4 py-2 rounded-md border border-zinc-100`}
+                            >
+                              30,000 KRW
+                            </button>
 
-                          <button
-                            onClick={() => setSelectedKrwAmount(100000)}
-                            className={`${
-                              selectedKrwAmount === 100000 ? 'bg-green-500' : 'bg-black'
-                            } text-lg text-white px-4 py-2 rounded-md border border-zinc-100`}
-                          >
-                            100,000 KRW
-                          </button>
+                            <button
+                              onClick={() => setSelectedKrwAmount(40000)}
+                              className={`${
+                                selectedKrwAmount === 40000 ? 'bg-green-500' : 'bg-black'
+                              } text-lg text-white px-4 py-2 rounded-md border border-zinc-100`}
+                            >
+                              40,000 KRW
+                            </button>
 
-                          <button
-                            onClick={() => setSelectedKrwAmount(200000)}
-                            className={`${
-                              selectedKrwAmount === 200000 ? 'bg-green-500' : 'bg-black'
-                            } text-lg text-white px-4 py-2 rounded-md border border-zinc-100`}
-                          >
-                            200,000 KRW
-                          </button>
+                            <button
+                              onClick={() => setSelectedKrwAmount(50000)}
+                              className={`${
+                                selectedKrwAmount === 50000 ? 'bg-green-500' : 'bg-black'
+                              } text-lg text-white px-4 py-2 rounded-md border border-zinc-100`}
+                            >
+                              50,000 KRW
+                            </button>
 
-                          <button
-                            onClick={() => setSelectedKrwAmount(300000)}
-                            className={`${
-                              selectedKrwAmount === 300000 ? 'bg-green-500' : 'bg-black'
-                            } text-lg text-white px-4 py-2 rounded-md border border-zinc-100`}
-                          >
-                            300,000 KRW
-                          </button>
+                            <button
+                              onClick={() => setSelectedKrwAmount(100000)}
+                              className={`${
+                                selectedKrwAmount === 100000 ? 'bg-green-500' : 'bg-black'
+                              } text-lg text-white px-4 py-2 rounded-md border border-zinc-100`}
+                            >
+                              100,000 KRW
+                            </button>
 
-                          <button
-                            onClick={() => setSelectedKrwAmount(400000)}
-                            className={`${
-                              selectedKrwAmount === 400000 ? 'bg-green-500' : 'bg-black'
-                            } text-lg text-white px-4 py-2 rounded-md border border-zinc-100`}
-                          >
-                            400,000 KRW
-                          </button>
+                            <button
+                              onClick={() => setSelectedKrwAmount(200000)}
+                              className={`${
+                                selectedKrwAmount === 200000 ? 'bg-green-500' : 'bg-black'
+                              } text-lg text-white px-4 py-2 rounded-md border border-zinc-100`}
+                            >
+                              200,000 KRW
+                            </button>
 
-                          <button
-                            onClick={() => setSelectedKrwAmount(500000)}
-                            className={`${
-                              selectedKrwAmount === 500000 ? 'bg-green-500' : 'bg-black'
-                            } text-lg text-white px-4 py-2 rounded-md border border-zinc-100`}
-                          >
-                            500,000 KRW
-                          </button>
+                            <button
+                              onClick={() => setSelectedKrwAmount(300000)}
+                              className={`${
+                                selectedKrwAmount === 300000 ? 'bg-green-500' : 'bg-black'
+                              } text-lg text-white px-4 py-2 rounded-md border border-zinc-100`}
+                            >
+                              300,000 KRW
+                            </button>
+
+                            <button
+                              onClick={() => setSelectedKrwAmount(400000)}
+                              className={`${
+                                selectedKrwAmount === 400000 ? 'bg-green-500' : 'bg-black'
+                              } text-lg text-white px-4 py-2 rounded-md border border-zinc-100`}
+                            >
+                              400,000 KRW
+                            </button>
+
+                            <button
+                              onClick={() => setSelectedKrwAmount(500000)}
+                              className={`${
+                                selectedKrwAmount === 500000 ? 'bg-green-500' : 'bg-black'
+                              } text-lg text-white px-4 py-2 rounded-md border border-zinc-100`}
+                            >
+                              500,000 KRW
+                            </button>
+
+
+                        </div>
+
+
+
+                        <button
+                          disabled={!address || !selectedKrwAmount || acceptingSellOrderRandom}
+                          className={`mt-10 text-lg text-white px-4 py-2 rounded-md
+                          ${!user || !selectedKrwAmount || acceptingSellOrderRandom ? 'bg-zinc-800' : 'bg-green-500 hover:bg-green-600'}
+                          `}
+
+                          onClick={() => {
+
+                              ////acceoptSellOrder(index, item._id);
+
+                              acceptSellOrderRandom(selectedKrwAmount);
+                        
+
+                          }}
+                        >
+                          {/* loaaing icon */}
+                          {acceptingSellOrderRandom && (
+                            <Image
+                              src="/loading.png"
+                              alt="Loading"
+                              width={24}
+                              height={24}
+                              className='animate-spin'
+                            />
+                          )}
+                          {Buy} USDT
+                        </button>
 
 
                       </div>
                     )}
+
+
+
 
 
 
@@ -2589,8 +2827,8 @@ export default function Index({ params }: any) {
 
                                             
                                               <button
-                                              disabled={!address || !agreementForTrade[index]}
-                                              className={`text-lg text-white px-4 py-2 rounded-md
+                                                disabled={!address || !agreementForTrade[index]}
+                                                className={`text-lg text-white px-4 py-2 rounded-md
                                                 ${!user || !agreementForTrade[index] ? 'bg-zinc-800' : 'bg-green-500 hover:bg-green-600'}
                                                 `}
 
@@ -2971,13 +3209,13 @@ export default function Index({ params }: any) {
 
 
                                 {/* buyer mobile number */}
-                                {address && item.buyer?.walletAddress === address && (
+                                {/*address && item.buyer?.walletAddress === address && (
                                   <div className="mt-4 flex flex-row items-center gap-2">
                                     <div className="text-lg font-semibold text-green-500">
                                       SMS: {item.buyer?.mobile}
                                     </div>
                                   </div>
-                                )}
+                                )*/}
 
 
                             </article>
