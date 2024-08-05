@@ -1404,6 +1404,7 @@ export default function Index({ params }: any) {
     }
 
     const mobile = '010-1234-5678';
+    
 
     const response = await fetch('/api/user/setUserWithoutWalletAddress', {
       method: 'POST',
