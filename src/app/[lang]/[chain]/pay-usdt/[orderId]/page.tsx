@@ -517,6 +517,9 @@ export default function Index({ params }: any) {
 
       const fetchSellOrders = async () => {
 
+        if (orderId !== '0') {
+          return;
+        }
         
 
         if (!selectedKrwAmount) {
@@ -580,40 +583,6 @@ export default function Index({ params }: any) {
         if (!nickname) {
           return;
         }
-
-
-        /*
-        if (!orderId) {
-          return;
-        }
-
-        const responseGetOneSellOrder = await fetch('/api/order/getOneSellOrder', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-              orderId: orderId,
-          })
-        });
-
-        const dataGetOneSellOrder = await responseGetOneSellOrder.json();
-
-        //console.log('data', data);
-
-        if (!dataGetOneSellOrder.result) {
-          return;
-        }
-
-        if (dataGetOneSellOrder.result.orders.length === 0) {
-          return;
-        }
-        */
-
-
-
-   
-
 
 
         const mobile = '010-1234-5678';
@@ -1564,7 +1533,7 @@ export default function Index({ params }: any) {
 
 
 
-             {!orderId && (
+             {orderId === '0' && (
                 <>
 
               <input
@@ -1659,128 +1628,102 @@ export default function Index({ params }: any) {
 
                     {/* 10000, 20000, 30000, 40000, 50000, 100000, 200000, 300000, 400000, 500000 */}
 
-                    <div className="grid grid-cols-2 xl:grid-cols-5 gap-4 w-full">
+                    {orderId === '0' && (
+                      <div className="grid grid-cols-2 xl:grid-cols-5 gap-4 w-full">
 
-                      {/*
-                      <div className="text-lg text-white">{Price}</div>
-                      
-                      <select
-                        value={selectedKrwAmount}
-                        onChange={(e) => {
-                          setSelectedKrwAmount(Number(e.target.value));
-                        }}
-                        className="text-lg bg-black text-white px-4 py-2 rounded-md"
-                      >
-                        {krwAmounts.map((item, index) => (
-                          <option key={index} value={item}>{item} KRW</option>
-                        ))}
-                      </select>
-                      */}
+                          <button
+                            onClick={() => setSelectedKrwAmount(10000)}
+                            className={`${
+                              selectedKrwAmount === 10000 ? 'bg-green-500' : 'bg-black'
+                            } text-lg text-white px-4 py-2 rounded-md border border-zinc-100`}
+                          >
+                            10,000 KRW
+                          </button>
 
-                        <button
-                          onClick={() => setSelectedKrwAmount(10000)}
-                          className={`${
-                            selectedKrwAmount === 10000 ? 'bg-green-500' : 'bg-black'
-                          } text-lg text-white px-4 py-2 rounded-md border border-zinc-100`}
-                        >
-                          10,000 KRW
-                        </button>
+                          <button
+                            onClick={() => setSelectedKrwAmount(20000)}
+                            className={`${
+                              selectedKrwAmount === 20000 ? 'bg-green-500' : 'bg-black'
+                            } text-lg text-white px-4 py-2 rounded-md border border-zinc-100`}
+                          >
+                            20,000 KRW
+                          </button>
 
-                        <button
-                          onClick={() => setSelectedKrwAmount(20000)}
-                          className={`${
-                            selectedKrwAmount === 20000 ? 'bg-green-500' : 'bg-black'
-                          } text-lg text-white px-4 py-2 rounded-md border border-zinc-100`}
-                        >
-                          20,000 KRW
-                        </button>
+                          <button
+                            onClick={() => setSelectedKrwAmount(30000)}
+                            className={`${
+                              selectedKrwAmount === 30000 ? 'bg-green-500' : 'bg-black'
+                            } text-lg text-white px-4 py-2 rounded-md border border-zinc-100`}
+                          >
+                            30,000 KRW
+                          </button>
 
-                        <button
-                          onClick={() => setSelectedKrwAmount(30000)}
-                          className={`${
-                            selectedKrwAmount === 30000 ? 'bg-green-500' : 'bg-black'
-                          } text-lg text-white px-4 py-2 rounded-md border border-zinc-100`}
-                        >
-                          30,000 KRW
-                        </button>
+                          <button
+                            onClick={() => setSelectedKrwAmount(40000)}
+                            className={`${
+                              selectedKrwAmount === 40000 ? 'bg-green-500' : 'bg-black'
+                            } text-lg text-white px-4 py-2 rounded-md border border-zinc-100`}
+                          >
+                            40,000 KRW
+                          </button>
 
-                        <button
-                          onClick={() => setSelectedKrwAmount(40000)}
-                          className={`${
-                            selectedKrwAmount === 40000 ? 'bg-green-500' : 'bg-black'
-                          } text-lg text-white px-4 py-2 rounded-md border border-zinc-100`}
-                        >
-                          40,000 KRW
-                        </button>
+                          <button
+                            onClick={() => setSelectedKrwAmount(50000)}
+                            className={`${
+                              selectedKrwAmount === 50000 ? 'bg-green-500' : 'bg-black'
+                            } text-lg text-white px-4 py-2 rounded-md border border-zinc-100`}
+                          >
+                            50,000 KRW
+                          </button>
 
-                        <button
-                          onClick={() => setSelectedKrwAmount(50000)}
-                          className={`${
-                            selectedKrwAmount === 50000 ? 'bg-green-500' : 'bg-black'
-                          } text-lg text-white px-4 py-2 rounded-md border border-zinc-100`}
-                        >
-                          50,000 KRW
-                        </button>
+                          <button
+                            onClick={() => setSelectedKrwAmount(100000)}
+                            className={`${
+                              selectedKrwAmount === 100000 ? 'bg-green-500' : 'bg-black'
+                            } text-lg text-white px-4 py-2 rounded-md border border-zinc-100`}
+                          >
+                            100,000 KRW
+                          </button>
 
-                        <button
-                          onClick={() => setSelectedKrwAmount(100000)}
-                          className={`${
-                            selectedKrwAmount === 100000 ? 'bg-green-500' : 'bg-black'
-                          } text-lg text-white px-4 py-2 rounded-md border border-zinc-100`}
-                        >
-                          100,000 KRW
-                        </button>
+                          <button
+                            onClick={() => setSelectedKrwAmount(200000)}
+                            className={`${
+                              selectedKrwAmount === 200000 ? 'bg-green-500' : 'bg-black'
+                            } text-lg text-white px-4 py-2 rounded-md border border-zinc-100`}
+                          >
+                            200,000 KRW
+                          </button>
 
-                        <button
-                          onClick={() => setSelectedKrwAmount(200000)}
-                          className={`${
-                            selectedKrwAmount === 200000 ? 'bg-green-500' : 'bg-black'
-                          } text-lg text-white px-4 py-2 rounded-md border border-zinc-100`}
-                        >
-                          200,000 KRW
-                        </button>
+                          <button
+                            onClick={() => setSelectedKrwAmount(300000)}
+                            className={`${
+                              selectedKrwAmount === 300000 ? 'bg-green-500' : 'bg-black'
+                            } text-lg text-white px-4 py-2 rounded-md border border-zinc-100`}
+                          >
+                            300,000 KRW
+                          </button>
 
-                        <button
-                          onClick={() => setSelectedKrwAmount(300000)}
-                          className={`${
-                            selectedKrwAmount === 300000 ? 'bg-green-500' : 'bg-black'
-                          } text-lg text-white px-4 py-2 rounded-md border border-zinc-100`}
-                        >
-                          300,000 KRW
-                        </button>
+                          <button
+                            onClick={() => setSelectedKrwAmount(400000)}
+                            className={`${
+                              selectedKrwAmount === 400000 ? 'bg-green-500' : 'bg-black'
+                            } text-lg text-white px-4 py-2 rounded-md border border-zinc-100`}
+                          >
+                            400,000 KRW
+                          </button>
 
-                        <button
-                          onClick={() => setSelectedKrwAmount(400000)}
-                          className={`${
-                            selectedKrwAmount === 400000 ? 'bg-green-500' : 'bg-black'
-                          } text-lg text-white px-4 py-2 rounded-md border border-zinc-100`}
-                        >
-                          400,000 KRW
-                        </button>
-
-                        <button
-                          onClick={() => setSelectedKrwAmount(500000)}
-                          className={`${
-                            selectedKrwAmount === 500000 ? 'bg-green-500' : 'bg-black'
-                          } text-lg text-white px-4 py-2 rounded-md border border-zinc-100`}
-                        >
-                          500,000 KRW
-                        </button>
+                          <button
+                            onClick={() => setSelectedKrwAmount(500000)}
+                            className={`${
+                              selectedKrwAmount === 500000 ? 'bg-green-500' : 'bg-black'
+                            } text-lg text-white px-4 py-2 rounded-md border border-zinc-100`}
+                          >
+                            500,000 KRW
+                          </button>
 
 
-
-
- 
-                        
-
-                    </div>
-                    
-
-
-
-
-
-
+                      </div>
+                    )}
 
 
 
