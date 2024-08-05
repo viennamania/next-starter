@@ -902,7 +902,10 @@ export default function Index({ params }: any) {
                               height: '20px',
                           }}
                         />
-                        <div className="text-lg font-semibold text-white ">{user?.nickname}</div>
+                        <div className="text-lg font-semibold text-white ">
+                          {user?.nickname}
+                        </div>
+
                         {seller && (
                           <>
                             <Image
@@ -1492,6 +1495,7 @@ export default function Index({ params }: any) {
                               </td>
 
                               <td>{item.buyer && item.buyer.nickname}</td>
+
                               <td>{item.usdtAmount}</td>
                               <td>{Number(item.krwAmount).toLocaleString('ko-KR', {
                                 style: 'currency',
@@ -1915,9 +1919,9 @@ export default function Index({ params }: any) {
 
                             {(item.status === 'accepted' || item.status === 'paymentRequested' || item.status === 'paymentConfirmed' || item.status === 'cancelled') 
                               && (
-                                <div className="w-full mt-4 mb-2 flex flex-row gap-2 items-start ">
+                                <div className="w-full mt-4 mb-2 flex flex-col gap-2 items-start ">
 
-                                  <p className="text-xl text-green-500 font-semibold">
+                                  <p className="text-sm text-green-500 font-semibold">
                                     {Buyer}: {
                                       item.buyer.walletAddress === address ? item.buyer.nickname + ' :' + Me :
                                     

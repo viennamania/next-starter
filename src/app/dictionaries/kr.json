@@ -238,7 +238,26 @@
     "You_must_have_a_wallet_address_to_buy_USDT": "USDT를 구매하려면 지갑주소가 필요합니다.",
 
 
-    "Make_Wallet_Address": "지갑주소 만들기"
+    "Make_Wallet_Address": "지갑주소 만들기",
+
+    
+
+    "PRICE_10000_KRW": "1만원",
+    "PRICE_50000_KRW": "5만원",
+    "PRICE_100000_KRW": "10만원",
+    "PRICE_300000_KRW": "30만원",
+    "PRICE_500000_KRW": "50만원",
+    "PRICE_1000000_KRW": "100만원",
+    "PRICE_5000000_KRW": "500만원",
+    "PRICE_10000000_KRW": "1,000만원",
+
+    "Please_keep_Your_Wallet_address_safe": "판매자와 분쟁 시 본인 지갑 주소가 꼭 필요하므로 본인 지갑 주소를 잘 저장해놓으시기 바랍니다.",
+
+    "Waiting_for_the_USDT_to_be_sent_to_the_store_address": "USDT가 상점 주소로 전송되기를 기다리는 중입니다",
+
+    "Successfully_sent_USDT_to_the_store_address": "USDT가 상점 주소로 성공적으로 전송되었습니다! 1-5분 후에 상점 입금 상태를 확인할 수 있습니다."
+
+
 
 
 

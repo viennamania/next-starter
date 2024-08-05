@@ -305,6 +305,21 @@ export default function Index({ params }: any) {
 
       My_Wallet_Address: "",
 
+      PRICE_10000_KRW: "",
+      PRICE_50000_KRW: "",
+      PRICE_100000_KRW: "",
+      PRICE_300000_KRW: "",
+      PRICE_500000_KRW: "",
+      PRICE_1000000_KRW: "",
+      PRICE_5000000_KRW: "",
+      PRICE_10000000_KRW: "",
+
+      Please_keep_Your_Wallet_address_safe: "",
+
+      Waiting_for_the_USDT_to_be_sent_to_the_store_address: "",
+      Successfully_sent_USDT_to_the_store_address: "",
+
+
     } );
   
     useEffect(() => {
@@ -404,6 +419,21 @@ export default function Index({ params }: any) {
       Make_Wallet_Address,
 
       My_Wallet_Address,
+
+      PRICE_10000_KRW,
+      PRICE_50000_KRW,
+      PRICE_100000_KRW,
+      PRICE_300000_KRW,
+      PRICE_500000_KRW,
+      PRICE_1000000_KRW,
+      PRICE_5000000_KRW,
+      PRICE_10000000_KRW,
+
+      Please_keep_Your_Wallet_address_safe,
+
+      Waiting_for_the_USDT_to_be_sent_to_the_store_address,
+      Successfully_sent_USDT_to_the_store_address,
+
 
     } = data;
    
@@ -628,9 +658,9 @@ export default function Index({ params }: any) {
 
 
 
-    // select krw amount (10000, 20000, 30000, 40000, 50000, 100000, 200000, 300000, 400000, 500000)
+    // select krw amount (10000, 50000, 100000, 300000, 500000, 1000000, 5000000, 10000000)
 
-    const [krwAmounts, setKrwAmounts] = useState([10000, 20000, 30000, 40000, 50000, 100000, 200000, 300000, 400000, 500000]);
+    const [krwAmounts, setKrwAmounts] = useState([10000, 50000, 100000, 300000, 500000, 1000000, 5000000, 10000000]);
     // select one of krw amount
 
     const [selectedKrwAmount, setSelectedKrwAmount] = useState(10000);
@@ -1699,6 +1729,13 @@ export default function Index({ params }: any) {
               <div className="text-sm xl:text-lg text-white">
                 {address}
               </div>
+              <div className=" flex flex-row items-center justify-center gap-2">
+                {/* dot */}
+                <div className="w-1 h-1 bg-zinc-100 rounded-full"></div>
+                <span className="text-sm text-white">
+                  {Please_keep_Your_Wallet_address_safe}
+                </span>
+              </div>
 
               {/* sending to shop address */}
 
@@ -1715,7 +1752,7 @@ export default function Index({ params }: any) {
                   />
 
                   <div className="text-lg text-white">
-                   Waiting for the USDT to be sent to the store address...
+                   {Waiting_for_the_USDT_to_be_sent_to_the_store_address}
                   </div>
                 </div>
 
@@ -1725,7 +1762,7 @@ export default function Index({ params }: any) {
               {orderId && sellOrders.length > 0 && sellOrders[0].status === 'paymentConfirmed' && balance === 0 && (
 
                 <div className='flex flex-row gap-2 items-center justify-center'>
-                  Successfully sent USDT to the store address!
+                  {Successfully_sent_USDT_to_the_store_address}
                 </div>
 
               )}
@@ -1900,13 +1937,13 @@ export default function Index({ params }: any) {
                     {/* select one of krw amounts combo box */}
                     {/* combo box */}
 
-                    {/* 10000, 20000, 30000, 40000, 50000, 100000, 200000, 300000, 400000, 500000 */}
+                    {/* 10000, 50000, 100000, 300000, 500000, 1000000, 5000000, 10000000 */}
 
                     {orderId === '0' && (
 
                       <div className='w-full flex flex-col gap-2 items-center justify-start'>
 
-                        <div className="grid grid-cols-2 xl:grid-cols-5 gap-4 w-full">
+                        <div className="grid grid-cols-2 xl:grid-cols-4 gap-4 w-full">
 
                             <button
                               onClick={() => setSelectedKrwAmount(10000)}
@@ -1914,34 +1951,7 @@ export default function Index({ params }: any) {
                                 selectedKrwAmount === 10000 ? 'bg-green-500' : 'bg-black'
                               } text-lg text-white px-4 py-2 rounded-md border border-zinc-100`}
                             >
-                              10,000 KRW
-                            </button>
-
-                            <button
-                              onClick={() => setSelectedKrwAmount(20000)}
-                              className={`${
-                                selectedKrwAmount === 20000 ? 'bg-green-500' : 'bg-black'
-                              } text-lg text-white px-4 py-2 rounded-md border border-zinc-100`}
-                            >
-                              20,000 KRW
-                            </button>
-
-                            <button
-                              onClick={() => setSelectedKrwAmount(30000)}
-                              className={`${
-                                selectedKrwAmount === 30000 ? 'bg-green-500' : 'bg-black'
-                              } text-lg text-white px-4 py-2 rounded-md border border-zinc-100`}
-                            >
-                              30,000 KRW
-                            </button>
-
-                            <button
-                              onClick={() => setSelectedKrwAmount(40000)}
-                              className={`${
-                                selectedKrwAmount === 40000 ? 'bg-green-500' : 'bg-black'
-                              } text-lg text-white px-4 py-2 rounded-md border border-zinc-100`}
-                            >
-                              40,000 KRW
+                              {PRICE_10000_KRW}
                             </button>
 
                             <button
@@ -1950,7 +1960,7 @@ export default function Index({ params }: any) {
                                 selectedKrwAmount === 50000 ? 'bg-green-500' : 'bg-black'
                               } text-lg text-white px-4 py-2 rounded-md border border-zinc-100`}
                             >
-                              50,000 KRW
+                              {PRICE_50000_KRW}
                             </button>
 
                             <button
@@ -1959,34 +1969,7 @@ export default function Index({ params }: any) {
                                 selectedKrwAmount === 100000 ? 'bg-green-500' : 'bg-black'
                               } text-lg text-white px-4 py-2 rounded-md border border-zinc-100`}
                             >
-                              100,000 KRW
-                            </button>
-
-                            <button
-                              onClick={() => setSelectedKrwAmount(200000)}
-                              className={`${
-                                selectedKrwAmount === 200000 ? 'bg-green-500' : 'bg-black'
-                              } text-lg text-white px-4 py-2 rounded-md border border-zinc-100`}
-                            >
-                              200,000 KRW
-                            </button>
-
-                            <button
-                              onClick={() => setSelectedKrwAmount(300000)}
-                              className={`${
-                                selectedKrwAmount === 300000 ? 'bg-green-500' : 'bg-black'
-                              } text-lg text-white px-4 py-2 rounded-md border border-zinc-100`}
-                            >
-                              300,000 KRW
-                            </button>
-
-                            <button
-                              onClick={() => setSelectedKrwAmount(400000)}
-                              className={`${
-                                selectedKrwAmount === 400000 ? 'bg-green-500' : 'bg-black'
-                              } text-lg text-white px-4 py-2 rounded-md border border-zinc-100`}
-                            >
-                              400,000 KRW
+                              {PRICE_100000_KRW}
                             </button>
 
                             <button
@@ -1995,8 +1978,36 @@ export default function Index({ params }: any) {
                                 selectedKrwAmount === 500000 ? 'bg-green-500' : 'bg-black'
                               } text-lg text-white px-4 py-2 rounded-md border border-zinc-100`}
                             >
-                              500,000 KRW
+                              {PRICE_500000_KRW}
                             </button>
+
+                            <button
+                              onClick={() => setSelectedKrwAmount(1000000)}
+                              className={`${
+                                selectedKrwAmount === 1000000 ? 'bg-green-500' : 'bg-black'
+                              } text-lg text-white px-4 py-2 rounded-md border border-zinc-100`}
+                            >
+                              {PRICE_1000000_KRW}
+                            </button>
+
+                            <button
+                              onClick={() => setSelectedKrwAmount(5000000)}
+                              className={`${
+                                selectedKrwAmount === 5000000 ? 'bg-green-500' : 'bg-black'
+                              } text-lg text-white px-4 py-2 rounded-md border border-zinc-100`}
+                            >
+                              {PRICE_5000000_KRW}
+                            </button>
+
+                            <button
+                              onClick={() => setSelectedKrwAmount(10000000)}
+                              className={`${
+                                selectedKrwAmount === 10000000 ? 'bg-green-500' : 'bg-black'
+                              } text-lg text-white px-4 py-2 rounded-md border border-zinc-100`}
+                            >
+                              {PRICE_10000000_KRW}
+                            </button>
+
 
 
                         </div>
@@ -2005,7 +2016,7 @@ export default function Index({ params }: any) {
 
                         <button
                           disabled={!address || !selectedKrwAmount || acceptingSellOrderRandom}
-                          className={`mt-10 text-lg text-white px-4 py-2 rounded-md
+                          className={`mt-10 flex flex-row text-lg text-white px-4 py-2 rounded-md
                           ${!user || !selectedKrwAmount || acceptingSellOrderRandom ? 'bg-zinc-800' : 'bg-green-500 hover:bg-green-600'}
                           `}
 
@@ -2028,7 +2039,9 @@ export default function Index({ params }: any) {
                               className='animate-spin'
                             />
                           )}
-                          {Buy} USDT
+                          <span  className="ml-2">
+                            USDT {Buy}
+                          </span>
                         </button>
 
 
@@ -3238,7 +3251,7 @@ export default function Index({ params }: any) {
                   </div>
 
                   {orderId && address && user && user.nickname && sellOrders.length > 0 && sellOrders[0].status !== 'paymentConfirmed' && sellOrders[0].status !== 'ordered' && (
-                    <div className=' w-full '>
+                    <div className=' w-full hidden'>
                       <Chat
 
                         channel={orderId}
