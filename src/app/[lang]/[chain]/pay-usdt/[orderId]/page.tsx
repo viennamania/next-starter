@@ -2997,7 +2997,7 @@ export default function Index({ params }: any) {
 
                   </div>
 
-                  {orderId && address && user && user.nickname && sellOrders.length > 0 && sellOrders[0].status !== 'paymentConfirmed' && (
+                  {orderId && address && user && user.nickname && sellOrders.length > 0 && sellOrders[0].status !== 'paymentConfirmed' && sellOrders[0].status !== 'ordered' && (
                     <div className=' w-full '>
                       <Chat
 
