@@ -319,6 +319,15 @@ export default function Index({ params }: any) {
       Waiting_for_the_USDT_to_be_sent_to_the_store_address: "",
       Successfully_sent_USDT_to_the_store_address: "",
 
+      Order_accepted_successfully: "",
+
+      Order_Opened: "",
+      Trade_Started: "",
+
+      When_the_deposit_is_completed: "",
+
+      Completed_at: "",
+
 
     } );
   
@@ -434,6 +443,14 @@ export default function Index({ params }: any) {
       Waiting_for_the_USDT_to_be_sent_to_the_store_address,
       Successfully_sent_USDT_to_the_store_address,
 
+      Order_accepted_successfully,
+
+      Order_Opened,
+      Trade_Started,
+
+      When_the_deposit_is_completed,
+
+      Completed_at,
 
     } = data;
    
@@ -1067,7 +1084,7 @@ export default function Index({ params }: any) {
             //setSellOrders(data.result.orders);
             //openModal();
 
-            toast.success('Order accepted successfully');
+            toast.success(Order_accepted_successfully);
 
 
             /*
@@ -1625,7 +1642,7 @@ export default function Index({ params }: any) {
         const data = await response?.json();
 
         if (data.result) {
-          toast.success('Order accepted successfully');
+          toast.success(Order_accepted_successfully);
 
           router.push('/' + params.lang + '/' + params.chain + '/pay-usdt/' + order._id);
 
@@ -1763,9 +1780,9 @@ export default function Index({ params }: any) {
 
               {orderId && sellOrders.length > 0 && sellOrders[0].status === 'paymentConfirmed' && balance === 0 && (
 
-                <div className='flex flex-row gap-2 items-center justify-center'>
+                <span className='text-lg text-yellow-500'>
                   {Successfully_sent_USDT_to_the_store_address}
-                </div>
+                </span>
 
               )}
 
@@ -2340,8 +2357,55 @@ export default function Index({ params }: any) {
                                         /> 
                                       )}
                                       <p className="text-sm text-zinc-400">
-                                        Order opened at {new Date(item.createdAt).toLocaleString()}
+                                        
+
+                                        {params.lang === 'kr' ? (
+
+                                          <p className="text-sm text-zinc-400">
+
+
+                                            {
+
+                                              new Date().getTime() - new Date(item.createdAt).getTime() < 1000 * 60 ? (
+                                                ' ' + Math.floor((new Date().getTime() - new Date(item.createdAt).getTime()) / 1000) + ' ' + seconds_ago
+                                              ) :
+                                              new Date().getTime() - new Date(item.createdAt).getTime() < 1000 * 60 * 60 ? (
+                                              ' ' + Math.floor((new Date().getTime() - new Date(item.createdAt).getTime()) / 1000 / 60) + ' ' + minutes_ago
+                                              ) : (
+                                                ' ' + Math.floor((new Date().getTime() - new Date(item.createdAt).getTime()) / 1000 / 60 / 60) + ' ' + hours_ago
+                                              )
+                                            }{' '}{Order_Opened} 
+
+                                          </p>
+
+                                          ) : (
+
+                                            <p className="text-sm text-zinc-400">
+
+
+
+                                            {Order_Opened}{' '}{
+
+                                              new Date().getTime() - new Date(item.createdAt).getTime() < 1000 * 60 ? (
+                                                ' ' + Math.floor((new Date().getTime() - new Date(item.createdAt).getTime()) / 1000) + ' ' + seconds_ago
+                                              ) :
+                                              new Date().getTime() - new Date(item.createdAt).getTime() < 1000 * 60 * 60 ? (
+                                              ' ' + Math.floor((new Date().getTime() - new Date(item.createdAt).getTime()) / 1000 / 60) + ' ' + minutes_ago
+                                              ) : (
+                                                ' ' + Math.floor((new Date().getTime() - new Date(item.createdAt).getTime()) / 1000 / 60 / 60) + ' ' + hours_ago
+                                              )
+                                            }
+
+
+
+                                          </p>
+
+
+                                        )}
+
+
                                       </p>
+
                                     </div>
 
 
@@ -2383,7 +2447,47 @@ export default function Index({ params }: any) {
                                       />
 
                                       <p className="text-sm text-zinc-400">
-                                        Trade started at {new Date(item.acceptedAt).toLocaleDateString() + ' ' + new Date(item.acceptedAt).toLocaleTimeString()}
+
+
+                                      {params.lang === 'kr' ? (
+
+                                        <p className="ml-2 text-sm text-zinc-400">
+
+
+                                          {new Date().getTime() - new Date(item.acceptedAt).getTime() < 1000 * 60 ? (
+                                            ' ' + Math.floor((new Date().getTime() - new Date(item.acceptedAt).getTime()) / 1000) + ' ' + seconds_ago
+                                          ) :
+                                          new Date().getTime() - new Date(item.acceptedAt).getTime() < 1000 * 60 * 60 ? (
+                                          ' ' + Math.floor((new Date().getTime() - new Date(item.acceptedAt).getTime()) / 1000 / 60) + ' ' + minutes_ago
+                                          ) : (
+                                            ' ' + Math.floor((new Date().getTime() - new Date(item.acceptedAt).getTime()) / 1000 / 60 / 60) + ' ' + hours_ago
+                                          )
+                                          }{' '}{Trade_Started}
+
+                                        </p>
+
+
+
+                                      ) : (
+
+                                        <p className="ml-2 text-sm text-zinc-400">
+
+                                          {Trade_Started} {
+                                            new Date().getTime() - new Date(item.acceptedAt).getTime() < 1000 * 60 ? (
+                                              ' ' + Math.floor((new Date().getTime() - new Date(item.acceptedAt).getTime()) / 1000) + ' ' + seconds_ago
+                                            ) :
+                                            new Date().getTime() - new Date(item.acceptedAt).getTime() < 1000 * 60 * 60 ? (
+                                            ' ' + Math.floor((new Date().getTime() - new Date(item.acceptedAt).getTime()) / 1000 / 60) + ' ' + minutes_ago
+                                            ) : (
+                                              ' ' + Math.floor((new Date().getTime() - new Date(item.acceptedAt).getTime()) / 1000 / 60 / 60) + ' ' + hours_ago
+                                            )
+                                          }
+
+                                        </p>
+
+                                      )}
+                                      
+                                      
                                       </p>
                                     </div>
 
@@ -2428,8 +2532,8 @@ export default function Index({ params }: any) {
                                         width={32}
                                         height={32}
                                       />
-                                      <p className="text-sm text-zinc-400">
-                                        Completed at {new Date(item.paymentConfirmedAt).toLocaleDateString() + ' ' + new Date(item.paymentConfirmedAt).toLocaleTimeString()}
+                                      <p className="text-sm text-green-500">
+                                        {Completed_at} {new Date(item.paymentConfirmedAt).toLocaleDateString() + ' ' + new Date(item.paymentConfirmedAt).toLocaleTimeString()}
                                       </p>
                                     </div>
 
@@ -2937,16 +3041,12 @@ export default function Index({ params }: any) {
                                       <div className="text-lg font-semibold text-green-500">
                                         {Bank_Transfer}
                                       </div>
+                                      <span className="text-sm text-green-500">
+                                        {When_the_deposit_is_completed}
+                                      </span>
                                     </div>
 
-                                    {/* dot */}
-                                    <div className='flex flex-row items-center gap-2'>
-                                      <div className="w-2 h-2 rounded-full bg-green-500"></div>
-                                      <div className="text-sm">
-                                        {Bank_Name}: {item.seller?.bankInfo.bankName}
-                                      </div>
-                                    </div>
-
+ 
 
 
                                     {address && (item.walletAddress === address || item.buyer?.walletAddress === address ) && (
@@ -2954,16 +3054,10 @@ export default function Index({ params }: any) {
                                         <div className='flex flex-row items-center gap-2'>
                                           <div className="w-2 h-2 rounded-full bg-green-500"></div>
                                           <div className="text-sm ">
-                                            {Account_Number}: {item.seller?.bankInfo.accountNumber}
+                                          {item.seller?.bankInfo.bankName}{' '}{item.seller?.bankInfo.accountNumber}{' '}{item.seller?.bankInfo.accountHolder}
                                           </div>
                                         </div>
 
-                                        <div className='flex flex-row items-center gap-2'>
-                                          <div className="w-2 h-2 rounded-full bg-green-500"></div>
-                                          <div className="text-sm">
-                                            {Account_Holder}: {item.seller?.bankInfo.accountHolder}
-                                          </div>
-                                        </div>
 
                                         <div className='flex flex-row items-center gap-2'>
                                           <div className="w-2 h-2 rounded-full bg-green-500"></div>

@@ -255,7 +255,12 @@
 
     "Waiting_for_the_USDT_to_be_sent_to_the_store_address": "USDT가 상점 주소로 전송되기를 기다리는 중입니다",
 
-    "Successfully_sent_USDT_to_the_store_address": "USDT가 상점 주소로 성공적으로 전송되었습니다! 1-5분 후에 상점 입금 상태를 확인할 수 있습니다."
+    "Successfully_sent_USDT_to_the_store_address": "USDT가 상점 주소로 성공적으로 전송되었습니다! 1 - 5분 후에 상점 입금 상태를 확인할 수 있습니다.",
+
+
+
+    "When_the_deposit_is_completed": "입금이 완료되면 에스크로한 USDT가 구매자 지갑으로 이체됩니다."
+
 
 
 
