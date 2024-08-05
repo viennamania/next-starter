@@ -326,7 +326,7 @@ export default function SendUsdt({ params }: any) {
 
       const data = await response.json();
 
-      ///console.log("getUsers", data);
+      console.log("getUsers", data);
 
 
       ///setUsers(data.result.users);
