@@ -798,6 +798,7 @@ export default function Index({ params }: any) {
                     {Send_USDT}
                   </button>
 
+                    {/*
                   <button
                     
                     //disabled={!address}
@@ -827,9 +828,11 @@ export default function Index({ params }: any) {
                   >
                     {Pay_USDT}
                   </button>
+                  */}
                 </div>
 
                 {/* Go Buy USDT */}
+                {/*
                 <div className="flex flex-row justify-center items-center mt-4">
                   <button
                     onClick={() => {
@@ -846,6 +849,7 @@ export default function Index({ params }: any) {
                     {Buy_USDT}
                   </button>
                 </div>
+                */}
 
 
 
@@ -946,6 +950,27 @@ export default function Index({ params }: any) {
 
               
                 <div className="flex flex-row gap-2 justify-center items-center mt-10">
+
+
+                  {/* Go Buy USDT */}
+
+                  <button
+                    onClick={() => {
+  
+
+                      // redirect to buy USDT page
+                      router.push(
+                        "/" + params.lang + "/" + params.chain + "/buy-usdt"
+                      );
+
+                    }}
+                    className=" w-40 bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
+                  >
+                    {Buy_USDT}
+                  </button>
+             
+
+
  
                   <button
                     disabled={!address}
