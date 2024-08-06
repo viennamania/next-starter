@@ -328,6 +328,8 @@ export default function Index({ params }: any) {
 
       Completed_at: "",
 
+      Please_enter_deposit_name: "",
+
 
     } );
   
@@ -451,6 +453,8 @@ export default function Index({ params }: any) {
       When_the_deposit_is_completed,
 
       Completed_at,
+
+      Please_enter_deposit_name,
 
     } = data;
    
@@ -1585,8 +1589,12 @@ export default function Index({ params }: any) {
   const [acceptingSellOrderRandom, setAcceptingSellOrderRandom] = useState(false);
 
   const acceptSellOrderRandom = async (
-    krwAmount: number
+    krwAmount: number,
+    depositName: string,
   ) => {
+
+    
+    console.log('acceptSellOrderRandom depositName', depositName);
 
     if (acceptingSellOrderRandom) {
       return;
@@ -1637,6 +1645,7 @@ export default function Index({ params }: any) {
             buyerNickname: nickname,
             buyerAvatar: '',
             buyerMobile: '010-1234-5678',
+            depositName: depositName,
           }),
         });
 
@@ -2058,9 +2067,13 @@ export default function Index({ params }: any) {
 
                             onClick={() => {
 
-                                ////acceoptSellOrder(index, item._id);
+                                // check deposit name is empty
+                                if (!depositName) {
+                                  toast.error(Please_enter_deposit_name);
+                                  return;
+                                }
 
-                                acceptSellOrderRandom(selectedKrwAmount);
+                                acceptSellOrderRandom(selectedKrwAmount, depositName);
                           
 
                             }}
@@ -2779,7 +2792,9 @@ export default function Index({ params }: any) {
                                         {item.seller?.bankInfo.bankName} {item.seller?.bankInfo.accountNumber} {item.seller?.bankInfo.accountHolder}
                                       </li>
                                       <li>{Deposit_Amount} : {item.krwAmount} KRW</li>
-                                      <li>{Deposit_Name} : {item.tradeId}</li>
+                                      <li>{Deposit_Name} : {
+                                        item.buyer?.depositName ? item.buyer?.depositName : item.tradeId
+                                      }</li>
                                     </ul>
                                   </div>
 
@@ -3083,7 +3098,9 @@ export default function Index({ params }: any) {
                                         <div className='flex flex-row items-center gap-2'>
                                           <div className="w-2 h-2 rounded-full bg-green-500"></div>
                                           <div className="text-sm">
-                                            {Deposit_Name}: {item.tradeId}
+                                            {Deposit_Name}: {
+                                              item.buyer?.depositName ? item.buyer?.depositName : item.tradeId
+                                            }
                                           </div>
                                         </div>
 

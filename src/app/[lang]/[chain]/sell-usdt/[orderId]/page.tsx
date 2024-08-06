@@ -2047,7 +2047,11 @@ export default function Index({ params }: any) {
                                       {item.seller?.bankInfo.bankName} {item.seller?.bankInfo.accountNumber} {item.seller?.bankInfo.accountHolder}
                                     </li>
                                     <li>{Deposit_Amount} : {item.krwAmount} KRW</li>
-                                    <li>{Deposit_Name} : {item.tradeId}</li>
+                                    <li>{Deposit_Name} : {
+
+                                      item.buyer?.depositName ? item.buyer?.depositName : item.tradeId
+                                    
+                                    }</li>
                                   </ul>
                                 </div>
 
@@ -2332,14 +2336,7 @@ export default function Index({ params }: any) {
                                     </div>
                                   </div>
 
-                                  {/* dot */}
-                                  <div className='flex flex-row items-center gap-2'>
-                                    <div className="w-2 h-2 rounded-full bg-green-500"></div>
-                                    <div className="text-sm">
-                                      {Bank_Name}: {item.seller?.bankInfo.bankName}
-                                    </div>
-                                  </div>
-
+                                
 
 
                                   {address && (item.walletAddress === address || item.buyer?.walletAddress === address ) && (
@@ -2347,21 +2344,17 @@ export default function Index({ params }: any) {
                                       <div className='flex flex-row items-center gap-2'>
                                         <div className="w-2 h-2 rounded-full bg-green-500"></div>
                                         <div className="text-sm ">
-                                          {Account_Number}: {item.seller?.bankInfo.accountNumber}
+                                        {item.seller?.bankInfo.bankName}{' '}{item.seller?.bankInfo.accountNumber}{' '}{item.seller?.bankInfo.accountHolder}
                                         </div>
                                       </div>
+
 
                                       <div className='flex flex-row items-center gap-2'>
                                         <div className="w-2 h-2 rounded-full bg-green-500"></div>
                                         <div className="text-sm">
-                                          {Account_Holder}: {item.seller?.bankInfo.accountHolder}
-                                        </div>
-                                      </div>
-
-                                      <div className='flex flex-row items-center gap-2'>
-                                        <div className="w-2 h-2 rounded-full bg-green-500"></div>
-                                        <div className="text-sm">
-                                          {Deposit_Name}: {item.tradeId}
+                                          {Deposit_Name}: {
+                                            item.buyer?.depositName ? item.buyer?.depositName : item.tradeId
+                                          }
                                         </div>
                                       </div>
 

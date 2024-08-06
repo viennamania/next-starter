@@ -579,6 +579,15 @@ export async function acceptSellOrder(data: any) {
 
   const buyerMemo = data.buyerMemo || '';
 
+
+  const depositName = data.depositName || '';
+
+  console.log('acceptSellOrder depositName: ' + depositName);
+
+  
+
+
+
   const client = await clientPromise;
   const collection = client.db('vienna').collection('orders');
 
@@ -618,6 +627,7 @@ export async function acceptSellOrder(data: any) {
         avatar: data.buyerAvatar,
         mobile: data.buyerMobile,
         memo: buyerMemo,
+        depositName: depositName,
       },
     } }
   );

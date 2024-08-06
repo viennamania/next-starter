@@ -301,6 +301,9 @@
     "Successfully_sent_USDT_to_the_store_address": "Successfully sent USDT to the store address! You can check the store deposit status after 1 - 5 minutes.",
 
 
-    "When_the_deposit_is_completed": "When the deposit is completed, the escrowed USDT will be transferred to the buyer's wallet."
+    "When_the_deposit_is_completed": "When the deposit is completed, the escrowed USDT will be transferred to the buyer's wallet.",
+
+
+    "Please_enter_deposit_name": "Please enter deposit name"
 
 }
