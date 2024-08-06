@@ -15,7 +15,7 @@ export async function POST(request: NextRequest) {
 
 
   const result = await getSellOrders({
-    limit: 100,
+    limit: 300,
     page: 1,
     walletAddress,
     searchMyOrders,

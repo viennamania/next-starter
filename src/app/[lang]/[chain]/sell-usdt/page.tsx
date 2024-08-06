@@ -728,8 +728,32 @@ export default function Index({ params }: any) {
 
 
 
+    // get sum of escrow balance of my wallet
+    // get from sell orders
+    const [escrowBalance, setEscrowBalance] = useState(0);
+    useEffect(() => {
+
+      if (sellOrders.length === 0) {
+        setEscrowBalance(0);
+        return;
+      }
+      
+      const escrowBalance = sellOrders
+        .filter((item) => item.status === 'paymentRequested')
+        .reduce((acc, item) => acc + item.usdtAmount, 0);
+      setEscrowBalance(escrowBalance);
+
+    } , [sellOrders, address]);
+
+    console.log('escrowBalance', escrowBalance);
+
+
+
+
     // check table view or card view
     const [tableView, setTableView] = useState(false);
+
+
 
 
     
@@ -1426,6 +1450,14 @@ export default function Index({ params }: any) {
                 </div>
 
 
+                {/* escrow balance */}
+                <div className="mt-4 flex flex-row items-center gap-2">
+                  <div className="text-sm text-zinc-400">
+                    {Escrow}: {escrowBalance} USDT
+                  </div>
+                </div>
+
+
                 {tableView ? (
 
                   <table className="w-full">
@@ -1930,7 +1962,8 @@ export default function Index({ params }: any) {
                                   </p>
 
 
-                                  {address && item.walletAddress === address && (
+                                  {item.status !== 'paymentConfirmed' && item.status !== 'cancelled'
+                                  && address && item.walletAddress === address && (
                                     <>
                                     {/* chat with buyer */}
 
