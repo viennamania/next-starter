@@ -13,19 +13,22 @@ export async function POST(request: NextRequest) {
 
   const body = await request.json();
 
-  const { walletAddress, amount, toWalletAddress } = body;
+  const { lang, chain, walletAddress, amount, toWalletAddress } = body;
 
+  console.log("lang", lang);
+  console.log("chain", chain);
   console.log("walletAddress", walletAddress);
   console.log("amount", amount);
   console.log("toWalletAddress", toWalletAddress);
 
   const result = await insertOne({
+    chain: chain,
     walletAddress: walletAddress,
     amount: amount,
     toWalletAddress: toWalletAddress,
   });
 
-  console.log("result", result);
+  //console.log("result", result);
 
 
   
@@ -51,7 +54,14 @@ export async function POST(request: NextRequest) {
 
 
       try {
-        const body = `[UNOVE] You have received ${amount} USDT from ${fromUserNickname}!`;
+
+        let body = '';
+
+        if (lang === 'en') {
+          body = `[UNOVE] You have received ${amount} USDT from ${fromUserNickname}!`;
+        } else if (lang === 'kr') {
+          body = `[UNOVE] ${fromUserNickname}님으로부터 ${amount} USDT를 받았습니다!`;
+        }
 
         message = await client.messages.create({
           ///body: "This is the ship that made the Kessel Run in fourteen parsecs?",

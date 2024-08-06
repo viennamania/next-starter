@@ -223,30 +223,10 @@ export default function SendUsdt({ params }: any) {
   const smartAccount = useActiveAccount();
 
 
-
-  console.log("smartAccount", smartAccount);
-
-  
-
-
-
-  // get the active wallet
-  //const activeWallet = useActiveWallet();
-
-
-  //console.log("activeWallet", activeWallet);
-
-  //console.log("activeWallet", activeWallet);
-
-
-  // get wallet address
-
-  //const address = activeWallet?.getAccount()?.address || "";
-  
   const address = smartAccount?.address || "";
 
 
-  console.log('address', address);
+  //console.log('address', address);
 
 
 
@@ -296,6 +276,46 @@ export default function SendUsdt({ params }: any) {
 
 
 
+  const [user, setUser] = useState(
+    {
+      _id: '',
+      id: 0,
+      email: '',
+      nickname: '',
+      mobile: '',
+      walletAddress: '',
+      createdAt: '',
+      settlementAmountOfFee: '',
+    }
+  );
+
+  useEffect(() => {
+
+    if (!address) return;
+
+    const getUser = async () => {
+
+      const response = await fetch('/api/user/getUserByWalletAddress', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          walletAddress: address,
+        }),
+      });
+
+      const data = await response.json();
+
+
+      setUser(data.result);
+
+    };
+
+    getUser();
+
+  }, [address]);
+
 
 
   // get list of user wallets from api
@@ -304,6 +324,7 @@ export default function SendUsdt({ params }: any) {
       _id: '',
       id: 0,
       email: '',
+      avatar: '',
       nickname: '',
       mobile: '',
       walletAddress: '',
@@ -315,6 +336,8 @@ export default function SendUsdt({ params }: any) {
   const [totalCountOfUsers, setTotalCountOfUsers] = useState(0);
 
   useEffect(() => {
+
+    if (!address) return;
 
     const getUsers = async () => {
 
@@ -328,7 +351,7 @@ export default function SendUsdt({ params }: any) {
 
       const data = await response.json();
 
-      console.log("getUsers", data);
+      //console.log("getUsers", data);
 
 
       ///setUsers(data.result.users);
@@ -344,35 +367,10 @@ export default function SendUsdt({ params }: any) {
 
     getUsers();
 
-    /*
-    [
-        {
-            "_id": "669b7701f33f6e09a44eb105",
-            "id": 311778,
-            "email": null,
-            "nickname": "eva1647",
-            "mobile": null,
-            "walletAddress": "",
-            "createdAt": "2024-07-20T08:36:17.552Z",
-            "settlementAmountOfFee": "0"
-        },
-        {
-            "_id": "669b76a0f33f6e09a44eb104",
-            "id": 678776,
-            "email": null,
-            "nickname": "genie",
-            "mobile": null,
-            "walletAddress": "0xaeACC0a48DBDedD982fdfa21Da7175610CAE0f51",
-            "createdAt": "2024-07-20T08:34:40.151Z",
-            "settlementAmountOfFee": "0"
-        }
-    ]
-    */
 
   }, [address]);
 
 
-  console.log("users", users);
 
 
 
@@ -391,7 +389,7 @@ export default function SendUsdt({ params }: any) {
 
 
 
-  console.log("recipient", recipient);
+  ///console.log("recipient", recipient);
 
   //console.log("recipient.walletAddress", recipient.walletAddress);
   //console.log("amount", amount);
@@ -416,7 +414,7 @@ export default function SendUsdt({ params }: any) {
       return;
     }
 
-    console.log('amount', amount, "balance", balance);
+    //console.log('amount', amount, "balance", balance);
 
     if (Number(amount) > balance) {
       toast.error('Insufficient balance');
@@ -447,7 +445,14 @@ export default function SendUsdt({ params }: any) {
             account: smartAccount as any,
         });
 
-        console.log(transactionResult);
+        console.log("transactionResult", transactionResult);
+        
+        if (transactionResult.status !== "success") {
+          toast.error(Failed_to_send_USDT);
+          return;
+        }
+
+        
 
         await fetch('/api/transaction/setTransfer', {
           method: 'POST',
@@ -455,6 +460,8 @@ export default function SendUsdt({ params }: any) {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
+            lang: params.lang,
+            chain: params.chain,
             walletAddress: address,
             amount: amount,
             toWalletAddress: recipient.walletAddress,
@@ -476,7 +483,7 @@ export default function SendUsdt({ params }: any) {
           address: address,
         });
 
-        console.log(result);
+        //console.log(result);
 
         setBalance( Number(result) / 10 ** 6 );
       
@@ -506,7 +513,7 @@ export default function SendUsdt({ params }: any) {
 
     const data = await response.json();
 
-    console.log("getUserByWalletAddress", data);
+    //console.log("getUserByWalletAddress", data);
 
     return data.result;
 
@@ -519,11 +526,16 @@ export default function SendUsdt({ params }: any) {
 
   
   useEffect(() => {
+
+    if (!recipient?.walletAddress) {
+      return;
+    }
+
     // check recipient.walletAddress is in the user list
     getUserByWalletAddress(recipient?.walletAddress)
     .then((data) => {
         
-        console.log("data============", data);
+        //console.log("data============", data);
   
         const checkUser = data
 
@@ -557,11 +569,6 @@ export default function SendUsdt({ params }: any) {
 
   } , [recipient?.walletAddress]);
   
-
-
-
-  console.log("isWhateListedUser", isWhateListedUser);
-  console.log("recipient", recipient);
 
 
 
@@ -734,7 +741,24 @@ export default function SendUsdt({ params }: any) {
           
             {/* my usdt balance */}
             <div className="w-full flex flex-col gap-2 items-start">
-              <div className="text-sm">{My_Balance}</div>
+              <div className='flex flex-row items-center gap-2'>
+                <div className="text-sm">{My_Balance}</div>
+                {/* my nickname */}
+                <Image
+                  src={user?.avatar || '/profile-default.png'}
+                  alt="profile"
+                  width={24}
+                  height={24}
+                  className="rounded-full"
+                  style={{
+                    objectFit: 'cover',
+                    width: '24px',
+                    height: '24px',
+                  }}
+                />
+                <div className="text-sm text-zinc-100">{user?.nickname}</div>
+              </div>
+
               <div className='w-full flex flex-row items-center justify-between'>
 
                 <div className="text-5xl font-semibold text-white">
