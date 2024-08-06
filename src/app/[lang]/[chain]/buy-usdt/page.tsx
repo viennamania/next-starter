@@ -994,6 +994,7 @@ export default function Index({ params }: any) {
                         className="bg-zinc-800 text-white"
                       >
                         <tr>
+                          <th className="p-2">{Order_Opened}</th>
                           <th className="p-2">{Seller}</th>
                           <th className="p-2">{Price}</th>
                           <th className="p-2">{Amount}</th>
@@ -1005,7 +1006,37 @@ export default function Index({ params }: any) {
 
                       <tbody>
                         {sellOrders.map((item, index) => (
-                          <tr key={index} className="bg-black bg-opacity-50">
+                          <tr key={index} className={`
+                            ${index % 2 === 0 ? 'bg-zinc-700' : 'bg-zinc-800'}
+                          `}>
+
+                            <td className="p-2">
+                              <div className="text-sm text-zinc-400">
+                                {params.lang === 'kr' ? (
+                                  <p>{
+                                    new Date().getTime() - new Date(item.createdAt).getTime() < 1000 * 60 ? (
+                                      ' ' + Math.floor((new Date().getTime() - new Date(item.createdAt).getTime()) / 1000) + ' ' + seconds_ago
+                                    ) :
+                                    new Date().getTime() - new Date(item.createdAt).getTime() < 1000 * 60 * 60 ? (
+                                    ' ' + Math.floor((new Date().getTime() - new Date(item.createdAt).getTime()) / 1000 / 60) + ' ' + minutes_ago
+                                    ) : (
+                                      ' ' + Math.floor((new Date().getTime() - new Date(item.createdAt).getTime()) / 1000 / 60 / 60) + ' ' + hours_ago
+                                    )
+                                  }{' '}{Order_Opened}</p>
+                                ) : (
+                                  <p>{Order_Opened} {
+                                    new Date().getTime() - new Date(item.createdAt).getTime() < 1000 * 60 ? (
+                                      ' ' + Math.floor((new Date().getTime() - new Date(item.createdAt).getTime()) / 1000) + ' ' + seconds_ago
+                                    ) :
+                                    new Date().getTime() - new Date(item.createdAt).getTime() < 1000 * 60 * 60 ? (
+                                    ' ' + Math.floor((new Date().getTime() - new Date(item.createdAt).getTime()) / 1000 / 60) + ' ' + minutes_ago
+                                    ) : (
+                                      ' ' + Math.floor((new Date().getTime() - new Date(item.createdAt).getTime()) / 1000 / 60 / 60) + ' ' + hours_ago
+                                    )
+                                  }</p>
+                                )}
+                              </div>
+                            </td>
                             
                             <td className="p-2">
                               <div className="flex flex-row items-center gap-2">
@@ -1034,7 +1065,7 @@ export default function Index({ params }: any) {
                             </td>
 
                             <td className="p-2">
-                              <div className="text-xl font-semibold text-white">
+                              <div className="text-sm font-semibold text-white">
                                 {
                                   // currency
                                   Number(item.krwAmount).toLocaleString('ko-KR', {
@@ -1043,20 +1074,20 @@ export default function Index({ params }: any) {
                                   })
                                 }
                               </div>
-                              <div className="text-lg font-semibold text-white">
+                              <div className="text-sm font-semibold text-white">
                                 {Number(item.krwAmount / item.usdtAmount).toFixed(2)} {Rate}
                               </div>
                             </td>
 
                             <td className="p-2">
-                              <div className="text-lg font-semibold text-white">
+                              <div className="text-sm font-semibold text-white">
                                 {item.usdtAmount} USDT
                               </div>
                             </td>
 
                             <td className="p-2">
-                              <div className="text-lg font-semibold text-white">
-                                {Bank_Transfer} ({item.seller?.bankInfo.bankName})
+                              <div className="text-sm font-semibold text-white">
+                                {item.seller?.bankInfo.bankName}
                               </div>
                             </td>
 
@@ -1065,36 +1096,39 @@ export default function Index({ params }: any) {
                                 {/* status */}
                                 {item.status === 'ordered' && (
                                   <div className="text-sm text-zinc-400">
-                                    {params.lang === 'kr' ? (
-                                      <p>{
-                                        new Date().getTime() - new Date(item.createdAt).getTime() < 1000 * 60 ? (
-                                          ' ' + Math.floor((new Date().getTime() - new Date(item.createdAt).getTime()) / 1000) + ' ' + seconds_ago
-                                        ) :
-                                        new Date().getTime() - new Date(item.createdAt).getTime() < 1000 * 60 * 60 ? (
-                                        ' ' + Math.floor((new Date().getTime() - new Date(item.createdAt).getTime()) / 1000 / 60) + ' ' + minutes_ago
-                                        ) : (
-                                          ' ' + Math.floor((new Date().getTime() - new Date(item.createdAt).getTime()) / 1000 / 60 / 60) + ' ' + hours_ago
-                                        )
-                                      }{' '}{Order_Opened}</p>
-                                    ) : (
-                                      <p>{Order_Opened} {
-                                        new Date().getTime() - new Date(item.createdAt).getTime() < 1000 * 60 ? (
-                                          ' ' + Math.floor((new Date().getTime() - new Date(item.createdAt).getTime()) / 1000) + ' ' + seconds_ago
-                                        ) :
-                                        new Date().getTime() - new Date(item.createdAt).getTime() < 1000 * 60 * 60 ? (
-                                        ' ' + Math.floor((new Date().getTime() - new Date(item.createdAt).getTime()) / 1000 / 60) + ' ' + minutes_ago
-                                        ) : (
-                                          ' ' + Math.floor((new Date().getTime() - new Date(item.createdAt).getTime()) / 1000 / 60 / 60) + ' ' + hours_ago
-                                        )
-                                      }</p>
-                                    )}
+                                    {Order_Opened}
                                   </div>
                                 )}
 
 
                                 {item.status === 'accepted' && (
                                   <div className="text-sm text-green-500">
-                                    {Accepting_Order}
+
+                                    {params.lang === 'kr' ? (
+                                      <p>{
+                                        new Date().getTime() - new Date(item.acceptedAt).getTime() < 1000 * 60 ? (
+                                          ' ' + Math.floor((new Date().getTime() - new Date(item.acceptedAt).getTime()) / 1000) + ' ' + seconds_ago
+                                        ) :
+                                        new Date().getTime() - new Date(item.acceptedAt).getTime() < 1000 * 60 * 60 ? (
+                                        ' ' + Math.floor((new Date().getTime() - new Date(item.acceptedAt).getTime()) / 1000 / 60) + ' ' + minutes_ago
+                                        ) : (
+                                          ' ' + Math.floor((new Date().getTime() - new Date(item.acceptedAt).getTime()) / 1000 / 60 / 60) + ' ' + hours_ago
+                                        )
+                                      }{' '}{Trade_Started}</p>
+                                    ) : (
+                                      <p>{Trade_Started} {
+                                        new Date().getTime() - new Date(item.acceptedAt).getTime() < 1000 * 60 ? (
+                                          ' ' + Math.floor((new Date().getTime() - new Date(item.acceptedAt).getTime()) / 1000) + ' ' + seconds_ago
+                                        ) :
+                                        new Date().getTime() - new Date(item.acceptedAt).getTime() < 1000 * 60 * 60 ? (
+                                        ' ' + Math.floor((new Date().getTime() - new Date(item.acceptedAt).getTime()) / 1000 / 60) + ' ' + minutes_ago
+                                        ) : (
+                                          ' ' + Math.floor((new Date().getTime() - new Date(item.acceptedAt).getTime()) / 1000 / 60 / 60) + ' ' + hours_ago
+                                        )
+                                      }</p>
+                                    )}
+
+
                                   </div>
                                 )}
 
