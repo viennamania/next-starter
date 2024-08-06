@@ -938,7 +938,7 @@ export default function Index({ params }: any) {
                   </div>
 
 
-                  <div className="ml-10 flex flex-row items-center gap-2">
+                  <div className="ml-10 flex flex-col items-center gap-2">
                     {/* reload button */}
                     <button
                       className="text-sm bg-zinc-800 px-2 py-1 rounded-md"
@@ -960,245 +960,256 @@ export default function Index({ params }: any) {
                     >
                       Reload
                     </button>
+
+                    {/* select table view or card view */}
+                    <div className="flex flex-row items-center space-x-4">
+                        <div className="text-sm">{Table_View}</div>
+                        <input
+                          type="checkbox"
+                          checked={tableView}
+                          onChange={(e) => setTableView(e.target.checked)}
+                          className="w-5 h-5 rounded-full"
+                        />
+                    </div>
+
                   </div>
 
 
-                  {/* select table view or card view */}
-                  <div className="flex flex-row items-center space-x-4">
-                      <div className="text-sm">{Table_View}</div>
-                      <input
-                        type="checkbox"
-                        checked={tableView}
-                        onChange={(e) => setTableView(e.target.checked)}
-                        className="w-5 h-5 rounded-full"
-                      />
-                  </div>
+
 
 
                 </div>
 
 
 
+                {/* table view is horizontal scroll */}
                 {tableView ? (
-                  <table className="w-full">
-                    <thead
-                      className="bg-zinc-800 text-white"
-                    >
-                      <tr>
-                        <th className="p-2">{Seller}</th>
-                        <th className="p-2">{Price}</th>
-                        <th className="p-2">{Amount}</th>
-                        <th className="p-2">{Payment}</th>
-                        <th className="p-2">{Status}</th>
-                        <th className="p-2">{Trades}</th>
-                      </tr>
-                    </thead>
-
-                    <tbody>
-                      {sellOrders.map((item, index) => (
-                        <tr key={index} className="bg-black bg-opacity-50">
-                          
-                          <td className="p-2">
-                            <div className="flex flex-row items-center gap-2">
-                              <Image
-                                src={item.avatar || "/profile-default.png"}
-                                alt="Avatar"
-                                width={32}
-                                height={32}
-                                priority={true} // Added priority property
-                                className="rounded-full"
-                                style={{
-                                    objectFit: 'cover',
-                                    width: '32px',
-                                    height: '32px',
-                                }}
-                              />
-                              <div className="flex flex-col gap-2 items-start">
-                                <div className="text-lg font-semibold text-white">
-                                  {item.walletAddress === address ? 'Me' : item.nickname}
-                                </div>
-                                <div className="text-sm text-zinc-400">
-                                  {item.walletAddress === address ? 'Me' : item.tradeId ? item.tradeId : ''}
-                                </div>
-                              </div>
-                            </div>
-                          </td>
-
-                          <td className="p-2">
-                            <div className="text-xl font-semibold text-white">
-                              {
-                                // currency
-                                Number(item.krwAmount).toLocaleString('ko-KR', {
-                                  style: 'currency',
-                                  currency: 'KRW',
-                                })
-                              }
-                            </div>
-                            <div className="text-lg font-semibold text-white">
-                              {Number(item.krwAmount / item.usdtAmount).toFixed(2)} {Rate}
-                            </div>
-                          </td>
-
-                          <td className="p-2">
-                            <div className="text-lg font-semibold text-white">
-                              {item.usdtAmount} USDT
-                            </div>
-                          </td>
-
-                          <td className="p-2">
-                            <div className="text-lg font-semibold text-white">
-                              {Bank_Transfer} ({item.seller?.bankInfo.bankName})
-                            </div>
-                          </td>
-
-                          <td className="p-2">
-                            <div className="flex flex-row items-center gap-2">
-                              {/* status */}
-                              {item.status === 'ordered' && (
-                                <div className="text-sm text-zinc-400">
-                                  {params.lang === 'kr' ? (
-                                    <p>{
-                                      new Date().getTime() - new Date(item.createdAt).getTime() < 1000 * 60 ? (
-                                        ' ' + Math.floor((new Date().getTime() - new Date(item.createdAt).getTime()) / 1000) + ' ' + seconds_ago
-                                      ) :
-                                      new Date().getTime() - new Date(item.createdAt).getTime() < 1000 * 60 * 60 ? (
-                                      ' ' + Math.floor((new Date().getTime() - new Date(item.createdAt).getTime()) / 1000 / 60) + ' ' + minutes_ago
-                                      ) : (
-                                        ' ' + Math.floor((new Date().getTime() - new Date(item.createdAt).getTime()) / 1000 / 60 / 60) + ' ' + hours_ago
-                                      )
-                                    }{' '}{Order_Opened}</p>
-                                  ) : (
-                                    <p>{Order_Opened} {
-                                      new Date().getTime() - new Date(item.createdAt).getTime() < 1000 * 60 ? (
-                                        ' ' + Math.floor((new Date().getTime() - new Date(item.createdAt).getTime()) / 1000) + ' ' + seconds_ago
-                                      ) :
-                                      new Date().getTime() - new Date(item.createdAt).getTime() < 1000 * 60 * 60 ? (
-                                      ' ' + Math.floor((new Date().getTime() - new Date(item.createdAt).getTime()) / 1000 / 60) + ' ' + minutes_ago
-                                      ) : (
-                                        ' ' + Math.floor((new Date().getTime() - new Date(item.createdAt).getTime()) / 1000 / 60 / 60) + ' ' + hours_ago
-                                      )
-                                    }</p>
-                                  )}
-                                </div>
-                              )}
 
 
-                              {item.status === 'accepted' && (
-                                <div className="text-sm text-green-500">
-                                  {Accepting_Order}
-                                </div>
-                              )}
+                  <div className="w-full overflow-x-auto">
 
-                              {item.status === 'paymentRequested' && (
-                                <div className="text-sm text-green-500">
-                                  {Waiting_for_seller_to_deposit}
-                                </div>
-                              )}
+                    <table className=" w-full table-auto border-collapse border border-zinc-800 rounded-md">
 
-                              {item.status === 'cancelled' && (
-                                <div className="text-sm text-red-600">
-                                  {Cancelled_at}
-                                </div>
-                              )}
-
-                              {item.status === 'completed' && (
-                                <div className="text-sm text-green-500">
-                                  {Completed_at}
-                                </div>
-                              )}
-
-                            </div>
-                          </td>
-
-                          <td className="p-2">
-
-                            {item.status === 'accepted' && item.buyer && item.buyer.walletAddress === address && (
-                              <div className="flex flex-row items-center gap-2">
-                                <input
-                                  type="checkbox"
-                                  checked={agreementForCancelTrade[index]}
-                                  onChange={(e) => {
-                                    setAgreementForCancelTrade(
-                                      agreementForCancelTrade.map((item, idx) => idx === index ? e.target.checked : item)
-                                    );
-                                  }}
-                                />
-                                <button
-                                  disabled={cancellings[index] || !agreementForCancelTrade[index]}
-                                  className={`
-                                    ${cancellings[index] || !agreementForCancelTrade[index] ?
-                                      'bg-zinc-800 text-zinc-400' : 'bg-red-500 text-white'}
-                                    px-2 py-1 rounded-md hover:bg-red-600
-                                  `}
-                                    
-                                  onClick={() => {
-                                    cancelTrade(item._id, index);
-                                  }}
-                                >
-                                  {cancellings[index] && (
-                                    <Image
-                                      src="/loading.png"
-                                      alt="Loading"
-                                      width={20}
-                                      height={20}
-                                      className="animate-spin"
-                                    />
-                                  )}
-                                  {!cancellings[index] && 
-                                    Cancel_My_Trade
-                                  }
-                                </button>
-                              </div>
-                            )}
-
-                            {item.status === 'ordered' && item.walletAddress !== address && (
-                              <div className="flex flex-row items-center gap-2">
-                                <input
-                                  type="checkbox"
-                                  checked={agreementForTrade[index]}
-                                  onChange={(e) => {
-                                    setAgreementForTrade(
-                                      agreementForTrade.map((item, idx) => idx === index ? e.target.checked : item)
-                                    );
-                                  }}
-                                />
-                                <button
-                                  disabled={acceptingSellOrder[index] || !agreementForTrade[index]}
-                                  className={`
-                                    ${acceptingSellOrder[index] || !agreementForTrade[index] ?
-                                      'bg-zinc-800 text-zinc-400' : 'bg-green-500 text-white'}
-                                    px-2 py-1 rounded-md hover:bg-green-600
-                                  `}
-                                  onClick={() => {
-                                    acceoptSellOrder(index, item._id, smsReceiverMobileNumber);
-                                  }}
-                                >
-                                  {acceptingSellOrder[index] && (
-                                    <Image
-                                      src="/loading.png"
-                                      alt="Loading"
-                                      width={20}
-                                      height={20}
-                                      className="animate-spin"
-                                    />
-                                  )}
-                                  {!acceptingSellOrder[index] && 
-                                    Buy
-                                  }
-                                  
-                                </button>
-                              </div>
-                            )}
-
-                          </td>
-
+                      <thead
+                        className="bg-zinc-800 text-white"
+                      >
+                        <tr>
+                          <th className="p-2">{Seller}</th>
+                          <th className="p-2">{Price}</th>
+                          <th className="p-2">{Amount}</th>
+                          <th className="p-2">{Payment}</th>
+                          <th className="p-2">{Status}</th>
+                          <th className="p-2">{Trades}</th>
                         </tr>
+                      </thead>
 
-                      ))}
+                      <tbody>
+                        {sellOrders.map((item, index) => (
+                          <tr key={index} className="bg-black bg-opacity-50">
+                            
+                            <td className="p-2">
+                              <div className="flex flex-row items-center gap-2">
+                                <Image
+                                  src={item.avatar || "/profile-default.png"}
+                                  alt="Avatar"
+                                  width={32}
+                                  height={32}
+                                  priority={true} // Added priority property
+                                  className="rounded-full"
+                                  style={{
+                                      objectFit: 'cover',
+                                      width: '32px',
+                                      height: '32px',
+                                  }}
+                                />
+                                <div className="flex flex-col gap-2 items-start">
+                                  <div className="text-lg font-semibold text-white">
+                                    {item.walletAddress === address ? 'Me' : item.nickname}
+                                  </div>
+                                  <div className="text-sm text-zinc-400">
+                                    {item.walletAddress === address ? 'Me' : item.tradeId ? item.tradeId : ''}
+                                  </div>
+                                </div>
+                              </div>
+                            </td>
 
-                    </tbody>
+                            <td className="p-2">
+                              <div className="text-xl font-semibold text-white">
+                                {
+                                  // currency
+                                  Number(item.krwAmount).toLocaleString('ko-KR', {
+                                    style: 'currency',
+                                    currency: 'KRW',
+                                  })
+                                }
+                              </div>
+                              <div className="text-lg font-semibold text-white">
+                                {Number(item.krwAmount / item.usdtAmount).toFixed(2)} {Rate}
+                              </div>
+                            </td>
 
-                  </table>
+                            <td className="p-2">
+                              <div className="text-lg font-semibold text-white">
+                                {item.usdtAmount} USDT
+                              </div>
+                            </td>
+
+                            <td className="p-2">
+                              <div className="text-lg font-semibold text-white">
+                                {Bank_Transfer} ({item.seller?.bankInfo.bankName})
+                              </div>
+                            </td>
+
+                            <td className="p-2">
+                              <div className="flex flex-row items-center gap-2">
+                                {/* status */}
+                                {item.status === 'ordered' && (
+                                  <div className="text-sm text-zinc-400">
+                                    {params.lang === 'kr' ? (
+                                      <p>{
+                                        new Date().getTime() - new Date(item.createdAt).getTime() < 1000 * 60 ? (
+                                          ' ' + Math.floor((new Date().getTime() - new Date(item.createdAt).getTime()) / 1000) + ' ' + seconds_ago
+                                        ) :
+                                        new Date().getTime() - new Date(item.createdAt).getTime() < 1000 * 60 * 60 ? (
+                                        ' ' + Math.floor((new Date().getTime() - new Date(item.createdAt).getTime()) / 1000 / 60) + ' ' + minutes_ago
+                                        ) : (
+                                          ' ' + Math.floor((new Date().getTime() - new Date(item.createdAt).getTime()) / 1000 / 60 / 60) + ' ' + hours_ago
+                                        )
+                                      }{' '}{Order_Opened}</p>
+                                    ) : (
+                                      <p>{Order_Opened} {
+                                        new Date().getTime() - new Date(item.createdAt).getTime() < 1000 * 60 ? (
+                                          ' ' + Math.floor((new Date().getTime() - new Date(item.createdAt).getTime()) / 1000) + ' ' + seconds_ago
+                                        ) :
+                                        new Date().getTime() - new Date(item.createdAt).getTime() < 1000 * 60 * 60 ? (
+                                        ' ' + Math.floor((new Date().getTime() - new Date(item.createdAt).getTime()) / 1000 / 60) + ' ' + minutes_ago
+                                        ) : (
+                                          ' ' + Math.floor((new Date().getTime() - new Date(item.createdAt).getTime()) / 1000 / 60 / 60) + ' ' + hours_ago
+                                        )
+                                      }</p>
+                                    )}
+                                  </div>
+                                )}
+
+
+                                {item.status === 'accepted' && (
+                                  <div className="text-sm text-green-500">
+                                    {Accepting_Order}
+                                  </div>
+                                )}
+
+                                {item.status === 'paymentRequested' && (
+                                  <div className="text-sm text-green-500">
+                                    {Waiting_for_seller_to_deposit}
+                                  </div>
+                                )}
+
+                                {item.status === 'cancelled' && (
+                                  <div className="text-sm text-red-600">
+                                    {Cancelled_at}
+                                  </div>
+                                )}
+
+                                {item.status === 'completed' && (
+                                  <div className="text-sm text-green-500">
+                                    {Completed_at}
+                                  </div>
+                                )}
+
+                              </div>
+                            </td>
+
+                            <td className="p-2">
+
+                              {item.status === 'accepted' && item.buyer && item.buyer.walletAddress === address && (
+                                <div className="flex flex-row items-center gap-2">
+                                  <input
+                                    type="checkbox"
+                                    checked={agreementForCancelTrade[index]}
+                                    onChange={(e) => {
+                                      setAgreementForCancelTrade(
+                                        agreementForCancelTrade.map((item, idx) => idx === index ? e.target.checked : item)
+                                      );
+                                    }}
+                                  />
+                                  <button
+                                    disabled={cancellings[index] || !agreementForCancelTrade[index]}
+                                    className={`
+                                      ${cancellings[index] || !agreementForCancelTrade[index] ?
+                                        'bg-zinc-800 text-zinc-400' : 'bg-red-500 text-white'}
+                                      px-2 py-1 rounded-md hover:bg-red-600
+                                    `}
+                                      
+                                    onClick={() => {
+                                      cancelTrade(item._id, index);
+                                    }}
+                                  >
+                                    {cancellings[index] && (
+                                      <Image
+                                        src="/loading.png"
+                                        alt="Loading"
+                                        width={20}
+                                        height={20}
+                                        className="animate-spin"
+                                      />
+                                    )}
+                                    {!cancellings[index] && 
+                                      Cancel_My_Trade
+                                    }
+                                  </button>
+                                </div>
+                              )}
+
+                              {item.status === 'ordered' && item.walletAddress !== address && (
+                                <div className="flex flex-row items-center gap-2">
+                                  <input
+                                    type="checkbox"
+                                    checked={agreementForTrade[index]}
+                                    onChange={(e) => {
+                                      setAgreementForTrade(
+                                        agreementForTrade.map((item, idx) => idx === index ? e.target.checked : item)
+                                      );
+                                    }}
+                                  />
+                                  <button
+                                    disabled={acceptingSellOrder[index] || !agreementForTrade[index]}
+                                    className={`
+                                      ${acceptingSellOrder[index] || !agreementForTrade[index] ?
+                                        'bg-zinc-800 text-zinc-400' : 'bg-green-500 text-white'}
+                                      px-2 py-1 rounded-md hover:bg-green-600
+                                    `}
+                                    onClick={() => {
+                                      acceoptSellOrder(index, item._id, smsReceiverMobileNumber);
+                                    }}
+                                  >
+                                    {acceptingSellOrder[index] && (
+                                      <Image
+                                        src="/loading.png"
+                                        alt="Loading"
+                                        width={20}
+                                        height={20}
+                                        className="animate-spin"
+                                      />
+                                    )}
+                                    {!acceptingSellOrder[index] && 
+                                      Buy
+                                    }
+                                    
+                                  </button>
+                                </div>
+                              )}
+
+                            </td>
+
+                          </tr>
+
+                        ))}
+
+                      </tbody>
+
+                    </table>
+
+                  </div>
 
 
                 ) : (
