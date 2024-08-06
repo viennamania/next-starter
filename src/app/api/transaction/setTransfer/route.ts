@@ -61,6 +61,8 @@ export async function POST(request: NextRequest) {
           body = `[UNOVE] You have received ${amount} USDT from ${fromUserNickname}!`;
         } else if (lang === 'kr') {
           body = `[UNOVE] ${fromUserNickname}님으로부터 ${amount} USDT를 받았습니다!`;
+        } else {
+          body = `[UNOVE] You have received ${amount} USDT from ${fromUserNickname}!`;
         }
 
         message = await client.messages.create({
