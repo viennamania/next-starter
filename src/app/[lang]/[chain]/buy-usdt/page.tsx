@@ -212,6 +212,13 @@ export default function Index({ params }: any) {
     Chat_with_Seller: "",
     Chat_with_Buyer: "",
 
+    Table_View: "",
+
+    TID: "",
+
+    Status: "",
+  
+
   } );
 
   useEffect(() => {
@@ -284,6 +291,12 @@ export default function Index({ params }: any) {
 
     Chat_with_Seller,
     Chat_with_Buyer,
+
+    Table_View,
+
+    TID,
+
+    Status,
 
 
   } = data;
@@ -675,7 +688,16 @@ export default function Index({ params }: any) {
     }
 
 
-    console.log('params.lang', params.lang);
+  
+
+
+    // check table view or card view
+    const [tableView, setTableView] = useState(false);
+
+
+
+
+
 
 
     return (
@@ -940,253 +962,468 @@ export default function Index({ params }: any) {
                     </button>
                   </div>
 
+
+                  {/* select table view or card view */}
+                  <div className="flex flex-row items-center space-x-4">
+                      <div className="text-sm">{Table_View}</div>
+                      <input
+                        type="checkbox"
+                        checked={tableView}
+                        onChange={(e) => setTableView(e.target.checked)}
+                        className="w-5 h-5 rounded-full"
+                      />
+                  </div>
+
+
                 </div>
 
 
 
+                {tableView ? (
+                  <table className="w-full">
+                    <thead
+                      className="bg-zinc-800 text-white"
+                    >
+                      <tr>
+                        <th className="p-2">{Seller}</th>
+                        <th className="p-2">{Price}</th>
+                        <th className="p-2">{Amount}</th>
+                        <th className="p-2">{Payment}</th>
+                        <th className="p-2">{Status}</th>
+                        <th className="p-2">{Trades}</th>
+                      </tr>
+                    </thead>
 
+                    <tbody>
+                      {sellOrders.map((item, index) => (
+                        <tr key={index} className="bg-black bg-opacity-50">
+                          
+                          <td className="p-2">
+                            <div className="flex flex-row items-center gap-2">
+                              <Image
+                                src={item.avatar || "/profile-default.png"}
+                                alt="Avatar"
+                                width={32}
+                                height={32}
+                                priority={true} // Added priority property
+                                className="rounded-full"
+                                style={{
+                                    objectFit: 'cover',
+                                    width: '32px',
+                                    height: '32px',
+                                }}
+                              />
+                              <div className="flex flex-col gap-2 items-start">
+                                <div className="text-lg font-semibold text-white">
+                                  {item.walletAddress === address ? 'Me' : item.nickname}
+                                </div>
+                                <div className="text-sm text-zinc-400">
+                                  {item.walletAddress === address ? 'Me' : item.tradeId ? item.tradeId : ''}
+                                </div>
+                              </div>
+                            </div>
+                          </td>
 
+                          <td className="p-2">
+                            <div className="text-xl font-semibold text-white">
+                              {
+                                // currency
+                                Number(item.krwAmount).toLocaleString('ko-KR', {
+                                  style: 'currency',
+                                  currency: 'KRW',
+                                })
+                              }
+                            </div>
+                            <div className="text-lg font-semibold text-white">
+                              {Number(item.krwAmount / item.usdtAmount).toFixed(2)} {Rate}
+                            </div>
+                          </td>
 
-                <div className="w-full grid gap-4 lg:grid-cols-2 xl:grid-cols-3 justify-center ">
+                          <td className="p-2">
+                            <div className="text-lg font-semibold text-white">
+                              {item.usdtAmount} USDT
+                            </div>
+                          </td>
 
-                    {sellOrders.map((item, index) => (
-        
-                      <div
-                        key={index}
-                        className="relative flex flex-col items-center justify-center"
-                      >
+                          <td className="p-2">
+                            <div className="text-lg font-semibold text-white">
+                              {Bank_Transfer} ({item.seller?.bankInfo.bankName})
+                            </div>
+                          </td>
 
-
-                        {item.status === 'ordered' && (new Date().getTime() - new Date(item.createdAt).getTime() > 1000 * 60 * 60 * 24) && (
-                          <div className="absolute inset-0 flex justify-center items-center z-10
-                            bg-black bg-opacity-50
-                          ">
-                            <Image
-                              src="/icon-expired.png"
-                              alt="Expired"
-                              width={100}
-                              height={100}
-                              className="opacity-20"
-                            />
-                          </div>
-                        )}
-
-                        {item.status === 'cancelled' && (
-                          <div className="absolute inset-0 flex justify-center items-center z-10
-                            bg-black bg-opacity-50
-                          ">
-                            <Image
-                              src="/icon-cancelled.png"
-                              alt="Cancelled"
-                              width={100}
-                              height={100}
-                              className="opacity-20"
-                            />
-                          </div>
-                        )}
-
-
-                        <article
-                            //key={index}
-                            className={` w-96 xl:w-full h-full relative
-                              ${item.walletAddress === address ? 'border-green-500' : 'border-gray-200'}
-
-                              ${item.status === 'accepted' || item.status === 'paymentRequested' ? 'border-red-600' : 'border-gray-200'}
-
-                              p-4 rounded-md border bg-black bg-opacity-50
-                          `}
-                        >
-
-                          {item.status === 'ordered' && (
-
-  
-                            <div className="w-full flex flex-col gpa-2 items-start justify-start">
-
-
-                                <div className="w-full flex flex-row items-center justify-between gap-2">
-
-                                  <div className="flex flex-row items-center gap-2">
-
-                                    {/* if createdAt is recent 1 hours, show new badge */}
-                                    {new Date().getTime() - new Date(item.createdAt).getTime() < 1000 * 60 * 60 && (
-                                      <Image
-                                        src="/icon-new.png"
-                                        alt="New"
-                                        width={28}
-                                        height={28}
-                                      />
-                                    )}
-
-                                    <Image
-                                      src="/icon-public-sale.png"
-                                      alt="Public Sale"
-                                      width={28}
-                                      height={28}
-                                    />
-
-                                  
-
-                                    {params.lang === 'kr' ? (
-
-                                      <p className="text-sm text-zinc-400">
-
-                                      
-                                        {
-
-                                          new Date().getTime() - new Date(item.createdAt).getTime() < 1000 * 60 ? (
-                                            ' ' + Math.floor((new Date().getTime() - new Date(item.createdAt).getTime()) / 1000) + ' ' + seconds_ago
-                                          ) :
-                                          new Date().getTime() - new Date(item.createdAt).getTime() < 1000 * 60 * 60 ? (
-                                          ' ' + Math.floor((new Date().getTime() - new Date(item.createdAt).getTime()) / 1000 / 60) + ' ' + minutes_ago
-                                          ) : (
-                                            ' ' + Math.floor((new Date().getTime() - new Date(item.createdAt).getTime()) / 1000 / 60 / 60) + ' ' + hours_ago
-                                          )
-                                        }{' '}{Order_Opened} 
-
-                                      </p>
-                                      
+                          <td className="p-2">
+                            <div className="flex flex-row items-center gap-2">
+                              {/* status */}
+                              {item.status === 'ordered' && (
+                                <div className="text-sm text-zinc-400">
+                                  {params.lang === 'kr' ? (
+                                    <p>{
+                                      new Date().getTime() - new Date(item.createdAt).getTime() < 1000 * 60 ? (
+                                        ' ' + Math.floor((new Date().getTime() - new Date(item.createdAt).getTime()) / 1000) + ' ' + seconds_ago
+                                      ) :
+                                      new Date().getTime() - new Date(item.createdAt).getTime() < 1000 * 60 * 60 ? (
+                                      ' ' + Math.floor((new Date().getTime() - new Date(item.createdAt).getTime()) / 1000 / 60) + ' ' + minutes_ago
                                       ) : (
-
-                                        <p className="text-sm text-zinc-400">
-
-
-                                      
-                                        {Order_Opened}{' '}{
-
-                                          new Date().getTime() - new Date(item.createdAt).getTime() < 1000 * 60 ? (
-                                            ' ' + Math.floor((new Date().getTime() - new Date(item.createdAt).getTime()) / 1000) + ' ' + seconds_ago
-                                          ) :
-                                          new Date().getTime() - new Date(item.createdAt).getTime() < 1000 * 60 * 60 ? (
-                                          ' ' + Math.floor((new Date().getTime() - new Date(item.createdAt).getTime()) / 1000 / 60) + ' ' + minutes_ago
-                                          ) : (
-                                            ' ' + Math.floor((new Date().getTime() - new Date(item.createdAt).getTime()) / 1000 / 60 / 60) + ' ' + hours_ago
-                                          )
-                                        }
-
-
-
-                                      </p>
+                                        ' ' + Math.floor((new Date().getTime() - new Date(item.createdAt).getTime()) / 1000 / 60 / 60) + ' ' + hours_ago
+                                      )
+                                    }{' '}{Order_Opened}</p>
+                                  ) : (
+                                    <p>{Order_Opened} {
+                                      new Date().getTime() - new Date(item.createdAt).getTime() < 1000 * 60 ? (
+                                        ' ' + Math.floor((new Date().getTime() - new Date(item.createdAt).getTime()) / 1000) + ' ' + seconds_ago
+                                      ) :
+                                      new Date().getTime() - new Date(item.createdAt).getTime() < 1000 * 60 * 60 ? (
+                                      ' ' + Math.floor((new Date().getTime() - new Date(item.createdAt).getTime()) / 1000 / 60) + ' ' + minutes_ago
+                                      ) : (
+                                        ' ' + Math.floor((new Date().getTime() - new Date(item.createdAt).getTime()) / 1000 / 60 / 60) + ' ' + hours_ago
+                                      )
+                                    }</p>
+                                  )}
+                                </div>
+                              )}
 
 
-                                    )}
+                              {item.status === 'accepted' && (
+                                <div className="text-sm text-green-500">
+                                  {Accepting_Order}
+                                </div>
+                              )}
 
-                                  </div>
+                              {item.status === 'paymentRequested' && (
+                                <div className="text-sm text-green-500">
+                                  {Waiting_for_seller_to_deposit}
+                                </div>
+                              )}
 
+                              {item.status === 'cancelled' && (
+                                <div className="text-sm text-red-600">
+                                  {Cancelled_at}
+                                </div>
+                              )}
 
+                              {item.status === 'completed' && (
+                                <div className="text-sm text-green-500">
+                                  {Completed_at}
+                                </div>
+                              )}
 
-                                  {/* share button */}
-                                  {/*
-                                  <button
-                                    className="text-sm bg-blue-500 text-white px-2 py-1 rounded-md hover:bg-blue-600"
-                                    onClick={() => {
+                            </div>
+                          </td>
 
-                                      window.open(`https://next.unove.space/${params.lang}/sell-usdt/${item._id}`, '_blank');
+                          <td className="p-2">
 
-                                    }}
-                                  >
+                            {item.status === 'accepted' && item.buyer && item.buyer.walletAddress === address && (
+                              <div className="flex flex-row items-center gap-2">
+                                <input
+                                  type="checkbox"
+                                  checked={agreementForCancelTrade[index]}
+                                  onChange={(e) => {
+                                    setAgreementForCancelTrade(
+                                      agreementForCancelTrade.map((item, idx) => idx === index ? e.target.checked : item)
+                                    );
+                                  }}
+                                />
+                                <button
+                                  disabled={cancellings[index] || !agreementForCancelTrade[index]}
+                                  className={`
+                                    ${cancellings[index] || !agreementForCancelTrade[index] ?
+                                      'bg-zinc-800 text-zinc-400' : 'bg-red-500 text-white'}
+                                    px-2 py-1 rounded-md hover:bg-red-600
+                                  `}
+                                    
+                                  onClick={() => {
+                                    cancelTrade(item._id, index);
+                                  }}
+                                >
+                                  {cancellings[index] && (
                                     <Image
-                                      src="/icon-share.png"
-                                      alt="Share"
+                                      src="/loading.png"
+                                      alt="Loading"
                                       width={20}
                                       height={20}
+                                      className="animate-spin"
                                     />
-                                  </button>
-                                  */}
+                                  )}
+                                  {!cancellings[index] && 
+                                    Cancel_My_Trade
+                                  }
+                                </button>
+                              </div>
+                            )}
 
-
-                                </div>
-
-
-                                {24 - Math.floor((new Date().getTime() - new Date(item.createdAt).getTime()) / 1000 / 60 / 60) > 0 ? (
-
-                                  <div className="mt-2 flex flex-row items-center space-x-2">
+                            {item.status === 'ordered' && item.walletAddress !== address && (
+                              <div className="flex flex-row items-center gap-2">
+                                <input
+                                  type="checkbox"
+                                  checked={agreementForTrade[index]}
+                                  onChange={(e) => {
+                                    setAgreementForTrade(
+                                      agreementForTrade.map((item, idx) => idx === index ? e.target.checked : item)
+                                    );
+                                  }}
+                                />
+                                <button
+                                  disabled={acceptingSellOrder[index] || !agreementForTrade[index]}
+                                  className={`
+                                    ${acceptingSellOrder[index] || !agreementForTrade[index] ?
+                                      'bg-zinc-800 text-zinc-400' : 'bg-green-500 text-white'}
+                                    px-2 py-1 rounded-md hover:bg-green-600
+                                  `}
+                                  onClick={() => {
+                                    acceoptSellOrder(index, item._id, smsReceiverMobileNumber);
+                                  }}
+                                >
+                                  {acceptingSellOrder[index] && (
                                     <Image
-                                      src="/icon-timer.webp"
-                                      alt="Timer"
-                                      width={28}
-                                      height={28}
+                                      src="/loading.png"
+                                      alt="Loading"
+                                      width={20}
+                                      height={20}
+                                      className="animate-spin"
                                     />
-                                    <p className="text-sm text-zinc-400">{Expires_in} {
-    
-                                      24 - Math.floor((new Date().getTime() - new Date(item.createdAt).getTime()) / 1000 / 60 / 60) - 1
+                                  )}
+                                  {!acceptingSellOrder[index] && 
+                                    Buy
+                                  }
+                                  
+                                </button>
+                              </div>
+                            )}
 
-                                      } {hours} {
-                                        60 - Math.floor((new Date().getTime() - new Date(item.createdAt).getTime()) / 1000 / 60) % 60
-                                      } {minutes}
+                          </td>
 
-                                    </p>
-                                  </div>
+                        </tr>
 
-                                ) : (
-                                  <div className="mt-2 flex flex-row items-center space-x-2">
-                                    {/*
-                                    <Image
-                                      src="/icon-timer.webp"
-                                      alt="Expired"
-                                      width={28}
-                                      height={28}
-                                    />
-                                    <p className="text-sm text-zinc-400">Expired</p>
-                                    */}
-                                  </div>
-                                )}
-    
+                      ))}
+
+                    </tbody>
+
+                  </table>
+
+
+                ) : (
+
+                  <div className="w-full grid gap-4 lg:grid-cols-2 xl:grid-cols-3 justify-center ">
+
+                      {sellOrders.map((item, index) => (
+          
+                        <div
+                          key={index}
+                          className="relative flex flex-col items-center justify-center"
+                        >
+
+
+                          {item.status === 'ordered' && (new Date().getTime() - new Date(item.createdAt).getTime() > 1000 * 60 * 60 * 24) && (
+                            <div className="absolute inset-0 flex justify-center items-center z-10
+                              bg-black bg-opacity-50
+                            ">
+                              <Image
+                                src="/icon-expired.png"
+                                alt="Expired"
+                                width={100}
+                                height={100}
+                                className="opacity-20"
+                              />
                             </div>
+                          )}
 
+                          {item.status === 'cancelled' && (
+                            <div className="absolute inset-0 flex justify-center items-center z-10
+                              bg-black bg-opacity-50
+                            ">
+                              <Image
+                                src="/icon-cancelled.png"
+                                alt="Cancelled"
+                                width={100}
+                                height={100}
+                                className="opacity-20"
+                              />
+                            </div>
                           )}
 
 
+                          <article
+                              //key={index}
+                              className={` w-96 xl:w-full h-full relative
+                                ${item.walletAddress === address ? 'border-green-500' : 'border-gray-200'}
 
-                          { (item.status === 'accepted' || item.status === 'paymentRequested' || item.status === 'cancelled') && (
-                              
-                            <div className={`
-                              ${item.status !== 'cancelled' && 'h-16'}
+                                ${item.status === 'accepted' || item.status === 'paymentRequested' ? 'border-red-600' : 'border-gray-200'}
 
-                              mb-4 flex flex-row items-center bg-zinc-800 px-2 py-1 rounded-md`}>
-                                <Image
-                                  src="/icon-trade.png"
-                                  alt="Trade"
-                                  width={32}
-                                  height={32}
-                                />
+                                p-4 rounded-md border bg-black bg-opacity-50
+                            `}
+                          >
+
+                            {item.status === 'ordered' && (
+
+    
+                              <div className="w-full flex flex-col gpa-2 items-start justify-start">
 
 
-                                <p className="text-sm font-semibold text-green-500 ">
-                                  {item.tradeId}
-                                </p>
+                                  <div className="w-full flex flex-row items-center justify-between gap-2">
 
-                                {item.status === 'cancelled' ? (
-                                  <p className="ml-2 text-sm text-zinc-400">
-                                    {new Date(item.acceptedAt).toLocaleString()}
-                                  </p>
-                                ) : (
-                                  
-                                  <>
-                                    {params.lang === 'kr' ? (
+                                    <div className="flex flex-row items-center gap-2">
 
-                                      <p className="ml-2 text-sm text-zinc-400">
+                                      {/* if createdAt is recent 1 hours, show new badge */}
+                                      {new Date().getTime() - new Date(item.createdAt).getTime() < 1000 * 60 * 60 && (
+                                        <Image
+                                          src="/icon-new.png"
+                                          alt="New"
+                                          width={28}
+                                          height={28}
+                                        />
+                                      )}
 
-                                      
-                                        {new Date().getTime() - new Date(item.acceptedAt).getTime() < 1000 * 60 ? (
-                                          ' ' + Math.floor((new Date().getTime() - new Date(item.acceptedAt).getTime()) / 1000) + ' ' + seconds_ago
-                                        ) :
-                                        new Date().getTime() - new Date(item.acceptedAt).getTime() < 1000 * 60 * 60 ? (
-                                        ' ' + Math.floor((new Date().getTime() - new Date(item.acceptedAt).getTime()) / 1000 / 60) + ' ' + minutes_ago
+                                      <Image
+                                        src="/icon-public-sale.png"
+                                        alt="Public Sale"
+                                        width={28}
+                                        height={28}
+                                      />
+
+                                    
+
+                                      {params.lang === 'kr' ? (
+
+                                        <p className="text-sm text-zinc-400">
+
+                                        
+                                          {
+
+                                            new Date().getTime() - new Date(item.createdAt).getTime() < 1000 * 60 ? (
+                                              ' ' + Math.floor((new Date().getTime() - new Date(item.createdAt).getTime()) / 1000) + ' ' + seconds_ago
+                                            ) :
+                                            new Date().getTime() - new Date(item.createdAt).getTime() < 1000 * 60 * 60 ? (
+                                            ' ' + Math.floor((new Date().getTime() - new Date(item.createdAt).getTime()) / 1000 / 60) + ' ' + minutes_ago
+                                            ) : (
+                                              ' ' + Math.floor((new Date().getTime() - new Date(item.createdAt).getTime()) / 1000 / 60 / 60) + ' ' + hours_ago
+                                            )
+                                          }{' '}{Order_Opened} 
+
+                                        </p>
+                                        
                                         ) : (
-                                          ' ' + Math.floor((new Date().getTime() - new Date(item.acceptedAt).getTime()) / 1000 / 60 / 60) + ' ' + hours_ago
-                                        )
-                                        }{' '}{Trade_Started}
+
+                                          <p className="text-sm text-zinc-400">
+
+
+                                        
+                                          {Order_Opened}{' '}{
+
+                                            new Date().getTime() - new Date(item.createdAt).getTime() < 1000 * 60 ? (
+                                              ' ' + Math.floor((new Date().getTime() - new Date(item.createdAt).getTime()) / 1000) + ' ' + seconds_ago
+                                            ) :
+                                            new Date().getTime() - new Date(item.createdAt).getTime() < 1000 * 60 * 60 ? (
+                                            ' ' + Math.floor((new Date().getTime() - new Date(item.createdAt).getTime()) / 1000 / 60) + ' ' + minutes_ago
+                                            ) : (
+                                              ' ' + Math.floor((new Date().getTime() - new Date(item.createdAt).getTime()) / 1000 / 60 / 60) + ' ' + hours_ago
+                                            )
+                                          }
+
+
+
+                                        </p>
+
+
+                                      )}
+
+                                    </div>
+
+
+
+                                    {/* share button */}
+                                    {/*
+                                    <button
+                                      className="text-sm bg-blue-500 text-white px-2 py-1 rounded-md hover:bg-blue-600"
+                                      onClick={() => {
+
+                                        window.open(`https://next.unove.space/${params.lang}/sell-usdt/${item._id}`, '_blank');
+
+                                      }}
+                                    >
+                                      <Image
+                                        src="/icon-share.png"
+                                        alt="Share"
+                                        width={20}
+                                        height={20}
+                                      />
+                                    </button>
+                                    */}
+
+
+                                  </div>
+
+
+                                  {24 - Math.floor((new Date().getTime() - new Date(item.createdAt).getTime()) / 1000 / 60 / 60) > 0 ? (
+
+                                    <div className="mt-2 flex flex-row items-center space-x-2">
+                                      <Image
+                                        src="/icon-timer.webp"
+                                        alt="Timer"
+                                        width={28}
+                                        height={28}
+                                      />
+                                      <p className="text-sm text-zinc-400">{Expires_in} {
+      
+                                        24 - Math.floor((new Date().getTime() - new Date(item.createdAt).getTime()) / 1000 / 60 / 60) - 1
+
+                                        } {hours} {
+                                          60 - Math.floor((new Date().getTime() - new Date(item.createdAt).getTime()) / 1000 / 60) % 60
+                                        } {minutes}
 
                                       </p>
+                                    </div>
+
+                                  ) : (
+                                    <div className="mt-2 flex flex-row items-center space-x-2">
+                                      {/*
+                                      <Image
+                                        src="/icon-timer.webp"
+                                        alt="Expired"
+                                        width={28}
+                                        height={28}
+                                      />
+                                      <p className="text-sm text-zinc-400">Expired</p>
+                                      */}
+                                    </div>
+                                  )}
+      
+                              </div>
+
+                            )}
 
 
 
-                                    ) : (
+                            { (item.status === 'accepted' || item.status === 'paymentRequested' || item.status === 'cancelled') && (
+                                
+                              <div className={`
+                                ${item.status !== 'cancelled' && 'h-16'}
 
-                                      <p className="ml-2 text-sm text-zinc-400">
+                                mb-4 flex flex-row items-center bg-zinc-800 px-2 py-1 rounded-md`}>
+                                  <Image
+                                    src="/icon-trade.png"
+                                    alt="Trade"
+                                    width={32}
+                                    height={32}
+                                  />
 
-                                        {Trade_Started} {
-                                          new Date().getTime() - new Date(item.acceptedAt).getTime() < 1000 * 60 ? (
+
+                                  <p className="text-sm font-semibold text-green-500 ">
+                                    {item.tradeId}
+                                  </p>
+
+                                  {item.status === 'cancelled' ? (
+                                    <p className="ml-2 text-sm text-zinc-400">
+                                      {new Date(item.acceptedAt).toLocaleString()}
+                                    </p>
+                                  ) : (
+                                    
+                                    <>
+                                      {params.lang === 'kr' ? (
+
+                                        <p className="ml-2 text-sm text-zinc-400">
+
+                                        
+                                          {new Date().getTime() - new Date(item.acceptedAt).getTime() < 1000 * 60 ? (
                                             ' ' + Math.floor((new Date().getTime() - new Date(item.acceptedAt).getTime()) / 1000) + ' ' + seconds_ago
                                           ) :
                                           new Date().getTime() - new Date(item.acceptedAt).getTime() < 1000 * 60 * 60 ? (
@@ -1194,193 +1431,243 @@ export default function Index({ params }: any) {
                                           ) : (
                                             ' ' + Math.floor((new Date().getTime() - new Date(item.acceptedAt).getTime()) / 1000 / 60 / 60) + ' ' + hours_ago
                                           )
-                                        }
+                                          }{' '}{Trade_Started}
 
-                                      </p>
-
-                                    )}
+                                        </p>
 
 
 
+                                      ) : (
 
-                                  </>
-                                 
-                                )}
+                                        <p className="ml-2 text-sm text-zinc-400">
 
+                                          {Trade_Started} {
+                                            new Date().getTime() - new Date(item.acceptedAt).getTime() < 1000 * 60 ? (
+                                              ' ' + Math.floor((new Date().getTime() - new Date(item.acceptedAt).getTime()) / 1000) + ' ' + seconds_ago
+                                            ) :
+                                            new Date().getTime() - new Date(item.acceptedAt).getTime() < 1000 * 60 * 60 ? (
+                                            ' ' + Math.floor((new Date().getTime() - new Date(item.acceptedAt).getTime()) / 1000 / 60) + ' ' + minutes_ago
+                                            ) : (
+                                              ' ' + Math.floor((new Date().getTime() - new Date(item.acceptedAt).getTime()) / 1000 / 60 / 60) + ' ' + hours_ago
+                                            )
+                                          }
 
+                                        </p>
 
-                                  {/* share button */}
-                                  <button
-                                    className="ml-5 text-sm bg-blue-500 text-white px-2 py-1 rounded-md hover:bg-blue-600"
-                                    onClick={() => {
-
-                                      //window.open(`https://next.unove.space/${params.lang}/${params.chain}/sell-usdt/${item._id}`, '_blank');
-
-                                      // copy to clipboard
-
-                                      navigator.clipboard.writeText(`https://next.unove.space/${params.lang}/${params.chain}/sell-usdt/${item._id}`);
-
-                                      toast.success('Link copied to clipboard');
-
-                                    }}
-                                  >
-                                    <Image
-                                      src="/icon-share.png"
-                                      alt="Share"
-                                      width={20}
-                                      height={20}
-                                    />
-                                  </button>
-
-
-
-                              </div>
-                          )}
-
-
-                            {/*
-                            
-                            {item.acceptedAt && (
-                              <p className="mb-2 text-sm text-zinc-400">
-                                Trade started at {new Date(item.acceptedAt).toLocaleDateString() + ' ' + new Date(item.acceptedAt).toLocaleTimeString()}
-                              </p>
-                            )}
-                            */}
+                                      )}
 
 
 
 
-                          {item.status === 'cancelled' && (
-                              <div className="mt-4 flex flex-row items-center gap-2">
-                                <Image
-                                  src='/icon-cancelled.webp'
-                                  alt='cancel'
-                                  width={20}
-                                  height={20}
-                                />
-                                <p className="text-sm text-red-500">
-                                  {Cancelled_at} {
-                                    new Date(item.cancelledAt).toLocaleDateString() + ' ' + new Date(item.cancelledAt).toLocaleTimeString()
-                                  }
-                                </p>
-                              </div>
+                                    </>
+                                  
+                                  )}
+
+
+
+                                    {/* share button */}
+                                    <button
+                                      className="ml-5 text-sm bg-blue-500 text-white px-2 py-1 rounded-md hover:bg-blue-600"
+                                      onClick={() => {
+
+                                        //window.open(`https://next.unove.space/${params.lang}/${params.chain}/sell-usdt/${item._id}`, '_blank');
+
+                                        // copy to clipboard
+
+                                        navigator.clipboard.writeText(`https://next.unove.space/${params.lang}/${params.chain}/sell-usdt/${item._id}`);
+
+                                        toast.success('Link copied to clipboard');
+
+                                      }}
+                                    >
+                                      <Image
+                                        src="/icon-share.png"
+                                        alt="Share"
+                                        width={20}
+                                        height={20}
+                                      />
+                                    </button>
+
+
+
+                                </div>
                             )}
 
 
-
-
-                  
-
-                            <div className="mt-4 flex flex-col items-start">
-
-
-
-                              <p className="text-2xl text-zinc-400">
-                                {Price}: {
-                                  // currency
-                                
-                                  Number(item.krwAmount).toLocaleString('ko-KR', {
-                                    style: 'currency',
-                                    currency: 'KRW',
-                                  })
-
-                                }
-                              </p>
-
-                              <div className="mt-2 flex flex-row items-start gap-2">
-
-                                <p className="text-xl font-semibold text-white">
-                                  {item.usdtAmount}{' '}USDT
+                              {/*
+                              
+                              {item.acceptedAt && (
+                                <p className="mb-2 text-sm text-zinc-400">
+                                  Trade started at {new Date(item.acceptedAt).toLocaleDateString() + ' ' + new Date(item.acceptedAt).toLocaleTimeString()}
                                 </p>
-                                <p className="text-lg font-semibold text-white">{Rate}: {
-
-                                  Number(item.krwAmount / item.usdtAmount).toFixed(2)
-
-                                  }</p>
-                              </div>
-
-
-                            </div>
-
-                    
-
-                            <div className="mb-4 flex flex-col items-start text-sm ">
-                              {Payment}: {Bank_Transfer} ({item.seller?.bankInfo.bankName})
-                            </div>
+                              )}
+                              */}
 
 
 
-                            <div className="flex flex-col items-start justify-start gap-2">
-                              <p className="mt-2 mb-2 flex items-center gap-2">
 
-                                <Image
-                                    src={item.avatar || '/profile-default.png'}
-                                    alt="Avatar"
-                                    width={32}
-                                    height={32}
-                                    priority={true} // Added priority property
-                                    className="rounded-full"
-                                    style={{
-                                        objectFit: 'cover',
-                                        width: '32px',
-                                        height: '32px',
-                                    }}
-                                />
-
-                                <div className="flex items-center space-x-2">{Seller}:</div>
-
-                                <h2 className="text-lg font-semibold">
-                                  {item.walletAddress === address ? 'Me' : item.nickname}
-                                
-                                </h2>
-
-                                <Image
-                                  src="/verified.png"
-                                  alt="Verified"
-                                  width={20}
-                                  height={20}
-                                  className="rounded-lg"
-                                />
-
-                                <Image
-                                  src="/best-seller.png"
-                                  alt="Best Seller"
-                                  width={20}
-                                  height={20}
-                                  className="rounded-lg"
-                                />
-
-                              </p>
-
-
-                              {address && item.walletAddress !== address && item.buyer && item.buyer.walletAddress === address && (
-                                <button
-                                  className="bg-green-500 text-white px-4 py-2 rounded-lg"
-                                  onClick={() => {
-                                      //console.log('Buy USDT');
-                                      // go to chat
-                                      // close modal
-                                      //closeModal();
-                                      ///goChat(item._id, item.tradeId);
-
-                                      router.push(`/${params.lang}/${params.chain}/sell-usdt/${item._id}`);
-
-                                  }}
-                                >
-                                  {Chat_with_Seller + ' ' + item.nickname}
-                                </button>
+                            {item.status === 'cancelled' && (
+                                <div className="mt-4 flex flex-row items-center gap-2">
+                                  <Image
+                                    src='/icon-cancelled.webp'
+                                    alt='cancel'
+                                    width={20}
+                                    height={20}
+                                  />
+                                  <p className="text-sm text-red-500">
+                                    {Cancelled_at} {
+                                      new Date(item.cancelledAt).toLocaleDateString() + ' ' + new Date(item.cancelledAt).toLocaleTimeString()
+                                    }
+                                  </p>
+                                </div>
                               )}
 
 
-                            </div>
+
+
+                    
+
+                              <div className="mt-4 flex flex-col items-start">
+
+
+
+                                <p className="text-2xl text-zinc-400">
+                                  {Price}: {
+                                    // currency
+                                  
+                                    Number(item.krwAmount).toLocaleString('ko-KR', {
+                                      style: 'currency',
+                                      currency: 'KRW',
+                                    })
+
+                                  }
+                                </p>
+
+                                <div className="mt-2 flex flex-row items-start gap-2">
+
+                                  <p className="text-xl font-semibold text-white">
+                                    {item.usdtAmount}{' '}USDT
+                                  </p>
+                                  <p className="text-lg font-semibold text-white">{Rate}: {
+
+                                    Number(item.krwAmount / item.usdtAmount).toFixed(2)
+
+                                    }</p>
+                                </div>
+
+
+                              </div>
+
+                      
+
+                              <div className="mb-4 flex flex-col items-start text-sm ">
+                                {Payment}: {Bank_Transfer} ({item.seller?.bankInfo.bankName})
+                              </div>
+
+
+
+                              <div className="flex flex-col items-start justify-start gap-2">
+                                <p className="mt-2 mb-2 flex items-center gap-2">
+
+                                  <Image
+                                      src={item.avatar || '/profile-default.png'}
+                                      alt="Avatar"
+                                      width={32}
+                                      height={32}
+                                      priority={true} // Added priority property
+                                      className="rounded-full"
+                                      style={{
+                                          objectFit: 'cover',
+                                          width: '32px',
+                                          height: '32px',
+                                      }}
+                                  />
+
+                                  <div className="flex items-center space-x-2">{Seller}:</div>
+
+                                  <h2 className="text-lg font-semibold">
+                                    {item.walletAddress === address ? 'Me' : item.nickname}
+                                  
+                                  </h2>
+
+                                  <Image
+                                    src="/verified.png"
+                                    alt="Verified"
+                                    width={20}
+                                    height={20}
+                                    className="rounded-lg"
+                                  />
+
+                                  <Image
+                                    src="/best-seller.png"
+                                    alt="Best Seller"
+                                    width={20}
+                                    height={20}
+                                    className="rounded-lg"
+                                  />
+
+                                </p>
+
+
+                                {address && item.walletAddress !== address && item.buyer && item.buyer.walletAddress === address && (
+                                  <button
+                                    className="bg-green-500 text-white px-4 py-2 rounded-lg"
+                                    onClick={() => {
+                                        //console.log('Buy USDT');
+                                        // go to chat
+                                        // close modal
+                                        //closeModal();
+                                        ///goChat(item._id, item.tradeId);
+
+                                        router.push(`/${params.lang}/${params.chain}/sell-usdt/${item._id}`);
+
+                                    }}
+                                  >
+                                    {Chat_with_Seller + ' ' + item.nickname}
+                                  </button>
+                                )}
+
+
+                              </div>
 
 
 
 
-                            {/* buyer cancelled the trade */}
-                            {item.status === 'cancelled' && (
-                              <div className="mt-4 flex flex-col gap-2 items-start justify-center">
-                                <div className="flex flex-row items-center gap-2">
+                              {/* buyer cancelled the trade */}
+                              {item.status === 'cancelled' && (
+                                <div className="mt-4 flex flex-col gap-2 items-start justify-center">
+                                  <div className="flex flex-row items-center gap-2">
+                                    <Image
+                                      src={item.buyer.avatar || "/profile-default.png"}
+                                      alt="Profile Image"
+                                      width={32}
+                                      height={32}
+                                      priority={true} // Added priority property
+                                      className="rounded-full"
+                                      style={{
+                                          objectFit: 'cover',
+                                          width: '32px',
+                                          height: '32px',
+                                      }}
+                                    />
+                                    <p className="text-sm text-red-500 font-semibold">
+                                      {Buyer}: {
+                                        address && item.buyer.walletAddress === address ? Me :
+                                        address && item.buyer.nickname ? item.buyer.nickname : Anonymous
+                                      }
+                                    </p>
+  
+                                  </div>
+
+
+                                </div>
+                              )}
+
+
+
+                              {(item.status === 'accepted' || item.status === 'paymentRequested') && (
+                          
+                                <div className="mt-4 flex flex-row items-center gap-2">
                                   <Image
                                     src={item.buyer.avatar || "/profile-default.png"}
                                     alt="Profile Image"
@@ -1394,216 +1681,35 @@ export default function Index({ params }: any) {
                                         height: '32px',
                                     }}
                                   />
-                                  <p className="text-xl text-red-500 font-semibold">
+                                  <p className="text-xl text-green-500 font-semibold">
                                     {Buyer}: {
-                                      address && item.buyer.walletAddress === address ? Me :
-                                      address && item.buyer.nickname ? item.buyer.nickname : Anonymous
+                                      item.buyer.walletAddress === address ? Me :
+                                      item.buyer.nickname.substring(0, 1) + '***'
                                     }
                                   </p>
- 
-                                </div>
-
-
-                              </div>
-                            )}
-
-
-
-                            {(item.status === 'accepted' || item.status === 'paymentRequested') && (
-                         
-                              <div className="mt-4 flex flex-row items-center gap-2">
-                                <Image
-                                  src={item.buyer.avatar || "/profile-default.png"}
-                                  alt="Profile Image"
-                                  width={32}
-                                  height={32}
-                                  priority={true} // Added priority property
-                                  className="rounded-full"
-                                  style={{
-                                      objectFit: 'cover',
-                                      width: '32px',
-                                      height: '32px',
-                                  }}
-                                />
-                                <p className="text-xl text-green-500 font-semibold">
-                                  {Buyer}: {
-                                    item.buyer.walletAddress === address ? Me :
-                                    item.buyer.nickname.substring(0, 1) + '***'
-                                  }
-                                </p>
-                                <Image
-                                  src="/verified.png"
-                                  alt="Verified"
-                                  width={20}
-                                  height={20}
-                                  className="rounded-lg"
-                                />
-                              </div>
-                            
-                            )}
-                           
-
-                            {/* waiting for escrow */}
-                            {item.status === 'accepted' && (
-
-
-
-                              <div className="mt-4 flex flex-col gap-2 items-center justify-start">
-
-
-                                  
-                                  
-                                <div className="mt-4 flex flex-row gap-2 items-center justify-start">
                                   <Image
-                                    src="/loading.png"
-                                    alt="Escrow"
-                                    width={32}
-                                    height={32}
-                                    className="animate-spin"
+                                    src="/verified.png"
+                                    alt="Verified"
+                                    width={20}
+                                    height={20}
+                                    className="rounded-lg"
                                   />
-
-                                  <div className="flex flex-col gap-2 items-start">
-                                    <span>
-                                      {Waiting_for_seller_to_deposit} {item.usdtAmount} USDT {to_escrow}...
-                                    </span>
-
-                                    <span className="text-sm text-zinc-400">
-
-                                      {If_the_seller_does_not_deposit_the_USDT_to_escrow},
-
-                                      {this_trade_will_be_cancelled_in} {
-
-                                        (1 - Math.floor((new Date().getTime() - new Date(item.acceptedAt).getTime()) / 1000 / 60 / 60) - 1) > 0
-                                        ? (1 - Math.floor((new Date().getTime() - new Date(item.acceptedAt).getTime()) / 1000 / 60 / 60) - 1) + ' ' + hours
-                                        : (60 - Math.floor((new Date().getTime() - new Date(item.acceptedAt).getTime()) / 1000 / 60) % 60) + ' ' + minutes
-
-                                      } 
-
-                                    </span>
-                                  </div>
                                 </div>
+                              
+                              )}
+                            
+
+                              {/* waiting for escrow */}
+                              {item.status === 'accepted' && (
 
 
 
+                                <div className="mt-4 flex flex-col gap-2 items-center justify-start">
 
 
-                                {item.buyer.walletAddress === address && (
-
-                                  <div className="mt-4 flex flex-col items-center justify-center gap-2">
-
-
-
-                                    <div className="flex flex-row items-center gap-2">
-                                      <input
-                                        type="checkbox"
-                                        checked={agreementForCancelTrade[index]}
-                                        onChange={(e) => {
-                                          setAgreementForCancelTrade(
-                                            sellOrders.map((item, idx) => {
-                                              if (idx === index) {
-                                                return e.target.checked;
-                                              } else {
-                                                return false;
-                                              }
-                                            })
-                                          );
-                                        }}
-                                      />
-                                      <label className="text-sm text-zinc-400">
-                                        {I_agree_to_cancel_the_trade}
-                                      </label>
-                                    </div>
-
-
-                                    <div className="mt-5 flex flex-row items-center gap-2">
-
-                                      <button
-                                        disabled={cancellings[index] || !agreementForCancelTrade[index]}
-                                        className={`text-sm bg-red-500 text-white px-2 py-1 rounded-md ${cancellings[index] || !agreementForCancelTrade[index] ? 'opacity-50 cursor-not-allowed' : 'hover:bg-red-600'}`}
-                                        onClick={() => {
-                                          // api call
-                                          // cancelSellOrder
-
-                                          cancelTrade(item._id, index);
-
-                                        }}
-                                      >
-
-                                        <div className="flex flex-row items-center gap-2 px-2 py-1">
-                                          {cancellings[index] ? (
-                                            <div className="
-                                              w-4 h-4
-                                              border-2 border-zinc-800
-                                              rounded-full
-                                              animate-spin
-                                            ">
-                                              <Image
-                                                src="/loading.png"
-                                                alt="loading"
-                                                width={16}
-                                                height={16}
-                                              />
-                                            </div>
-                                          ) : (
-                                            <Image
-                                              src="/icon-cancelled.png"
-                                              alt="Cancel"
-                                              width={16}
-                                              height={16}
-                                            />
-                                          )}
-                                          {Cancel_My_Trade}
-                                        </div>
-                                          
-                                      
-                                      </button>
-                                    </div>
-
-                                  </div>
-
-                                )}
-
-
-                              </div>
-                            )}
-
-                            {/* waiting for payment */}
-                            {item.status === 'paymentRequested' && (
-
-                                <div className="mt-4 flex flex-col gap-2 items-start justify-start">
-
-                                  <div className="flex flex-row items-center gap-2">
-
-                                    <Image
-                                      src="/smart-contract.png"
-                                      alt="Smart Contract"
-                                      width={32}
-                                      height={32}
-                                    />
-                                    <div>{Escrow}: {item.usdtAmount} USDT</div>
-                                    <button
-                                      className="bg-white text-black px-2 py-2 rounded-md"
-                                      onClick={() => {
-                             
-                                          params.chain === 'arbitrum' ? window.open(`https://arbiscan.io/tx/${item.escrowTransactionHash}`) : window.open(`https://polygonscan.com/tx/${item.escrowTransactionHash}`);
-                                          
-
-
-                                      }}
-                                    >
-                                      <Image
-                                        src={params.chain === 'arbitrum' ? '/logo-arbitrum.png' : '/logo-polygon.png'}
-                                        alt="Chain"
-                                        width={20}
-                                        height={20}
-                                      />
-                                    </button>
-                                  </div>
-
-                                  <div className="flex flex-row gap-2 items-center justify-start">
-
-                                    {/* rotate loading icon */}
-                                  
+                                    
+                                    
+                                  <div className="mt-4 flex flex-row gap-2 items-center justify-start">
                                     <Image
                                       src="/loading.png"
                                       alt="Escrow"
@@ -1612,199 +1718,356 @@ export default function Index({ params }: any) {
                                       className="animate-spin"
                                     />
 
-                                    <div>Waiting for buyer to send {
-                                    item.krwAmount.toLocaleString('ko-KR', {
-                                      style: 'currency',
-                                      currency: 'KRW',
-                                    })} to seller...</div>
-                                  
+                                    <div className="flex flex-col gap-2 items-start">
+                                      <span>
+                                        {Waiting_for_seller_to_deposit} {item.usdtAmount} USDT {to_escrow}...
+                                      </span>
 
+                                      <span className="text-sm text-zinc-400">
+
+                                        {If_the_seller_does_not_deposit_the_USDT_to_escrow},
+
+                                        {this_trade_will_be_cancelled_in} {
+
+                                          (1 - Math.floor((new Date().getTime() - new Date(item.acceptedAt).getTime()) / 1000 / 60 / 60) - 1) > 0
+                                          ? (1 - Math.floor((new Date().getTime() - new Date(item.acceptedAt).getTime()) / 1000 / 60 / 60) - 1) + ' ' + hours
+                                          : (60 - Math.floor((new Date().getTime() - new Date(item.acceptedAt).getTime()) / 1000 / 60) % 60) + ' ' + minutes
+
+                                        } 
+
+                                      </span>
+                                    </div>
                                   </div>
 
 
-                                </div>
-                            )}
 
 
 
-                           
+                                  {item.buyer.walletAddress === address && (
+
+                                    <div className="mt-4 flex flex-col items-center justify-center gap-2">
 
 
 
+                                      <div className="flex flex-row items-center gap-2">
+                                        <input
+                                          type="checkbox"
+                                          checked={agreementForCancelTrade[index]}
+                                          onChange={(e) => {
+                                            setAgreementForCancelTrade(
+                                              sellOrders.map((item, idx) => {
+                                                if (idx === index) {
+                                                  return e.target.checked;
+                                                } else {
+                                                  return false;
+                                                }
+                                              })
+                                            );
+                                          }}
+                                        />
+                                        <label className="text-sm text-zinc-400">
+                                          {I_agree_to_cancel_the_trade}
+                                        </label>
+                                      </div>
 
 
-                            {item.status === 'ordered' && (
-                              <>
+                                      <div className="mt-5 flex flex-row items-center gap-2">
 
-                              {acceptingSellOrder[index] ? (
+                                        <button
+                                          disabled={cancellings[index] || !agreementForCancelTrade[index]}
+                                          className={`text-sm bg-red-500 text-white px-2 py-1 rounded-md ${cancellings[index] || !agreementForCancelTrade[index] ? 'opacity-50 cursor-not-allowed' : 'hover:bg-red-600'}`}
+                                          onClick={() => {
+                                            // api call
+                                            // cancelSellOrder
 
-                                <div className="flex flex-row items-center gap-2">
-                                  <Image
-                                    src='/loading.png'
-                                    alt='loading'
-                                    width={35}
-                                    height={35}
-                                    className="animate-spin"
-                                  />
-                                  <div>{Accepting_Order}...</div>
-                                </div>
+                                            cancelTrade(item._id, index);
 
+                                          }}
+                                        >
 
-                              ) : (
-                                <>
-                                  
-                                  {item.walletAddress === address ? (
-                                    <div className="flex flex-col space-y-4">
-                                      {My_Order}
-                                    </div>
-                                  ) : (
-                                    <div className="w-full flex items-center justify-center">
-
-                                      {item.status === 'ordered' && (
-                                        
-                                        // check if the order is expired
-                                        new Date().getTime() - new Date(item.createdAt).getTime() > 1000 * 60 * 60 * 24
-
-                                      ) ? (
-
-                                        <>
-                                          {/*
-                                          <Image
-                                            src="/icon-expired.png"
-                                            alt="Expired"
-                                            width={80}
-                                            height={80}
-                                          />
-                                          */}
-                                       
-                                       </>
-                                      ) : (
-
-                                        <div className="mt-4 flex flex-col items-center justify-center">
-
-
-
-
-
-
-                                          {/* agreement for trade */}
-                                          <div className="flex flex-row items-center space-x-2">
-                                            <input
-                                              disabled={!address}
-                                              type="checkbox"
-                                              checked={agreementForTrade[index]}
-                                              onChange={(e) => {
-                                                  setAgreementForTrade(
-                                                      sellOrders.map((item, idx) => {
-                                                          if (idx === index) {
-                                                              return e.target.checked;
-                                                          } else {
-                                                              return false;
-                                                          }
-                                                      })
-                                                  );
-                                              }}
-                                            />
-                                            <label className="text-sm text-zinc-400">
-                                              {I_agree_to_the_terms_of_trade}
-                                            </label>
-                                          </div>
-
-
-
-                                          {/* input sms receiver mobile number */}
-
-                                          {address && agreementForTrade[index] && (
-                                            <div className="mt-8 flex flex-row items-center justify-start gap-2">
-
-                                              <span className="text-sm text-zinc-400">SMS</span>
-
-                                              <div className="flex flex-col items-start justify-start">
-                                                <input
-                                                  disabled={!address || !agreementForTrade[index]}
-                                                  type="text"
-                                                  placeholder="SMS Receiver Mobile Number"
-                                                  className={`w-full px-4 py-2 rounded-md text-black`}
-                                                  value={smsReceiverMobileNumber}
-                                                  onChange={(e) => {
-                                                      setSmsReceiverMobileNumber(e.target.value);
-                                                  }}
+                                          <div className="flex flex-row items-center gap-2 px-2 py-1">
+                                            {cancellings[index] ? (
+                                              <div className="
+                                                w-4 h-4
+                                                border-2 border-zinc-800
+                                                rounded-full
+                                                animate-spin
+                                              ">
+                                                <Image
+                                                  src="/loading.png"
+                                                  alt="loading"
+                                                  width={16}
+                                                  height={16}
                                                 />
                                               </div>
-                                            </div>
-                                          )}
+                                            ) : (
+                                              <Image
+                                                src="/icon-cancelled.png"
+                                                alt="Cancel"
+                                                width={16}
+                                                height={16}
+                                              />
+                                            )}
+                                            {Cancel_My_Trade}
+                                          </div>
+                                            
+                                        
+                                        </button>
+                                      </div>
+
+                                    </div>
+
+                                  )}
+
+
+                                </div>
+                              )}
+
+                              {/* waiting for payment */}
+                              {item.status === 'paymentRequested' && (
+
+                                  <div className="mt-4 flex flex-col gap-2 items-start justify-start">
+
+                                    <div className="flex flex-row items-center gap-2">
+
+                                      <Image
+                                        src="/smart-contract.png"
+                                        alt="Smart Contract"
+                                        width={32}
+                                        height={32}
+                                      />
+                                      <div>{Escrow}: {item.usdtAmount} USDT</div>
+                                      <button
+                                        className="bg-white text-black px-2 py-2 rounded-md"
+                                        onClick={() => {
+                              
+                                            params.chain === 'arbitrum' ? window.open(`https://arbiscan.io/tx/${item.escrowTransactionHash}`) : window.open(`https://polygonscan.com/tx/${item.escrowTransactionHash}`);
+                                            
+
+
+                                        }}
+                                      >
+                                        <Image
+                                          src={params.chain === 'arbitrum' ? '/logo-arbitrum.png' : '/logo-polygon.png'}
+                                          alt="Chain"
+                                          width={20}
+                                          height={20}
+                                        />
+                                      </button>
+                                    </div>
+
+                                    <div className="flex flex-row gap-2 items-center justify-start">
+
+                                      {/* rotate loading icon */}
+                                    
+                                      <Image
+                                        src="/loading.png"
+                                        alt="Escrow"
+                                        width={32}
+                                        height={32}
+                                        className="animate-spin"
+                                      />
+
+                                      <div>Waiting for buyer to send {
+                                      item.krwAmount.toLocaleString('ko-KR', {
+                                        style: 'currency',
+                                        currency: 'KRW',
+                                      })} to seller...</div>
+                                    
+
+                                    </div>
+
+
+                                  </div>
+                              )}
+
+
+
+                            
 
 
 
 
 
-                                          <button
-                                            disabled={!address || !agreementForTrade[index]}
-                                            className={`m-10 text-lg text-white px-4 py-2 rounded-md
-                                              ${!address || !agreementForTrade[index] ? 'bg-zinc-800' : 'bg-green-500 hover:bg-green-600'}
-                                              `}
-                                            onClick={() => {
-  
-                                                acceoptSellOrder(index, item._id, smsReceiverMobileNumber);
+                              {item.status === 'ordered' && (
+                                <>
+
+                                {acceptingSellOrder[index] ? (
+
+                                  <div className="flex flex-row items-center gap-2">
+                                    <Image
+                                      src='/loading.png'
+                                      alt='loading'
+                                      width={35}
+                                      height={35}
+                                      className="animate-spin"
+                                    />
+                                    <div>{Accepting_Order}...</div>
+                                  </div>
+
+
+                                ) : (
+                                  <>
+                                    
+                                    {item.walletAddress === address ? (
+                                      <div className="flex flex-col space-y-4">
+                                        {My_Order}
+                                      </div>
+                                    ) : (
+                                      <div className="w-full flex items-center justify-center">
+
+                                        {item.status === 'ordered' && (
                                           
+                                          // check if the order is expired
+                                          new Date().getTime() - new Date(item.createdAt).getTime() > 1000 * 60 * 60 * 24
 
-                                            }}
-                                          >
-                                            {Buy} {item.usdtAmount} USDT
-                                          </button>
+                                        ) ? (
+
+                                          <>
+                                            {/*
+                                            <Image
+                                              src="/icon-expired.png"
+                                              alt="Expired"
+                                              width={80}
+                                              height={80}
+                                            />
+                                            */}
+                                        
+                                        </>
+                                        ) : (
+
+                                          <div className="mt-4 flex flex-col items-center justify-center">
 
 
-                                        </div>
+
+
+
+
+                                            {/* agreement for trade */}
+                                            <div className="flex flex-row items-center space-x-2">
+                                              <input
+                                                disabled={!address}
+                                                type="checkbox"
+                                                checked={agreementForTrade[index]}
+                                                onChange={(e) => {
+                                                    setAgreementForTrade(
+                                                        sellOrders.map((item, idx) => {
+                                                            if (idx === index) {
+                                                                return e.target.checked;
+                                                            } else {
+                                                                return false;
+                                                            }
+                                                        })
+                                                    );
+                                                }}
+                                              />
+                                              <label className="text-sm text-zinc-400">
+                                                {I_agree_to_the_terms_of_trade}
+                                              </label>
+                                            </div>
+
+
+
+                                            {/* input sms receiver mobile number */}
+
+                                            {address && agreementForTrade[index] && (
+                                              <div className="mt-8 flex flex-row items-center justify-start gap-2">
+
+                                                <span className="text-sm text-zinc-400">SMS</span>
+
+                                                <div className="flex flex-col items-start justify-start">
+                                                  <input
+                                                    disabled={!address || !agreementForTrade[index]}
+                                                    type="text"
+                                                    placeholder="SMS Receiver Mobile Number"
+                                                    className={`w-full px-4 py-2 rounded-md text-black`}
+                                                    value={smsReceiverMobileNumber}
+                                                    onChange={(e) => {
+                                                        setSmsReceiverMobileNumber(e.target.value);
+                                                    }}
+                                                  />
+                                                </div>
+                                              </div>
+                                            )}
+
+
+
+
+
+                                            <button
+                                              disabled={!address || !agreementForTrade[index]}
+                                              className={`m-10 text-lg text-white px-4 py-2 rounded-md
+                                                ${!address || !agreementForTrade[index] ? 'bg-zinc-800' : 'bg-green-500 hover:bg-green-600'}
+                                                `}
+                                              onClick={() => {
+    
+                                                  acceoptSellOrder(index, item._id, smsReceiverMobileNumber);
+                                            
+
+                                              }}
+                                            >
+                                              {Buy} {item.usdtAmount} USDT
+                                            </button>
+
+
+                                          </div>
+
+                                        )}
+
+                                      </div>
+
+
 
                                       )}
 
-                                    </div>
+                                    </>
+
+                                  )}
+
+                                </>
+
+                              )}
 
 
 
-                                    )}
-
-                                  </>
-
-                                )}
-
-                              </>
-
-                            )}
-
-
-
-                        </article>
+                          </article>
 
 
 
 
-                        {/* status */}
-                        {/*
-                        <div className="absolute bottom-4 right-4 flex flex-row items-start justify-start">
-                          <div className="text-xs text-zinc-400">
-                            {item.status === 'ordered' ? 'Order opened at ' + new Date(item.createdAt).toLocaleString()
-                            : item.status === 'accepted' ? 'Trade started at ' + new Date(item.acceptedAt).toLocaleString()
-                            : item.status === 'paymentRequested' ? 'Payment requested at ' + new Date(item.paymentRequestedAt).toLocaleString()
-                            : item.status === 'cancelled' ? 'Trade cancelled at ' + new Date(item.cancelledAt).toLocaleString()
-                            : item.status === 'paymentConfirmed' ? 'Trade completed at ' + new Date(item.paymentConfirmedAt).toLocaleString()
-                            : 'Unknown'}
+                          {/* status */}
+                          {/*
+                          <div className="absolute bottom-4 right-4 flex flex-row items-start justify-start">
+                            <div className="text-xs text-zinc-400">
+                              {item.status === 'ordered' ? 'Order opened at ' + new Date(item.createdAt).toLocaleString()
+                              : item.status === 'accepted' ? 'Trade started at ' + new Date(item.acceptedAt).toLocaleString()
+                              : item.status === 'paymentRequested' ? 'Payment requested at ' + new Date(item.paymentRequestedAt).toLocaleString()
+                              : item.status === 'cancelled' ? 'Trade cancelled at ' + new Date(item.cancelledAt).toLocaleString()
+                              : item.status === 'paymentConfirmed' ? 'Trade completed at ' + new Date(item.paymentConfirmedAt).toLocaleString()
+                              : 'Unknown'}
+                            </div>
                           </div>
+                          */}
+
+
+
+
+
+
                         </div>
-                        */}
+                  
+                      ))}
 
+                  </div>
 
+                )}
 
+            
 
-
-
-                      </div>
-                 
-                    ))}
-
-                </div>
 
             </div>
+
+        
 
             
           </div>
