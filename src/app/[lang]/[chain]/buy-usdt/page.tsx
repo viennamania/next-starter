@@ -1075,7 +1075,7 @@ export default function Index({ params }: any) {
                                 }
                               </div>
                               <div className="text-sm font-semibold text-white">
-                                {Number(item.krwAmount / item.usdtAmount).toFixed(2)} {Rate}
+                              {Rate}{' '}{Number(item.krwAmount / item.usdtAmount).toFixed(2)}
                               </div>
                             </td>
 
