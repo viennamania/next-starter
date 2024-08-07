@@ -304,6 +304,13 @@
     "When_the_deposit_is_completed": "When the deposit is completed, the escrowed USDT will be transferred to the buyer's wallet.",
 
 
-    "Please_enter_deposit_name": "Please enter deposit name"
+    "Please_enter_deposit_name": "Please enter deposit name",
+
+    "Your_wallet_address_is_copied": "Your wallet address is copied",
+
+    "Charge": "Charge",
+
+  
+    "Deposit_name_description": "When you deposit, please enter the deposit name in the deposit name field. If you do not enter the deposit name, the deposit may not be reflected in your account."
 
 }

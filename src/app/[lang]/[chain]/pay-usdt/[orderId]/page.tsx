@@ -330,6 +330,14 @@ export default function Index({ params }: any) {
 
       Please_enter_deposit_name: "",
 
+      Copy: "",
+
+      Your_wallet_address_is_copied: "",
+
+      Charge: "",
+
+      Deposit_name_description: "",
+
 
     } );
   
@@ -455,6 +463,14 @@ export default function Index({ params }: any) {
       Completed_at,
 
       Please_enter_deposit_name,
+
+      Copy,
+
+      Your_wallet_address_is_copied,
+
+      Charge,
+
+      Deposit_name_description,
 
     } = data;
    
@@ -1749,18 +1765,39 @@ export default function Index({ params }: any) {
           </div>
 
           {address ? (
-            <div className="mt-5 flex flex-col items-center space-y-4 mb-4">
+            <div className="mt-5 flex flex-col items-center gap-2 mb-4">
 
               {/* wallet address */}
+              <div className='flex flex-row gap-2 items-center justify-center'>
+                {/* store code */}
+                <div className="text-lg text-white">
+                  상점: {storecode}
+                </div>
+                <div className="text-lg text-white">
+                  아이디: {memberid}
+                </div>
+              </div>
               <div className="text-lg text-white">
-                {My_Wallet_Address}
+                  {My_Wallet_Address}
+                </div>
+              <div className='flex flex-row gap-2 items-center justify-center'>
+                <div className="text-sm xl:text-lg text-white">
+                  {address}
+                </div>
+                <button
+                  onClick={() => {
+                    navigator.clipboard.writeText(address);
+                    toast.success(Your_wallet_address_is_copied);
+                  }}
+                  className="text-sm bg-zinc-100 text-black px-4 py-2 rounded-md hover:bg-zinc-200"
+                >
+                  {Copy}
+                </button>
               </div>
-              <div className="text-sm xl:text-lg text-white">
-                {address}
-              </div>
+
+
               <div className=" flex flex-row items-center justify-center gap-2">
-                {/* dot */}
-                <div className="w-1 h-1 bg-zinc-100 rounded-full"></div>
+                <div className="w-1 h-1 bg-green-500 rounded-full"></div>
                 <span className="text-sm text-white">
                   {Please_keep_Your_Wallet_address_safe}
                 </span>
@@ -2049,6 +2086,7 @@ export default function Index({ params }: any) {
                             {Deposit_Name}
                           </span>
                           <input
+                            disabled={!address || !selectedKrwAmount || acceptingSellOrderRandom}
                             type="text"
                             value={depositName}
                             onChange={(e) => setDepositName(e.target.value)}
@@ -2090,11 +2128,19 @@ export default function Index({ params }: any) {
                             )}
                             
                             <span  className="ml-2">
-                              USDT {Buy}
+                              {Charge}
                             </span>
 
                           </button>
 
+                        </div>
+
+                        {/* deposit name description */}
+                        <div className='flex flex-row gap-2 items-center justify-center'>
+                          <div className="w-1 h-1 bg-green-500 rounded-full"></div>
+                          <span className="text-sm text-white">
+                            {Deposit_name_description}
+                          </span>
                         </div>
 
 

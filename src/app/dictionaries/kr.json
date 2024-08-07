@@ -261,10 +261,16 @@
 
     "When_the_deposit_is_completed": "입금이 완료되면 에스크로한 USDT가 구매자 지갑으로 이체됩니다.",
 
-    "Please_enter_deposit_name": "입금자명을 입력하세요"
+    "Please_enter_deposit_name": "입금자명을 입력하세요",
 
 
 
+
+    "Your_wallet_address_is_copied": "지갑 주소가 복사되었습니다",
+
+    "Charge": "충전하기",
+
+    "Deposit_name_description": "입금자명은 은행 송금 시 입력할 이름입니다. 은행 송금 시 반드시 입금자명을 입력해야 합니다. 입금자명을 입력하지 않으면 입금이 지연될 수 있습니다."
 
 
 
