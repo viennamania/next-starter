@@ -211,6 +211,7 @@ export default function Index({ params }: any) {
 
     Cancel_My_Order: "",
 
+
     Order_has_been_placed: "",
 
 
@@ -250,6 +251,12 @@ export default function Index({ params }: any) {
     Cancelled: "",
 
     Deposit_Name: "",
+
+    Request_Payment: "",
+
+    Waiting_for_seller_to_confirm_payment: "",
+
+    Confirm_Payment: "",
 
 
   } );
@@ -355,6 +362,13 @@ export default function Index({ params }: any) {
     Cancelled,
 
     Deposit_Name,
+
+    Request_Payment,
+
+    
+    Waiting_for_seller_to_confirm_payment,
+
+    Confirm_Payment,
 
   } = data;
 
@@ -740,6 +754,368 @@ export default function Index({ params }: any) {
 
 
 
+
+
+
+
+      // request payment check box
+      const [requestPaymentCheck, setRequestPaymentCheck] = useState([] as boolean[]);
+      useEffect(() => {
+          
+          setRequestPaymentCheck(
+            new Array(sellOrders.length).fill(false)
+          );
+    
+      } , [sellOrders]);
+    
+
+
+
+
+    // array of escrowing
+    const [escrowing, setEscrowing] = useState([] as boolean[]);
+
+    useEffect(() => {
+        
+        setEscrowing(
+          new Array(sellOrders.length).fill(false)
+        );
+  
+    } , [sellOrders]);
+
+
+
+
+
+    // array of requestingPayment
+    const [requestingPayment, setRequestingPayment] = useState([] as boolean[]);
+
+    useEffect(() => {
+
+      setRequestingPayment(
+
+        new Array(sellOrders.length).fill(false)
+
+      );
+
+    } , [sellOrders]);
+
+
+
+
+    const requestPayment = async (
+      index: number,
+      orderId: string,
+      tradeId: string,
+      amount: number,
+    ) => {
+      // check balance
+      // send payment request
+
+      if (balance < amount) {
+        toast.error('Insufficient balance');
+        return;
+      }
+
+
+      // check all escrowing is false
+      if (escrowing.some((item) => item === true)) {
+        toast.error('Escrowing');
+        return;
+      }
+
+      // check all requestingPayment is false
+      if (requestingPayment.some((item) => item === true)) {
+        toast.error('Requesting Payment');
+        return;
+      }
+
+
+
+      setEscrowing(
+        escrowing.map((item, idx) => {
+          if (idx === index) {
+            return true;
+          }
+          return item;
+        })
+      );
+
+   
+
+      const recipientWalletAddress = "0x7B773C495b91EEC3c549C7f811d5c53241CeF41f";
+
+      // send USDT
+      // Call the extension function to prepare the transaction
+      const transaction = transfer({
+        contract,
+        to: recipientWalletAddress,
+        amount: amount,
+      });
+      
+
+
+      try {
+
+
+        const transactionResult = await sendAndConfirmTransaction({
+            transaction: transaction,
+            
+            account: smartAccount as any,
+        });
+
+        console.log("transactionResult===", transactionResult);
+
+
+        setEscrowing(
+          escrowing.map((item, idx) => {
+            if (idx === index) {
+              return false;
+            }
+            return item;
+          })
+        );
+
+
+
+        // send payment request
+
+        if (transactionResult) {
+
+          /*
+          setRequestingPayment(
+            requestingPayment.map((item, idx) => {
+              if (idx === index) {
+                return true;
+              }
+              return item;
+            })
+          );
+          */
+          
+          
+
+
+        
+          const response = await fetch('/api/order/requestPayment', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              lang: params.lang,
+              chain: params.chain,
+              orderId: orderId,
+              transactionHash: transactionResult.transactionHash,
+            })
+          });
+
+          const data = await response.json();
+
+          console.log('/api/order/requestPayment data====', data);
+
+
+          /*
+          setRequestingPayment(
+            requestingPayment.map((item, idx) => {
+              if (idx === index) {
+                return false;
+              }
+              return item;
+            })
+          );
+          */
+          
+
+
+          if (data.result) {
+
+
+            const response = await fetch('/api/order/getAllSellOrders', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({
+                lang: params.lang,
+                chain: params.chain,
+                walletAddress: address,
+                searchMyOrders: searchMyOrders
+              })
+            });
+
+            const data = await response.json();
+
+            //console.log('data', data);
+
+            if (data.result) {
+              setSellOrders(data.result.orders);
+            }
+
+
+            // refresh balance
+
+            const result = await balanceOf({
+              contract,
+              address: address,
+            });
+
+            //console.log(result);
+
+            setBalance( Number(result) / 10 ** 6 );
+
+
+            toast.success('Payment request has been sent');
+          } else {
+            toast.error('Payment request has been failed');
+          }
+
+        }
+
+
+      } catch (error) {
+        console.error('Error:', error);
+
+        toast.error('Payment request has been failed');
+
+        setEscrowing(
+          escrowing.map((item, idx) => {
+            if (idx === index) {
+              return false;
+            }
+            return item;
+          })
+        );
+
+      }
+
+
+    }
+
+
+
+
+
+
+  // array of confirmingPayment
+
+  const [confirmingPayment, setConfirmingPayment] = useState([] as boolean[]);
+
+  useEffect(() => {
+      
+      setConfirmingPayment(
+        new Array(sellOrders.length).fill(false)
+      );
+
+  } , [sellOrders]);
+
+
+
+  // confirm payment check box
+  const [confirmPaymentCheck, setConfirmPaymentCheck] = useState([] as boolean[]);
+  useEffect(() => {
+      
+      setConfirmPaymentCheck(
+        new Array(sellOrders.length).fill(false)
+      );
+
+  } , [sellOrders]);
+
+
+
+  const confirmPayment = async (
+
+    index: number,
+    orderId: string,
+
+  ) => {
+    // confirm payment
+    // send usdt to buyer wallet address
+
+    if (confirmingPayment[index]) {
+      return;
+    }
+
+    setConfirmingPayment(
+      confirmingPayment.map((item, idx) => {
+        if (idx === index) {
+          return true;
+        }
+        return item;
+      })
+    );
+
+
+
+    const response = await fetch('/api/order/confirmPayment', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        lang: params.lang,
+        chain: params.chain,
+        orderId: orderId,
+      })
+    });
+
+    const data = await response.json();
+
+    //console.log('data', data);
+
+    if (data.result) {
+
+      const response = await fetch('/api/order/getAllSellOrders', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          lang: params.lang,
+          chain: params.chain,
+          walletAddress: address,
+          searchMyOrders: searchMyOrders
+        })
+      });
+
+      const data = await response.json();
+
+      //console.log('data', data);
+
+      if (data.result) {
+        setSellOrders(data.result.orders);
+      }
+
+      
+
+      toast.success('Payment has been confirmed');
+    } else {
+      toast.error('Payment has been failed');
+    }
+
+    setConfirmingPayment(
+      confirmingPayment.map((item, idx) => {
+        if (idx === index) {
+          return false;
+        }
+        return item;
+      })
+    );
+
+
+
+  }
+
+
+
+
+
+
+
+
+
+
+
     // get sum of escrow balance of my wallet
     // get from sell orders
     const [escrowBalance, setEscrowBalance] = useState(0);
@@ -758,6 +1134,18 @@ export default function Index({ params }: any) {
     } , [sellOrders, address]);
 
     console.log('escrowBalance', escrowBalance);
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1576,14 +1964,131 @@ export default function Index({ params }: any) {
                               </td>
                               
                               <td>
+
+                                {item.status === 'ordered' && (
+                            
+                                  <button
+                                    disabled={cancellings[index]}
+                                    className={`flex flex-row gap-1 text-xs text-white px-2 py-1 rounded-md ${cancellings[index] ? 'bg-gray-500' : 'bg-red-500'}`}
+                                    onClick={() => cancelSellOrder(item._id, index)}
+                                  >
+                                    <Image
+                                      src="/loading.png"
+                                      alt="loading"
+                                      width={16}
+                                      height={16}
+                                      className={cancellings[index] ? 'animate-spin' : 'hidden'}
+                                    />
+                                    <span>{Cancel_My_Order}</span>
+                                   
+                                  </button>
+                                )}
+
+
                                 {item.status === 'paymentConfirmed' && (
                                   <span className="text-green-500">{Completed}</span>
                                 )}
+
                                 {item.status === 'accepted' && (
-                                  <span className="text-yellow-500">{Waiting_for_seller_to_deposit}</span>
+                                  <div className="flex flex-row gap-1">
+
+                                    {/* check box for agreement */}
+                                    <input
+                                      disabled={escrowing[index] || requestingPayment[index]}
+                                      type="checkbox"
+                                      checked={requestPaymentCheck[index]}
+                                      onChange={(e) => {
+                                        setRequestPaymentCheck(
+                                          requestPaymentCheck.map((item, idx) => {
+                                            if (idx === index) {
+                                              return e.target.checked;
+                                            }
+                                            return item;
+                                          })
+                                        );
+                                      }}
+                                    />
+
+                                    <button
+                                      disabled={escrowing[index] || requestingPayment[index] || !requestPaymentCheck[index]}
+                                      
+                                      className={`flex flex-row gap-1 text-xs text-white px-2 py-1 rounded-md ${escrowing[index] || requestingPayment[index] || !requestPaymentCheck[index] ? 'bg-gray-500' : 'bg-green-500'}`}
+                                      onClick={() => {
+                                        /*
+                                              index: number,
+                                        orderId: string,
+                                        tradeId: string,
+                                        amount: number,
+                                        */
+                                        requestPayment(
+                                          index,
+                                          item._id,
+                                          item.tradeId,
+                                          item.usdtAmount
+                                        );
+                                      }}
+                                    >
+                                      <Image
+                                        src="/loading.png"
+                                        alt="loading"
+                                        width={16}
+                                        height={16}
+                                        className={escrowing[index] || requestingPayment[index] ? 'animate-spin' : 'hidden'}
+                                      />
+                                      <span>{Request_Payment}</span>
+                                    
+                                    </button>
+
+                                  </div>
                                 )}
+
                                 {item.status === 'paymentRequested' && (
-                                  <span className="text-yellow-500">{Waiting_for_seller_to_deposit}</span>
+
+                                  <div className="flex flex-row gap-1">
+
+                                    <input
+                                      disabled={confirmingPayment[index]}
+                                      type="checkbox"
+                                      checked={confirmPaymentCheck[index]}
+                                      onChange={(e) => {
+                                        setConfirmPaymentCheck(
+                                          confirmPaymentCheck.map((item, idx) => {
+                                            if (idx === index) {
+                                              return e.target.checked;
+                                            }
+                                            return item;
+                                          })
+                                        );
+                                      }}
+                                    />
+
+                                    <button
+                                      disabled={confirmingPayment[index] || !confirmPaymentCheck[index]}
+                                      className={`flex flex-row gap-1 text-xs text-white px-2 py-1 rounded-md ${confirmingPayment[index] || !confirmPaymentCheck[index] ? 'bg-gray-500' : 'bg-green-500'}`}
+                                      onClick={() => {
+                                        confirmPayment(
+                                          index,
+                                          item._id
+                                        );
+                                      }}
+
+                                    >
+
+                                      <Image
+                                        src="/loading.png"
+                                        alt="loading"
+                                        width={16}
+                                        height={16}
+                                        className={confirmingPayment[index] ? 'animate-spin' : 'hidden'}
+                                      />
+                                      <span>{Confirm_Payment}</span>
+
+                                    </button>
+
+                                  </div>
+
+
+
                                 )}
                                 {item.status === 'cancelled' && (
                                   <span className="text-red-500">{Cancelled}</span>

@@ -1024,11 +1024,8 @@ export default function Index({ params }: any) {
           })
         );
 
-
       }
 
-
-      
 
     }
 
