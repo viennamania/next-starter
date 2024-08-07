@@ -2669,23 +2669,27 @@ export default function Index({ params }: any) {
                               
 
 
-                                <p className="mt-4 text-sm text-zinc-400">
-                                  {Payment}: {item.seller?.bankInfo.bankName} {item.seller?.bankInfo.accountNumber} {item.seller?.bankInfo.accountHolder}
-                                </p> 
-                                <p className="text-sm text-zinc-400">
-                                  {Deposit_Amount}: {item.krwAmount} KRW
-                                </p>
-                                <p className="text-sm text-zinc-400">
-                                  {Deposit_Name}: {
-                                    item.buyer?.depositName ? item.buyer?.depositName : item.tradeId
-                                  }
-                                </p>                        
+                                {item.status === 'paymentConfirmed' && (
+                                  <div className="mt-4 flex flex-col items-start gap-2">
+                                    <p className="mt-4 text-sm text-zinc-400">
+                                      {Payment}: {item.seller?.bankInfo.bankName} {item.seller?.bankInfo.accountNumber} {item.seller?.bankInfo.accountHolder}
+                                    </p> 
+                                    <p className="text-sm text-zinc-400">
+                                      {Deposit_Amount}: {item.krwAmount} KRW
+                                    </p>
+                                    <p className="text-sm text-zinc-400">
+                                      {Deposit_Name}: {
+                                        item.buyer?.depositName ? item.buyer?.depositName : item.tradeId
+                                      }
+                                    </p>                        
 
-                                {/* 판매자가 입급을 확인였습니다. */}
+                                    {/* 판매자가 입급을 확인였습니다. */}
 
-                                <p className="mt-4 text-lg text-green-500">
-                                  {Deposit_Confirmed}
-                                </p>
+                                    <p className="mt-4 text-lg text-green-500">
+                                      {Deposit_Confirmed}
+                                    </p>
+                                  </div>
+                                )}
                                 
 
                             
