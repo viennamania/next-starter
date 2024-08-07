@@ -2428,7 +2428,7 @@ export default function Index({ params }: any) {
 
 
 
-                                    <div className='flex flex-row items-center gap-2'>
+                                    <div className='hidden  flex-row items-center gap-2'>
                                   
                                       {item.privateSale ? (
                                         <Image
@@ -2498,7 +2498,7 @@ export default function Index({ params }: any) {
                                     </div>
 
 
-                                    <div className='flex flex-row items-center gap-2'>
+                                    <div className='hidden flex-row items-center gap-2'>
                                       <div className={
                                         ` ml-4 mr-3 bg-green-500 w-1 h-[20px]
                                         rounded-full`
