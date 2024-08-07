@@ -58,10 +58,10 @@
     "Sell_Description": "Sell USDT and receive your favorite real-world currency.",
 
     "Total": "Total",
-    "Orders": "Orders",
+    "Orders": "Sell Orders",
     "Trades": "Trades",
-    "Completed": "Completed",
-    "Cancelled": "Cancelled",
+    "Completed": "Trade Completed",
+    "Cancelled": "Trade Cancelled",
 
     "Search_my_trades": "Search my trades",
 

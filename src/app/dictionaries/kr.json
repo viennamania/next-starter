@@ -36,10 +36,10 @@
     "Sell_Description": "USDT를 판매하고 좋아하는 실제 통화를 받으세요.",
 
     "Total": "합계",
-    "Orders": "주문",
+    "Orders": "판매주문",
     "Trades": "거래",
-    "Completed": "완료",
-    "Cancelled": "취소",
+    "Completed": "거래완료",
+    "Cancelled": "거래취소",
 
     "Search_my_trades": "내 거래 검색",
 
