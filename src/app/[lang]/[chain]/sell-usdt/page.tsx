@@ -56,6 +56,7 @@ import { it } from "node:test";
 
 import AppBarComponent from "@/components/Appbar/AppBar";
 import { getDictionary } from "../../../dictionaries";
+import { IncomingPhoneNumberContextImpl } from "twilio/lib/rest/api/v2010/account/incomingPhoneNumber";
 
 
 
@@ -1025,10 +1026,27 @@ export default function Index({ params }: any) {
 
 
 
+
+
+  // payment amoount array
+  const [paymentAmounts, setPaymentAmounts] = useState([] as number[]);
+  useEffect(() => {
+
+    // default payment amount is from sellOrders krwAmount
+      
+    setPaymentAmounts(
+      sellOrders.map((item) => item.krwAmount)
+      );
+
+  } , [sellOrders]);
+
+
+
   const confirmPayment = async (
 
     index: number,
     orderId: string,
+    paymentAmount: number,
 
   ) => {
     // confirm payment
@@ -1058,6 +1076,7 @@ export default function Index({ params }: any) {
         lang: params.lang,
         chain: params.chain,
         orderId: orderId,
+        paymentAmount: paymentAmount,
       })
     });
 
@@ -1975,6 +1994,44 @@ export default function Index({ params }: any) {
                                     currency: 'KRW',
                                   })
                                 )}
+
+                                {item.status === 'paymentRequested' && (
+
+                                  <div className="flex flex-col gap-1">
+                                    <input
+                                      disabled={true}
+                                      type="number"
+                                      className="w-24 px-2 py-1 border border-gray-300 rounded-md text-lg text-black"
+                                      placeholder="Amount"
+                                      value={paymentAmounts[index]}
+                                      onChange={(e) => {
+                                        // check number
+                                        e.target.value = e.target.value.replace(/[^0-9.]/g, '');
+
+
+                                        parseFloat(e.target.value) < 0 ? setPaymentAmounts(
+                                          paymentAmounts.map((item, idx) => {
+                                            if (idx === index) {
+                                              return 0;
+                                            }
+                                            return item;
+                                          })
+                                        ) : setPaymentAmounts(
+                                          paymentAmounts.map((item, idx) => {
+                                            if (idx === index) {
+                                              return parseFloat(e.target.value);
+                                            }
+                                            return item;
+                                          })
+                                        );
+
+                                      }
+                                    }
+                                    />
+                                      
+                                  </div>
+
+                                )}
                               </td>
                               
                               <td>
@@ -2000,7 +2057,14 @@ export default function Index({ params }: any) {
 
 
                                 {item.status === 'paymentConfirmed' && (
-                                  <span className="text-lg font-semibold text-green-500">{Completed}</span>
+                                  <div className="flex flex-col gap-1">
+                                    <span className="text-lg font-semibold text-green-500">
+                                      {Completed}
+                                    </span>
+                                    <span>{
+                                      item.paymentConfirmedAt && new Date(item.paymentConfirmedAt).toLocaleString()
+                                    }</span>
+                                  </div>
                                 )}
 
                                 {item.status === 'accepted' && (
@@ -2086,7 +2150,8 @@ export default function Index({ params }: any) {
                                         onClick={() => {
                                           confirmPayment(
                                             index,
-                                            item._id
+                                            item._id,
+                                            paymentAmounts[index]
                                           );
                                         }}
 

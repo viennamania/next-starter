@@ -82,12 +82,14 @@ export async function POST(request: NextRequest) {
 
   const body = await request.json();
 
-  const { lang, chain, orderId } = body;
+  const { lang, chain, orderId, paymentAmount } = body;
 
   console.log("lang", lang);
   console.log("chain", chain);
 
   console.log("orderId", orderId);
+
+  console.log("paymentAmount", paymentAmount);
 
 
 
@@ -187,6 +189,7 @@ export async function POST(request: NextRequest) {
         lang: lang,
         chain: chain,
         orderId: orderId,
+        paymentAmount: paymentAmount,
         transactionHash: sendDataStore.transactionHash,
       });
     
@@ -213,6 +216,14 @@ export async function POST(request: NextRequest) {
 
 
         if (!buyer.mobile) {
+          return NextResponse.json({
+            result,
+          });
+        }
+
+
+        // check buyer.mobile is prefixed with +
+        if (!buyer.mobile.startsWith("+")) {
           return NextResponse.json({
             result,
           });

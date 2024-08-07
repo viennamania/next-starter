@@ -49,7 +49,19 @@ export async function POST(request: NextRequest) {
 
     // send sms
 
+
+    console.log("byuer.mobile", buyer.mobile);
+
+
+
     if (!buyer.mobile) {
+      return NextResponse.json({
+        result,
+      });
+    }
+
+    // check buyer.mobile is prefixed with +
+    if (!buyer.mobile.startsWith("+")) {
       return NextResponse.json({
         result,
       });

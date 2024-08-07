@@ -754,6 +754,9 @@ export async function confirmPayment(data: any) {
     return null;
   }
 
+  const paymentAmount = data.paymentAmount || 0;
+
+
   const client = await clientPromise;
   const collection = client.db('vienna').collection('orders');
 
@@ -765,6 +768,7 @@ export async function confirmPayment(data: any) {
 
     { $set: {
       status: 'paymentConfirmed',
+      paymentAmount: paymentAmount,
       transactionHash: data.transactionHash,
       paymentConfirmedAt: new Date().toISOString(),
     } }
