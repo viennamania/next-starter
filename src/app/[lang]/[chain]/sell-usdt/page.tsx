@@ -258,6 +258,7 @@ export default function Index({ params }: any) {
 
     Confirm_Payment: "",
 
+    Escrow_Completed: "",
 
   } );
 
@@ -369,6 +370,8 @@ export default function Index({ params }: any) {
     Waiting_for_seller_to_confirm_payment,
 
     Confirm_Payment,
+
+    Escrow_Completed,
 
   } = data;
 
@@ -1086,7 +1089,7 @@ export default function Index({ params }: any) {
         setSellOrders(data.result.orders);
       }
 
-      
+
 
       toast.success('Payment has been confirmed');
     } else {
@@ -2044,46 +2047,52 @@ export default function Index({ params }: any) {
 
                                 {item.status === 'paymentRequested' && (
 
-                                  <div className="flex flex-row gap-1">
+                                  <div className="flex flex-col gap-1">
 
-                                    <input
-                                      disabled={confirmingPayment[index]}
-                                      type="checkbox"
-                                      checked={confirmPaymentCheck[index]}
-                                      onChange={(e) => {
-                                        setConfirmPaymentCheck(
-                                          confirmPaymentCheck.map((item, idx) => {
-                                            if (idx === index) {
-                                              return e.target.checked;
-                                            }
-                                            return item;
-                                          })
-                                        );
-                                      }}
-                                    />
+                                    <span className="text-yellow-500">{Escrow_Completed}</span>
 
-                                    <button
-                                      disabled={confirmingPayment[index] || !confirmPaymentCheck[index]}
-                                      className={`flex flex-row gap-1 text-xs text-white px-2 py-1 rounded-md ${confirmingPayment[index] || !confirmPaymentCheck[index] ? 'bg-gray-500' : 'bg-green-500'}`}
-                                      onClick={() => {
-                                        confirmPayment(
-                                          index,
-                                          item._id
-                                        );
-                                      }}
+                                    <div className="flex flex-row gap-1">
 
-                                    >
-
-                                      <Image
-                                        src="/loading.png"
-                                        alt="loading"
-                                        width={16}
-                                        height={16}
-                                        className={confirmingPayment[index] ? 'animate-spin' : 'hidden'}
+                                      <input
+                                        disabled={confirmingPayment[index]}
+                                        type="checkbox"
+                                        checked={confirmPaymentCheck[index]}
+                                        onChange={(e) => {
+                                          setConfirmPaymentCheck(
+                                            confirmPaymentCheck.map((item, idx) => {
+                                              if (idx === index) {
+                                                return e.target.checked;
+                                              }
+                                              return item;
+                                            })
+                                          );
+                                        }}
                                       />
-                                      <span>{Confirm_Payment}</span>
 
-                                    </button>
+                                      <button
+                                        disabled={confirmingPayment[index] || !confirmPaymentCheck[index]}
+                                        className={`flex flex-row gap-1 text-xs text-white px-2 py-1 rounded-md ${confirmingPayment[index] || !confirmPaymentCheck[index] ? 'bg-gray-500' : 'bg-green-500'}`}
+                                        onClick={() => {
+                                          confirmPayment(
+                                            index,
+                                            item._id
+                                          );
+                                        }}
+
+                                      >
+
+                                        <Image
+                                          src="/loading.png"
+                                          alt="loading"
+                                          width={16}
+                                          height={16}
+                                          className={confirmingPayment[index] ? 'animate-spin' : 'hidden'}
+                                        />
+                                        <span>{Confirm_Payment}</span>
+
+                                      </button>
+
+                                    </div>
 
                                   </div>
 
