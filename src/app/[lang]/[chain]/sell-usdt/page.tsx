@@ -1475,17 +1475,18 @@ export default function Index({ params }: any) {
                   <table className="w-full">
                   <thead>
                       <tr
-                          className="bg-gray-800 text-white text-xs h-10"
+                          className="bg-gray-800 text-white text-xs h-10 "
                       >
 
-                          <th className="text-left">{Opened_at}</th>
+                          <th className="text-left ">{Opened_at}</th>
                           <th className="text-left">{TID}</th>
                           <th className="text-left">{Started_at}</th>
                           <th className="text-left">{Trading_Time_is}</th>
 
-                          <th className="text-left">{Deposit_Name}</th>
-                        
-                          <th className="text-left">{Buyer}</th>
+                          <th className="text-left">
+                            {Deposit_Name} / {Buyer}
+                          </th>
+
                           <th className="text-left">{Sell_Amount}</th>
                           <th className="text-left">{Price}</th>
                           <th className="text-left">{Rate}</th>
@@ -1502,7 +1503,7 @@ export default function Index({ params }: any) {
                       {sellOrders.map((item, index) => (
                           <tr
                             key={index}
-                            className="border-b border-gray-200 hover:bg-gray-800 hover:bg-opacity-10 text-xs h-10">
+                            className="border-b border-gray-200 hover:bg-gray-800 hover:bg-opacity-10 text-xs h-10 ">
                               
                               <td>
                                 {
@@ -1516,12 +1517,20 @@ export default function Index({ params }: any) {
                                   )}
                               </td>
                               
-                              <td>{item.tradeId}</td>
+                              <td className="text-blue-500 text-lg font-semibold">
+                                {item.tradeId}
+                              </td>
                               
                               <td>
 
                                 {item.acceptedAt && (
-                                  new Date(item.acceptedAt).toLocaleString()
+                                  new Date().getTime() - new Date(item.acceptedAt).getTime() < 1000 * 60 ? (
+                                    ' ' + Math.floor((new Date().getTime() - new Date(item.acceptedAt).getTime()) / 1000) + ' ' + seconds_ago
+                                  ) : new Date().getTime() - new Date(item.acceptedAt).getTime() < 1000 * 60 * 60 ? (
+                                    ' ' + Math.floor((new Date().getTime() - new Date(item.acceptedAt).getTime()) / 1000 / 60) + ' ' + minutes_ago
+                                  ) : (
+                                    ' ' + Math.floor((new Date().getTime() - new Date(item.acceptedAt).getTime()) / 1000 / 60 / 60) + ' ' + hours_ago
+                                  )
                                 )}
                                 
                               </td>
@@ -1534,11 +1543,12 @@ export default function Index({ params }: any) {
                                 }
                               </td>
 
-                              <td>
-                                 {item.buyer?.depositName ? item.buyer?.depositName : item.tradeId}
+                              <td className="flex flex-col gap-1 mt-1">
+                                <span className="text-lg text-yellow-500 font-semibold">
+                                  {item.buyer?.depositName ? item.buyer?.depositName : item.tradeId}
+                                </span>
+                                 <span>{item.buyer?.nickname}</span>
                               </td>
-
-                              <td>{item.buyer && item.buyer?.nickname}</td>
 
                               <td>{item.usdtAmount}</td>
                               <td>{Number(item.krwAmount).toLocaleString('ko-KR', {
@@ -1550,11 +1560,13 @@ export default function Index({ params }: any) {
 
 
 
-                              <td>
-                                {item.seller?.bankInfo.bankName} {item.seller?.bankInfo.accountNumber} {item.seller?.bankInfo.accountHolder}
+                              <td className="flex flex-col gap-1">
+                                <span>{item.seller?.bankInfo.bankName}</span>
+                                <span>{item.seller?.bankInfo.accountNumber}</span>
+                                <span>{item.seller?.bankInfo.accountHolder}</span>
                               </td>
 
-                              <td>
+                              <td className="text-lg text-yellow-500 font-semibold">
                                 {item.status === 'paymentConfirmed' && (
                                   Number(item.krwAmount).toLocaleString('ko-KR', {
                                     style: 'currency',
