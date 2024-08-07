@@ -1860,7 +1860,10 @@ export default function Index({ params }: any) {
 
                 {tableView ? (
 
-                  <table className="w-full">
+
+           
+                <table className=" w-full table-auto border-collapse border border-zinc-800 rounded-md">
+
                   <thead>
                       <tr
                           className="bg-gray-800 text-white text-xs h-10 "
@@ -1875,9 +1878,8 @@ export default function Index({ params }: any) {
                             {Deposit_Name} / {Buyer}
                           </th>
 
-                          <th className="text-left">{Sell_Amount}</th>
-                          <th className="text-left">{Price}</th>
-                          <th className="text-left">{Rate}</th>
+                          <th className="text-left">{Price} / {Sell_Amount} / {Rate}</th>
+
 
                           <th className="text-left">{Payment}</th>
                           <th className="text-left">{Payment_Amount}</th>
@@ -1938,20 +1940,26 @@ export default function Index({ params }: any) {
                                  <span>{item.buyer?.nickname}</span>
                               </td>
 
-                              <td>{item.usdtAmount}</td>
-                              <td>{Number(item.krwAmount).toLocaleString('ko-KR', {
-                                style: 'currency',
-                                currency: 'KRW',
-                              })}</td>
-                              <td>{Number(item.krwAmount / item.usdtAmount).toFixed(2)}</td>
 
+                              <td>
+                                <div className="flex flex-col gap-1">
+                                  <span>{Number(item.krwAmount).toLocaleString('ko-KR', {
+                                  style: 'currency',
+                                  currency: 'KRW',
+                                  })}</span>
+                                
+                                  <span>{item.usdtAmount}</span>
+                                  <span>{Number(item.krwAmount / item.usdtAmount).toFixed(2)}</span>
+                                </div>
+                              </td>
 
-
-
-                              <td className="flex flex-col gap-1">
-                                <span>{item.seller?.bankInfo.bankName}</span>
-                                <span>{item.seller?.bankInfo.accountNumber}</span>
-                                <span>{item.seller?.bankInfo.accountHolder}</span>
+                           
+                              <td>
+                                <div className="flex flex-col gap-1">
+                                  <span>{item.seller?.bankInfo.bankName}</span>
+                                  <span>{item.seller?.bankInfo.accountNumber}</span>
+                                  <span>{item.seller?.bankInfo.accountHolder}</span>
+                                </div>
                               </td>
 
                               <td className="text-lg text-yellow-500 font-semibold">
