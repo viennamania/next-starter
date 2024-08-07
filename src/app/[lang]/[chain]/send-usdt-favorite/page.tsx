@@ -282,6 +282,7 @@ export default function SendUsdt({ params }: any) {
       id: 0,
       email: '',
       nickname: '',
+      avatar: '',
       mobile: '',
       walletAddress: '',
       createdAt: '',
