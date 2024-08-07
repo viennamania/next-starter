@@ -82,6 +82,7 @@ export async function POST(request: NextRequest) {
       console.log(message.sid);
 
       
+      /*
       let msgBody2 = '';
 
       if (lang === 'en') { 
@@ -91,7 +92,7 @@ export async function POST(request: NextRequest) {
       } else {
         msgBody2 = `[UNOVE] TID[${tradeId}] Check the trade: https://next.unove.space/${lang}/${chain}/sell-usdt/${orderId}`;
       }
-      
+
 
       message = await client.messages.create({
         body: msgBody2,
@@ -100,6 +101,7 @@ export async function POST(request: NextRequest) {
       });
 
       console.log(message.sid);
+      */
 
     } catch (e) {
       console.error('error', e);

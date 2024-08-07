@@ -1696,8 +1696,6 @@ export default function Index({ params }: any) {
 
 
 
-
-
   if (orderId === '0' && !storeUser) {
     return (
       <div>
@@ -1706,8 +1704,12 @@ export default function Index({ params }: any) {
     );
   }
 
+
+
   const storecode = storeUser?.split('@').slice(-1)[0];
   const memberid = storeUser?.split('@').slice(0, -1).join('@');
+
+  
 
   if (orderId === '0' && storecode !== '2000001') {
     return (
@@ -1773,10 +1775,14 @@ export default function Index({ params }: any) {
               <div className='flex flex-row gap-2 items-center justify-center'>
                 {/* store code */}
                 <div className="text-lg text-white">
-                  상점: {storecode}
+                  상점: {
+                    storecode ? storecode : sellOrders.length > 0 ? sellOrders[0]?.buyer.nickname?.split('@').slice(-1)[0] : ''
+                  }
                 </div>
                 <div className="text-lg text-white">
-                  아이디: {memberid}
+                  아이디: {
+                    memberid ? memberid : sellOrders.length > 0 ? sellOrders[0]?.buyer.nickname?.split('@').slice(0, -1).join('@') : ''
+                  }
                 </div>
               </div>
               <div className="text-lg text-white">
@@ -1954,7 +1960,7 @@ export default function Index({ params }: any) {
                   <div className="w-full flex flex-col items-start justify-between gap-2">
 
                     {/* my usdt balance */}
-                    <div className='w-full flex flex-row items-between justify-start gap-5'>
+                    <div className='hidden w-full  flex-row items-between justify-start gap-5'>
 
                       <div className=" flex flex-col gap-2 items-start">
                         <div className="text-5xl font-semibold text-white">
@@ -2087,13 +2093,14 @@ export default function Index({ params }: any) {
                           <span className="text-lg text-white">
                             {Deposit_Name}
                           </span>
+
                           <input
                             disabled={!address || !selectedKrwAmount || acceptingSellOrderRandom}
                             type="text"
                             value={depositName}
                             onChange={(e) => setDepositName(e.target.value)}
                             placeholder={Deposit_Name}
-                            className="text-lg bg-black text-white px-4 py-2 rounded-md border border-zinc-100"
+                            className="w-48 text-lg bg-black text-white px-4 py-2 rounded-md border border-zinc-100"
                           />
                           
 
