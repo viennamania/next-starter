@@ -527,13 +527,14 @@ export default function Index({ params }: any) {
 
 
 
-        
+        /*
         const interval = setInterval(() => {
 
           fetchSellOrders();
         }, 10000);
         
         return () => clearInterval(interval);
+        */
         
   
     }, [orderId, address ]);
