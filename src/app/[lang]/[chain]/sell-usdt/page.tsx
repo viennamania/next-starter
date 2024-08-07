@@ -266,6 +266,8 @@ export default function Index({ params }: any) {
 
     Reload: "",
 
+    Insufficient_balance: "",
+
   } );
 
   useEffect(() => {
@@ -384,6 +386,8 @@ export default function Index({ params }: any) {
     Payment_has_been_confirmed,
 
     Reload,
+
+    Insufficient_balance,
 
   } = data;
 
@@ -831,7 +835,7 @@ export default function Index({ params }: any) {
       // send payment request
 
       if (balance < amount) {
-        toast.error('Insufficient balance');
+        toast.error(Insufficient_balance);
         return;
       }
 
@@ -1943,10 +1947,12 @@ export default function Index({ params }: any) {
 
                               <td>
                                 <div className="flex flex-col gap-1">
-                                  <span>{Number(item.krwAmount).toLocaleString('ko-KR', {
-                                  style: 'currency',
-                                  currency: 'KRW',
-                                  })}</span>
+                                  <span className="text-lg text-yellow-500 font-semibold">
+                                    {Number(item.krwAmount).toLocaleString('ko-KR', {
+                                      style: 'currency',
+                                      currency: 'KRW',
+                                    })}
+                                  </span>
                                 
                                   <span>{item.usdtAmount}</span>
                                   <span>{Number(item.krwAmount / item.usdtAmount).toFixed(2)}</span>
@@ -2054,7 +2060,7 @@ export default function Index({ params }: any) {
 
                                   <div className="flex flex-col gap-1">
 
-                                    <span className="text-yellow-500">{Escrow_Completed}</span>
+                                    <span className="text-sm font-semibold text-yellow-500">{Escrow_Completed}</span>
 
                                     <div className="flex flex-row gap-1">
 

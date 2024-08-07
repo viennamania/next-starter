@@ -321,6 +321,9 @@
 
     "Payment_has_been_confirmed": "Payment has been confirmed",
 
-    "Reload": "Reload"
+    "Reload": "Reload",
+
+ 
+    "Insufficient_balance": "Insufficient balance"
 
 }
