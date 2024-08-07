@@ -259,7 +259,7 @@
 
 
 
-    "When_the_deposit_is_completed": "입금이 완료되면 에스크로한 USDT가 구매자 지갑으로 이체됩니다.",
+    "When_the_deposit_is_completed": "입금이 완료되면 에스크로한 USDT가 구매자 지갑으로 이체됩니다. 입금자명을 정확하게 입력하고 입금을 완료해주세요.",
 
     "Please_enter_deposit_name": "입금자명을 입력하세요",
 
