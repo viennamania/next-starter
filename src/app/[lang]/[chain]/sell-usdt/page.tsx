@@ -269,6 +269,8 @@ export default function Index({ params }: any) {
 
     Insufficient_balance: "",
 
+
+
   } );
 
   useEffect(() => {
@@ -761,7 +763,7 @@ export default function Index({ params }: any) {
       ///console.log('data', data);
 
       if (data.result) {
-        toast.success('Order has been cancelled');
+        toast.success(Order_has_been_cancelled);
 
 
         fetchSellOrders();
