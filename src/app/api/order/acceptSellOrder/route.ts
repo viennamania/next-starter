@@ -57,10 +57,21 @@ export async function POST(request: NextRequest) {
 
     let message = null;
 
+   
+
     try {
 
-      const msgBody = `[UNOVE] TID[${tradeId}] Your sell order has been accepted by ${buyer?.nickname}! You must escrow USDT to proceed with the trade in 10 minutes!`;
-      
+      let msgBody = '';
+
+      if (lang === 'en') {
+        msgBody = `[UNOVE] TID[${tradeId}] Your sell order has been accepted by ${buyer?.nickname}! You must escrow USDT to proceed with the trade in 10 minutes!`;
+      } else if (lang === 'kr') {
+        msgBody = `[UNOVE] TID[${tradeId}] ${buyer?.nickname}님이 구매 주문을 수락했습니다! 거래를 계속하기 위해 USDT를 에스크로해야 합니다!`;
+      } else {
+        msgBody = `[UNOVE] TID[${tradeId}] Your sell order has been accepted by ${buyer?.nickname}! You must escrow USDT to proceed with the trade in 10 minutes!`;
+      }
+
+
 
       message = await client.messages.create({
         body: msgBody,
@@ -71,8 +82,16 @@ export async function POST(request: NextRequest) {
       console.log(message.sid);
 
       
+      let msgBody2 = '';
 
-      const msgBody2 = `[UNOVE] TID[${tradeId}] Check the trade: https://next.unove.space/${lang}/${chain}/sell-usdt/${orderId}`;
+      if (lang === 'en') { 
+        msgBody2 = `[UNOVE] TID[${tradeId}] Check the trade: https://next.unove.space/${lang}/${chain}/sell-usdt/${orderId}`;
+      } else if (lang === 'kr') {
+        msgBody2 = `[UNOVE] TID[${tradeId}] 거래 확인: https://next.unove.space/${lang}/${chain}/sell-usdt/${orderId}`;
+      } else {
+        msgBody2 = `[UNOVE] TID[${tradeId}] Check the trade: https://next.unove.space/${lang}/${chain}/sell-usdt/${orderId}`;
+      }
+      
 
       message = await client.messages.create({
         body: msgBody2,

@@ -1090,6 +1090,8 @@ export default function Index({ params }: any) {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
+                lang: params.lang,
+                chain: params.chain,
                 orderId: orderId,
                 buyerWalletAddress: user.walletAddress,
                 buyerNickname: user.nickname,
