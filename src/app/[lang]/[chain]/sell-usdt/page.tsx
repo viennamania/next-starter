@@ -249,6 +249,8 @@ export default function Index({ params }: any) {
     Completed: "",
     Cancelled: "",
 
+    Deposit_Name: "",
+
 
   } );
 
@@ -351,6 +353,8 @@ export default function Index({ params }: any) {
     Opened,
     Completed,
     Cancelled,
+
+    Deposit_Name,
 
   } = data;
 
@@ -1479,7 +1483,7 @@ export default function Index({ params }: any) {
                           <th className="text-left">{Started_at}</th>
                           <th className="text-left">{Trading_Time_is}</th>
 
-                          <th className="text-left">Memo</th>
+                          <th className="text-left">{Deposit_Name}</th>
                         
                           <th className="text-left">{Buyer}</th>
                           <th className="text-left">{Sell_Amount}</th>
@@ -1531,10 +1535,10 @@ export default function Index({ params }: any) {
                               </td>
 
                               <td>
-                                {item.seller && item.seller.memo}
+                                 {item.buyer?.depositName ? item.buyer?.depositName : item.tradeId}
                               </td>
 
-                              <td>{item.buyer && item.buyer.nickname}</td>
+                              <td>{item.buyer && item.buyer?.nickname}</td>
 
                               <td>{item.usdtAmount}</td>
                               <td>{Number(item.krwAmount).toLocaleString('ko-KR', {
@@ -1852,9 +1856,19 @@ export default function Index({ params }: any) {
                             </div>
 
 
-                            <p className="mt-2 text-sm text-zinc-400">
-                              {Payment}: {Bank_Transfer} ({item.seller?.bankInfo.bankName})
-                            </p>
+                            {address && item.walletAddress === address && item.status !== 'cancelled' && (
+                              <div className="mt-4 flex flex-col gap-2 items-start">
+                                <p className="mt-2 text-sm text-zinc-400">
+                                  {Payment}: {item.seller?.bankInfo.bankName} {item.seller?.bankInfo.accountNumber} {item.seller?.bankInfo.accountHolder}
+                                </p>
+                                <p className="text-sm text-zinc-400">
+                                  {Deposit_Name}: {
+                                    item.buyer?.depositName ? item.buyer?.depositName : item.tradeId
+                                  }
+                                </p>  
+                              </div>
+
+                            )}
 
 
 
