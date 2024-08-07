@@ -274,7 +274,14 @@
 
     "Deposit_Confirmed": "판매자가 입금을 확인했습니다",
 
-    "Escrow_Completed": "에스크로 완료"
+    "Escrow_Completed": "에스크로 완료",
+
+    "Payment_request_has_been_sent": "결제 요청이 전송되었습니다",
+
+    "Payment_has_been_confirmed": "결제가 확인되었습니다",
+
+    "Reload": "새로고침"
+
 
 
 

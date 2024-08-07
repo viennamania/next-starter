@@ -315,6 +315,12 @@
 
     "Deposit_Confirmed": "Seller has confirmed the deposit",
 
-    "Escrow_Completed": "Escrow Completed"
+    "Escrow_Completed": "Escrow Completed",
+
+    "Payment_request_has_been_sent": "Payment request has been sent",
+
+    "Payment_has_been_confirmed": "Payment has been confirmed",
+
+    "Reload": "Reload"
 
 }

@@ -49,7 +49,15 @@ export async function POST(request: NextRequest) {
 
     // send sms
 
+    if (!buyer.mobile) {
+      return NextResponse.json({
+        result,
+      });
+    }
+
     const to = buyer.mobile;
+
+
 
 
     const accountSid = process.env.TWILIO_ACCOUNT_SID;

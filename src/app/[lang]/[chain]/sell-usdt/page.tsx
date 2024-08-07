@@ -260,6 +260,12 @@ export default function Index({ params }: any) {
 
     Escrow_Completed: "",
 
+    Payment_request_has_been_sent: "",
+
+    Payment_has_been_confirmed: "",
+
+    Reload: "",
+
   } );
 
   useEffect(() => {
@@ -372,6 +378,12 @@ export default function Index({ params }: any) {
     Confirm_Payment,
 
     Escrow_Completed,
+
+    Payment_request_has_been_sent,
+
+    Payment_has_been_confirmed,
+
+    Reload,
 
   } = data;
 
@@ -506,6 +518,48 @@ export default function Index({ params }: any) {
     const [searchMyOrders, setSearchMyOrders] = useState(true);
 
 
+    const [loadingFetchSellOrders, setLoadingFetchSellOrders] = useState(false);
+
+    const fetchSellOrders = async () => {
+
+      if (!address) {
+        return;
+      }
+
+      setLoadingFetchSellOrders(true);
+
+      // api call
+      const response = await fetch('/api/order/getAllSellOrders', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          lang: params.lang,
+          chain: params.chain,
+          walletAddress: address,
+          searchMyOrders: searchMyOrders
+        })
+      });
+
+      const data = await response.json();
+
+      
+      //console.log('data', data);
+
+
+
+      if (data.result) {
+        setSellOrders(data.result.orders);
+      }
+
+      setLoadingFetchSellOrders(false);
+
+    };
+
+
+
+
     useEffect(() => {
 
         /*
@@ -514,43 +568,18 @@ export default function Index({ params }: any) {
         }
           */
         
-        const fetchSellOrders = async () => {
-          // api call
-          const response = await fetch('/api/order/getAllSellOrders', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-              lang: params.lang,
-              chain: params.chain,
-              walletAddress: address,
-              searchMyOrders: searchMyOrders
-            })
-          });
-  
-          const data = await response.json();
-  
-          
-          //console.log('data', data);
 
-
-  
-          if (data.result) {
-            setSellOrders(data.result.orders);
-          }
-  
-        };
   
         fetchSellOrders();
 
         // fetch sell orders every 10 seconds
-
+        /*
         const interval = setInterval(() => {
           fetchSellOrders();
         }, 10000);
 
         return () => clearInterval(interval);
+        */
   
     }, [address, searchMyOrders, params.lang, params.chain]);
 
@@ -681,6 +710,7 @@ export default function Index({ params }: any) {
         });
 
 
+  
 
 
       } else {
@@ -728,24 +758,9 @@ export default function Index({ params }: any) {
       if (data.result) {
         toast.success('Order has been cancelled');
 
-        await fetch('/api/order/getAllSellOrders', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            lang: params.lang,
-            chain: params.chain,
-            walletAddress: address,
-            searchMyOrders: searchMyOrders
-          })
-        }).then(async (response) => {
-          const data = await response.json();
-          //console.log('data', data);
-          if (data.result) {
-            setSellOrders(data.result.orders);
-          }
-        });
+
+        fetchSellOrders();
+
 
       } else {
         toast.error('Order has been failed');
@@ -761,15 +776,15 @@ export default function Index({ params }: any) {
 
 
 
-      // request payment check box
-      const [requestPaymentCheck, setRequestPaymentCheck] = useState([] as boolean[]);
-      useEffect(() => {
-          
-          setRequestPaymentCheck(
-            new Array(sellOrders.length).fill(false)
-          );
-    
-      } , [sellOrders]);
+    // request payment check box
+    const [requestPaymentCheck, setRequestPaymentCheck] = useState([] as boolean[]);
+    useEffect(() => {
+        
+        setRequestPaymentCheck(
+          new Array(sellOrders.length).fill(false)
+        );
+  
+    } , [sellOrders]);
     
 
 
@@ -867,7 +882,7 @@ export default function Index({ params }: any) {
             account: smartAccount as any,
         });
 
-        console.log("transactionResult===", transactionResult);
+        //console.log("transactionResult===", transactionResult);
 
 
         setEscrowing(
@@ -885,7 +900,7 @@ export default function Index({ params }: any) {
 
         if (transactionResult) {
 
-          /*
+          
           setRequestingPayment(
             requestingPayment.map((item, idx) => {
               if (idx === index) {
@@ -894,7 +909,7 @@ export default function Index({ params }: any) {
               return item;
             })
           );
-          */
+          
           
           
 
@@ -933,28 +948,7 @@ export default function Index({ params }: any) {
 
           if (data.result) {
 
-
-            const response = await fetch('/api/order/getAllSellOrders', {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json'
-              },
-              body: JSON.stringify({
-                lang: params.lang,
-                chain: params.chain,
-                walletAddress: address,
-                searchMyOrders: searchMyOrders
-              })
-            });
-
-            const data = await response.json();
-
-            //console.log('data', data);
-
-            if (data.result) {
-              setSellOrders(data.result.orders);
-            }
-
+            fetchSellOrders();
 
             // refresh balance
 
@@ -968,7 +962,8 @@ export default function Index({ params }: any) {
             setBalance( Number(result) / 10 ** 6 );
 
 
-            toast.success('Payment request has been sent');
+            toast.success(Payment_request_has_been_sent);
+
           } else {
             toast.error('Payment request has been failed');
           }
@@ -1067,31 +1062,11 @@ export default function Index({ params }: any) {
     //console.log('data', data);
 
     if (data.result) {
+      
+      fetchSellOrders();
 
-      const response = await fetch('/api/order/getAllSellOrders', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          lang: params.lang,
-          chain: params.chain,
-          walletAddress: address,
-          searchMyOrders: searchMyOrders
-        })
-      });
+      toast.success(Payment_has_been_confirmed);
 
-      const data = await response.json();
-
-      //console.log('data', data);
-
-      if (data.result) {
-        setSellOrders(data.result.orders);
-      }
-
-
-
-      toast.success('Payment has been confirmed');
     } else {
       toast.error('Payment has been failed');
     }
@@ -1852,12 +1827,34 @@ export default function Index({ params }: any) {
                   
                 </div>
 
-
-                {/* escrow balance */}
-                <div className="mt-4 flex flex-row items-center gap-2">
-                  <div className="text-sm text-zinc-400">
-                    {Escrow}: {escrowBalance} USDT
+                <div className="w-full flex flex-row items-center justify-between gap-4">
+                  {/* escrow balance */}
+                  <div className="mt-4 flex flex-row items-center gap-2">
+                    <div className="text-sm text-zinc-400">
+                      {Escrow}: {escrowBalance} USDT
+                    </div>
                   </div>
+
+                  {/* reload sellOrders button */}
+                  <div className="mt-4 flex flex-row items-center gap-2">
+                    <button
+                      disabled={loadingFetchSellOrders || requestingPayment.some((item) => item === true) || escrowing.some((item) => item === true) || confirmingPayment.some((item) => item === true)}
+                      className={`flex flex-row gap-1 text-sm text-white px-2 py-1 rounded-md ${loadingFetchSellOrders ? 'bg-gray-500' : 'bg-green-500'}`}
+                      onClick={fetchSellOrders}
+                    >
+                      <Image
+                        src="/loading.png"
+                        alt="loading"
+                        width={16}
+                        height={16}
+                        className={loadingFetchSellOrders ? 'animate-spin' : 'hidden'}
+                      />
+                      <span>{Reload}</span>
+                    </button>
+                  </div>
+
+
+
                 </div>
 
 
@@ -1989,7 +1986,7 @@ export default function Index({ params }: any) {
 
 
                                 {item.status === 'paymentConfirmed' && (
-                                  <span className="text-green-500">{Completed}</span>
+                                  <span className="text-lg font-semibold text-green-500">{Completed}</span>
                                 )}
 
                                 {item.status === 'accepted' && (
