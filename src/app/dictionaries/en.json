@@ -311,6 +311,8 @@
     "Charge": "Charge",
 
   
-    "Deposit_name_description": "When you deposit, please enter the deposit name in the deposit name field. If you do not enter the deposit name, the deposit may not be reflected in your account."
+    "Deposit_name_description": "When you deposit, please enter the deposit name in the deposit name field. If you do not enter the deposit name, the deposit may not be reflected in your account.",
+
+    "Deposit_Confirmed": "Seller has confirmed the deposit"
 
 }
