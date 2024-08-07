@@ -396,7 +396,88 @@ export default function SendUsdt({ params }: any) {
   //console.log("amount", amount);
 
 
+
+  const [otp, setOtp] = useState('');
+
+  const [verifiedOtp, setVerifiedOtp] = useState(false);
+
+  const [isSendedOtp, setIsSendedOtp] = useState(false);
+
+
+
+  const [isSendingOtp, setIsSendingOtp] = useState(false);
+
+  const [isVerifingOtp, setIsVerifingOtp] = useState(false);
+
+  const sendOtp = async () => {
+
+    setIsSendingOtp(true);
+      
+    const response = await fetch('/api/transaction/setOtp', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        lang: params.lang,
+        chain: params.chain,
+        walletAddress: address,
+        mobile: user.mobile,
+      }),
+    });
+
+    const data = await response.json();
+
+    //console.log("data", data);
+
+    if (data.result) {
+      setIsSendedOtp(true);
+      toast.success('OTP sent successfully');
+    } else {
+      toast.error('Failed to send OTP');
+    }
+
+    setIsSendingOtp(false);
+
+  };
+
+  const verifyOtp = async () => {
+
+    setIsVerifingOtp(true);
+      
+    const response = await fetch('/api/transaction/verifyOtp', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        lang: params.lang,
+        chain: params.chain,
+        walletAddress: address,
+        otp: otp,
+      }),
+    });
+
+    const data = await response.json();
+
+    //console.log("data", data);
+
+    if (data.status === 'success') {
+      setVerifiedOtp(true);
+      toast.success('OTP verified successfully');
+    } else {
+      toast.error('Failed to verify OTP');
+    }
+
+    setIsVerifingOtp(false);
+  
+  }
+
+
+
+
   const [sending, setSending] = useState(false);
+
 
 
   const sendUsdt = async () => {
@@ -794,7 +875,7 @@ export default function SendUsdt({ params }: any) {
               <div className="text-lg">{Enter_the_amount_and_recipient_address}</div>
 
 
-              <div className='flex flex-col xl:flex-row gap-5 items-center justify-between'>
+              <div className='mb-5 flex flex-col xl:flex-row gap-5 items-start justify-between'>
 
                 <input
                   disabled={sending}
@@ -1001,15 +1082,84 @@ export default function SendUsdt({ params }: any) {
 
               </div>
 
+              {/* otp verification */}
+
+              {verifiedOtp ? (
+                <div className="w-full flex flex-row gap-2 items-center justify-center">
+                  <Image
+                    src="/verified.png"
+                    alt="check"
+                    width={30}
+                    height={30}
+                  />
+                  <div className="text-white">OTP verified</div>
+                </div>
+              ) : (
+             
+        
+                <div className="w-full flex flex-row gap-2 items-start">
+
+                  <button
+                    disabled={!address || !recipient?.walletAddress || !amount || isSendingOtp}
+                    onClick={sendOtp}
+                    className={`
+                      
+                      ${isSendedOtp && 'hidden'}
+
+                      w-32 p-2 rounded-lg text-sm font-semibold
+
+                        ${
+                        !address || !recipient?.walletAddress || !amount || isSendingOtp
+                        ?'bg-gray-300 text-gray-400'
+                        : 'bg-green-500 text-white'
+                        }
+                      
+                      `}
+                  >
+                      Send OTP
+                  </button>
+
+                  <div className={`flex flex-row gap-2 items-center justify-center ${!isSendedOtp && 'hidden'}`}>
+                    <input
+                      type="text"
+                      placeholder="Enter OTP"
+                      className=" w-40 p-2 border border-gray-300 rounded text-black text-sm font-semibold"
+                      value={otp}
+                      onChange={(e) => setOtp(e.target.value)}
+                    />
+
+                    <button
+                      disabled={!otp || isVerifingOtp}
+                      onClick={verifyOtp}
+                      className={`w-32 p-2 rounded-lg text-sm font-semibold
+
+                          ${
+                          !otp || isVerifingOtp
+                          ?'bg-gray-300 text-gray-400'
+                          : 'bg-green-500 text-white'
+                          }
+                        
+                        `}
+                    >
+                        Verify OTP
+                    </button>
+                  </div>
+
+                </div>
+
+              )}
+
+              
+
 
 
               <button
-                disabled={!address || !recipient?.walletAddress || !amount || sending}
+                disabled={!address || !recipient?.walletAddress || !amount || sending || !verifiedOtp}
                 onClick={sendUsdt}
                 className={`mt-10 w-full p-2 rounded-lg text-xl font-semibold
 
                     ${
-                    !address || !recipient?.walletAddress || !amount || sending
+                    !address || !recipient?.walletAddress || !amount || sending || !verifiedOtp
                     ?'bg-gray-300 text-gray-400'
                     : 'bg-green-500 text-white'
                     }
