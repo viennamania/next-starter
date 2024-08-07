@@ -288,6 +288,8 @@ export default function Index({ params }: any) {
       Save: "",
       Enter_your_nickname: "",
 
+      Reload: "",
+
     } );
   
     useEffect(() => {
@@ -380,6 +382,8 @@ export default function Index({ params }: any) {
       Cancel,
       Save,
       Enter_your_nickname,
+
+      Reload,
 
     } = data;
    
@@ -489,6 +493,36 @@ export default function Index({ params }: any) {
     
     const [sellOrders, setSellOrders] = useState<SellOrder[]>([]);
 
+    const [loadingOneSellOrder, setLoadingOneSellOrder] = useState(false);
+
+
+    const fetchOneSellOrder = async () => {
+
+      setLoadingOneSellOrder(true);
+
+      // api call
+      const response = await fetch('/api/order/getOneSellOrder', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            orderId: orderId,
+        })
+      });
+
+      const data = await response.json();
+
+      //console.log('data', data);
+
+      if (data.result) {
+        setSellOrders(data.result.orders);
+      }
+
+      setLoadingOneSellOrder(false);
+
+    };
+
 
     useEffect(() => {
 
@@ -496,10 +530,10 @@ export default function Index({ params }: any) {
           return;
         }
         
-        const fetchSellOrders = async () => {
 
+        const fetchOneSellOrder = async () => {
 
-
+          setLoadingOneSellOrder(true);
 
 
           // api call
@@ -512,18 +546,21 @@ export default function Index({ params }: any) {
                 orderId: orderId,
             })
           });
-  
+    
           const data = await response.json();
-  
-          console.log('data', data);
-  
+    
+          //console.log('data', data);
+    
           if (data.result) {
             setSellOrders(data.result.orders);
           }
-  
+
+          setLoadingOneSellOrder(false);
+    
         };
+
   
-        fetchSellOrders();
+        fetchOneSellOrder();
 
 
 
@@ -537,7 +574,7 @@ export default function Index({ params }: any) {
         */
         
   
-    }, [orderId, address ]);
+    }, [orderId]);
 
 
 
@@ -810,6 +847,7 @@ export default function Index({ params }: any) {
             toast.success('Order accepted successfully');
 
 
+            setLoadingOneSellOrder(true);
 
             fetch('/api/order/getOneSellOrder', {
                 method: 'POST',
@@ -825,6 +863,12 @@ export default function Index({ params }: any) {
                 ///console.log('data', data);
                 setSellOrders(data.result.orders);
             })
+            .catch((error) => {
+                console.error('Error:', error);
+            })
+
+            setLoadingOneSellOrder(false);
+
 
         })
         .catch((error) => {
@@ -970,6 +1014,8 @@ export default function Index({ params }: any) {
 
           if (data.result) {
 
+            setLoadingOneSellOrder(true);
+
             const response = await fetch('/api/order/getOneSellOrder', {
               method: 'POST',
               headers: {
@@ -988,6 +1034,7 @@ export default function Index({ params }: any) {
               setSellOrders(data.result.orders);
             }
             
+            setLoadingOneSellOrder(false);
 
 
             // refresh balance
@@ -1397,6 +1444,7 @@ export default function Index({ params }: any) {
 
                 {address && (
                   <div className="w-full flex flex-row items-start justify-between gap-2">
+                    
                     {/* my usdt balance */}
                     <div className='w-full flex flex-row items-between justify-start gap-5'>
 
@@ -1425,22 +1473,24 @@ export default function Index({ params }: any) {
                             user?.nickname ? user.nickname : Anonymous
                           }</div>
 
-                          {user?.seller && (
-                            <div className="flex flex-row items-center gap-2">
-                              <Image
-                                src="/verified.png"
-                                alt="Verified"
-                                width={24}
-                                height={24}
-                              />
-                              <Image
-                                src="/best-seller.png"
-                                alt="Best Seller"
-                                width={24}
-                                height={24}
-                              />
-                            </div>
-                          )}
+                      
+                            {user?.seller && (
+                              <div className="flex flex-row items-center gap-2">
+                                <Image
+                                  src="/verified.png"
+                                  alt="Verified"
+                                  width={24}
+                                  height={24}
+                                />
+                                <Image
+                                  src="/best-seller.png"
+                                  alt="Best Seller"
+                                  width={24}
+                                  height={24}
+                                />
+                              </div>
+                            )}
+
                        
                       </div>
                     </div>
@@ -1510,7 +1560,8 @@ export default function Index({ params }: any) {
 
 
                           {address && item.buyer && item.buyer.walletAddress === address && (
-                            <div className="w-full flex flex-row items-center justify-start">
+                            <div className="w-full flex flex-row items-center justify-between">
+                              
                               <div className='flex flex-row items-center gap-2'>
 
                                 <Image
@@ -1553,6 +1604,29 @@ export default function Index({ params }: any) {
                                 />
 
                               </div>
+
+
+
+                              {/* reload button */}
+                              <button
+                                disabled={loadingOneSellOrder}
+                                className={`flex flex-row gap-1 text-sm text-white px-2 py-1 rounded-md ${loadingOneSellOrder ? 'bg-gray-500' : 'bg-green-500'}`}
+                                onClick={
+                                  () => {
+                                    fetchOneSellOrder();
+                                  }
+                                }
+                              >
+                                <Image
+                                  src="/loading.png"
+                                  alt="loading"
+                                  width={16}
+                                  height={16}
+                                  className={loadingOneSellOrder ? 'animate-spin' : 'hidden'}
+                                />
+                                <span>{Reload}</span>
+                              </button>
+
 
                             </div>
                           )}
