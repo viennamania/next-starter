@@ -298,7 +298,8 @@
 
   
     "Waiting_for_the_USDT_to_be_sent_to_the_store_address": "Waiting for the USDT to be sent to the store address...",
-    "Successfully_sent_USDT_to_the_store_address": "Successfully sent USDT to the store address! You can check the store deposit status after 1 - 5 minutes.",
+    
+    "Successfully_sent_USDT_to_the_store_address": "Successfully sent USDT to the store address! You can check the store deposit status within 5 minutes.",
 
 
     "When_the_deposit_is_completed": "When the deposit is completed, the escrowed USDT will be transferred to the buyer's wallet.",
@@ -313,7 +314,7 @@
   
     "Deposit_name_description": "When you deposit, please enter the deposit name in the deposit name field. If you do not enter the deposit name, the deposit may not be reflected in your account.",
 
-    "Deposit_Confirmed": "Seller has confirmed the deposit",
+    "Deposit_Confirmed": "Seller has confirmed the deposit and completed the trade.",
 
     "Escrow_Completed": "Escrow Completed",
 
@@ -324,7 +325,14 @@
     "Reload": "Reload",
 
  
-    "Insufficient_balance": "Insufficient balance"
+    "Insufficient_balance": "Insufficient balance",
+
+
+    "Account_number_has_been_copied": "Account number has been copied",
+
+    "Payment_name_has_been_copied": "Payment name has been copied",
+
+    "Payment_amount_has_been_copied": "Payment amount has been copied"
 
   
   

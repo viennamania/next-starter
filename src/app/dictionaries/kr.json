@@ -63,9 +63,9 @@
     "Please_connect_your_wallet_first": "먼저 지갑을 연결하세요",
 
 
-    "USDT_sent_successfully": "USDT 를 성공적으로 보냈습니다",
+    "USDT_sent_successfully": "USDT 를 성공적으로 보냈습니다.",
 
-    "Failed_to_send_USDT": "USDT를 보내는 데 실패했습니다",
+    "Failed_to_send_USDT": "USDT를 보내는 데 실패했습니다.",
 
 
 
@@ -92,8 +92,8 @@
     "Bank_Transfer": "은행 송금",
     "Payment_Amount": "결제 금액",
 
-    "I_agree_to_the_terms_of_trade": "거래 조건에 동의합니다",
-    "I_agree_to_cancel_the_trade": "거래 취소에 동의합니다",
+    "I_agree_to_the_terms_of_trade": "거래 조건에 동의합니다.",
+    "I_agree_to_cancel_the_trade": "거래 취소에 동의합니다.",
 
     "Opened_at": "주문시작",
     "Started_at": "거래시작",
@@ -114,8 +114,8 @@
 
     "Cancel_My_Trade": "거래 취소하기",
 
-    "Order_accepted_successfully": "주문이 성공적으로 수락되었습니다",
-    "Order_has_been_cancelled": "주문이 취소되었습니다",
+    "Order_accepted_successfully": "주문이 성공적으로 수락되었습니다.",
+    "Order_has_been_cancelled": "주문이 취소되었습니다.",
 
     "My Order": "내 주문",
 
@@ -158,7 +158,7 @@
 
     "Disconnect_Wallet": "지갑 연결 해제",
 
-     "Order_has_been_placed": "주문이 완료되었습니다",
+     "Order_has_been_placed": "주문이 완료되었습니다.",
 
 
     "Placing_Order": "주문 중",
@@ -255,7 +255,7 @@
 
     "Waiting_for_the_USDT_to_be_sent_to_the_store_address": "USDT가 상점 주소로 전송되기를 기다리는 중입니다.",
 
-    "Successfully_sent_USDT_to_the_store_address": "USDT가 상점 주소로 성공적으로 전송되었습니다! 1 - 5분 후에 상점 입금 상태를 확인할 수 있습니다.",
+    "Successfully_sent_USDT_to_the_store_address": "USDT가 상점 지갑주소로 성공적으로 전송되었습니다. 5분내로 상점에서 충전 상태를 확인할 수 있습니다.",
 
 
 
@@ -266,24 +266,30 @@
 
 
 
-    "Your_wallet_address_is_copied": "지갑 주소가 복사되었습니다",
+    "Your_wallet_address_is_copied": "지갑 주소가 복사되었습니다.",
 
     "Charge": "충전하기",
 
     "Deposit_name_description": "입금자명은 은행 송금 시 입력할 이름입니다. 은행 송금 시 반드시 입금자명을 입력해야 합니다. 입금자명을 정확하게 입력하지 않으면 입금이 지연될 수 있습니다.",
 
-    "Deposit_Confirmed": "판매자가 입금을 확인했습니다",
+    "Deposit_Confirmed": "판매자가 입금을 확인하고 거래를 완료했습니다.",
 
     "Escrow_Completed": "에스크로 완료",
 
-    "Payment_request_has_been_sent": "결제 요청이 전송되었습니다",
+    "Payment_request_has_been_sent": "결제 요청이 전송되었습니다.",
 
-    "Payment_has_been_confirmed": "결제가 확인되었습니다",
+    "Payment_has_been_confirmed": "결제가 확인되었습니다.",
 
     "Reload": "새로고침",
 
 
-    "Insufficient_balance": "잔액 부족"
+    "Insufficient_balance": "잔액 부족",
+
+    "Account_number_has_been_copied": "계좌번호가 복사되었습니다.",
+
+    "Payment_name_has_been_copied": "입금자명이 복사되었습니다.",
+
+    "Payment_amount_has_been_copied": "입금액이 복사되었습니다."
 
 
 

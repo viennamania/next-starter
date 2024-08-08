@@ -340,6 +340,12 @@ export default function Index({ params }: any) {
 
       Deposit_Confirmed: "",
 
+      Account_number_has_been_copied: "",
+
+      Payment_name_has_been_copied: "",
+
+      Payment_amount_has_been_copied: "",
+
 
     } );
   
@@ -475,6 +481,12 @@ export default function Index({ params }: any) {
       Deposit_name_description,
 
       Deposit_Confirmed,
+
+      Account_number_has_been_copied,
+
+      Payment_name_has_been_copied,
+
+      Payment_amount_has_been_copied,
 
     } = data;
    
@@ -2868,7 +2880,19 @@ export default function Index({ params }: any) {
                                     </div>
                                     <ul>
                                       <li>
-                                        {item.seller?.bankInfo.bankName} {item.seller?.bankInfo.accountNumber} {item.seller?.bankInfo.accountHolder}
+                                        {item.seller?.bankInfo.bankName}
+                                        {' '}
+                                        <button
+                                          onClick={() => {
+                                              navigator.clipboard.writeText(item.seller?.bankInfo.accountNumber);
+                                              toast.success(Account_number_has_been_copied);
+                                          } }
+                                          className='text-lg font-semibold'
+                                        >
+                                          {item.seller?.bankInfo.accountNumber}
+                                        </button>
+                                        {' '}
+                                        {item.seller?.bankInfo.accountHolder}
                                       </li>
                                       <li>{Deposit_Amount} : {item.krwAmount} KRW</li>
                                       <li>{Deposit_Name} : {
@@ -3166,10 +3190,32 @@ export default function Index({ params }: any) {
 
                                     {address && (item.walletAddress === address || item.buyer?.walletAddress === address ) && (
                                       <>
-                                        <div className='flex flex-row items-center gap-2'>
+                                        <div className='flex flex-row items-center justify-center gap-2'>
                                           <div className="w-2 h-2 rounded-full bg-green-500"></div>
                                           <div className="text-sm ">
-                                          {item.seller?.bankInfo.bankName}{' '}{item.seller?.bankInfo.accountNumber}{' '}{item.seller?.bankInfo.accountHolder}
+                                          {item.seller?.bankInfo.bankName}
+                                          {' '}
+                                          <button
+                                            onClick={() => {
+                                                navigator.clipboard.writeText(item.seller?.bankInfo.accountNumber);
+                                                toast.success(Account_number_has_been_copied);
+                                            } }
+                                            className='text-lg font-semibold'
+                                          >
+                                            {item.seller?.bankInfo.accountNumber}
+                                          </button>
+                                          {' '}
+                                          <button
+                                            onClick={() => {
+                                                navigator.clipboard.writeText(item.seller?.bankInfo.accountNumber);
+                                                toast.success(Account_number_has_been_copied);
+                                            } }
+                                            className="text-xs bg-green-500 text-white px-2 py-1 rounded-md"
+                                          >
+                                            {Copy}
+                                          </button>
+                                          {' '}
+                                          {item.seller?.bankInfo.accountHolder}
                                           </div>
                                         </div>
 
@@ -3177,21 +3223,57 @@ export default function Index({ params }: any) {
                                         <div className='flex flex-row items-center gap-2'>
                                           <div className="w-2 h-2 rounded-full bg-green-500"></div>
                                           <div className="text-sm">
-                                            {Deposit_Name}: {
-                                              item.buyer?.depositName ? item.buyer?.depositName : item.tradeId
-                                            }
+                                            {Deposit_Name}:{' '}
+                                            <button
+                                              onClick={() => {
+                                                  navigator.clipboard.writeText(item.buyer?.depositName ? item.buyer?.depositName : item.tradeId);
+                                                  toast.success(Payment_name_has_been_copied);
+                                              } }
+                                              className="text-lg font-semibold"
+                                            >
+                                              {item.buyer?.depositName ? item.buyer?.depositName : item.tradeId}
+                                            </button>
+                                            {' '}
+                                            <button
+                                              onClick={() => {
+                                                  navigator.clipboard.writeText(item.buyer?.depositName ? item.buyer?.depositName : item.tradeId);
+                                                  toast.success(Payment_name_has_been_copied);
+                                              } }
+                                              className="text-xs bg-green-500 text-white px-2 py-1 rounded-md"
+                                            >
+                                              {Copy}
+                                            </button>
                                           </div>
                                         </div>
 
                                         <div className='flex flex-row items-center gap-2'>
                                           <div className="w-2 h-2 rounded-full bg-green-500"></div>
                                           <div className="text-sm">
-                                            {Deposit_Amount}: {
-                                              item.krwAmount.toLocaleString('ko-KR', {
-                                                style: 'currency',
-                                                currency: 'KRW'
-                                              })
-                                            }
+                                            {Deposit_Amount}:{' '}
+
+                                            <button
+                                              onClick={() => {
+                                                  navigator.clipboard.writeText(item.krwAmount.toString());
+                                                  toast.success(Payment_amount_has_been_copied);
+                                              } }
+                                              className="text-lg font-semibold"
+                                            >
+                                              {item.krwAmount.toLocaleString('ko-KR', {
+                                                  style: 'currency',
+                                                  currency: 'KRW'
+                                                })
+                                              }
+                                            </button>
+                                            {' '}
+                                            <button
+                                              onClick={() => {
+                                                  navigator.clipboard.writeText(item.krwAmount.toString());
+                                                  toast.success(Payment_amount_has_been_copied);
+                                              } }
+                                              className="text-xs bg-green-500 text-white px-2 py-1 rounded-md"
+                                            >
+                                              {Copy}
+                                            </button>
                                           </div>
                                         </div>
 
