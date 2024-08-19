@@ -632,6 +632,20 @@ export default function SettingsPage({ params }: any) {
                                 >
                                     Get
                                 </button>
+                                {/* Reset Button */}
+                                <button
+                                    disabled={!address || loading}
+                                    onClick={() => {
+                                        setPrompt("");
+                                        setResults([]);
+                                        setCheckIsRealPicture(false);
+                                    }}
+                                    className={` ${!address || loading ? 'bg-gray-300 text-gray-500' : 'bg-red-500 text-zinc-100'} p-2 rounded
+                                        text-lg font-semibold w-32
+                                        `}
+                                >
+                                    Reset
+                                </button>
 
 
                             </div>
