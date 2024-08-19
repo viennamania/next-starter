@@ -35,6 +35,9 @@ export interface UserProps {
   bio: string,
 
   password: string,
+
+  walletAddress: string,
+  erc721ContractAddress: string,
 }
 
 export interface ResultProps {
@@ -313,6 +316,47 @@ export async function updateSellerStatus(data: any) {
 
 
 }
+
+
+
+
+
+
+export async function updateErc721ContractAddress(data: any) {
+  const client = await clientPromise;
+  const collection = client.db('vienna').collection('users');
+
+
+  // update and return updated user
+
+  if (!data.walletAddress || !data.erc721ContractAddress) {
+    return null;
+  }
+
+
+  const result = await collection.updateOne(
+    { walletAddress: data.walletAddress },
+    { $set: { erc721ContractAddress: data.erc721ContractAddress } }
+  );
+
+  if (result) {
+
+    const updated = await collection.findOne<UserProps>(
+      { walletAddress: data.walletAddress },
+    );
+
+    return updated;
+
+  } else {
+    return null;
+  }
+
+
+}
+
+
+
+
 
 
 

@@ -45,13 +45,7 @@ import Uploader from '@/components/uploader';
 import { add } from 'thirdweb/extensions/farcaster/keyGateway';
 
 
-const wallets = [
-    inAppWallet({
-      auth: {
-        options: ["phone"],
-      },
-    }),
-];
+
 
 
 import { useRouter }from "next//navigation";
@@ -65,6 +59,32 @@ import { getDictionary } from "../../../dictionaries";
 
 import axios from 'axios';
 
+import { deployERC721Contract } from 'thirdweb/deploys';
+
+import {
+    lazyMint,
+    claimTo,
+    mintTo,
+ 
+    totalSupply,
+    nextTokenIdToMint,
+  
+    //nextTokenIdToClaim,
+  
+    getTotalClaimedSupply,
+  
+  
+  } from "thirdweb/extensions/erc721";
+
+
+
+const wallets = [
+    inAppWallet({
+      auth: {
+        options: ["phone"],
+      },
+    }),
+];
 
 
 const contractAddress = "0xc2132D05D31c914a87C6611C10748AEb04B58e8F"; // USDT on Polygon
@@ -74,7 +94,7 @@ const contractAddressArbitrum = "0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9"; //
 
 
 
-export default function SettingsPage({ params }: any) {
+export default function AIPage({ params }: any) {
 
 
     console.log("SettingsPage params", params);
@@ -258,7 +278,7 @@ export default function SettingsPage({ params }: any) {
       // get the balance in the interval
   
       const interval = setInterval(() => {
-        if (address) getBalance();
+        getBalance();
       }, 1000);
   
   
@@ -306,7 +326,7 @@ export default function SettingsPage({ params }: any) {
     const [userCode, setUserCode] = useState("");
 
 
-
+    const [erc721ContractAddress, setErc721ContractAddress] = useState("");
 
 
 
@@ -324,17 +344,21 @@ export default function SettingsPage({ params }: any) {
 
             const data = await response.json();
 
-            console.log("data", data);
+            ///console.log("data", data);
 
             if (data.result) {
                 setNickname(data.result.nickname);
                 setUserCode(data.result.id);
+
+                setErc721ContractAddress(data.result.erc721ContractAddress);
             }
         };
 
         fetchData();
     }, [address]);
 
+
+    console.log("erc721ContractAddress", erc721ContractAddress);
 
 
 
@@ -559,7 +583,7 @@ export default function SettingsPage({ params }: any) {
 
             const data = await response.json();
 
-            //console.log("getImages data", data);
+            ///console.log("getImages data", data);
 
             setMyImages(data.images || []);
 
@@ -645,7 +669,7 @@ export default function SettingsPage({ params }: any) {
 
         const data2 = await response2.json();
 
-        console.log("data2", data2);
+        //console.log("data2", data2);
 
         setMyImages(data2.images || []);
 
@@ -654,42 +678,246 @@ export default function SettingsPage({ params }: any) {
     }
 
 
-    // mint nft
-    const [loadingMintNFT, setLoadingMintNFT] = useState(false);
+    // mint nft array of images
+    const [loadingMintNFTs, setLoadingMintNFTs] = useState([] as boolean[]);
+    useEffect(() => {
+        setLoadingMintNFTs(
+            new Array(myImages.length).fill(false)
+        );
+    } , [myImages]);
+    
 
-    const mintNFT = async (url: string) => {
 
-        setLoadingMintNFT(true);
+    const mintNFT = async (url: string, index: number) => {
 
-        /*
-        const response = await fetch("/api/ai/mintNFT", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                prompt: prompt,
-                url: url,
-                userid: address,
-            }),
+
+        if (!smartAccount) {
+            return;
+        }
+
+        setLoadingMintNFTs(
+            loadingMintNFTs.map((value, i) => {
+                return i === index ? true : value;
+            }
+        ));
+        
+
+        const contract = getContract({
+            client,
+            chain: params.chain === "arbitrum" ? arbitrum : polygon,
+            address: erc721ContractAddress,
         });
 
-        const data = await response.json();
 
-        console.log("data", data);
+        // generate image
+        const image = url;
 
-        if (data.result) {
-            toast.success('NFT minted');
-        } else {
-            toast.error('Error minting NFT');
-        }
-        */
+        const transactionMintTo = mintTo({
+            contract,
+            to: address,
+            nft: {
+            name: "NFT",
+            description: "NFT",
+            image: image,
+            animation_url: image,
+
+            attributes: [
+                {
+                trait_type: "CreatorName",
+                value: nickname,
+                },
+            ],
+
+            },
+        });
+
+
+
+        const sendData = await sendAndConfirmTransaction({
+            transaction: transactionMintTo,
+            account: smartAccount,
+        });
+
+        if (sendData) {
+            // update image with erc721 contract address and token id
+
+            // get the token id
+            const nextTokenId = await nextTokenIdToMint({
+                contract: contract,
+            });
+
+            const tokenid = parseInt(nextTokenId.toString(), 10) - 1;
+
+
+
+            const response = await fetch("/api/ai/updateImageNFT", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    image: url,
+                    erc721ContractAddress: erc721ContractAddress,
+                    tokenid: tokenid,
+                }),
+            });
+
+            // update my images
+            const response2 = await fetch("/api/ai/getImages?userid=" + address, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            });
+
+            const data2 = await response2.json();
+
+            //console.log("data2", data2);
+
+            setMyImages(data2.images || []);
+
+        }   
+
+
 
         toast.success('NFT minted');
 
-        setLoadingMintNFT(false);
+        setLoadingMintNFTs(
+            loadingMintNFTs.map((value, i) => {
+                return i === index ? false : value;
+            }
+        ));
 
     }
+
+
+
+
+
+    /*
+          erc721ContractAddress = await deployERC721Contract({
+        chain,
+        client,
+        account,
+
+        //  type ERC721ContractType =
+        //  | "DropERC721"
+        //  | "TokenERC721"
+        //  | "OpenEditionERC721";
+        
+
+        //type: "DropERC721",
+
+        type: "TokenERC721",
+        
+        
+        params: {
+          name: "My NFT",
+          description: "My NFT",
+          symbol: "MYNFT",
+        },
+
+      });
+      */
+
+
+    const [loadingDeployERC721Contract, setLoadingDeployERC721Contract] = useState(false);
+
+    const deployERC721 = async () => {
+
+        if (!smartAccount) {
+            return;
+        }
+
+        setLoadingDeployERC721Contract(true);
+
+        const erc721ContractAddress = await deployERC721Contract({
+            chain: params.chain === "arbitrum" ? arbitrum : polygon,
+            client: client,
+            account: smartAccount,
+            type: "TokenERC721",
+            params: {
+                name: "My NFT",
+                description: "My NFT",
+                symbol: "MYNFT",
+            },
+        });
+
+        console.log("erc721ContractAddress", erc721ContractAddress);
+
+        if (erc721ContractAddress) {
+
+
+            const contract = getContract({
+                client,
+                chain: params.chain === "arbitrum" ? arbitrum : polygon,
+                address: erc721ContractAddress,
+            });
+
+
+            // generate image
+            const image = "https://next.unove.space/logo-chatgpt.png";
+
+            const transactionMintTo = mintTo({
+                contract,
+                to: address,
+                nft: {
+                name: "NFT",
+                description: "NFT",
+                image: image,
+                animation_url: image,
+
+                attributes: [
+                    {
+                    trait_type: "CreatorName",
+                    value: nickname,
+                    },
+                ],
+
+                },
+            });
+
+
+
+            const sendData = await sendAndConfirmTransaction({
+                transaction: transactionMintTo,
+                account: smartAccount,
+            });
+
+
+
+
+
+            // update the user with the erc721 contract address
+
+            const response = await fetch("/api/user/updateErc721ContractAddress", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    walletAddress: address,
+                    erc721ContractAddress: erc721ContractAddress,
+                }),
+            });
+
+            setErc721ContractAddress(erc721ContractAddress);
+
+
+            toast.success('ERC721 Contract deployed');
+        }
+
+        setLoadingDeployERC721Contract(false);
+
+
+
+
+    }
+
+
+
+
+
 
 
     return (
@@ -960,9 +1188,74 @@ export default function SettingsPage({ params }: any) {
                         </div>
 
 
+                        {/* check erc721 contract address */}
+                        {/* if not set, deploy */}
+
+                        {userCode && !erc721ContractAddress && (
+                            <div className='mt-10 flex flex-col gap-5 items-center justify-center'>
+
+                                {loadingDeployERC721Contract ? (
+                                    <div className='flex flex-row items-center gap-2'>
+                                        <Image
+                                            src="/chatbot-loading.gif"
+                                            alt="loading"
+                                            width={100}
+                                            height={100}
+                                        />
+                                        <span>
+                                            Making OpenSea Collection...
+                                        </span>
+                                    </div>
+                                ) : (
+                                    
+                                    <button
+                                        disabled={loadingDeployERC721Contract}
+                                        onClick={deployERC721}
+                                        className={` ${loadingDeployERC721Contract ? 'bg-gray-300 text-gray-500' : 'bg-blue-500 text-zinc-100'} p-2 rounded
+                                            text-lg font-semibold m-2
+                                            `}
+                                    >
+                                        {loadingDeployERC721Contract ? 'Deploying ERC721 Contract...' : 'Make opensea collection'}
+                                    </button>
+
+                                )}
+
+                            </div>
+                        )}
+
+                        {/* if erc721 contract address is set, link to opensea */}
+                        {erc721ContractAddress && (
+                            <div className='mt-10 flex flex-col gap-5 items-center justify-center'>
+                                <div>
+                                    ERC721 Contract Address: {erc721ContractAddress}
+                                </div>
+                                <button
+                                    onClick={() => window.open("https://opensea.io/assets/matic/" + erc721ContractAddress)}
+
+                                    className='hover:underline'
+                                >
+                                    <div className='flex flex-row items-center gap-2'>
+                                    
+                                        <Image
+                                            src="/logo-opensea.png"
+                                            alt="opensea"
+                                            width={100}
+                                            height={100}
+                                        />
+                                        <span className='ml-2'>
+                                            OpenSea Collection
+                                        </span>
+                                    </div>
+                                    
+                                </button>
+                            </div>
+                        )}
+
+
+
                         {/* my images */}
 
-                        <div className='flex flex-col gap-5 items-center justify-center'>
+                        <div className='mt-10 flex flex-col gap-5 items-center justify-center'>
 
                             {loadingMyImages && (
 
@@ -970,8 +1263,8 @@ export default function SettingsPage({ params }: any) {
                                     <Image
                                         src="/chatbot-loading.gif"
                                         alt="loading"
-                                        width={400}
-                                        height={400}
+                                        width={100}
+                                        height={100}
 
                                     />
                                 </div>
@@ -995,15 +1288,54 @@ export default function SettingsPage({ params }: any) {
                                         </div>
 
                                         {/* mint nft button */}
-                                        <button
-                                            disabled={loadingMintNFT}
-                                            onClick={() => mintNFT(result.image)}
-                                            className={` ${loadingMintNFT ? 'bg-gray-300 text-gray-500' : 'bg-blue-500 text-zinc-100'} p-2 rounded
-                                                text-lg font-semibold m-2
-                                                `}
-                                        >
-                                            {loadingMintNFT ? 'Minting NFT...' : 'Mint NFT'}
-                                        </button>
+                                        {result.erc721ContractAddress ? (
+
+                                            <button
+                                                // open opensea
+                                                onClick={() => window.open("https://opensea.io/assets/matic/" + result.erc721ContractAddress + "/" + result.tokenid)}
+                                                className='hover:underline'
+                                            >
+                                                <div className='flex flex-row items-center gap-2'>
+                                                    <Image
+                                                        src="/logo-opensea.png"
+                                                        alt="opensea"
+                                                        width={50}
+                                                        height={50}
+                                                    />
+                                                    <span>
+                                                        OpenSea
+                                                    </span>
+                                                </div>
+                                            </button>
+                                        
+                                        ) : (
+                                            <>
+                                                {loadingMintNFTs[index] ? (
+                                                    <div className='flex flex-row items-center gap-2'>
+                                                        <Image
+                                                            src="/chatbot-loading.gif"
+                                                            alt="loading"
+                                                            width={100}
+                                                            height={100}
+                                                        />
+                                                        <span>
+                                                            Minting NFT...
+                                                        </span>
+                                                    </div>
+                                                ) : (
+                                                <button
+                                                    disabled={loadingMintNFTs[index]}
+                                                    onClick={() => mintNFT(result.image, index)}
+                                                    className={` ${loadingMintNFTs[index] ? 'bg-gray-300 text-gray-500' : 'bg-blue-500 text-zinc-100'} p-2 rounded
+                                                        text-lg font-semibold m-2
+                                                        `}
+                                                >
+                                                    {loadingMintNFTs[index] ? 'Minting NFT...' : 'Mint NFT'}
+                                                
+                                                </button>
+                                                )}
+                                            </>
+                                        )}
                                             
 
 

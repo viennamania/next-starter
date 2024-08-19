@@ -154,6 +154,7 @@ export async function findOneByImage(data: any) {
 // update image by image
 export async function updateOneByImage(data: any) {
   
+  
   console.log('updateOneByImage data: ' + JSON.stringify(data));
 
 
