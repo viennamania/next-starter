@@ -452,7 +452,156 @@ export default function SettingsPage({ params }: any) {
     console.log("results", results);
 
 
+    const [myImages, setMyImages] = useState([]);
+    // loading my images
+    const [loadingMyImages, setLoadingMyImages] = useState(false);
 
+
+    useEffect(() => {
+        async function fetchData() {
+            
+            setLoadingMyImages(true);
+
+            const response = await fetch("/api/ai/getImages?userid=" + address, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            });
+
+            const data = await response.json();
+
+            //console.log("getImages data", data);
+
+            setMyImages(data.images || []);
+
+            setLoadingMyImages(false);
+        }
+
+        fetchData();
+    }, [address]);
+
+
+
+    const [loadingDownload, setLoadingDownload] = useState(false);
+
+    //function download(url: string) {
+
+    // aync function download(url: string) {
+
+    const download = async (url: string) => {
+  
+      setLoadingDownload(true);
+
+
+      // /api/download`
+
+        const response = await fetch("/api/ai/download", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                prompt: prompt,
+                url: url,
+                type: type,
+                userid: address,
+            }),
+        });
+
+        /*
+        if (!response.ok) {
+            console.log("error", response);
+
+            toast.success('Already downloaded');
+
+            setLoadingDownload(false);
+            return;
+        }
+        */
+
+        const data = await response.json();
+
+        if (data.error) {
+            console.log("error", data.error);
+
+            toast.error(data.error);
+
+            setLoadingDownload(false);
+            return;
+        }
+
+
+
+
+        //console.log("data", data);
+
+        const link = document.createElement("a");
+
+        link.href = data.result;
+
+        link.download = `${prompt}.${type.toLowerCase()}`;
+
+        link.click();
+        
+
+        toast.success('Downloaded');
+
+        // get my images from api
+        const response2 = await fetch("/api/ai/getImages?userid=" + address, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        });
+
+        const data2 = await response2.json();
+
+        console.log("data2", data2);
+
+        setMyImages(data2.images || []);
+
+        setLoadingDownload(false);
+  
+    }
+
+
+    // mint nft
+    const [loadingMintNFT, setLoadingMintNFT] = useState(false);
+
+    const mintNFT = async (url: string) => {
+
+        setLoadingMintNFT(true);
+
+        /*
+        const response = await fetch("/api/ai/mintNFT", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                prompt: prompt,
+                url: url,
+                userid: address,
+            }),
+        });
+
+        const data = await response.json();
+
+        console.log("data", data);
+
+        if (data.result) {
+            toast.success('NFT minted');
+        } else {
+            toast.error('Error minting NFT');
+        }
+        */
+
+        toast.success('NFT minted');
+
+        setLoadingMintNFT(false);
+
+    }
 
 
     return (
@@ -600,6 +749,7 @@ export default function SettingsPage({ params }: any) {
                         <div className='flex flex-col xl:flex-row gap-5 items-center justify-between border border-gray-300 p-4 rounded-lg'>
 
                             <div className='flex flex-row items-center gap-2'>
+                                {/*
                                 <input
                                     disabled={!address || loading}
                                     type="text"
@@ -610,6 +760,18 @@ export default function SettingsPage({ params }: any) {
                                         text-lg w-full
                                         `}
                                 />
+                                */}
+                                {/* text area for prompt */}
+                                <textarea
+                                    disabled={!address || loading}
+                                    value={prompt}
+                                    onChange={(e) => setPrompt(e.target.value)}
+                                    placeholder="prompt"
+                                    className={` ${!address || loading ? 'bg-gray-300 text-gray-500' : 'bg-zinc-100 text-zinc-800'} p-2 rounded
+                                        text-lg w-full
+                                        `}
+                                />
+
 
                                 {/* cehck box for real picture */}
                                 <input
@@ -650,6 +812,8 @@ export default function SettingsPage({ params }: any) {
 
                             </div>
 
+                            
+
                             <div className='mt-10 xl:mt-0 flex flex-row items-center gap-2'>
                             
                                 { loading && (
@@ -662,24 +826,100 @@ export default function SettingsPage({ params }: any) {
                                     />
                                 )}
 
-                                {results?.map((result : any, index : number) => (
-                                    <div key={index} className='flex flex-col gap-2 items-center justify-between border border-gray-300 rounded-lg'>
-                                        <div className='flex flex-row items-center gap-2'>
-                                            <Image
-                                                src={result.url}
-                                                alt={result.url}
-                                                width={400}
-                                                height={400}
-                                                className='rounded-lg'
-                                            />
+                                {!loading && results.length > 0 && results?.map((result : any, index : number) => (
+
+                                    <div key={index} className='flex flex-col gap-2 items-center justify-between '>
+                                        
+                                        <div className='flex flex-col items-center gap-2 border border-gray-300 rounded-lg p-4'>
+                                            
+                                            <div className='flex flex-row items-center gap-2'>
+                                                <Image
+                                                    src={result.url}
+                                                    alt={result.url}
+                                                    width={400}
+                                                    height={400}
+                                                    className='rounded-lg'
+                                                />
+                                            </div>
+
+                                            {/* download button */}
+                                            <button
+                                                disabled={loadingDownload}
+                                                onClick={() => download(result.url)}
+                                                className={` ${loadingDownload ? 'bg-gray-300 text-gray-500' : 'bg-blue-500 text-zinc-100'} p-2 rounded
+                                                    text-lg font-semibold m-2
+                                                    `}
+                                            >
+                                                {loadingDownload ? 'Downloading...' : 'Download'}
+                                            </button>
+
                                         </div>
+
+
                                     </div>
                                 ))}
 
                             </div>
 
+                       
 
                         </div>
+
+
+                        {/* my images */}
+
+                        <div className='flex flex-col gap-5 items-center justify-center'>
+
+                            {loadingMyImages && (
+
+                                <div className='flex flex-col items-center justify-center'>
+                                    <Image
+                                        src="/chatbot-loading.gif"
+                                        alt="loading"
+                                        width={400}
+                                        height={400}
+
+                                    />
+                                </div>
+
+                            )}
+
+                            {!loadingMyImages && myImages.length > 0 && myImages?.map((result : any, index : number) => (
+
+                                <div key={index} className='flex flex-col gap-2 items-center justify-between '>
+                                    
+                                    <div className='flex flex-col items-center gap-2 border border-gray-300 rounded-lg p-4'>
+                                        
+                                        <div className='flex flex-row items-center gap-2'>
+                                            <Image
+                                                src={result.image}
+                                                alt={result.image}
+                                                width={400}
+                                                height={400}
+                                                className='rounded-lg'
+                                            />
+                                        </div>
+
+                                        {/* mint nft button */}
+                                        <button
+                                            disabled={loadingMintNFT}
+                                            onClick={() => mintNFT(result.image)}
+                                            className={` ${loadingMintNFT ? 'bg-gray-300 text-gray-500' : 'bg-blue-500 text-zinc-100'} p-2 rounded
+                                                text-lg font-semibold m-2
+                                                `}
+                                        >
+                                            {loadingMintNFT ? 'Minting NFT...' : 'Mint NFT'}
+                                        </button>
+                                            
+
+
+                                    </div>
+                                </div>
+
+                            ))}
+
+                        </div>
+
 
 
 

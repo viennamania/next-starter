@@ -24,6 +24,7 @@
 		"react-dom": "^18.3",
 		"react-hot-toast": "^2.4.1",
 		"replicate": "^0.32.0",
+		"sharp": "^0.33.5",
 		"talkjs": "^0.22.0",
 		"thirdweb": "^5",
 		"twilio": "^5.2.2"
