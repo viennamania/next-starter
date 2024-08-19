@@ -8,6 +8,18 @@ import { toast } from 'react-hot-toast';
 
 import { client } from "../../../client";
 
+
+import {
+    getContract,
+    //readContract,
+    sendTransaction,
+    sendAndConfirmTransaction,
+} from "thirdweb";
+
+import { balanceOf, transfer } from "thirdweb/extensions/erc20";
+ 
+
+
 import {
     polygon,
     arbitrum,
@@ -52,6 +64,11 @@ import { getDictionary } from "../../../dictionaries";
 
 
 import axios from 'axios';
+
+
+
+const contractAddress = "0xc2132D05D31c914a87C6611C10748AEb04B58e8F"; // USDT on Polygon
+const contractAddressArbitrum = "0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9"; // USDT on Arbitrum
 
 
 
@@ -181,6 +198,77 @@ export default function SettingsPage({ params }: any) {
     const address = smartAccount?.address || "";
 
 
+
+    const contract = getContract({
+        // the client you have created via `createThirdwebClient()`
+        client,
+        // the chain the contract is deployed on
+        
+        
+        chain: params.chain === "arbitrum" ? arbitrum : polygon,
+      
+      
+      
+        // the contract's address
+        ///address: contractAddress,
+    
+        address: params.chain === "arbitrum" ? contractAddressArbitrum : contractAddress,
+    
+    
+        // OPTIONAL: the contract's abi
+        //abi: [...],
+      });
+    
+
+
+
+
+    const [balance, setBalance] = useState(0);
+
+    useEffect(() => {
+  
+      if (!address) return;
+      // get the balance
+  
+  
+      if (!contract) {
+        return;
+      }
+  
+      const getBalance = async () => {
+  
+        try {
+          const result = await balanceOf({
+            contract,
+            address: address,
+          });
+      
+          //console.log(result);
+      
+          setBalance( Number(result) / 10 ** 6 );
+  
+        } catch (error) {
+          console.error("Error getting balance", error);
+        }
+  
+      };
+  
+      if (address) getBalance();
+  
+      // get the balance in the interval
+  
+      const interval = setInterval(() => {
+        if (address) getBalance();
+      }, 1000);
+  
+  
+      return () => clearInterval(interval);
+  
+    } , [address, contract]);
+
+
+
+    
 
     const [phoneNumber, setPhoneNumber] = useState("");
 
@@ -645,6 +733,12 @@ export default function SettingsPage({ params }: any) {
                         <div className="text-2xl font-semibold">
                             ChatGPT
                         </div>
+                        {/* balance */}
+                        {address && (
+                            <div className="text-5xl font-semibold text-white">
+                                {Number(balance).toFixed(2)} <span className="text-lg">USDT</span>
+                            </div>
+                        )}
 
                         {!address && (
 
