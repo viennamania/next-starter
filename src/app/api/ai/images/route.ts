@@ -52,9 +52,17 @@ export async function GET(request: NextRequest) {
 
     const url = new URL(request.url);
 
-    const prompt = url.searchParams.get("prompt")?.trim();
+    console.log("url=", url);
+
+
+
+    const prompt = url.searchParams.get("p")?.trim();
+    const n = url.searchParams.get("n");
     const userid = url.searchParams.get("userid");
     const isReal = url.searchParams.get("real");
+
+
+
 
 
     let englishPrompt = '';

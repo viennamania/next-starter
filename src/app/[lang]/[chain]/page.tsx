@@ -999,6 +999,16 @@ export default function Index({ params }: any) {
                   </button>
 
                 </div>
+
+                {/* button for goto genai */}
+                <button
+                  onClick={() => {
+                    router.push("/" + params.lang + "/" + params.chain + "/genai");
+                  }}
+                  className="w-full bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 mt-10"
+                >
+                  Gen AI
+                </button>
                 
 
 

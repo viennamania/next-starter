@@ -13,7 +13,14 @@ const nextConfig = {
   },
 
   images: {
-    domains: ["cryptologos.cc", "vzrcy5vcsuuocnf3.public.blob.vercel-storage.com"],
+    domains: [
+      "cryptologos.cc",
+      "vzrcy5vcsuuocnf3.public.blob.vercel-storage.com",
+      "replicate.delivery",
+      "fal.media",
+
+    ],
+
   },
 
   experimental: {
