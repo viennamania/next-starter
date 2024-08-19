@@ -649,29 +649,34 @@ export default function SettingsPage({ params }: any) {
 
 
                             </div>
-                            
-                            { loading && (
-                                <Image
-                                    src="/chatbot-loading.gif"
-                                    alt="loading"
-                                    width={200}
-                                    height={200}
-                                />
-                            )}
 
-                            {results?.map((result : any, index : number) => (
-                                <div key={index} className='flex flex-col gap-2 items-center justify-between border border-gray-300 rounded-lg'>
-                                    <div className='flex flex-row items-center gap-2'>
-                                        <Image
-                                            src={result.url}
-                                            alt={result.url}
-                                            width={200}
-                                            height={200}
-                                            className='rounded-lg'
-                                        />
+                            <div className='mt-10 xl:mt-0 flex flex-row items-center gap-2'>
+                            
+                                { loading && (
+                                    <Image
+                                        src="/chatbot-loading.gif"
+                                        alt="loading"
+                                        width={400}
+                                        height={400}
+
+                                    />
+                                )}
+
+                                {results?.map((result : any, index : number) => (
+                                    <div key={index} className='flex flex-col gap-2 items-center justify-between border border-gray-300 rounded-lg'>
+                                        <div className='flex flex-row items-center gap-2'>
+                                            <Image
+                                                src={result.url}
+                                                alt={result.url}
+                                                width={400}
+                                                height={400}
+                                                className='rounded-lg'
+                                            />
+                                        </div>
                                     </div>
-                                </div>
-                            ))}
+                                ))}
+
+                            </div>
 
 
                         </div>
