@@ -42,6 +42,15 @@ import {
 
 
 import { balanceOf, transfer } from "thirdweb/extensions/erc20";
+
+// balance of erc721
+import {
+  totalSupply,
+  ownerOf,
+  tokenURI,
+  getOwnedNFTs,
+  ///getOwnedTokenIds,
+} from "thirdweb/extensions/erc721";
  
 
 
@@ -54,7 +63,6 @@ import { useRouter }from "next//navigation";
 import { add } from "thirdweb/extensions/farcaster/keyGateway";
 
 
-import { getOwnedNFTs } from "thirdweb/extensions/erc721";
 
 
 import GearSetupIcon from "@/components/gearSetupIcon";
@@ -64,6 +72,7 @@ import GearSetupIcon from "@/components/gearSetupIcon";
 
 import AppBarComponent from "@/components/Appbar/AppBar";
 import { getDictionary } from "../../dictionaries";
+import { get } from "http";
 
 
 
@@ -282,6 +291,8 @@ export default function Index({ params }: any) {
 
 
 
+
+
   const [loadingAnimation, setLoadingAnimation] = useState(false);
   // loadingAnimation duration is 2 seconds
   // and then 10 seconds later it will be toggled again
@@ -372,6 +383,8 @@ export default function Index({ params }: any) {
 
   const [seller, setSeller] = useState(null) as any;
 
+  const [erc721ContractAddress, setErc721ContractAddress] = useState("");
+
 
   const [loadingUser, setLoadingUser] = useState(true);
 
@@ -405,6 +418,8 @@ export default function Index({ params }: any) {
 
               setSeller(data.result.seller);
 
+              setErc721ContractAddress(data.result.erc721ContractAddress);
+
           }
 
           setLoadingUser(false);
@@ -413,6 +428,60 @@ export default function Index({ params }: any) {
       fetchData();
 
   }, [address]);
+
+
+  console.log("erc721ContractAddress", erc721ContractAddress);
+
+
+
+
+
+  // owned NFTs
+  
+  const [ownedNFTs, setOwnedNFTs] = useState([] as any);
+  useEffect(() => {
+      
+      if (!address) {
+        return;
+      }
+
+      if (!erc721ContractAddress) {
+        return;
+      }
+
+      const fetchData = async () => {
+          const response = await fetch("/api/ai/getOwnedNFTs", {
+              method: "POST",
+              headers: {
+                  "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                  lang: params.lang,
+                  chain: params.chain,
+                  walletAddress: address,
+                  erc721ContractAddress: erc721ContractAddress,
+              }),
+          });
+
+          const data = await response.json();
+
+          console.log("data", data);
+
+          if (data.result) {
+              setOwnedNFTs(data.result.ownedNFTs);
+          }
+      };
+
+      fetchData();
+
+  } , [address, erc721ContractAddress]);
+  
+
+
+
+
+
+
 
 
 
