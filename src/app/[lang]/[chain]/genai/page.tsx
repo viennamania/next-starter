@@ -1255,7 +1255,9 @@ export default function AIPage({ params }: any) {
 
                         {/* my images */}
 
-                        <div className='mt-10 flex flex-col gap-5 items-center justify-center'>
+                        <div className="mt-10 w-full grid gap-4 lg:grid-cols-2 xl:grid-cols-3 justify-center ">
+
+
 
                             {loadingMyImages && (
 
@@ -1274,7 +1276,7 @@ export default function AIPage({ params }: any) {
                             {!loadingMyImages && myImages.length > 0 && myImages?.map((result : any, index : number) => (
 
                                 <div key={index} className='flex flex-col gap-2 items-center justify-between '>
-                                    
+    
                                     <div className='flex flex-col items-center gap-2 border border-gray-300 rounded-lg p-4'>
                                         
                                         <div className='flex flex-row items-center gap-2'>
@@ -1296,6 +1298,17 @@ export default function AIPage({ params }: any) {
                                                 className='hover:underline'
                                             >
                                                 <div className='flex flex-row items-center gap-2'>
+                                                    {/* verify image */}
+                                                    <Image
+                                                        src="/verified.png"
+                                                        alt="verified"
+                                                        width={20}
+                                                        height={20}
+                                                    />
+                                                    {/* updatedAt */}
+                                                    <span>
+                                                        {new Date(result.updatedAt).toLocaleString()}
+                                                    </span>
                                                     <Image
                                                         src="/logo-opensea.png"
                                                         alt="opensea"
