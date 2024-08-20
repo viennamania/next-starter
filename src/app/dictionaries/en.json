@@ -350,17 +350,23 @@
 
     "Downloading_Image": "Downloading Image..., please wait for a moment.",
 
+    "Alert_download_image_success": "Image downloaded successfully",
+
     "Make_OpenSea_Collection": "Make OpenSea Collection",
 
     "If_you_make_an_OpenSea_collection": "If you make an OpenSea collection, you can mint NFTs.",
 
     "Making_OpenSea_Collection": "Making OpenSea Collection..., Please wait for a moment.",
 
+    "Alert_OpenSea_Collection_made": "OpenSea Collection made successfully.",
+
     "OpenSea_Collection_Address": "OpenSea Collection Address",
 
     "OpenSea_Collection": "OpenSea Collection",
 
     "Mint_NFT": "Mint NFT",
+
+    "Alert_NFT_minted": "NFT minted successfully",
 
     "Minting_NFT": "Minting NFT..., Please wait for a moment.",
 

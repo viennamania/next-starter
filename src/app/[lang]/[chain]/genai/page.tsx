@@ -75,6 +75,7 @@ import {
   
   
   } from "thirdweb/extensions/erc721";
+import { Alert } from '@mui/material';
 
 
 
@@ -162,8 +163,12 @@ export default function AIPage({ params }: any) {
         Download_Image: "",
 
         Downloading_Image: "",
+
+        Alert_download_image_success: "",
     
         Make_OpenSea_Collection: "",
+
+        Alert_OpenSea_Collection_made: "",
 
         If_you_make_an_OpenSea_collection: "",
 
@@ -174,6 +179,8 @@ export default function AIPage({ params }: any) {
         OpenSea_Collection: "",
 
         Mint_NFT: "",
+
+        Alert_NFT_minted: "",
 
         Minting_NFT: "",
 
@@ -240,17 +247,23 @@ export default function AIPage({ params }: any) {
 
         Downloading_Image,
 
+        Alert_download_image_success,
+
         Make_OpenSea_Collection,
 
         If_you_make_an_OpenSea_collection,
 
         Making_OpenSea_Collection,
 
+        Alert_OpenSea_Collection_made,
+
         OpenSea_Collection_Address,
 
         OpenSea_Collection,
 
         Mint_NFT,
+
+        Alert_NFT_minted,
 
         Minting_NFT,
 
@@ -497,7 +510,7 @@ export default function AIPage({ params }: any) {
 
             const data = await response.json();
 
-            console.log("data", data);
+            ///console.log("data", data);
 
             if (data.result) {
 
@@ -539,7 +552,6 @@ export default function AIPage({ params }: any) {
   
   
     // check if prompt is real picture
-    // 真实图片
     const [checkIsRealPicture, setCheckIsRealPicture] = useState(false);
   
   
@@ -621,7 +633,7 @@ export default function AIPage({ params }: any) {
   
 
 
-    console.log("results", results);
+    ///console.log("results", results);
 
 
     const [myImages, setMyImages] = useState([]);
@@ -717,7 +729,7 @@ export default function AIPage({ params }: any) {
         link.click();
         
 
-        toast.success('Downloaded');
+        toast.success(Alert_download_image_success);
 
         // get my images from api
         const response2 = await fetch("/api/ai/getImages?userid=" + address, {
@@ -840,7 +852,7 @@ export default function AIPage({ params }: any) {
 
 
 
-        toast.success('NFT minted');
+        toast.success(Alert_NFT_minted);
 
         setLoadingMintNFTs(
             loadingMintNFTs.map((value, i) => {
@@ -964,7 +976,7 @@ export default function AIPage({ params }: any) {
             setErc721ContractAddress(erc721ContractAddress);
 
 
-            toast.success('ERC721 Contract deployed');
+            toast.success(Alert_OpenSea_Collection_made);
         }
 
         setLoadingDeployERC721Contract(false);

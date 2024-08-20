@@ -308,17 +308,23 @@
 
     "Downloading_Image": "이미지 다운로드 중..., 잠시만 기다려주세요.",
 
+    "Alert_download_image_success": "이미지 다운로드가 성공적으로 완료되었습니다.",
+
     "Make_OpenSea_Collection": "OpenSea 컬렉션 만들기",
 
     "If_you_make_an_OpenSea_collection": "OpenSea 컬렉션을 만들면 NFT를 발행할 수 있습니다.",
 
     "Making_OpenSea_Collection": "OpenSea 컬렉션 만드는 중..., 잠시만 기다려주세요.",
 
+    "Alert_OpenSea_Collection_made": "OpenSea 컬렉션이 성공적으로 만들어졌습니다.",
+
     "OpenSea_Collection_Address": "OpenSea 컬렉션 주소",
 
     "OpenSea_Collection": "OpenSea 컬렉션",
     
     "Mint_NFT": "NFT 발행하기",
+
+    "Alert_NFT_minted": "NFT 발행이 성공적으로 완료되었습니다.",
 
     "Minting_NFT": "NFT 발행 중..., 잠시만 기다려주세요.",
 
