@@ -289,8 +289,40 @@
 
     "Payment_name_has_been_copied": "입금자명이 복사되었습니다.",
 
-    "Payment_amount_has_been_copied": "입금액이 복사되었습니다."
+    "Payment_amount_has_been_copied": "입금액이 복사되었습니다.",
 
+
+
+
+    "Prompt_input_placeholder": "프롬프트 입력 예) 아름다운 풍경",
+
+    "Real_prompt": "실사",
+
+    "Generate_prompt": "생성",
+
+    "Reset_prompt": "초기화",
+
+    "Generating_prompt": "프롬프트 생성 중..., 잠시만 기다려주세요.",
+
+    "Download_Image": "이미지 다운로드",
+
+    "Downloading_Image": "이미지 다운로드 중..., 잠시만 기다려주세요.",
+
+    "Make_OpenSea_Collection": "OpenSea 컬렉션 만들기",
+
+    "If_you_make_an_OpenSea_collection": "OpenSea 컬렉션을 만들면 NFT를 발행할 수 있습니다.",
+
+    "Making_OpenSea_Collection": "OpenSea 컬렉션 만드는 중..., 잠시만 기다려주세요.",
+
+    "OpenSea_Collection_Address": "OpenSea 컬렉션 주소",
+
+    "OpenSea_Collection": "OpenSea 컬렉션",
+    
+    "Mint_NFT": "NFT 발행하기",
+
+    "Minting_NFT": "NFT 발행 중..., 잠시만 기다려주세요.",
+
+    "Loading_my_images": "내 이미지 로딩 중..., 잠시만 기다려주세요."
 
 
 

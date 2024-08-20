@@ -147,8 +147,37 @@ export default function AIPage({ params }: any) {
         Copy: "",
 
         Disconnect_Wallet: "",
-    
 
+
+        Prompt_input_placeholder: "",
+
+        Real_prompt: "",
+
+        Generate_prompt: "",
+    
+        Reset_prompt: "",
+
+        Generating_prompt: "",
+
+        Download_Image: "",
+
+        Downloading_Image: "",
+    
+        Make_OpenSea_Collection: "",
+
+        If_you_make_an_OpenSea_collection: "",
+
+        Making_OpenSea_Collection: "",
+
+        OpenSea_Collection_Address: "",
+
+        OpenSea_Collection: "",
+
+        Mint_NFT: "",
+
+        Minting_NFT: "",
+
+        Loading_my_images: "",
     
     } );
     
@@ -195,6 +224,37 @@ export default function AIPage({ params }: any) {
         Copy,
 
         Disconnect_Wallet,
+
+
+        Prompt_input_placeholder,
+
+        Real_prompt,
+
+        Generate_prompt,
+
+        Reset_prompt,
+
+        Generating_prompt,
+
+        Download_Image,
+
+        Downloading_Image,
+
+        Make_OpenSea_Collection,
+
+        If_you_make_an_OpenSea_collection,
+
+        Making_OpenSea_Collection,
+
+        OpenSea_Collection_Address,
+
+        OpenSea_Collection,
+
+        Mint_NFT,
+
+        Minting_NFT,
+
+        Loading_my_images,
 
     } = data;
     
@@ -1088,7 +1148,7 @@ export default function AIPage({ params }: any) {
                                     disabled={!address || loading}
                                     value={prompt}
                                     onChange={(e) => setPrompt(e.target.value)}
-                                    placeholder="prompt"
+                                    placeholder={Prompt_input_placeholder}
                                     className={` ${!address || loading ? 'bg-gray-300 text-gray-500' : 'bg-zinc-100 text-zinc-800'} p-2 rounded
                                         text-lg w-full
                                         `}
@@ -1103,7 +1163,7 @@ export default function AIPage({ params }: any) {
                                     className='p-2'
                                 />
                                 <div>
-                                    Real
+                                    {Real_prompt}
                                 </div>
 
 
@@ -1114,7 +1174,7 @@ export default function AIPage({ params }: any) {
                                         text-lg font-semibold w-32
                                         `}
                                 >
-                                    Get
+                                    {Generate_prompt}
                                 </button>
                                 {/* Reset Button */}
                                 <button
@@ -1128,7 +1188,7 @@ export default function AIPage({ params }: any) {
                                         text-lg font-semibold w-32
                                         `}
                                 >
-                                    Reset
+                                    {Reset_prompt}
                                 </button>
 
 
@@ -1139,13 +1199,18 @@ export default function AIPage({ params }: any) {
                             <div className='mt-10 xl:mt-0 flex flex-row items-center gap-2'>
                             
                                 { loading && (
-                                    <Image
-                                        src="/chatbot-loading.gif"
-                                        alt="loading"
-                                        width={400}
-                                        height={400}
+                                    <div className='flex flex-row items-center gap-2'>
+                                        <Image
+                                            src="/chatbot-loading.gif"
+                                            alt="loading"
+                                            width={400}
+                                            height={400}
 
-                                    />
+                                        />
+                                        <span>
+                                            {Generating_prompt}
+                                        </span>
+                                    </div>
                                 )}
 
                                 {!loading && results.length > 0 && results?.map((result : any, index : number) => (
@@ -1172,7 +1237,7 @@ export default function AIPage({ params }: any) {
                                                     text-lg font-semibold m-2
                                                     `}
                                             >
-                                                {loadingDownload ? 'Downloading...' : 'Download'}
+                                                {loadingDownload ? Downloading_Image : Download_Image}
                                             </button>
 
                                         </div>
@@ -1203,20 +1268,24 @@ export default function AIPage({ params }: any) {
                                             height={100}
                                         />
                                         <span>
-                                            Making OpenSea Collection...
+                                            {Making_OpenSea_Collection}
                                         </span>
                                     </div>
                                 ) : (
-                                    
-                                    <button
-                                        disabled={loadingDeployERC721Contract}
-                                        onClick={deployERC721}
-                                        className={` ${loadingDeployERC721Contract ? 'bg-gray-300 text-gray-500' : 'bg-blue-500 text-zinc-100'} p-2 rounded
-                                            text-lg font-semibold m-2
-                                            `}
-                                    >
-                                        {loadingDeployERC721Contract ? 'Deploying ERC721 Contract...' : 'Make opensea collection'}
-                                    </button>
+                                    <div className='flex flex-col gap-2 items-center justify-between '>
+                                        <span className='text-sm text-gray-500'>
+                                            {If_you_make_an_OpenSea_collection}
+                                        </span>
+                                        <button
+                                            disabled={loadingDeployERC721Contract}
+                                            onClick={deployERC721}
+                                            className={` ${loadingDeployERC721Contract ? 'bg-gray-300 text-gray-500' : 'bg-blue-500 text-zinc-100'} p-2 rounded
+                                                text-lg font-semibold m-2
+                                                `}
+                                        >
+                                            {loadingDeployERC721Contract ? Making_OpenSea_Collection : Make_OpenSea_Collection}
+                                        </button>
+                                    </div>
 
                                 )}
 
@@ -1225,9 +1294,9 @@ export default function AIPage({ params }: any) {
 
                         {/* if erc721 contract address is set, link to opensea */}
                         {erc721ContractAddress && (
-                            <div className='mt-10 flex flex-col gap-5 items-center justify-center'>
+                            <div className='mt-10 flex flex-col gap-5 items-center justify-center text-sm'>
                                 <div>
-                                    ERC721 Contract Address: {erc721ContractAddress}
+                                    {OpenSea_Collection_Address}: {erc721ContractAddress}
                                 </div>
                                 <button
                                     onClick={() => window.open("https://opensea.io/assets/matic/" + erc721ContractAddress)}
@@ -1243,7 +1312,7 @@ export default function AIPage({ params }: any) {
                                             height={100}
                                         />
                                         <span className='ml-2'>
-                                            OpenSea Collection
+                                            {OpenSea_Collection}
                                         </span>
                                     </div>
                                     
@@ -1267,8 +1336,10 @@ export default function AIPage({ params }: any) {
                                         alt="loading"
                                         width={100}
                                         height={100}
-
                                     />
+                                    <span>
+                                        {Loading_my_images}
+                                    </span>
                                 </div>
 
                             )}
@@ -1332,7 +1403,7 @@ export default function AIPage({ params }: any) {
                                                             height={100}
                                                         />
                                                         <span>
-                                                            Minting NFT...
+                                                            {Minting_NFT}
                                                         </span>
                                                     </div>
                                                 ) : (
@@ -1343,7 +1414,7 @@ export default function AIPage({ params }: any) {
                                                         text-lg font-semibold m-2
                                                         `}
                                                 >
-                                                    {loadingMintNFTs[index] ? 'Minting NFT...' : 'Mint NFT'}
+                                                    {loadingMintNFTs[index] ? Minting_NFT : Mint_NFT}
                                                 
                                                 </button>
                                                 )}

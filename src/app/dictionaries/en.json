@@ -332,9 +332,39 @@
 
     "Payment_name_has_been_copied": "Payment name has been copied",
 
-    "Payment_amount_has_been_copied": "Payment amount has been copied"
+    "Payment_amount_has_been_copied": "Payment amount has been copied",
 
   
-  
+
+    "Prompt_input_placeholder": "Enter prompt here ex) A beautiful sunset",
+
+    "Real_prompt": "Real",
+
+    "Generate_prompt": "Gen",
+
+    "Reset_prompt": "Reset",
+
+    "Generating_prompt": "Generating prompt..., please wait for a moment.",
+
+    "Download_Image": "Download Image",
+
+    "Downloading_Image": "Downloading Image..., please wait for a moment.",
+
+    "Make_OpenSea_Collection": "Make OpenSea Collection",
+
+    "If_you_make_an_OpenSea_collection": "If you make an OpenSea collection, you can mint NFTs.",
+
+    "Making_OpenSea_Collection": "Making OpenSea Collection..., Please wait for a moment.",
+
+    "OpenSea_Collection_Address": "OpenSea Collection Address",
+
+    "OpenSea_Collection": "OpenSea Collection",
+
+    "Mint_NFT": "Mint NFT",
+
+    "Minting_NFT": "Minting NFT..., Please wait for a moment.",
+
+    "Loading_my_images": "Loading my images..., Please wait for a moment."
+
 
 }
