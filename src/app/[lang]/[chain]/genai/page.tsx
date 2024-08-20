@@ -1199,7 +1199,7 @@ export default function AIPage({ params }: any) {
                             <div className='mt-10 xl:mt-0 flex flex-row items-center gap-2'>
                             
                                 { loading && (
-                                    <div className='flex flex-row items-center gap-2'>
+                                    <div className='flex flex-col items-center gap-2'>
                                         <Image
                                             src="/chatbot-loading.gif"
                                             alt="loading"
@@ -1219,7 +1219,7 @@ export default function AIPage({ params }: any) {
                                         
                                         <div className='flex flex-col items-center gap-2 border border-gray-300 rounded-lg p-4'>
                                             
-                                            <div className='flex flex-row items-center gap-2'>
+                                            <div className='flex flex-col items-center gap-2'>
                                                 <Image
                                                     src={result.url}
                                                     alt={result.url}
@@ -1227,18 +1227,34 @@ export default function AIPage({ params }: any) {
                                                     height={400}
                                                     className='rounded-lg'
                                                 />
+                                                <span>
+                                                    {prompt}
+                                                </span>
                                             </div>
 
-                                            {/* download button */}
-                                            <button
-                                                disabled={loadingDownload}
-                                                onClick={() => download(result.url)}
-                                                className={` ${loadingDownload ? 'bg-gray-300 text-gray-500' : 'bg-blue-500 text-zinc-100'} p-2 rounded
-                                                    text-lg font-semibold m-2
-                                                    `}
-                                            >
-                                                {loadingDownload ? Downloading_Image : Download_Image}
-                                            </button>
+                                            {loadingDownload ? (
+                                                <div className='flex flex-col items-center gap-2'>
+                                                    <Image
+                                                        src="/chatbot-loading.gif"
+                                                        alt="loading"
+                                                        width={100}
+                                                        height={100}
+                                                    />
+                                                    <span>
+                                                        {Downloading_Image}
+                                                    </span>
+                                                </div>
+                                            ) : (
+                                                <button
+                                                    disabled={loadingDownload}
+                                                    onClick={() => download(result.url)}
+                                                    className={` ${loadingDownload ? 'bg-gray-300 text-gray-500' : 'bg-blue-500 text-zinc-100'} p-2 rounded
+                                                        text-lg font-semibold m-2
+                                                        `}
+                                                >
+                                                    {loadingDownload ? Downloading_Image : Download_Image}
+                                                </button>
+                                            )}
 
                                         </div>
 
@@ -1350,7 +1366,7 @@ export default function AIPage({ params }: any) {
     
                                     <div className='flex flex-col items-center gap-2 border border-gray-300 rounded-lg p-4'>
                                         
-                                        <div className='flex flex-row items-center gap-2'>
+                                        <div className='flex flex-col items-center gap-2'>
                                             <Image
                                                 src={result.image}
                                                 alt={result.image}
@@ -1358,6 +1374,9 @@ export default function AIPage({ params }: any) {
                                                 height={400}
                                                 className='rounded-lg'
                                             />
+                                            <span>
+                                                {result.prompt}
+                                            </span>
                                         </div>
 
                                         {/* mint nft button */}
