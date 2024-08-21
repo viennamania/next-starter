@@ -761,7 +761,7 @@ export default function AIPage({ params }: any) {
     
 
 
-    const mintNFT = async (url: string, index: number) => {
+    const mintNFT = async (url: string, prompt:string, index: number) => {
 
 
         if (!smartAccount) {
@@ -794,7 +794,7 @@ export default function AIPage({ params }: any) {
                 to: address,
                 nft: {
                 name: "NFT",
-                description: "NFT",
+                description: prompt,
                 image: image,
                 animation_url: image,
 
@@ -1495,7 +1495,11 @@ export default function AIPage({ params }: any) {
                                                     <div className='flex flex-row items-center gap-2'>
                                                         <button
                                                             disabled={loadingMintNFTs[index]}
-                                                            onClick={() => mintNFT(result.image, index)}
+                                                            onClick={() => mintNFT(
+                                                                result.image,
+                                                                result.prompt,
+                                                                index
+                                                            )}
                                                             className={` ${loadingMintNFTs[index] ? 'bg-gray-300 text-gray-500' : 'bg-blue-500 text-zinc-100'} p-2 rounded
                                                                 text-lg font-semibold m-2
                                                                 `}
