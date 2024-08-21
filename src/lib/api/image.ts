@@ -217,3 +217,28 @@ export async function findAllByUserid(data: any) {
 
   return result;
 }
+
+
+// delete one by image
+export async function deleteOneByImage(data: any) {
+  
+  console.log('deleteOneByImage data: ' + JSON.stringify(data));
+
+  if (!data.image) {
+    return null;
+  }
+
+  const client = await clientPromise;
+  const collection = client.db('vienna').collection('images');
+
+  const result = await collection.deleteOne(
+    {
+      image: data.image,
+    },
+  );
+
+  return {
+    result: result,
+  };
+
+}

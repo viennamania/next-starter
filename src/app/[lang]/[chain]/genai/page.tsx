@@ -719,7 +719,7 @@ export default function AIPage({ params }: any) {
 
 
         //console.log("data", data);
-
+        /*
         const link = document.createElement("a");
 
         link.href = data.result;
@@ -727,6 +727,7 @@ export default function AIPage({ params }: any) {
         link.download = `${prompt}.${type.toLowerCase()}`;
 
         link.click();
+        */
         
 
         toast.success(Alert_download_image_success);
@@ -767,98 +768,106 @@ export default function AIPage({ params }: any) {
             return;
         }
 
-        setLoadingMintNFTs(
-            loadingMintNFTs.map((value, i) => {
-                return i === index ? true : value;
-            }
-        ));
+
+        if (confirm("Are you sure you want to mint this NFT?")) {
+
+
+            setLoadingMintNFTs(
+                loadingMintNFTs.map((value, i) => {
+                    return i === index ? true : value;
+                }
+            ));
+            
+
+            const contract = getContract({
+                client,
+                chain: params.chain === "arbitrum" ? arbitrum : polygon,
+                address: erc721ContractAddress,
+            });
+
+
+            // generate image
+            const image = url;
+
+            const transactionMintTo = mintTo({
+                contract,
+                to: address,
+                nft: {
+                name: "NFT",
+                description: "NFT",
+                image: image,
+                animation_url: image,
+
+                attributes: [
+                    {
+                    trait_type: "CreatorName",
+                    value: nickname,
+                    },
+                ],
+
+                },
+            });
+
+
+
+            const sendData = await sendAndConfirmTransaction({
+                transaction: transactionMintTo,
+                account: smartAccount,
+            });
+
+            if (sendData) {
+                // update image with erc721 contract address and token id
+
+                // get the token id
+                const nextTokenId = await nextTokenIdToMint({
+                    contract: contract,
+                });
+
+                const tokenid = parseInt(nextTokenId.toString(), 10) - 1;
+
+
+
+                const response = await fetch("/api/ai/updateImageNFT", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        image: url,
+                        erc721ContractAddress: erc721ContractAddress,
+                        tokenid: tokenid,
+                    }),
+                });
+
+                // update my images
+                const response2 = await fetch("/api/ai/getImages?userid=" + address, {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                });
+
+                const data2 = await response2.json();
+
+                //console.log("data2", data2);
+
+                setMyImages(data2.images || []);
+
+            }   
+
+
+
+            toast.success(Alert_NFT_minted);
+
+            setLoadingMintNFTs(
+                loadingMintNFTs.map((value, i) => {
+                    return i === index ? false : value;
+                }
+            ));
+
+
+        }
         
-
-        const contract = getContract({
-            client,
-            chain: params.chain === "arbitrum" ? arbitrum : polygon,
-            address: erc721ContractAddress,
-        });
-
-
-        // generate image
-        const image = url;
-
-        const transactionMintTo = mintTo({
-            contract,
-            to: address,
-            nft: {
-            name: "NFT",
-            description: "NFT",
-            image: image,
-            animation_url: image,
-
-            attributes: [
-                {
-                trait_type: "CreatorName",
-                value: nickname,
-                },
-            ],
-
-            },
-        });
-
-
-
-        const sendData = await sendAndConfirmTransaction({
-            transaction: transactionMintTo,
-            account: smartAccount,
-        });
-
-        if (sendData) {
-            // update image with erc721 contract address and token id
-
-            // get the token id
-            const nextTokenId = await nextTokenIdToMint({
-                contract: contract,
-            });
-
-            const tokenid = parseInt(nextTokenId.toString(), 10) - 1;
-
-
-
-            const response = await fetch("/api/ai/updateImageNFT", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    image: url,
-                    erc721ContractAddress: erc721ContractAddress,
-                    tokenid: tokenid,
-                }),
-            });
-
-            // update my images
-            const response2 = await fetch("/api/ai/getImages?userid=" + address, {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-            });
-
-            const data2 = await response2.json();
-
-            //console.log("data2", data2);
-
-            setMyImages(data2.images || []);
-
-        }   
-
-
-
-        toast.success(Alert_NFT_minted);
-
-        setLoadingMintNFTs(
-            loadingMintNFTs.map((value, i) => {
-                return i === index ? false : value;
-            }
-        ));
 
     }
 
@@ -901,88 +910,133 @@ export default function AIPage({ params }: any) {
             return;
         }
 
-        setLoadingDeployERC721Contract(true);
 
-        const erc721ContractAddress = await deployERC721Contract({
-            chain: params.chain === "arbitrum" ? arbitrum : polygon,
-            client: client,
-            account: smartAccount,
-            type: "TokenERC721",
-            params: {
-                name: "My NFT",
-                description: "My NFT",
-                symbol: "MYNFT",
-            },
-        });
-
-        console.log("erc721ContractAddress", erc721ContractAddress);
-
-        if (erc721ContractAddress) {
+        if (confirm("Are you sure you want to make an OpenSea collection?")) {
 
 
-            const contract = getContract({
-                client,
+            setLoadingDeployERC721Contract(true);
+
+            const erc721ContractAddress = await deployERC721Contract({
                 chain: params.chain === "arbitrum" ? arbitrum : polygon,
-                address: erc721ContractAddress,
-            });
-
-
-            // generate image
-            const image = "https://next.unove.space/logo-chatgpt.png";
-
-            const transactionMintTo = mintTo({
-                contract,
-                to: address,
-                nft: {
-                name: "NFT",
-                description: "NFT",
-                image: image,
-                animation_url: image,
-
-                attributes: [
-                    {
-                    trait_type: "CreatorName",
-                    value: nickname,
-                    },
-                ],
-
+                client: client,
+                account: smartAccount,
+                type: "TokenERC721",
+                params: {
+                    name: "My NFT",
+                    description: "My NFT",
+                    symbol: "MYNFT",
                 },
             });
 
+            console.log("erc721ContractAddress", erc721ContractAddress);
+
+            if (erc721ContractAddress) {
 
 
-            const sendData = await sendAndConfirmTransaction({
-                transaction: transactionMintTo,
-                account: smartAccount,
-            });
+                const contract = getContract({
+                    client,
+                    chain: params.chain === "arbitrum" ? arbitrum : polygon,
+                    address: erc721ContractAddress,
+                });
+
+
+                // generate image
+                const image = "https://next.unove.space/logo-chatgpt.png";
+
+                const transactionMintTo = mintTo({
+                    contract,
+                    to: address,
+                    nft: {
+                    name: "NFT",
+                    description: "NFT",
+                    image: image,
+                    animation_url: image,
+
+                    attributes: [
+                        {
+                        trait_type: "CreatorName",
+                        value: nickname,
+                        },
+                    ],
+
+                    },
+                });
+
+
+
+                const sendData = await sendAndConfirmTransaction({
+                    transaction: transactionMintTo,
+                    account: smartAccount,
+                });
 
 
 
 
 
-            // update the user with the erc721 contract address
+                // update the user with the erc721 contract address
 
-            const response = await fetch("/api/user/updateErc721ContractAddress", {
+                const response = await fetch("/api/user/updateErc721ContractAddress", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        walletAddress: address,
+                        erc721ContractAddress: erc721ContractAddress,
+                    }),
+                });
+
+                setErc721ContractAddress(erc721ContractAddress);
+
+
+                toast.success(Alert_OpenSea_Collection_made);
+            }
+
+            setLoadingDeployERC721Contract(false);
+
+        }
+
+
+
+    }
+
+
+
+    // remove image
+
+    const removeImage = async (url: string) => {
+
+        if (confirm("Are you sure you want to delete this image?")) {
+
+            const response = await fetch("/api/ai/removeOneImage", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
-                    walletAddress: address,
-                    erc721ContractAddress: erc721ContractAddress,
+                    image: url,
                 }),
             });
 
-            setErc721ContractAddress(erc721ContractAddress);
+            const data = await response.json();
 
+            console.log("data", data);
 
-            toast.success(Alert_OpenSea_Collection_made);
+            // get my images from api
+            const response2 = await fetch("/api/ai/getImages?userid=" + address, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            });
+
+            const data2 = await response2.json();
+
+            //console.log("data2", data2);
+
+            setMyImages(data2.images || []);
+
         }
-
-        setLoadingDeployERC721Contract(false);
-
-
-
 
     }
 
@@ -1438,16 +1492,32 @@ export default function AIPage({ params }: any) {
                                                         </span>
                                                     </div>
                                                 ) : (
-                                                <button
-                                                    disabled={loadingMintNFTs[index]}
-                                                    onClick={() => mintNFT(result.image, index)}
-                                                    className={` ${loadingMintNFTs[index] ? 'bg-gray-300 text-gray-500' : 'bg-blue-500 text-zinc-100'} p-2 rounded
-                                                        text-lg font-semibold m-2
-                                                        `}
-                                                >
-                                                    {loadingMintNFTs[index] ? Minting_NFT : Mint_NFT}
-                                                
-                                                </button>
+                                                    <div className='flex flex-row items-center gap-2'>
+                                                        <button
+                                                            disabled={loadingMintNFTs[index]}
+                                                            onClick={() => mintNFT(result.image, index)}
+                                                            className={` ${loadingMintNFTs[index] ? 'bg-gray-300 text-gray-500' : 'bg-blue-500 text-zinc-100'} p-2 rounded
+                                                                text-lg font-semibold m-2
+                                                                `}
+                                                        >
+                                                            {loadingMintNFTs[index] ? Minting_NFT : Mint_NFT}
+                                                        
+                                                        </button>
+                                                        {/* delete image */}
+                                                        <button
+                                                            onClick={() => {
+                                                                removeImage(result.image);
+                                                            } }
+                                                            className='hover:underline'
+                                                        >
+                                                            <div className='flex flex-row items-center gap-2'>
+                                                                <span>
+                                                                    Delete
+                                                                </span>
+                                                            </div>
+                                                        </button>
+
+                                                    </div>
                                                 )}
                                             </>
                                         )}
