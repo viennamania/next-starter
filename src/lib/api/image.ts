@@ -213,7 +213,7 @@ export async function findAllByUserid(data: any) {
     },
 
 
-  ).sort({createdAt: -1}).limit(5).toArray();
+  ).sort({createdAt: -1}).toArray();
 
   return result;
 }
