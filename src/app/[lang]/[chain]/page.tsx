@@ -54,7 +54,10 @@ import {
  
 
 
-import { getUserPhoneNumber } from "thirdweb/wallets/in-app";
+import {
+  inAppWallet as inAppWalletExtension,
+  getUserPhoneNumber
+} from "thirdweb/wallets/in-app";
 
 
 import { toast } from 'react-hot-toast';
@@ -87,10 +90,14 @@ const client = createThirdwebClient({
 
 
 const wallets = [
+  
   inAppWallet({
     auth: {
       options: ["phone"],
     },
+
+
+
   }),
 ];
 
@@ -1130,6 +1137,10 @@ export default function Index({ params }: any) {
 
                     }
                   }
+
+                  // custom national phone number selection
+
+                  
 
                 />
 
