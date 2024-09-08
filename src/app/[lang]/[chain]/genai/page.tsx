@@ -1291,7 +1291,13 @@ export default function AIPage({ params }: any) {
                                                     alt={result.url}
                                                     width={400}
                                                     height={400}
-                                                    className='rounded-lg'
+                                                    priority={true} // Added priority property
+                                                    className="rounded-lg"
+                                                    style={{
+                                                        objectFit: 'cover',
+                                                        width: '100%',
+                                                        height: '100%',
+                                                    }}
                                                 />
                                                 <span>
                                                     {prompt}

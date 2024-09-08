@@ -12,6 +12,9 @@ const nextConfig = {
     return config;
   },
 
+
+  // https://fal.media/files/koala/rBzGwXhz4gD4CFfCgpX74_157eefb0a8e649829fd762f179314591.jpg
+  
   images: {
     domains: [
       "cryptologos.cc",
