@@ -1286,19 +1286,14 @@ export default function AIPage({ params }: any) {
                                         <div className='flex flex-col items-center gap-2 border border-gray-300 rounded-lg p-4'>
                                             
                                             <div className='flex flex-col items-center gap-2'>
+                                            
                                                 <Image
                                                     src={result.url}
                                                     alt={result.url}
-                                                    width={400}
-                                                    height={400}
-                                                    priority={true} // Added priority property
-                                                    className="rounded-lg"
-                                                    style={{
-                                                        objectFit: 'cover',
-                                                        width: '100%',
-                                                        height: '100%',
-                                                    }}
+                                                    width={500}
+                                                    height={500}
                                                 />
+
                                                 <span>
                                                     {prompt}
                                                 </span>

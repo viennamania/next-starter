@@ -14,16 +14,14 @@ const nextConfig = {
 
 
   // https://fal.media/files/koala/rBzGwXhz4gD4CFfCgpX74_157eefb0a8e649829fd762f179314591.jpg
-  
+
   images: {
     domains: [
       "cryptologos.cc",
       "vzrcy5vcsuuocnf3.public.blob.vercel-storage.com",
       "replicate.delivery",
       "fal.media",
-
     ],
-
   },
 
   experimental: {
